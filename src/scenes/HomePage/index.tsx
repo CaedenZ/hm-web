@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import logo from "logo.svg";
 
-class LoginPage extends Component {
+class HomePage extends Component {
   render() {
     return (
       <div className="App">
@@ -24,4 +24,4 @@ class LoginPage extends Component {
   }
 }
 
-export default LoginPage;
+export default HomePage;
