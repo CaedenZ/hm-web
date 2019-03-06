@@ -45,32 +45,25 @@ const styles = (theme:any) => ({
   },
 });
 
-function SignIn(props:any) {
+function ResetPasswordPage(props:any) {
   const { classes } = props;
 
   return (
     <main className={classes.main}>
       <CssBaseline />
       <Paper className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          Set your new password
         </Typography>
         <form className={classes.form}>
-          <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="email">Email Address</InputLabel>
-            <Input id="email" name="email" autoComplete="email" autoFocus />
-          </FormControl>
-          <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="password">Password</InputLabel>
+        <FormControl margin="normal" required fullWidth>
+            <InputLabel htmlFor="password">New Password</InputLabel>
             <Input name="password" type="password" id="password" autoComplete="current-password" />
           </FormControl>
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
+          <FormControl margin="normal" required fullWidth>
+            <InputLabel htmlFor="password">Confirm Password</InputLabel>
+            <Input name="password" type="password" id="password" autoComplete="current-password" />
+          </FormControl>
           <Button
             type="submit"
             fullWidth
@@ -78,7 +71,7 @@ function SignIn(props:any) {
             color="primary"
             className={classes.submit}
           >
-            Sign in
+            Confirm
           </Button>
         </form>
       </Paper>
@@ -86,8 +79,8 @@ function SignIn(props:any) {
   );
 }
 
-SignIn.propTypes = {
+ResetPasswordPage.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(SignIn);
+export default withStyles(styles)(ResetPasswordPage);
