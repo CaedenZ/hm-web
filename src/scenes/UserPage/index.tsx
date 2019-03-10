@@ -1,117 +1,103 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import withStyles from '@material-ui/core/styles/withStyles';
-import { Table, TableBody, TableRow, TableCell, TableFooter, TablePagination } from '@material-ui/core';
+import { render } from 'react-dom';
+import ButtonGroup from './create/component/ButtonGroup';
 
-const styles = (theme:any) => ({
-  main: {
-    width: 'auto',
-    display: 'block', // Fix IE 11 issue.
-    marginLeft: theme.spacing.unit * 3,
-    marginRight: theme.spacing.unit * 3,
-    [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
-      width: "70%",
-      marginLeft: 'auto',
-      marginRight: 'auto',
-    },
+const CustomTableCell = withStyles(theme => ({
+  head: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
   },
-  title:{
-    marginTop: theme.spacing.unit * 10,
+  body: {
+    fontSize: 14,
   },
-  paper: {
+}))(TableCell);
+
+const styles = (theme: Theme) =>
+  createStyles({
+  root: {
+    width: '100%',
     marginTop: theme.spacing.unit * 3,
-    display: 'flex',
-    // flexDirection: 'column',
-    alignItems: 'center',
-    padding: `${theme.spacing.unit}px ${theme.spacing.unit}px ${theme.spacing.unit * 3}px`,
-  },
-  avatar: {
-    margin: theme.spacing.unit,
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing.unit,
-  },
-  submit: {
-    marginTop: theme.spacing.unit * 3,
+    overflowX: 'auto',
   },
   table: {
-    minWidth: 500,
+    minWidth: 700,
+  },
+  row: {
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.background.default,
+    },
   },
 });
 
-function UserPage(props:any) {
-  const { classes } = props;
-//   const { rows, rowsPerPage, page } = this.state;
-const rows = [
-    {
-        att1:'att1',
-        att2:'att2',
-        att3:'att3'
-    },
-    {
-        att1:'att1',
-        att2:'att2',
-        att3:'att3'
-    },
-]
-  return (
-    <main className={classes.main}>
-      <CssBaseline />
-      <Typography className={classes.title} component="h1" variant="h5">
-          User
-        </Typography>
-      <Paper className={classes.paper}>
-      <div className={classes.tableWrapper}>
-          <Table className={classes.table}>
-            <TableBody>
-              {rows.map(row => (
-                <TableRow key={row.att1}>
-                  <TableCell component="th" scope="row">
-                    {row.att2}
-                  </TableCell>
-                  <TableCell align="right">{row.att3}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-            <TableFooter>
-              <TableRow>
-                {/* <TablePagination
-                  rowsPerPageOptions={[5, 10, 25]}
-                  colSpan={3}
-                  count={rows.length}
-                  rowsPerPage={rowsPerPage}
-                  page={page}
-                  SelectProps={{
-                    native: true,
-                  }}
-                  onChangePage={}
-                  onChangeRowsPerPage={}
-                  ActionsComponent={}
-                /> */}
-              </TableRow>
-            </TableFooter>
-          </Table>
-        </div>
-      </Paper>
-    </main>
-  );
+let id = 0;
+function createData(name:any, calories:any, fat:any, carbs:any, protein:any) {
+  id += 1;
+  return { id, name, calories, fat, carbs, protein };
 }
 
-UserPage.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
+const rows = [
+  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
+  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
+  createData('Eclair', 262, 16.0, 24, 6.0),
+  createData('Cupcake', 305, 3.7, 67, 4.3),
+  createData('Gingerbread', 356, 16.0, 49, 3.9),
+];
 
-export default withStyles(styles)(UserPage);
+export interface Props extends WithStyles<typeof styles> {}
+
+interface State {
+}
+
+class CustomizedTable extends React.Component<Props, State> {
+  render(){
+    const { classes } = this.props;
+
+  return (
+    <main>
+      <ButtonGroup></ButtonGroup>
+      <Paper className={classes.root}>
+      <Table className={classes.table}>
+        <TableHead>
+          <TableRow>
+            <CustomTableCell>Dessert (100g serving)</CustomTableCell>
+            <CustomTableCell align="right">Calories</CustomTableCell>
+            <CustomTableCell align="right">Fat (g)</CustomTableCell>
+            <CustomTableCell align="right">Carbs (g)</CustomTableCell>
+            <CustomTableCell align="right">Protein (g)</CustomTableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {rows.map(row => (
+            <TableRow className={classes.row} key={row.id}>
+              <CustomTableCell component="th" scope="row">
+                {row.name}
+              </CustomTableCell>
+              <CustomTableCell align="right">{row.calories}</CustomTableCell>
+              <CustomTableCell align="right">{row.fat}</CustomTableCell>
+              <CustomTableCell align="right">{row.carbs}</CustomTableCell>
+              <CustomTableCell align="right">{row.protein}</CustomTableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </Paper>
+    </main>
+    
+  );
+  }
+  
+}
+
+(CustomizedTable as React.ComponentClass<Props>).propTypes = {
+  classes: PropTypes.object.isRequired,
+} as any;
+
+export default withStyles(styles)(CustomizedTable);

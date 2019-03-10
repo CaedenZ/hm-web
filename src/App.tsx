@@ -7,6 +7,7 @@ import HomePage from "./scenes/HomePage";
 import ResponsiveDrawer from "./Layout/default";
 import ForgetPasswordPage from "./scenes/ForgetPasswordPage";
 import ResetPasswordPage from "./scenes/ResetPasswordPage";
+import UserCreatePage from "./scenes/UserPage/create/index";
 import UserPage from "./scenes/UserPage";
 
 class App extends Component {
@@ -24,6 +25,7 @@ class App extends Component {
           <Route exact path="/" render={() => <ResponsiveDrawer><HomePage/></ResponsiveDrawer>} />
           <Route exact path="/homepage" component={HomePage} /> 
           <Route exact path="/user" render={() => <ResponsiveDrawer><UserPage/></ResponsiveDrawer>} />
+          <Route exact path="/user/create" render={() => <ResponsiveDrawer><UserCreatePage/></ResponsiveDrawer>} />
           {/* <Route path="/schedule" component={Schedule} /> */}
         </Switch>
       </Router>
