@@ -1,13 +1,9 @@
 import React, { Component } from "react";
-import PermanentDrawerLeft from "./component/Drawer"
+import PermanentDrawerLeft from "./component/Drawer";
 
 class Layout extends Component {
   render() {
-    return (
-      <PermanentDrawerLeft>
-        {this.props.children}
-      </PermanentDrawerLeft>
-    );
+    return <PermanentDrawerLeft>{this.props.children}</PermanentDrawerLeft>;
   }
 }
 

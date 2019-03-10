@@ -1,54 +1,53 @@
-import { Toolbar, IconButton, List, ListItem, ListItemText, Menu, MenuItem } from "@material-ui/core";
+import {
+  Toolbar,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  Menu,
+  MenuItem
+} from "@material-ui/core";
 import React from "react";
 
+export class CompanySelect extends React.Component<any, any> {
+  state: any = {
+    mobileOpen: false,
+    anchorEl: null,
+    selectedIndex: 1
+  };
 
- export class CompanySelect extends React.Component<any, any> {
+  handleClickListItem = (event: any) => {
+    this.setState({ anchorEl: event.currentTarget });
+  };
 
-    state: any = {
-        mobileOpen: false,
-        anchorEl: null,
-        selectedIndex: 1,
-      };
+  handleMenuItemClick = (event: any, index: any) => {
+    this.setState({ selectedIndex: index, anchorEl: null });
+  };
 
-    handleClickListItem = (event:any) => {
-        this.setState({ anchorEl: event.currentTarget });
-      };
-    
-      handleMenuItemClick = (event:any, index:any) => {
-        this.setState({ selectedIndex: index, anchorEl: null });
-      };
-    
-      handleClose = () => {
-        this.setState({ anchorEl: null });
-      };
-  
-render(){
-    const {classes, theme } = this.props;
+  handleClose = () => {
+    this.setState({ anchorEl: null });
+  };
+
+  render() {
+    const { classes, theme } = this.props;
     const { anchorEl } = this.state;
-    
-    const options = [
-        'Campany 1',
-        'Campany 2',
-        'Campany 3',
-        'Campany 4',
-      ];
 
-    return(
-        <div>
-            <List component="nav">
-              <ListItem
-                button
-                aria-haspopup="true"
-                aria-controls="lock-menu"
-                aria-label="Welcome to"
-                onClick={this.handleClickListItem}
-              >
-                <ListItemText
-                  primary={options[this.state.selectedIndex]}
-                />
-              </ListItem>
-            </List>
-            <Menu
+    const options = ["Campany 1", "Campany 2", "Campany 3", "Campany 4"];
+
+    return (
+      <div>
+        <List component="nav">
+          <ListItem
+            button
+            aria-haspopup="true"
+            aria-controls="lock-menu"
+            aria-label="Welcome to"
+            onClick={this.handleClickListItem}
+          >
+            <ListItemText primary={options[this.state.selectedIndex]} />
+          </ListItem>
+        </List>
+        <Menu
           id="lock-menu"
           anchorEl={anchorEl}
           open={Boolean(anchorEl)}
@@ -65,9 +64,9 @@ render(){
             </MenuItem>
           ))}
         </Menu>
-          </div>
-    )
-}
+      </div>
+    );
   }
+}
 
-  export default CompanySelect;
+export default CompanySelect;

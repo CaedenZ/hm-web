@@ -1,45 +1,80 @@
 import React, { Component } from "react";
-import logo from "logo.svg";
-import { Typography } from "@material-ui/core";
+import PropTypes from "prop-types";
+import {
+  Typography,
+  Avatar,
+  Theme,
+  createStyles,
+  WithStyles,
+  withStyles,
+  Grid,
+  Paper
+} from "@material-ui/core";
+import CustomButton from "../component/CustomButton";
 
-class HomePage extends Component {
+const styles = (theme: Theme) =>
+  createStyles({
+    root: {
+      flexGrow: 1
+    },
+    paper: {
+      padding: theme.spacing.unit * 2,
+      textAlign: "center",
+      color: theme.palette.text.secondary
+    },
+    divAvatar: {
+      margin: theme.spacing.unit * 3,
+      alignSelf: "baseline",
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "center"
+    },
+    bigAvatar: {
+      width: "auto",
+      height: "auto"
+    },
+    profilebutton: {
+      alignContent: "center",
+      alignSelf: "center",
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "center"
+    }
+  });
+export interface Props extends WithStyles<typeof styles> {}
+
+interface State {}
+
+class CreateUserPage extends Component<Props, State> {
   render() {
+    const { classes } = this.props;
     return (
-      <main >
-          <div />
-          <Typography paragraph>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
-            dolor purus non enim praesent elementum facilisis leo vel. Risus at
-            ultrices mi tempus imperdiet. Semper risus in hendrerit gravida
-            rutrum quisque non tellus. Convallis convallis tellus id interdum
-            velit laoreet id donec ultrices. Odio morbi quis commodo odio aenean
-            sed adipiscing. Amet nisl suscipit adipiscing bibendum est ultricies
-            integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate
-            eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo
-            quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat
-            vivamus at augue. At augue eget arcu dictum varius duis at
-            consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem
-            donec massa sapien faucibus et molestie ac.
-          </Typography>
-          <Typography paragraph>
-            Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
-            ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar
-            elementum integer enim neque volutpat ac tincidunt. Ornare
-            suspendisse sed nisi lacus sed viverra tellus. Purus sit amet
-            volutpat consequat mauris. Elementum eu facilisis sed odio morbi.
-            Euismod lacinia at quis risus sed vulputate odio. Morbi tincidunt
-            ornare massa eget egestas purus viverra accumsan in. In hendrerit
-            gravida rutrum quisque non tellus orci ac. Pellentesque nec nam
-            aliquam sem et tortor. Habitant morbi tristique senectus et.
-            Adipiscing elit duis tristique sollicitudin nibh sit. Ornare aenean
-            euismod elementum nisi quis eleifend. Commodo viverra maecenas
-            accumsan lacus vel facilisis. Nulla posuere sollicitudin aliquam
-            ultrices sagittis orci a.
-          </Typography>
-        </main>
+      <Grid container className={classes.root} spacing={16}>
+        <Grid item justify="center" xs={2}>
+          <Paper className={classes.paper}>
+            <div className={classes.profilebutton}>
+              <Avatar className={classes.bigAvatar}>R</Avatar>
+
+              <CustomButton link="">Change Picture</CustomButton>
+            </div>
+          </Paper>
+        </Grid>
+        <Grid item justify="center" xs={6}>
+          <Paper className={classes.paper}>xs=12</Paper>
+        </Grid>
+        <Grid item justify="center" xs={12}>
+          <Paper className={classes.paper}>xs=12</Paper>
+        </Grid>
+        <Grid item justify="center" xs={12}>
+          <Paper className={classes.paper}>xs=12</Paper>
+        </Grid>
+      </Grid>
     );
   }
 }
 
-export default HomePage;
+(CreateUserPage as React.ComponentClass<Props>).propTypes = {
+  classes: PropTypes.object.isRequired
+} as any;
+
+export default withStyles(styles)(CreateUserPage);
