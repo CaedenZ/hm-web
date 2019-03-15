@@ -1,26 +1,51 @@
-import {
-  Toolbar,
-  IconButton,
-  List,
-  ListItem,
-  ListItemText,
-  Menu,
-  MenuItem
-} from "@material-ui/core";
-import React from "react";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { withStyles, createStyles, Theme, WithStyles } from '@material-ui/core/styles';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
+import { Typography } from '@material-ui/core';
+import Avatar from 'react-avatar-edit';
 
-export class CompanySelect extends React.Component<any, any> {
-  state: any = {
-    mobileOpen: false,
+const styles = (theme: Theme) =>
+  createStyles({
+    root: {
+      width: '100%',
+      maxWidth: 360,
+      backgroundColor: theme.palette.background.paper,
+    },
+  });
+
+const options = [
+  {
+    logo:require('assets/images/companylogo1.png'),
+    title:'company1',
+    location:'abc'
+  },
+  {
+    logo:require('assets/images/companylogo2.png'),
+    title:'company2',
+    location:'cba'
+  },
+];
+
+export interface Props extends WithStyles<typeof styles> {}
+
+interface State {}
+
+class CompanySelectMenu extends React.Component<Props, State> {
+  state = {
     anchorEl: null,
-    selectedIndex: 1
+    selectedIndex: 1,
   };
 
-  handleClickListItem = (event: any) => {
+  handleClickListItem = event => {
     this.setState({ anchorEl: event.currentTarget });
   };
 
-  handleMenuItemClick = (event: any, index: any) => {
+  handleMenuItemClick = (event, index) => {
     this.setState({ selectedIndex: index, anchorEl: null });
   };
 
@@ -29,24 +54,22 @@ export class CompanySelect extends React.Component<any, any> {
   };
 
   render() {
-    const { classes, theme } = this.props;
+    const { classes } = this.props;
     const { anchorEl } = this.state;
 
-    const options = ["Campany 1", "Campany 2", "Campany 3", "Campany 4"];
-
     return (
-      <div>
-        <List component="nav">
+      <div className={classes.root}>
           <ListItem
             button
             aria-haspopup="true"
-            aria-controls="lock-menu"
-            aria-label="Welcome to"
             onClick={this.handleClickListItem}
           >
-            <ListItemText primary={options[this.state.selectedIndex]} />
+            <img style={{height:'50px'}}  src={options[this.state.selectedIndex].logo} />
+            <ListItemText
+              primary={options[this.state.selectedIndex].title}
+              secondary={`location: ${options[this.state.selectedIndex].location}`}
+            />
           </ListItem>
-        </List>
         <Menu
           id="lock-menu"
           anchorEl={anchorEl}
@@ -55,12 +78,16 @@ export class CompanySelect extends React.Component<any, any> {
         >
           {options.map((option, index) => (
             <MenuItem
-              key={option}
+              key={option.title}
               disabled={index === 0}
               selected={index === this.state.selectedIndex}
               onClick={event => this.handleMenuItemClick(event, index)}
             >
-              {option}
+              <img style={{height:'100%'}} src = {option.logo}/>
+              <div style={{marginLeft:'10px'}} >
+              <Typography>{option.title}</Typography>
+              <Typography>{`location: ${option.location}`}</Typography>
+              </div>
             </MenuItem>
           ))}
         </Menu>
@@ -69,4 +96,8 @@ export class CompanySelect extends React.Component<any, any> {
   }
 }
 
-export default CompanySelect;
+(CompanySelectMenu as React.ComponentClass<Props>).propTypes = {
+  classes: PropTypes.object.isRequired
+} as any;
+
+export default withStyles(styles)(CompanySelectMenu);

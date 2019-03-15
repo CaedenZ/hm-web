@@ -34,6 +34,15 @@ class App extends Component {
           <Route exact path="/homepage" component={HomePage} />
           <Route
             exact
+            path="/prifile"
+            render={() => (
+              <ResponsiveDrawer>
+                <CreateUserPage />
+              </ResponsiveDrawer>
+            )}
+          />
+          <Route
+            exact
             path="/user"
             render={() => (
               <ResponsiveDrawer>

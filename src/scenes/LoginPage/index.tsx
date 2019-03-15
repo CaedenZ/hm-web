@@ -12,6 +12,8 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
+import { Link } from "react-router-dom";
+import { Divider } from "@material-ui/core";
 
 const styles = (theme: any) => ({
   main: {
@@ -77,6 +79,10 @@ function SignIn(props: any) {
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
           />
+          <Divider/>
+          <div style={{marginTop: 20}}>
+          <Link to = "/forgetpassword">Forget password</Link>
+          </div>
           <Button
             type="submit"
             fullWidth

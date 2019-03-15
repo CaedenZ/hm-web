@@ -21,6 +21,8 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
+import CompanySelect from "./companySelect";
+import { Link } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -29,7 +31,8 @@ const styles = (theme: Theme) =>
     root: {},
     appBar: {
       width: `calc(100% - ${drawerWidth}px)`,
-      marginLeft: drawerWidth
+      marginLeft: drawerWidth,
+      // backgroundColor:'white'
     },
     grow: {
       flexGrow: 1
@@ -141,7 +144,7 @@ class PrimarySearchAppBar extends React.Component<Props, State> {
         open={isMenuOpen}
         onClose={this.handleMenuClose}
       >
-        <MenuItem onClick={this.handleMenuClose}>Profile</MenuItem>
+        <Link to="/profile"><MenuItem>Profile</MenuItem></Link>
         <MenuItem onClick={this.handleMenuClose}>My account</MenuItem>
       </Menu>
     );
@@ -182,22 +185,8 @@ class PrimarySearchAppBar extends React.Component<Props, State> {
     return (
       <div className={classes.root}>
         <AppBar position="fixed" className={classes.appBar}>
-          <Toolbar>
-            <IconButton
-              className={classes.menuButton}
-              color="inherit"
-              aria-label="Open drawer"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography
-              className={classes.title}
-              variant="h6"
-              color="inherit"
-              noWrap
-            >
-              Material-UI
-            </Typography>
+          <Toolbar style={{padding:0}}>
+            <CompanySelect/>
             <div className={classes.search}>
               <div className={classes.searchIcon}>
                 <SearchIcon />

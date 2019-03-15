@@ -21,7 +21,7 @@ import MailIcon from "@material-ui/icons/Mail";
 import MenuIcon from "@material-ui/icons/Menu";
 import PrimarySearchAppBar from "./AppBar";
 import { Link } from "react-router-dom";
-import logo from '../../assets/images/3CGradient Full.png';
+import logo from 'assets/images/3CGradient Full.png';
 
 const drawerWidth = 240;
 
@@ -35,7 +35,7 @@ const styles = (theme: Theme) =>
         padding:"20px"
     },
     menubar:{
-        background: "linear-gradient(#D1D1D1 0%, #FFFFFF 30%)",
+        background: "linear-gradient(#F0F0F0 0%, #FFFFFF 30%)",
     },
     menudivider:{
         
@@ -49,10 +49,11 @@ const styles = (theme: Theme) =>
     },
     drawer: {
       width: drawerWidth,
-      flexShrink: 0
+      flexShrink: 0 
     },
     drawerPaper: {
-      width: drawerWidth
+      width: drawerWidth,
+      boxShadow: "10px 0px 50px 0px rgba(0,0,0,0.2)"   
     },
     toolbar: theme.mixins.toolbar,
     content: {

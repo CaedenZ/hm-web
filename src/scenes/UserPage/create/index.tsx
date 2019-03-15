@@ -12,7 +12,8 @@ import {
   Divider,
   FormControl,
   Checkbox,
-  FormControlLabel
+  FormControlLabel,
+  Button
 } from "@material-ui/core";
 import CustomButton from "../component/CustomButton";
 import Avatar from 'react-avatar-edit'
@@ -27,6 +28,7 @@ const styles = (theme: Theme) =>
     },
     textField: {
       width: 200,
+      margin: 20,
     },
     // formControl: {
     //   margin: theme.spacing.unit * 3,
@@ -61,8 +63,13 @@ const styles = (theme: Theme) =>
 export interface Props extends WithStyles<typeof styles> {}
 
 export interface State {
-  name: string;
-  age: string;
+  email: string;
+  password: string;
+  firstname: string;
+  lastname: string;
+  country: string;
+  address: string;
+  postalcode: string;
   multiline: string;
   currency: string;
   preview: any;
@@ -85,8 +92,13 @@ class CreateUserPage extends Component<Props, State> {
   state: State = {
     preview: null,
     src: '',
-    name: '',
-    age: '',
+    email: '',
+    password: '',
+    firstname: '',
+    lastname: '',
+    country: '',
+    address: '',
+    postalcode: '',
     multiline: 'Controlled',
     currency: 'EUR',
     roles: [
@@ -111,8 +123,8 @@ class CreateUserPage extends Component<Props, State> {
     this.setState({preview})
   }
 
-  handleChange = (name: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ [name]: event.target.value } as Pick<State, keyof State>);
+  handleChange = (statekay: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ [statekay]: event.target.value } as Pick<State, keyof State>);
   };
 
   handleCheckbox = (index: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -132,27 +144,28 @@ class CreateUserPage extends Component<Props, State> {
       <Paper>
       <Grid container className={classes.grid} spacing={16}>
         <Grid item justify="center" xs container>
-          <Paper className={classes.paper}>
             <Grid container direction="column" spacing={16} xs>
-            Profile Picture
-              <Avatar
-                  width={200}
-                  height={150}
-                  onCrop={this.onCrop}
-                  onClose={this.onClose}
-                  src={this.state.src}
-                />
+              <div style = {{margin:20, justifyContent: 'center'}}>
+                <Avatar
+                    width={200}
+                    height={150}
+                    onCrop={this.onCrop}
+                    onClose={this.onClose}
+                    src={this.state.src}
+                  />
+                  <Typography variant="h6">Profile Picture</Typography>
+                </div>
+                
             </Grid>
-          </Paper>
         </Grid>
         <Grid item justify="center" xs container>
-          <Paper className={classes.paper}>
+        <div style = {{margin:20}}>
           <TextField
             id="email"
             label="Email"
             className={classes.textField}
-            value={this.state.name}
-            onChange={this.handleChange('name')}
+            value={this.state.email}
+            onChange={this.handleChange('email')}
             margin="normal"
           />
           <TextField
@@ -163,59 +176,59 @@ class CreateUserPage extends Component<Props, State> {
             autoComplete="current-password"
             margin="normal"
           />
-          </Paper>
+          </div>
         </Grid>
         <Grid item justify="center" xs container>
-          <Paper className={classes.paper}>
+        <div style = {{margin:20}}>
           <TextField
             id="firstname"
             label="Firstname"
             className={classes.textField}
-            value={this.state.name}
-            onChange={this.handleChange('name')}
+            value={this.state.firstname}
+            onChange={this.handleChange('firstname')}
             margin="normal"
           />
           <TextField
             id="lastname"
             label="Lastname"
             className={classes.textField}
-            value={this.state.name}
-            onChange={this.handleChange('name')}
+            value={this.state.lastname}
+            onChange={this.handleChange('lastname')}
             margin="normal"
           />
-          </Paper>
+          </div>
         </Grid>
         <Grid item justify="center" container xs>
-          <Paper className={classes.paper}>
+        <div style = {{margin:20}}>
           <TextField
             id="country"
             label="Country"
             className={classes.textField}
-            value={this.state.name}
-            onChange={this.handleChange('name')}
+            value={this.state.country}
+            onChange={this.handleChange('country')}
             margin="normal"
           />
           <TextField
             id="address"
             label="Address"
             className={classes.textField}
-            value={this.state.name}
-            onChange={this.handleChange('name')}
+            value={this.state.address}
+            onChange={this.handleChange('address')}
             margin="normal"
           />
           <TextField
             id="postal_code"
             label="Postal Code"
             className={classes.textField}
-            value={this.state.name}
-            onChange={this.handleChange('name')}
+            value={this.state.postalcode}
+            onChange={this.handleChange('postalcode')}
             margin="normal"
           />
-          </Paper>
+          </div>
         </Grid>
         
       </Grid>
-      <Typography component="h1" variant="h5">
+      <Typography style={{margin:20}} component="h1" variant="h5">
           Role
       </Typography>
       <Divider/>
@@ -233,6 +246,13 @@ class CreateUserPage extends Component<Props, State> {
                         );
                       })}
       </Grid>
+      <Divider/>
+      <div style={{width:'100%',flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'center',alignItems:'flex-end'}}>
+      <CustomButton link = "">Submmit</CustomButton>
+      </div>
+      
       </Paper>
       </div>
     );

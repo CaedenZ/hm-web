@@ -72,7 +72,7 @@ class CustomizedTable extends React.Component<Props, State> {
 
     return (
       <main>
-        <CustomButton link="/user/create">New User</CustomButton>
+        <CustomButton link="/user/create">New Company</CustomButton>
         <Paper className={classes.root}>
           <Table className={classes.table}>
             <TableHead>
