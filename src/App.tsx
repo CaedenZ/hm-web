@@ -9,6 +9,7 @@ import ForgetPasswordPage from "./scenes/ForgetPasswordPage";
 import ResetPasswordPage from "./scenes/ResetPasswordPage";
 import CreateUserPage from "./scenes/UserPage/create/index";
 import UserPage from "./scenes/UserPage";
+import CompanyPage from "./scenes/CompanyPage";
 
 class App extends Component {
   render() {
@@ -46,6 +47,15 @@ class App extends Component {
             render={() => (
               <ResponsiveDrawer>
                 <CreateUserPage />
+              </ResponsiveDrawer>
+            )}
+          />
+          <Route
+            exact
+            path="/company"
+            render={() => (
+              <ResponsiveDrawer>
+                <CompanyPage />
               </ResponsiveDrawer>
             )}
           />

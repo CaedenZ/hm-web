@@ -18,15 +18,30 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
+import MenuIcon from "@material-ui/icons/Menu";
 import PrimarySearchAppBar from "./AppBar";
 import { Link } from "react-router-dom";
+import logo from '../../assets/images/3CGradient Full.png';
 
 const drawerWidth = 240;
 
 const styles = (theme: Theme) =>
   createStyles({
     root: {
-      display: "flex"
+      display: "flex",
+    },
+    logo:{
+        width: "100%",
+        padding:"20px"
+    },
+    menubar:{
+        background: "linear-gradient(#D1D1D1 0%, #FFFFFF 30%)",
+    },
+    menudivider:{
+        
+    },
+    navlist:{
+        
     },
     appBar: {
       width: `calc(100% - ${drawerWidth}px)`,
@@ -57,7 +72,7 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
 
     var itemlist1 = [
       {
-        title: "Home",
+        title: "Dashboard",
         path: "/"
       },
       {
@@ -93,13 +108,21 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
           }}
           anchor="left"
         >
-          <div className={classes.toolbar} />
-          <Divider />
-          <List>
+          <div className={classes.toolbar}>
+            <img className={classes.logo} src={logo}/>
+          </div>
+          <Divider className={classes.menudivider} />
+          <ListItem className = {classes.menubar}>
+            <ListItemIcon>
+                <MenuIcon />
+            </ListItemIcon>
+            <ListItemText primary="menu"/>
+          </ListItem>
+          <List className={classes.navlist}>
             {itemlist1.map((item, index) => (
-              <Link to={item.path}>
+              <Link to={item.path} style={{ textDecoration: "none" }}>
                 <ListItem button key={item.title}>
-                  <ListItemIcon>
+                  <ListItemIcon style={{ marginLeft:"20px"}}>
                     {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
                   </ListItemIcon>
                   <ListItemText primary={item.title} />
@@ -110,7 +133,7 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
           <Divider />
           <List>
             {itemlist2.map((item, index) => (
-              <Link to={item.path}>
+              <Link to={item.path} style={{ textDecoration: "none" }}>
                 <ListItem button key={item.title}>
                   <ListItemIcon>
                     {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
