@@ -31,7 +31,7 @@ const styles = (theme: Theme) =>
       display: "flex",
     },
     logo:{
-        width: "100%",
+        height: "100%",
         padding:"20px"
     },
     menubar:{
@@ -55,7 +55,9 @@ const styles = (theme: Theme) =>
       width: drawerWidth,
       boxShadow: "10px 0px 50px 0px rgba(0,0,0,0.2)"   
     },
-    toolbar: theme.mixins.toolbar,
+    toolbar: {
+      height: theme.spacing.unit * 10
+    },
     content: {
       flexGrow: 1,
       backgroundColor: theme.palette.background.default,

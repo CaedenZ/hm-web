@@ -32,6 +32,7 @@ const styles = (theme: Theme) =>
     appBar: {
       width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: drawerWidth,
+      height: theme.spacing.unit * 10
       // backgroundColor:'white'
     },
     grow: {

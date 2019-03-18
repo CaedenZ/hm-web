@@ -13,9 +13,13 @@ const styles = (theme: Theme) =>
   createStyles({
     root: {
       width: '100%',
+      height: theme.spacing.unit * 10,
       maxWidth: 360,
       backgroundColor: theme.palette.background.paper,
     },
+    listitem:{
+      height : theme.spacing.unit * 10,
+    }
   });
 
 const options = [
@@ -63,6 +67,7 @@ class CompanySelectMenu extends React.Component<Props, State> {
             button
             aria-haspopup="true"
             onClick={this.handleClickListItem}
+            className = {classes.listitem}
           >
             <img style={{height:'50px'}}  src={options[this.state.selectedIndex].logo} />
             <ListItemText
