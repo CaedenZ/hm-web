@@ -10,10 +10,24 @@ import ResetPasswordPage from "./scenes/ResetPasswordPage";
 import CreateUserPage from "./scenes/UserPage/create/index";
 import UserPage from "./scenes/UserPage";
 import CompanyPage from "./scenes/CompanyPage";
+import ProfilePage from "./scenes/ProfilePage";
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import { fade } from "@material-ui/core/styles/colorManipulator";
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      light: "rgba(255, 170, 0, 0.66)",
+      main: "rgba(245, 96, 0, 0.99)",
+      dark: "rgba(245, 56, 0, 0.99)",
+    }
+  } 
+});
 
 class App extends Component {
   render() {
     return (
+      <MuiThemeProvider theme = {theme}>
       <Router>
         <Switch>
           {/* <Route exact path="/" component={Home} /> */}
@@ -34,10 +48,10 @@ class App extends Component {
           <Route exact path="/homepage" component={HomePage} />
           <Route
             exact
-            path="/prifile"
+            path="/profile"
             render={() => (
               <ResponsiveDrawer>
-                <CreateUserPage />
+                <ProfilePage />
               </ResponsiveDrawer>
             )}
           />
@@ -71,6 +85,7 @@ class App extends Component {
           {/* <Route path="/schedule" component={Schedule} /> */}
         </Switch>
       </Router>
+      </MuiThemeProvider>
     );
   }
 }

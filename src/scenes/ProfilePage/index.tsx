@@ -89,13 +89,13 @@ class UserProfilePage extends Component<Props, State> {
   state: State = {
     preview: null,
     src: '',
-    email: '',
+    email: 'em',
     password: '',
-    firstname: '',
-    lastname: '',
-    country: '',
-    address: '',
-    postalcode: '',
+    firstname: 'fn',
+    lastname: 'ln',
+    country: 'c',
+    address: 'a',
+    postalcode: '111111',
     multiline: 'Controlled',
     currency: 'EUR',
     roles: [
@@ -136,20 +136,14 @@ class UserProfilePage extends Component<Props, State> {
     return (
       <div className={classes.root}>
       <Typography component="h1" variant="h5">
-          New User
+          Profile
       </Typography>
       <Paper>
       <Grid container className={classes.grid} spacing={16}>
         <Grid item justify="center" xs container>
             <Grid container direction="column" spacing={16} xs>
               <div style = {{margin:20, justifyContent: 'center'}}>
-                <Avatar
-                    width={200}
-                    height={150}
-                    onCrop={this.onCrop}
-                    onClose={this.onClose}
-                    src={this.state.src}
-                  />
+                  <img src={this.state.preview} alt="Preview" />
                   <Typography variant="h6">Profile Picture</Typography>
                 </div>
                 
@@ -158,6 +152,7 @@ class UserProfilePage extends Component<Props, State> {
         <Grid item justify="center" xs container>
         <div style = {{margin:20}}>
           <TextField
+            disabled
             id="email"
             label="Email"
             className={classes.textField}
@@ -166,18 +161,7 @@ class UserProfilePage extends Component<Props, State> {
             margin="normal"
           />
           <TextField
-            id="standard-password-input"
-            label="Password"
-            className={classes.textField}
-            type="password"
-            autoComplete="current-password"
-            margin="normal"
-          />
-          </div>
-        </Grid>
-        <Grid item justify="center" xs container>
-        <div style = {{margin:20}}>
-          <TextField
+          disabled
             id="firstname"
             label="Firstname"
             className={classes.textField}
@@ -186,6 +170,7 @@ class UserProfilePage extends Component<Props, State> {
             margin="normal"
           />
           <TextField
+          disabled
             id="lastname"
             label="Lastname"
             className={classes.textField}
@@ -198,6 +183,7 @@ class UserProfilePage extends Component<Props, State> {
         <Grid item justify="center" container xs>
         <div style = {{margin:20}}>
           <TextField
+          disabled
             id="country"
             label="Country"
             className={classes.textField}
@@ -206,6 +192,7 @@ class UserProfilePage extends Component<Props, State> {
             margin="normal"
           />
           <TextField
+          disabled
             id="address"
             label="Address"
             className={classes.textField}
@@ -214,6 +201,7 @@ class UserProfilePage extends Component<Props, State> {
             margin="normal"
           />
           <TextField
+          disabled
             id="postal_code"
             label="Postal Code"
             className={classes.textField}
@@ -233,12 +221,7 @@ class UserProfilePage extends Component<Props, State> {
           {this.state.roles.map(function(role:any, index:number){
                         return (
                           <Grid item justify="center" xs container>
-                            <FormControlLabel
-                              control={
-                                <Checkbox checked={role.checked} onChange={that.handleCheckbox(index)} value={role.title} />
-                              }
-                              label="Gilad Gray"
-                            />
+                            <Typography>{role.title}</Typography>
                           </Grid>
                         );
                       })}
