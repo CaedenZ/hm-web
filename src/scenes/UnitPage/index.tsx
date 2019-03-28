@@ -15,10 +15,11 @@ import Paper from "@material-ui/core/Paper";
 import { render } from "react-dom";
 import CustomButton from "./component/CustomButton";
 import { SharedDispatchProps } from "../../interface/propsInterface";
-import { Company } from "../../interface/companyInterface";
+import { Company, Unit } from "../../interface/companyInterface";
 import { RootState } from "../../reducer";
 import { mapDispatchToProps } from "../../helper/dispachProps";
 import { connect } from "react-redux";
+import { Button } from "@material-ui/core";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -52,43 +53,47 @@ export interface Props extends WithStyles<typeof styles>, SharedDispatchProps, I
 interface State { }
 
 interface InState {
-  companyList: Company[]
+  unitList: Unit[]
 }
 
-class CustomizedTable extends React.Component<Props, State> {
+class UnitPage extends React.Component<Props, State> {
 
   componentDidMount() {
-    this.props.getChildCompanyList()
+    this.props.getUnitList()
+    this.handleViewButtonClick = this.handleViewButtonClick.bind(this)
   }
+
+  handleViewButtonClick = (id) => {
+    console.log('clicked')
+  }
+
   render() {
     const { classes } = this.props;
 
     return (
       <main>
-        <CustomButton link="/company/create">New Company</CustomButton>
+        <CustomButton link="/unit/create">New unit</CustomButton>
         <Paper className={classes.root}>
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
-                <CustomTableCell>company_id</CustomTableCell>
-                <CustomTableCell align="right">company_name</CustomTableCell>
-                <CustomTableCell align="right">contact_email</CustomTableCell>
-                <CustomTableCell align="right">contact_number</CustomTableCell>
-                <CustomTableCell align="right">contact_person</CustomTableCell>
+                <CustomTableCell>unit_id</CustomTableCell>
+                <CustomTableCell align="right">unit_name</CustomTableCell>
+                <CustomTableCell align="right">unit_type</CustomTableCell>
+                <CustomTableCell align="right">Action</CustomTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {this.props.companyList.map(row => (
-                <TableRow className={classes.row} key={row.company_id}>
+              {this.props.unitList.map(row => (
+                <TableRow className={classes.row} key={row.unit_id}>
                   <CustomTableCell component="th" scope="row">
-                    {row.company_id}
+                    {row.unit_id}
                   </CustomTableCell>
                   <CustomTableCell align="right">
-                    {row.company_name}
+                    {row.unit_name}
                   </CustomTableCell>
-                  <CustomTableCell align="right">{row.contact_email}</CustomTableCell>
-                  <CustomTableCell align="right">{row.contact_number}</CustomTableCell>
-                  <CustomTableCell align="right">{row.contact_person}</CustomTableCell>
+                  <CustomTableCell align="right">{row.unit_type}</CustomTableCell>
+                  <CustomTableCell align="right"><Button onClick={() => this.handleViewButtonClick(row.unit_id)}>view</Button></CustomTableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -99,14 +104,14 @@ class CustomizedTable extends React.Component<Props, State> {
   }
 }
 
-(CustomizedTable as React.ComponentClass<Props>).propTypes = {
+(UnitPage as React.ComponentClass<Props>).propTypes = {
   classes: PropTypes.object.isRequired
 } as any;
 
 function mapStateToProps(state: RootState) {
   return {
-    companyList: state.companyReducer.childCompanyList
+    unitList: state.companyReducer.unitList
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CustomizedTable));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(UnitPage));

@@ -17,14 +17,17 @@ import {
 } from "@material-ui/core";
 import CustomButton from "../component/CustomButton";
 import Avatar from 'react-avatar-edit'
+import { mapDispatchToProps } from "../../../helper/dispachProps";
+import { connect } from "react-redux";
+import { SharedDispatchProps } from "../../../interface/propsInterface";
 
 const styles = (theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1
     },
-    grid:{
-      margin:20
+    grid: {
+      margin: 20
     },
     textField: {
       width: 200,
@@ -37,9 +40,9 @@ const styles = (theme: Theme) =>
       padding: theme.spacing.unit * 2,
       textAlign: "center",
       color: theme.palette.text.secondary,
-      flexDirection:"column"
+      flexDirection: "column"
     },
-    preview:{
+    preview: {
     },
     divAvatar: {
       margin: theme.spacing.unit * 3,
@@ -60,207 +63,97 @@ const styles = (theme: Theme) =>
       justifyContent: "center"
     }
   });
-export interface Props extends WithStyles<typeof styles> {}
 
-export interface State {
-  email: string;
-  password: string;
-  firstname: string;
-  lastname: string;
-  country: string;
-  address: string;
-  postalcode: string;
-  multiline: string;
-  currency: string;
-  preview: any;
-  src: any;
-  roles: any;
+export interface CreateUnitState {
+  unit_name: string,
+  unit_type: string,
+  unit_data: string,
+  parent_unit: string,
+  main_unit: string,
 }
+export interface Props extends WithStyles<typeof styles>, SharedDispatchProps { }
 
-class CreateUserPage extends Component<Props, State> {
+class CreateUnitPage extends Component<Props, CreateUnitState> {
 
 
   constructor(props) {
     super(props)
-    
-    
-    this.onCrop = this.onCrop.bind(this)
-    this.onClose = this.onClose.bind(this)
+    this.handleCreateUnit = this.handleCreateUnit.bind(this)
   }
 
 
-  state: State = {
-    preview: null,
-    src: '',
-    email: '',
-    password: '',
-    firstname: '',
-    lastname: '',
-    country: '',
-    address: '',
-    postalcode: '',
-    multiline: 'Controlled',
-    currency: 'EUR',
-    roles: [
-      {
-        id:1,
-        title:'Dummy 1',
-        checked: false
-      },
-      {
-        id:2,
-        title:'Dummy 2',
-        checked: false
-      },
-    ]
+  state: CreateUnitState = {
+    unit_name: '',
+    unit_type: '',
+    unit_data: '',
+    parent_unit: '',
+    main_unit: '',
   }
 
-  onClose() {
-    this.setState({preview: null})
-  }
-  
-  onCrop(preview) {
-    this.setState({preview})
-  }
-
-  handleChange = (statekay: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ [statekay]: event.target.value } as Pick<State, keyof State>);
+  handleChange = (statekay: keyof CreateUnitState) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ [statekay]: event.target.value } as Pick<CreateUnitState, keyof CreateUnitState>);
   };
 
-  handleCheckbox = (index: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.state.roles[index].checked = event.target.checked
-    this.forceUpdate()
-    console.log(this.state.roles)
-  };
-  
+  handleCreateUnit = () => {
+    this.props.createUnit(this.state)
+  }
+
   render() {
     const { classes } = this.props;
-    const that = this;
     return (
       <div className={classes.root}>
-      <Typography component="h1" variant="h5">
-          New User
+        <Typography component="h1" variant="h5">
+          New Unit
       </Typography>
-      <Paper>
-      <Grid container className={classes.grid} spacing={16}>
-        <Grid item justify="center" xs container>
-            <Grid container direction="column" spacing={16} xs>
-              <div style = {{margin:20, justifyContent: 'center'}}>
-                <Avatar
-                    width={200}
-                    height={150}
-                    onCrop={this.onCrop}
-                    onClose={this.onClose}
-                    src={this.state.src}
-                  />
-                  <Typography variant="h6">Profile Picture</Typography>
-                </div>
-                
+        <Paper>
+          <Grid container className={classes.grid} spacing={16}>
+            <Grid item justify="center" container xs>
+              <div style={{ margin: 20 }}>
+                <TextField
+                  id="unit_name"
+                  label="unit_name"
+                  className={classes.textField}
+                  value={this.state.unit_name}
+                  onChange={this.handleChange('unit_name')}
+                  margin="normal"
+                />
+                <TextField
+                  id="unit_type"
+                  label="unit_type"
+                  className={classes.textField}
+                  value={this.state.unit_type}
+                  onChange={this.handleChange('unit_type')}
+                  margin="normal"
+                />
+                <TextField
+                  id="unit_data"
+                  label="unit_data"
+                  className={classes.textField}
+                  value={this.state.unit_data}
+                  onChange={this.handleChange('unit_data')}
+                  margin="normal"
+                />
+              </div>
             </Grid>
-        </Grid>
-        <Grid item justify="center" xs container>
-        <div style = {{margin:20}}>
-          <TextField
-            id="email"
-            label="Email"
-            className={classes.textField}
-            value={this.state.email}
-            onChange={this.handleChange('email')}
-            margin="normal"
-          />
-          <TextField
-            id="standard-password-input"
-            label="Password"
-            className={classes.textField}
-            type="password"
-            autoComplete="current-password"
-            margin="normal"
-          />
+          </Grid>
+          <Divider />
+          <Divider />
+          <div style={{
+            width: '100%', flex: 1,
+            flexDirection: 'row',
+            justifyContent: 'center', alignItems: 'flex-end'
+          }}>
+            <Button onClick={this.handleCreateUnit}>Submmit</Button>
           </div>
-        </Grid>
-        <Grid item justify="center" xs container>
-        <div style = {{margin:20}}>
-          <TextField
-            id="firstname"
-            label="Firstname"
-            className={classes.textField}
-            value={this.state.firstname}
-            onChange={this.handleChange('firstname')}
-            margin="normal"
-          />
-          <TextField
-            id="lastname"
-            label="Lastname"
-            className={classes.textField}
-            value={this.state.lastname}
-            onChange={this.handleChange('lastname')}
-            margin="normal"
-          />
-          </div>
-        </Grid>
-        <Grid item justify="center" container xs>
-        <div style = {{margin:20}}>
-          <TextField
-            id="country"
-            label="Country"
-            className={classes.textField}
-            value={this.state.country}
-            onChange={this.handleChange('country')}
-            margin="normal"
-          />
-          <TextField
-            id="address"
-            label="Address"
-            className={classes.textField}
-            value={this.state.address}
-            onChange={this.handleChange('address')}
-            margin="normal"
-          />
-          <TextField
-            id="postal_code"
-            label="Postal Code"
-            className={classes.textField}
-            value={this.state.postalcode}
-            onChange={this.handleChange('postalcode')}
-            margin="normal"
-          />
-          </div>
-        </Grid>
-        
-      </Grid>
-      <Typography style={{margin:20}} component="h1" variant="h5">
-          Role
-      </Typography>
-      <Divider/>
-      <Grid container className={classes.grid} spacing={16}>
-          {this.state.roles.map(function(role:any, index:number){
-                        return (
-                          <Grid item justify="center" xs container>
-                            <FormControlLabel
-                              control={
-                                <Checkbox checked={role.checked} onChange={that.handleCheckbox(index)} value={role.title} />
-                              }
-                              label="Gilad Gray"
-                            />
-                          </Grid>
-                        );
-                      })}
-      </Grid>
-      <Divider/>
-      <div style={{width:'100%',flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'center',alignItems:'flex-end'}}>
-      <CustomButton link = "">Submmit</CustomButton>
-      </div>
-      
-      </Paper>
+
+        </Paper>
       </div>
     );
   }
 }
 
-(CreateUserPage as React.ComponentClass<Props>).propTypes = {
+(CreateUnitPage as React.ComponentClass<Props>).propTypes = {
   classes: PropTypes.object.isRequired
 } as any;
 
-export default withStyles(styles)(CreateUserPage);
+export default connect(null, mapDispatchToProps)(withStyles(styles)(CreateUnitPage));

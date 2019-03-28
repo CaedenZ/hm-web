@@ -18,8 +18,18 @@ export interface Company {
     webpage_url: string,
 }
 
+export interface Unit {
+    unit_id: string,
+    unit_name: string,
+    unit_type: string,
+    unit_data: string,
+}
+
 export interface CompanyState {
+    unitList: Unit[],
+    subUnitList: Unit[],
     companyList: Company[],
     childCompanyList: Company[],
     selectedCompany?: Company,
+    selectedUnit?: Unit,
 }

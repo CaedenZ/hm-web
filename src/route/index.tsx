@@ -15,6 +15,8 @@ import ProfilePage from "../scenes/ProfilePage";
 import { RootState } from "../reducer";
 import { connect } from "react-redux";
 import { mapDispatchToProps } from "../helper/dispachProps";
+import UnitPage from "../scenes/UnitPage";
+import RolePage from "../scenes/RolePage";
 
 export interface Props extends InState { }
 
@@ -36,14 +38,15 @@ class RootRoute extends React.Component<Props, State>{
                         <Route exact path="/forgetpassword" component={ForgetPasswordPage} />
                         <Route exact path="/resetpassword" component={ResetPasswordPage} />
                         {/* <Route exact path="/" component={ResponsiveDrawer} /> */}
-                        <Route exact path="/" render={() => ( <ResponsiveDrawer> <HomePage /> </ResponsiveDrawer> )} />
+                        <Route exact path="/" render={() => (<ResponsiveDrawer> <HomePage /> </ResponsiveDrawer>)} />
                         <Route exact path="/homepage" component={HomePage} />
                         <Route exact path="/profile" render={() => (<ResponsiveDrawer><ProfilePage /></ResponsiveDrawer>)} />
-                        <Route exact path="/user" render={() => ( <ResponsiveDrawer> <UserPage /> </ResponsiveDrawer> )} />
-                        <Route exact path="/user/create" render={() => ( <ResponsiveDrawer> <CreateUserPage /> </ResponsiveDrawer> )} />
-                        <Route exact path="/company" render={() => ( <ResponsiveDrawer> <CompanyPage /> </ResponsiveDrawer> )} />
-                        <Route exact path="/company/create" render={() => ( <ResponsiveDrawer> <CreateCompanyPage /> </ResponsiveDrawer> )} />
-                        
+                        <Route exact path="/user" render={() => (<ResponsiveDrawer> <UserPage /> </ResponsiveDrawer>)} />
+                        <Route exact path="/user/create" render={() => (<ResponsiveDrawer> <CreateUserPage /> </ResponsiveDrawer>)} />
+                        <Route exact path="/company" render={() => (<ResponsiveDrawer> <CompanyPage /> </ResponsiveDrawer>)} />
+                        <Route exact path="/company/create" render={() => (<ResponsiveDrawer> <CreateCompanyPage /> </ResponsiveDrawer>)} />
+                        <Route exact path="/unit" render={() => (<ResponsiveDrawer> <UnitPage /> </ResponsiveDrawer>)} />
+                        <Route exact path="/role" render={() => (<ResponsiveDrawer> <RolePage /> </ResponsiveDrawer>)} />
                     </Switch>
                 </Router>
             )

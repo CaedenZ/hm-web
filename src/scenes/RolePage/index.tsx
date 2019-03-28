@@ -62,11 +62,11 @@ const rows = [
   createData("Gingerbread", 356, 16.0, 49, 3.9)
 ];
 
-export interface Props extends WithStyles<typeof styles> {}
+export interface Props extends WithStyles<typeof styles> { }
 
-interface State {}
+interface State { }
 
-class CustomizedTable extends React.Component<Props, State> {
+class RolePage extends React.Component<Props, State> {
   render() {
     const { classes } = this.props;
 
@@ -106,8 +106,8 @@ class CustomizedTable extends React.Component<Props, State> {
   }
 }
 
-(CustomizedTable as React.ComponentClass<Props>).propTypes = {
+(RolePage as React.ComponentClass<Props>).propTypes = {
   classes: PropTypes.object.isRequired
 } as any;
 
-export default withStyles(styles)(CustomizedTable);
+export default withStyles(styles)(RolePage);
