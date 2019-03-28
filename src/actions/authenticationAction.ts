@@ -16,3 +16,9 @@ export const loginAction = createAsyncAction(
   LOG_IN_SUCCESS,
   LOG_IN_FAILURE
 )<LOGINCRED, string, void>()
+
+const LOG_OUT = "LOG_OUT"
+export const logoutAction = createAction(LOG_OUT,
+  action => {
+    return () => action()
+  })

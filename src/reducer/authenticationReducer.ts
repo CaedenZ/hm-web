@@ -38,6 +38,11 @@ export function authenticationReducer(state: AuthenticationState = {
                 ...state,
                 token: action.payload
             }
+        case 'LOG_OUT':
+            return {
+                ...state,
+                token: null
+            }
         default:
             return state
     }

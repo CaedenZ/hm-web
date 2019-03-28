@@ -20,6 +20,7 @@ import { RootState } from "../../reducer";
 import { mapDispatchToProps } from "../../helper/dispachProps";
 import { connect } from "react-redux";
 import { Button } from "@material-ui/core";
+import { Redirect } from "react-router-dom";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -50,7 +51,9 @@ const styles = (theme: Theme) =>
 
 export interface Props extends WithStyles<typeof styles>, SharedDispatchProps, InState { }
 
-interface State { }
+interface State {
+  redirect: boolean
+}
 
 interface InState {
   unitList: Unit[]
@@ -58,49 +61,67 @@ interface InState {
 
 class UnitPage extends React.Component<Props, State> {
 
-  componentDidMount() {
-    this.props.getUnitList()
+  constructor(props) {
+    super(props)
     this.handleViewButtonClick = this.handleViewButtonClick.bind(this)
+
+  }
+  state = {
+    redirect: false
   }
 
-  handleViewButtonClick = (id) => {
+
+  componentDidMount() {
+    this.props.getUnitList()
+  }
+
+  handleViewButtonClick = (unit) => {
     console.log('clicked')
+    this.props.selectUnit(unit)
+    this.setState({
+      redirect: true
+    })
   }
 
   render() {
     const { classes } = this.props;
-
-    return (
-      <main>
-        <CustomButton link="/unit/create">New unit</CustomButton>
-        <Paper className={classes.root}>
-          <Table className={classes.table}>
-            <TableHead>
-              <TableRow>
-                <CustomTableCell>unit_id</CustomTableCell>
-                <CustomTableCell align="right">unit_name</CustomTableCell>
-                <CustomTableCell align="right">unit_type</CustomTableCell>
-                <CustomTableCell align="right">Action</CustomTableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {this.props.unitList.map(row => (
-                <TableRow className={classes.row} key={row.unit_id}>
-                  <CustomTableCell component="th" scope="row">
-                    {row.unit_id}
-                  </CustomTableCell>
-                  <CustomTableCell align="right">
-                    {row.unit_name}
-                  </CustomTableCell>
-                  <CustomTableCell align="right">{row.unit_type}</CustomTableCell>
-                  <CustomTableCell align="right"><Button onClick={() => this.handleViewButtonClick(row.unit_id)}>view</Button></CustomTableCell>
+    const { redirect } = this.state;
+    if (redirect) {
+      return <Redirect to='/unit/subunit' />;
+    }
+    else {
+      return (
+        <main>
+          <CustomButton link="/unit/createmainunit">New unit</CustomButton>
+          <Paper className={classes.root}>
+            <Table className={classes.table}>
+              <TableHead>
+                <TableRow>
+                  <CustomTableCell>unit_id</CustomTableCell>
+                  <CustomTableCell align="right">unit_name</CustomTableCell>
+                  <CustomTableCell align="right">unit_type</CustomTableCell>
+                  <CustomTableCell align="right">Action</CustomTableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </Paper>
-      </main>
-    );
+              </TableHead>
+              <TableBody>
+                {this.props.unitList.map(row => (
+                  <TableRow className={classes.row} key={row.unit_id}>
+                    <CustomTableCell component="th" scope="row">
+                      {row.unit_id}
+                    </CustomTableCell>
+                    <CustomTableCell align="right">
+                      {row.unit_name}
+                    </CustomTableCell>
+                    <CustomTableCell align="right">{row.unit_type}</CustomTableCell>
+                    <CustomTableCell align="right"><Button onClick={() => this.handleViewButtonClick(row)}>view</Button></CustomTableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </Paper>
+        </main>
+      );
+    }
   }
 }
 

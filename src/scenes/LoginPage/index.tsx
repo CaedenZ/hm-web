@@ -12,12 +12,13 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { Divider } from "@material-ui/core";
 import { connect } from "react-redux";
 import { loginAction } from "../../actions/authenticationAction";
 import { mapDispatchToProps } from "../../helper/dispachProps";
 import { SharedDispatchProps } from "../../interface/propsInterface";
+import { RootState } from "../../reducer";
 
 const styles = (theme: any) => ({
   main: {
@@ -52,8 +53,11 @@ const styles = (theme: any) => ({
   }
 });
 
-export interface Props extends SharedDispatchProps, WithStyles<typeof styles> { }
+export interface Props extends SharedDispatchProps, InState, WithStyles<typeof styles> { }
 
+interface InState {
+  usertoken: string;
+}
 export interface State {
   email: string;
   password: string;
@@ -87,56 +91,68 @@ class SignIn extends Component<Props, State> {
 
   render() {
     const { classes } = this.props;
-    return (
-      <main className={classes.main}>
-        <CssBaseline />
-        <Paper className={classes.paper}>
-          {/* <Avatar className={classes.avatar}>
+    if (this.props.usertoken == null) {
+
+      return (
+        <main className={classes.main}>
+          <CssBaseline />
+          <Paper className={classes.paper}>
+            {/* <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
           Sign in
         </Typography> */}
-          <form className={classes.form}>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="email">Email Address</InputLabel>
-              <Input id="email" name="email" autoComplete="email" autoFocus value={this.state.email} onChange={this.handleChange} />
-            </FormControl>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="password">Password</InputLabel>
-              <Input
-                name="password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                value={this.state.password}
-                onChange={this.handleChange}
+            <form className={classes.form}>
+              <FormControl margin="normal" required fullWidth>
+                <InputLabel htmlFor="email">Email Address</InputLabel>
+                <Input id="email" name="email" autoComplete="email" autoFocus value={this.state.email} onChange={this.handleChange} />
+              </FormControl>
+              <FormControl margin="normal" required fullWidth>
+                <InputLabel htmlFor="password">Password</InputLabel>
+                <Input
+                  name="password"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                  value={this.state.password}
+                  onChange={this.handleChange}
+                />
+              </FormControl>
+              <FormControlLabel
+                control={<Checkbox value="remember" color="primary" />}
+                label="Remember me"
               />
-            </FormControl>
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
-            <Divider />
-            <div style={{ marginTop: 20 }}>
-              <Link to="/forgetpassword">Forget password</Link>
-            </div>
-            <Button
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-              onClick={() => {
-                this.props.login(this.state)
-              }}
-            >
-              Sign in
+              <Divider />
+              <div style={{ marginTop: 20 }}>
+                <Link to="/forgetpassword">Forget password</Link>
+              </div>
+              <Button
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                onClick={() => {
+                  this.props.login(this.state)
+                }}
+              >
+                Sign in
           </Button>
-          </form>
-        </Paper>
-      </main>
-    );
+            </form>
+          </Paper>
+        </main>
+      );
+    }
+    else {
+      return (<Redirect to="/" />)
+    }
   }
 }
 
-export default connect(null, mapDispatchToProps)(withStyles(styles)(SignIn));
+function mapStateToProps(state: RootState) {
+  return {
+    usertoken: state.authenticationReducer.token
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(SignIn));

@@ -1,8 +1,8 @@
-import { loginAction } from "../actions/authenticationAction";
+import { loginAction, logoutAction } from "../actions/authenticationAction";
 import { getUserListAction, createUserAction } from "../actions/userAction";
 import { LOGINCRED } from "../interface/credInterface";
 import { SharedDispatchProps } from "../interface/propsInterface";
-import { getCompanyListAction, getChildCompanyListAction, selectCompanyAction, createCompanyAction, createUnitAction, getChildUnitListAction, getUnitListAction, selectUnitAction } from "../actions/companyAction";
+import { getCompanyListAction, getChildCompanyListAction, selectCompanyAction, createCompanyAction, createUnitAction, getChildUnitListAction, getUnitListAction, selectUnitAction, createSubUnitAction } from "../actions/companyAction";
 
 
 
@@ -12,6 +12,9 @@ export function mapDispatchToProps(dispatch): SharedDispatchProps {
         login: (payload) => {
             // console.log('scuus')
             dispatch(loginAction.request(payload))
+        },
+        logout: () => {
+            dispatch(logoutAction())
         },
         getUserList: () => {
             // console.log('scuus')
@@ -43,6 +46,9 @@ export function mapDispatchToProps(dispatch): SharedDispatchProps {
         },
         createUnit: (payload) => {
             dispatch(createUnitAction.request(payload))
+        },
+        createSubUnit: (payload) => {
+            dispatch(createSubUnitAction.request(payload))
         },
     }
 }

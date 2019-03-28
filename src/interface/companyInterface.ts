@@ -23,6 +23,7 @@ export interface Unit {
     unit_name: string,
     unit_type: string,
     unit_data: string,
+    main_unit: string,
 }
 
 export interface CompanyState {

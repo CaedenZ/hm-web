@@ -11,7 +11,7 @@ import { authenticationReducer, loginEpic } from "./authenticationReducer"
 import { combineEpics } from "redux-observable"
 import { StateType } from "typesafe-actions";
 import { userReducer, getUserListEpic, createUserEpic } from "./userReducer";
-import { companyReducer, getCompanyListEpic, getChildCompanyListEpic, createCompanyEpic, getUnitListEpic, getChildUnitListEpic, createUnitEpic } from "./companyReducer";
+import { companyReducer, getCompanyListEpic, getChildCompanyListEpic, createCompanyEpic, getUnitListEpic, getChildUnitListEpic, createUnitEpic, createSubUnitEpic } from "./companyReducer";
 import { initReducer } from "./initReducer";
 
 export const rootReducer = combineReducers({
@@ -33,6 +33,7 @@ export const rootEpic = combineEpics(
     getUnitListEpic,
     getChildUnitListEpic,
     createUnitEpic,
+    createSubUnitEpic,
     //   generateReportEpic,
     //   sendEmailEpic,
     //   completeReportEpic,

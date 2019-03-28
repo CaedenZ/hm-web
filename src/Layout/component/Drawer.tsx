@@ -22,6 +22,9 @@ import MenuIcon from "@material-ui/icons/Menu";
 import PrimarySearchAppBar from "./AppBar";
 import { Link } from "react-router-dom";
 import logo from 'assets/images/3CGradient Full.png';
+import { mapDispatchToProps } from "../../helper/dispachProps";
+import { connect } from "react-redux";
+import { SharedDispatchProps } from "../../interface/propsInterface";
 
 const drawerWidth = 240;
 
@@ -65,11 +68,19 @@ const styles = (theme: Theme) =>
     }
   });
 
-export interface Props extends WithStyles<typeof styles> { }
+export interface Props extends SharedDispatchProps, WithStyles<typeof styles> { }
 
 interface State { }
 
 class PermanentDrawerLeft extends React.Component<Props, State> {
+  constructor(props) {
+    super(props);
+    this.handleLogout = this.handleLogout.bind(this);
+  }
+
+  handleLogout = () => {
+    this.props.logout()
+  }
   render() {
     const { classes } = this.props;
 
@@ -145,7 +156,7 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
           <List>
             {itemlist2.map((item, index) => (
               <Link key={item.title} to={item.path} style={{ textDecoration: "none" }}>
-                <ListItem button>
+                <ListItem button onClick={() => this.handleLogout()}>
                   <ListItemIcon>
                     {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
                   </ListItemIcon>
@@ -168,4 +179,4 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
   classes: PropTypes.object.isRequired
 } as any;
 
-export default withStyles(styles)(PermanentDrawerLeft);
+export default connect(null, mapDispatchToProps)(withStyles(styles)(PermanentDrawerLeft));

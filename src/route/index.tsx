@@ -16,6 +16,10 @@ import { RootState } from "../reducer";
 import { connect } from "react-redux";
 import { mapDispatchToProps } from "../helper/dispachProps";
 import UnitPage from "../scenes/UnitPage";
+import SubUnitPage from "../scenes/UnitPage/subUnit"
+import ChildUnitPage from "../scenes/UnitPage/childUnit"
+import CreateUnitPage from "../scenes/UnitPage/create"
+import CreateMainUnitPage from "../scenes/UnitPage/createmainunit"
 import RolePage from "../scenes/RolePage";
 
 export interface Props extends InState { }
@@ -46,6 +50,10 @@ class RootRoute extends React.Component<Props, State>{
                         <Route exact path="/company" render={() => (<ResponsiveDrawer> <CompanyPage /> </ResponsiveDrawer>)} />
                         <Route exact path="/company/create" render={() => (<ResponsiveDrawer> <CreateCompanyPage /> </ResponsiveDrawer>)} />
                         <Route exact path="/unit" render={() => (<ResponsiveDrawer> <UnitPage /> </ResponsiveDrawer>)} />
+                        <Route exact path="/unit/subunit" render={() => (<ResponsiveDrawer> <SubUnitPage /> </ResponsiveDrawer>)} />
+                        <Route exact path="/unit/childunit" render={() => (<ResponsiveDrawer> <ChildUnitPage /> </ResponsiveDrawer>)} />
+                        <Route exact path="/unit/create" render={() => (<ResponsiveDrawer> <CreateUnitPage /> </ResponsiveDrawer>)} />
+                        <Route exact path="/unit/createmainunit" render={() => (<ResponsiveDrawer> <CreateMainUnitPage /> </ResponsiveDrawer>)} />
                         <Route exact path="/role" render={() => (<ResponsiveDrawer> <RolePage /> </ResponsiveDrawer>)} />
                     </Switch>
                 </Router>

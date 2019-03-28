@@ -6,6 +6,7 @@ import { CreateUnitState } from "../scenes/UnitPage/create";
 
 export interface SharedDispatchProps {
     login: (cred: LOGINCRED) => void,
+    logout: () => void,
     getUserList: () => void,
     getCompanyList: () => void,
     getChildCompanyList: () => void,
@@ -16,4 +17,6 @@ export interface SharedDispatchProps {
     getChildUnitList: () => void,
     selectUnit: (unit: Unit) => void,
     createUnit: (cred: CreateUnitState) => void,
+    createSubUnit: (cred: CreateUnitState) => void,
+
 }

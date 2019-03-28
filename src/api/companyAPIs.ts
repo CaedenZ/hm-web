@@ -37,11 +37,15 @@ export const getUnitList = async (token, identifier, ID): Promise<Unit[]> => {
     return response.data.data
 }
 
-export const createUnit = async (token, payload: CreateUnitState): Promise<Unit[]> => {
+export const createUnit = async (token, identifier, payload: CreateUnitState): Promise<Unit[]> => {
 
+    if ((identifier === 1) && (payload.parent_unit !== payload.main_unit)) {
+        identifier = 2
+    }
     let data = {
         ...payload,
         session_key: token,
+        identifier: identifier,
     }
 
     const response = await $axios.post('/company/createUnit', data)
