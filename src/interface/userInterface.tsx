@@ -1,21 +1,35 @@
-
-interface user {
-    email:string;
-    session_key:string;
-    firstname:string;
-    lastname:string;
-    alias:string;
-    employee_id:string;
-    image:string;
-    contact:string;
-    jobfunction:string;
-    country:string;
-    address:string;
-    postal_code:string;
-    status:string;
-    remarks:string;
-    role:string;
-    company:string;
+export interface Function {
+    function_name: string
 }
 
-export default user;
+export interface Role {
+    role: string,
+    functions: Function[]
+}
+export interface Info {
+    company_id: string,
+    company_name: string,
+    primary: number,
+    roles: Role
+}
+
+export interface User {
+    email: string,
+    firstname: string,
+    lastname: string,
+    alias: string,
+    employee_id: string,
+    image: string,
+    contact: string,
+    jobfunction: string,
+    country: string,
+    address: string,
+    postal_code: string,
+    status: string,
+    remarks: string
+}
+
+export interface UserState {
+    userList: User[],
+    profileInfo?: Info,
+}

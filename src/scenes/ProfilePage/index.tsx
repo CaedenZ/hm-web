@@ -16,14 +16,18 @@ import {
   Button
 } from "@material-ui/core";
 import Avatar from 'react-avatar-edit'
+import logo from 'assets/images/companylogo2.png';
+import theme from "../../assets/theme";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
 const styles = (theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1
     },
-    grid:{
-      margin:20
+    grid: {
+      margin: 20
     },
     textField: {
       width: 200,
@@ -36,9 +40,9 @@ const styles = (theme: Theme) =>
       padding: theme.spacing.unit * 2,
       textAlign: "center",
       color: theme.palette.text.secondary,
-      flexDirection:"column"
+      flexDirection: "column"
     },
-    preview:{
+    preview: {
     },
     divAvatar: {
       margin: theme.spacing.unit * 3,
@@ -59,7 +63,7 @@ const styles = (theme: Theme) =>
       justifyContent: "center"
     }
   });
-export interface Props extends WithStyles<typeof styles> {}
+export interface Props extends WithStyles<typeof styles> { }
 
 export interface State {
   email: string;
@@ -87,7 +91,7 @@ class UserProfilePage extends Component<Props, State> {
 
 
   state: State = {
-    preview: null,
+    preview: 'adfgsf',
     src: '',
     email: 'em',
     password: '',
@@ -100,24 +104,24 @@ class UserProfilePage extends Component<Props, State> {
     currency: 'EUR',
     roles: [
       {
-        id:1,
-        title:'Dummy 1',
+        id: 1,
+        title: 'Dummy 1',
         checked: false
       },
       {
-        id:2,
-        title:'Dummy 2',
+        id: 2,
+        title: 'Dummy 2',
         checked: false
       },
     ]
   }
 
   onClose() {
-    this.setState({preview: null})
+    this.setState({ preview: null })
   }
-  
+
   onCrop(preview) {
-    this.setState({preview})
+    this.setState({ preview })
   }
 
   handleChange = (statekay: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -129,110 +133,106 @@ class UserProfilePage extends Component<Props, State> {
     this.forceUpdate()
     console.log(this.state.roles)
   };
-  
+
   render() {
     const { classes } = this.props;
     const that = this;
     return (
       <div className={classes.root}>
-      <Typography component="h1" variant="h5">
+        <Typography component="h1" variant="h5">
           Profile
       </Typography>
-      <Paper>
-      <Grid container className={classes.grid} spacing={16}>
-        <Grid item justify="center" xs container>
-            <Grid container direction="column" spacing={16} xs>
-              <div style = {{margin:20, justifyContent: 'center'}}>
-                  <img src={this.state.preview} alt="Preview" />
+        <Paper>
+          <Grid container className={classes.grid} spacing={16}>
+            <Grid item justify="center" xs container>
+              <Grid container direction="column" spacing={16} xs>
+                <div style={{height:theme.spacing.unit * 40, margin: 20, justifyContent: 'center'}}>
+                  <img style={{height:'inherit'}} src={this.state.preview}  onError={(e:any)=>{e.target.onerror = null; e.target.src=logo}} alt="Preview" />
                   <Typography variant="h6">Profile Picture</Typography>
                 </div>
-                
+
+              </Grid>
             </Grid>
-        </Grid>
-        <Grid item justify="center" xs container>
-        <div style = {{margin:20}}>
-          <TextField
-            disabled
-            id="email"
-            label="Email"
-            className={classes.textField}
-            value={this.state.email}
-            onChange={this.handleChange('email')}
-            margin="normal"
-          />
-          <TextField
-          disabled
-            id="firstname"
-            label="Firstname"
-            className={classes.textField}
-            value={this.state.firstname}
-            onChange={this.handleChange('firstname')}
-            margin="normal"
-          />
-          <TextField
-          disabled
-            id="lastname"
-            label="Lastname"
-            className={classes.textField}
-            value={this.state.lastname}
-            onChange={this.handleChange('lastname')}
-            margin="normal"
-          />
-          </div>
-        </Grid>
-        <Grid item justify="center" container xs>
-        <div style = {{margin:20}}>
-          <TextField
-          disabled
-            id="country"
-            label="Country"
-            className={classes.textField}
-            value={this.state.country}
-            onChange={this.handleChange('country')}
-            margin="normal"
-          />
-          <TextField
-          disabled
-            id="address"
-            label="Address"
-            className={classes.textField}
-            value={this.state.address}
-            onChange={this.handleChange('address')}
-            margin="normal"
-          />
-          <TextField
-          disabled
-            id="postal_code"
-            label="Postal Code"
-            className={classes.textField}
-            value={this.state.postalcode}
-            onChange={this.handleChange('postalcode')}
-            margin="normal"
-          />
-          </div>
-        </Grid>
-        
-      </Grid>
-      <Typography style={{margin:20}} component="h1" variant="h5">
-          Role
+            <Grid item justify="center" xs container>
+              <div style={{ margin: 20 }}>
+                <TextField
+                  disabled
+                  id="email"
+                  label="Email"
+                  className={classes.textField}
+                  value={this.state.email}
+                  onChange={this.handleChange('email')}
+                  margin="normal"
+                />
+                <TextField
+                  disabled
+                  id="firstname"
+                  label="Firstname"
+                  className={classes.textField}
+                  value={this.state.firstname}
+                  onChange={this.handleChange('firstname')}
+                  margin="normal"
+                />
+                <TextField
+                  disabled
+                  id="lastname"
+                  label="Lastname"
+                  className={classes.textField}
+                  value={this.state.lastname}
+                  onChange={this.handleChange('lastname')}
+                  margin="normal"
+                />
+              </div>
+            </Grid>
+            <Grid item justify="center" container xs>
+              <div style={{ margin: 20 }}>
+                <TextField
+                  disabled
+                  id="country"
+                  label="Country"
+                  className={classes.textField}
+                  value={this.state.country}
+                  onChange={this.handleChange('country')}
+                  margin="normal"
+                />
+                <TextField
+                  disabled
+                  id="address"
+                  label="Address"
+                  className={classes.textField}
+                  value={this.state.address}
+                  onChange={this.handleChange('address')}
+                  margin="normal"
+                />
+                <TextField
+                  disabled
+                  id="postal_code"
+                  label="Postal Code"
+                  className={classes.textField}
+                  value={this.state.postalcode}
+                  onChange={this.handleChange('postalcode')}
+                  margin="normal"
+                />
+              </div>
+            </Grid>
+
+          </Grid>
+          <Typography style={{ margin: 20 }} component="h1" variant="h5">
+            Role
       </Typography>
-      <Divider/>
-      <Grid container className={classes.grid} spacing={16}>
-          {this.state.roles.map(function(role:any, index:number){
-                        return (
-                          <Grid item justify="center" xs container>
-                            <Typography>{role.title}</Typography>
-                          </Grid>
-                        );
-                      })}
-      </Grid>
-      <Divider/>
-      <div style={{width:'100%',flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'center',alignItems:'flex-end'}}>
-      </div>
-      
-      </Paper>
+          <Divider />
+          <Grid container className={classes.grid} spacing={16}>
+            {this.state.roles.map(function (role: any, index: number) {
+              return (
+                <Grid key={role.title} item justify="center" xs container>
+                  <Typography>{role.title}</Typography>
+                </Grid>
+              );
+            })}
+          </Grid>
+          <Divider />
+
+        </Paper>
       </div>
     );
   }
@@ -242,4 +242,12 @@ class UserProfilePage extends Component<Props, State> {
   classes: PropTypes.object.isRequired
 } as any;
 
-export default withStyles(styles)(UserProfilePage);
+function mapStateToProps(state) {
+  return { todos: state.todos }
+}
+
+function mapDispatchToProps(dispatch) {
+  return { actions: "s" }
+}
+
+export default (withStyles(styles)(UserProfilePage));

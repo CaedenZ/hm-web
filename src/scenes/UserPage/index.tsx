@@ -14,6 +14,11 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { render } from "react-dom";
 import CustomButton from "./component/CustomButton";
+import { RootState } from "../../reducer";
+import { mapDispatchToProps } from "../../helper/dispachProps";
+import { connect } from "react-redux";
+import { SharedDispatchProps } from "../../interface/propsInterface";
+import { User } from "../../interface/userInterface";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -54,19 +59,21 @@ function createData(
   return { id, name, calories, fat, carbs, protein };
 }
 
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9)
-];
 
-export interface Props extends WithStyles<typeof styles> {}
+export interface Props extends WithStyles<typeof styles>, SharedDispatchProps, InState { }
 
-interface State {}
+interface State { }
 
+interface InState {
+  userList: User[]
+}
 class CustomizedTable extends React.Component<Props, State> {
+
+
+  componentDidMount() {
+    this.props.getUserList()
+  }
+
   render() {
     const { classes } = this.props;
 
@@ -77,28 +84,36 @@ class CustomizedTable extends React.Component<Props, State> {
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
-                <CustomTableCell>Dessert (100g serving)</CustomTableCell>
-                <CustomTableCell align="right">Calories</CustomTableCell>
-                <CustomTableCell align="right">Fat (g)</CustomTableCell>
-                <CustomTableCell align="right">Carbs (g)</CustomTableCell>
-                <CustomTableCell align="right">Protein (g)</CustomTableCell>
+                <CustomTableCell>Email</CustomTableCell>
+                <CustomTableCell align="right">Firstname</CustomTableCell>
+                <CustomTableCell align="right">Lastname</CustomTableCell>
+                <CustomTableCell align="right">Contact</CustomTableCell>
+                <CustomTableCell align="right">Address</CustomTableCell>
+                <CustomTableCell align="right">Country</CustomTableCell>
+                <CustomTableCell align="right">Employee ID</CustomTableCell>
+                <CustomTableCell align="right">Job Function</CustomTableCell>
+                <CustomTableCell align="right">Postal Code</CustomTableCell>
+                <CustomTableCell align="right">Status</CustomTableCell>
+                <CustomTableCell align="right">Remarks</CustomTableCell>
               </TableRow>
             </TableHead>
-            <TableBody>
-              {rows.map(row => (
-                <TableRow className={classes.row} key={row.id}>
-                  <CustomTableCell component="th" scope="row">
-                    {row.name}
-                  </CustomTableCell>
-                  <CustomTableCell align="right">
-                    {row.calories}
-                  </CustomTableCell>
-                  <CustomTableCell align="right">{row.fat}</CustomTableCell>
-                  <CustomTableCell align="right">{row.carbs}</CustomTableCell>
-                  <CustomTableCell align="right">{row.protein}</CustomTableCell>
+            {this.props.userList.length > 0 && <TableBody>
+              {this.props.userList.map(row => (
+                <TableRow className={classes.row} key={row.email}>
+                  <CustomTableCell component="th" scope="row">{row.email}</CustomTableCell>
+                  <CustomTableCell align="right">{row.firstname}</CustomTableCell>
+                  <CustomTableCell align="right">{row.lastname}</CustomTableCell>
+                  <CustomTableCell align="right">{row.contact}</CustomTableCell>
+                  <CustomTableCell align="right">{row.address}</CustomTableCell>
+                  <CustomTableCell align="right">{row.country}</CustomTableCell>
+                  <CustomTableCell align="right">{row.employee_id}</CustomTableCell>
+                  <CustomTableCell align="right">{row.jobfunction}</CustomTableCell>
+                  <CustomTableCell align="right">{row.postal_code}</CustomTableCell>
+                  <CustomTableCell align="right">{row.status}</CustomTableCell>
+                  <CustomTableCell align="right">{row.remarks}</CustomTableCell>
                 </TableRow>
               ))}
-            </TableBody>
+            </TableBody>}
           </Table>
         </Paper>
       </main>
@@ -110,4 +125,10 @@ class CustomizedTable extends React.Component<Props, State> {
   classes: PropTypes.object.isRequired
 } as any;
 
-export default withStyles(styles)(CustomizedTable);
+function mapStateToProps(state: RootState) {
+  return {
+    userList: state.userReducer.userList
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CustomizedTable));

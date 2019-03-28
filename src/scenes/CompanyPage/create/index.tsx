@@ -64,76 +64,92 @@ const styles = (theme: Theme) =>
     }
   });
 
-export interface CreateUserState {
-  email: string;
-  password: string;
-  firstname: string;
-  lastname: string;
+export interface CreateCompanyState {
+  sector: string;
+  location: string;
+  company_name: string;
+  industry: string;
   country: string;
   address: string;
   postal_code: string;
-  image: string;
-  remarks: string;
-  status: string;
-  jobfunction: string;
-  contact: string;
-  alias: string;
-  employee_id: string;
+  logo_small: string;
+  contact_person: string;
+  contact_number: string;
+  contact_email: string;
+  hq_name: string;
+  financialyr_id: string;
+  base_currency_id: string;
+  logo_main: string;
+  parentcompany_id: string;
+  webpage_url: string;
 }
 export interface Props extends WithStyles<typeof styles>, SharedDispatchProps { }
 
-class CreateUserPage extends Component<Props, CreateUserState> {
+class CreateCompanyPage extends Component<Props, CreateCompanyState> {
 
 
   constructor(props) {
     super(props)
     this.onCrop = this.onCrop.bind(this)
     this.onClose = this.onClose.bind(this)
-    this.handleCreateUser = this.handleCreateUser.bind(this)
+    this.onMainCrop = this.onMainCrop.bind(this)
+    this.onMainClose = this.onMainClose.bind(this)
+    this.handleCreateCompany = this.handleCreateCompany.bind(this)
   }
 
 
-  state: CreateUserState = {
-    image: '',
-    email: '',
-    password: '',
-    firstname: '',
-    lastname: '',
-    employee_id: '',
-    alias: '',
+  state: CreateCompanyState = {
+    sector: '',
+    location: '',
+    company_name: '',
+    industry: '',
     country: '',
     address: '',
     postal_code: '',
-    remarks: '',
-    status: '',
-    jobfunction: '',
-    contact: '',
+    logo_small: '',
+    contact_person: '',
+    contact_number: '',
+    contact_email: '',
+    hq_name: '',
+    financialyr_id: '',
+    base_currency_id: '',
+    logo_main: '',
+    parentcompany_id: '',
+    webpage_url: '',
   }
 
   onClose() {
-    this.setState({ image: '' })
+    this.setState({ logo_small: '' })
   }
 
   onCrop(image) {
-    this.setState({ image })
+    this.setState({ logo_small: image })
     console.log(this.state)
   }
 
-  handleChange = (statekay: keyof CreateUserState) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ [statekay]: event.target.value } as Pick<CreateUserState, keyof CreateUserState>);
+  onMainClose() {
+    this.setState({ logo_main: '' })
+  }
+
+  onMainCrop(logoMain) {
+    this.setState({ logo_main: logoMain })
+    console.log(this.state)
+  }
+
+  handleChange = (statekay: keyof CreateCompanyState) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ [statekay]: event.target.value } as Pick<CreateCompanyState, keyof CreateCompanyState>);
   };
 
-  handleCreateUser = () => {
-    this.props.createUser(this.state)
+  handleCreateCompany = () => {
+    this.props.createCompany(this.state)
   }
 
   render() {
     const { classes } = this.props;
-    const that = this;
     return (
       <div className={classes.root}>
         <Typography component="h1" variant="h5">
-          New User
+          New Company
       </Typography>
         <Paper>
           <Grid container className={classes.grid} spacing={16}>
@@ -143,52 +159,40 @@ class CreateUserPage extends Component<Props, CreateUserState> {
                   <Avatar
                     width={200}
                     height={150}
+                    onCrop={this.onMainCrop}
+                    onClose={this.onMainClose}
+                  />
+                  <Typography variant="h6">Main Logo</Typography>
+                </div>
+              </Grid>
+              <Grid container direction="column" spacing={16}>
+                <div style={{ margin: 20, justifyContent: 'center' }}>
+                  <Avatar
+                    width={200}
+                    height={150}
                     onCrop={this.onCrop}
                     onClose={this.onClose}
                   />
-                  <Typography variant="h6">Profile Picture</Typography>
+                  <Typography variant="h6">Small Logo</Typography>
                 </div>
-
               </Grid>
             </Grid>
             <Grid item justify="center" xs container>
               <div style={{ margin: 20 }}>
                 <TextField
-                  id="email"
-                  label="Email"
+                  id="company_name"
+                  label="company_name"
                   className={classes.textField}
-                  value={this.state.email}
-                  onChange={this.handleChange('email')}
+                  value={this.state.company_name}
+                  onChange={this.handleChange('company_name')}
                   margin="normal"
                 />
                 <TextField
-                  id="standard-password-input"
-                  label="Password"
+                  id="hq_name"
+                  label="hq_name"
                   className={classes.textField}
-                  type="password"
-                  autoComplete="current-password"
-                  margin="normal"
-                  value={this.state.password}
-                  onChange={this.handleChange('password')}
-                />
-              </div>
-            </Grid>
-            <Grid item justify="center" xs container>
-              <div style={{ margin: 20 }}>
-                <TextField
-                  id="firstname"
-                  label="Firstname"
-                  className={classes.textField}
-                  value={this.state.firstname}
-                  onChange={this.handleChange('firstname')}
-                  margin="normal"
-                />
-                <TextField
-                  id="lastname"
-                  label="Lastname"
-                  className={classes.textField}
-                  value={this.state.lastname}
-                  onChange={this.handleChange('lastname')}
+                  value={this.state.hq_name}
+                  onChange={this.handleChange('hq_name')}
                   margin="normal"
                 />
               </div>
@@ -224,27 +228,27 @@ class CreateUserPage extends Component<Props, CreateUserState> {
             <Grid item justify="center" container xs>
               <div style={{ margin: 20 }}>
                 <TextField
-                  id="alias"
-                  label="alias"
+                  id="contact_email"
+                  label="contact_email"
                   className={classes.textField}
-                  value={this.state.alias}
-                  onChange={this.handleChange('alias')}
+                  value={this.state.contact_email}
+                  onChange={this.handleChange('contact_email')}
                   margin="normal"
                 />
                 <TextField
-                  id="employee_id"
-                  label="employee_id"
+                  id="contact_number"
+                  label="contact_number"
                   className={classes.textField}
-                  value={this.state.employee_id}
-                  onChange={this.handleChange('employee_id')}
+                  value={this.state.contact_number}
+                  onChange={this.handleChange('contact_number')}
                   margin="normal"
                 />
                 <TextField
-                  id="contact"
-                  label="contact"
+                  id="contact_person"
+                  label="contact_person"
                   className={classes.textField}
-                  value={this.state.contact}
-                  onChange={this.handleChange('contact')}
+                  value={this.state.contact_person}
+                  onChange={this.handleChange('contact_person')}
                   margin="normal"
                 />
               </div>
@@ -252,27 +256,55 @@ class CreateUserPage extends Component<Props, CreateUserState> {
             <Grid item justify="center" container xs>
               <div style={{ margin: 20 }}>
                 <TextField
-                  id="jobfunction"
-                  label="jobfunction"
+                  id="base_currency_id"
+                  label="base_currency_id"
                   className={classes.textField}
-                  value={this.state.jobfunction}
-                  onChange={this.handleChange('jobfunction')}
+                  value={this.state.base_currency_id}
+                  onChange={this.handleChange('base_currency_id')}
                   margin="normal"
                 />
                 <TextField
-                  id="status"
-                  label="status"
+                  id="financialyr_id"
+                  label="financialyr_id"
                   className={classes.textField}
-                  value={this.state.status}
-                  onChange={this.handleChange('status')}
+                  value={this.state.financialyr_id}
+                  onChange={this.handleChange('financialyr_id')}
                   margin="normal"
                 />
                 <TextField
-                  id="remarks"
-                  label="remarks"
+                  id="parentcompany_id"
+                  label="parentcompany_id"
                   className={classes.textField}
-                  value={this.state.remarks}
-                  onChange={this.handleChange('remarks')}
+                  value={this.state.parentcompany_id}
+                  onChange={this.handleChange('parentcompany_id')}
+                  margin="normal"
+                />
+              </div>
+            </Grid>
+            <Grid item justify="center" container xs>
+              <div style={{ margin: 20 }}>
+                <TextField
+                  id="industry"
+                  label="industry"
+                  className={classes.textField}
+                  value={this.state.industry}
+                  onChange={this.handleChange('industry')}
+                  margin="normal"
+                />
+                <TextField
+                  id="sector"
+                  label="sector"
+                  className={classes.textField}
+                  value={this.state.sector}
+                  onChange={this.handleChange('sector')}
+                  margin="normal"
+                />
+                <TextField
+                  id="webpage_url"
+                  label="webpage_url"
+                  className={classes.textField}
+                  value={this.state.webpage_url}
+                  onChange={this.handleChange('webpage_url')}
                   margin="normal"
                 />
               </div>
@@ -286,7 +318,7 @@ class CreateUserPage extends Component<Props, CreateUserState> {
             flexDirection: 'row',
             justifyContent: 'center', alignItems: 'flex-end'
           }}>
-            <Button onClick={this.handleCreateUser}>Submmit</Button>
+            <Button onClick={this.handleCreateCompany}>Submmit</Button>
           </div>
 
         </Paper>
@@ -295,8 +327,8 @@ class CreateUserPage extends Component<Props, CreateUserState> {
   }
 }
 
-(CreateUserPage as React.ComponentClass<Props>).propTypes = {
+(CreateCompanyPage as React.ComponentClass<Props>).propTypes = {
   classes: PropTypes.object.isRequired
 } as any;
 
-export default connect(null, mapDispatchToProps)(withStyles(styles)(CreateUserPage));
+export default connect(null, mapDispatchToProps)(withStyles(styles)(CreateCompanyPage));

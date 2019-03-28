@@ -30,18 +30,18 @@ const styles = (theme: Theme) =>
     root: {
       display: "flex",
     },
-    logo:{
-        height: "100%",
-        padding:"20px"
+    logo: {
+      height: "100%",
+      padding: "20px"
     },
-    menubar:{
-        background: "linear-gradient(#F0F0F0 0%, #FFFFFF 30%)",
+    menubar: {
+      background: "linear-gradient(#F0F0F0 0%, #FFFFFF 30%)",
     },
-    menudivider:{
-        
+    menudivider: {
+
     },
-    navlist:{
-        
+    navlist: {
+
     },
     appBar: {
       width: `calc(100% - ${drawerWidth}px)`,
@@ -49,11 +49,11 @@ const styles = (theme: Theme) =>
     },
     drawer: {
       width: drawerWidth,
-      flexShrink: 0 
+      flexShrink: 0
     },
     drawerPaper: {
       width: drawerWidth,
-      boxShadow: "10px 0px 50px 0px rgba(0,0,0,0.2)"   
+      boxShadow: "10px 0px 50px 0px rgba(0,0,0,0.2)"
     },
     toolbar: {
       height: theme.spacing.unit * 10
@@ -65,15 +65,15 @@ const styles = (theme: Theme) =>
     }
   });
 
-export interface Props extends WithStyles<typeof styles> {}
+export interface Props extends WithStyles<typeof styles> { }
 
-interface State {}
+interface State { }
 
 class PermanentDrawerLeft extends React.Component<Props, State> {
   render() {
     const { classes } = this.props;
 
-    var itemlist1 = [
+    const itemlist1 = [
       {
         title: "Dashboard",
         path: "/"
@@ -85,10 +85,18 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
       {
         title: "Company",
         path: "/company"
+      },
+      {
+        title: "Unit",
+        path: "/unit"
+      },
+      {
+        title: "Role",
+        path: "/role"
       }
     ];
 
-    var itemlist2 = [
+    const itemlist2 = [
       {
         title: "Logout",
         path: "/login"
@@ -112,20 +120,20 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
           anchor="left"
         >
           <div className={classes.toolbar}>
-            <img className={classes.logo} src={logo}/>
+            <img className={classes.logo} src={logo} />
           </div>
           <Divider className={classes.menudivider} />
-          <ListItem className = {classes.menubar}>
+          <ListItem className={classes.menubar}>
             <ListItemIcon>
-                <MenuIcon />
+              <MenuIcon />
             </ListItemIcon>
-            <ListItemText primary="menu"/>
+            <ListItemText primary="menu" />
           </ListItem>
           <List className={classes.navlist}>
             {itemlist1.map((item, index) => (
-              <Link to={item.path} style={{ textDecoration: "none" }}>
-                <ListItem button key={item.title}>
-                  <ListItemIcon style={{ marginLeft:"20px"}}>
+              <Link key={item.title} to={item.path} style={{ textDecoration: "none" }}>
+                <ListItem button >
+                  <ListItemIcon style={{ marginLeft: "20px" }}>
                     {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
                   </ListItemIcon>
                   <ListItemText primary={item.title} />
@@ -136,8 +144,8 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
           <Divider />
           <List>
             {itemlist2.map((item, index) => (
-              <Link to={item.path} style={{ textDecoration: "none" }}>
-                <ListItem button key={item.title}>
+              <Link key={item.title} to={item.path} style={{ textDecoration: "none" }}>
+                <ListItem button>
                   <ListItemIcon>
                     {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
                   </ListItemIcon>

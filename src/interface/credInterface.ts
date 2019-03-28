@@ -1,7 +1,14 @@
-
-export interface Auth {
+export interface LOGINCRED {
+    app_key: string;
     email: string;
-    session_key: string;
+    password: string;
+}
+
+
+export interface CREATEUSERCRED {
+    session_key: string,
+    email: string;
+    password: string;
     firstname: string;
     lastname: string;
     alias: string;
@@ -11,9 +18,7 @@ export interface Auth {
     jobfunction: string;
     country: string;
     address: string;
-    postal_code: string;
+    postalcode: string;
     status: string;
     remarks: string;
-    role: string;
-    company: string;
 }
