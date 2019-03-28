@@ -1,0 +1,60 @@
+import { createAction, createAsyncAction } from "typesafe-actions"
+import { JobFunction } from "../interface/jobfunctionInterface";
+import { CreateJobFunctionState } from "../scenes/JobFunctionPage/create";
+import { CreateSubJobFunctionState } from "../scenes/JobFunctionPage/createsub";
+
+interface GETJOBFUNCTIONLISTCRED {
+    session_key: string
+}
+
+const SELECT_JOBFUNCTION = "SELECT_JOBFUNCTION"
+export const selectJobFunctionAction = createAction(SELECT_JOBFUNCTION,
+    action => {
+        return (jf: JobFunction) => action(jf)
+    })
+
+const GET_JOBFUNCTION_LIST_REQUEST = "GET_JOBFUNCTION_LIST_REQUEST"
+const GET_JOBFUNCTION_LIST_SUCCESS = "GET_JOBFUNCTION_LIST_SUCCESS"
+const GET_JOBFUNCTION_LIST_FAILURE = "GET_JOBFUNCTION_LIST_FAILURE"
+export const getJobFunctionListAction = createAsyncAction(
+    GET_JOBFUNCTION_LIST_REQUEST,
+    GET_JOBFUNCTION_LIST_SUCCESS,
+    GET_JOBFUNCTION_LIST_FAILURE
+)<void, JobFunction[], void>()
+
+
+const CREATE_JOBFUNCTION_REQUEST = "CREATE_JOBFUNCTION_REQUEST"
+const CREATE_JOBFUNCTION_SUCCESS = "CREATE_JOBFUNCTION_SUCCESS"
+const CREATE_JOBFUNCTION_FAILURE = "CREATE_JOBFUNCTION_FAILURE"
+export const createJobFunctionAction = createAsyncAction(
+    CREATE_JOBFUNCTION_REQUEST,
+    CREATE_JOBFUNCTION_SUCCESS,
+    CREATE_JOBFUNCTION_FAILURE
+)<CreateJobFunctionState, void, void>()
+
+const CREATE_SUBJOBFUNCTION_REQUEST = "CREATE_SUBJOBFUNCTION_REQUEST"
+const CREATE_SUBJOBFUNCTION_SUCCESS = "CREATE_SUBJOBFUNCTION_SUCCESS"
+const CREATE_SUBJOBFUNCTION_FAILURE = "CREATE_SUBJOBFUNCTION_FAILURE"
+export const createSubJobFunctionAction = createAsyncAction(
+    CREATE_SUBJOBFUNCTION_REQUEST,
+    CREATE_SUBJOBFUNCTION_SUCCESS,
+    CREATE_SUBJOBFUNCTION_FAILURE
+)<CreateSubJobFunctionState, void, void>()
+
+const DELETE_JOBFUNCTION_REQUEST = "DELETE_JOBFUNCTION_REQUEST"
+const DELETE_JOBFUNCTION_SUCCESS = "DELETE_JOBFUNCTION_SUCCESS"
+const DELETE_JOBFUNCTION_FAILURE = "DELETE_JOBFUNCTION_FAILURE"
+export const deleteJobFunctionAction = createAsyncAction(
+    DELETE_JOBFUNCTION_REQUEST,
+    DELETE_JOBFUNCTION_SUCCESS,
+    DELETE_JOBFUNCTION_FAILURE
+)<string, string, void>()
+
+const DELETE_SUBJOBFUNCTION_REQUEST = "DELETE_SUBJOBFUNCTION_REQUEST"
+const DELETE_SUBJOBFUNCTION_SUCCESS = "DELETE_SUBJOBFUNCTION_SUCCESS"
+const DELETE_SUBJOBFUNCTION_FAILURE = "DELETE_SUBJOBFUNCTION_FAILURE"
+export const deleteSubJobFunctionAction = createAsyncAction(
+    DELETE_SUBJOBFUNCTION_REQUEST,
+    DELETE_SUBJOBFUNCTION_SUCCESS,
+    DELETE_SUBJOBFUNCTION_FAILURE
+)<string, string, void>()

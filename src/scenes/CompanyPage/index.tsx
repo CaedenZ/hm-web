@@ -70,20 +70,16 @@ class CustomizedTable extends React.Component<Props, State> {
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
-                <CustomTableCell>company_id</CustomTableCell>
-                <CustomTableCell align="right">company_name</CustomTableCell>
+                <CustomTableCell>company_name</CustomTableCell>
                 <CustomTableCell align="right">contact_email</CustomTableCell>
                 <CustomTableCell align="right">contact_number</CustomTableCell>
                 <CustomTableCell align="right">contact_person</CustomTableCell>
               </TableRow>
             </TableHead>
-            <TableBody>
+            {this.props.companyList.length > 0 && <TableBody>
               {this.props.companyList.map(row => (
                 <TableRow className={classes.row} key={row.company_id}>
                   <CustomTableCell component="th" scope="row">
-                    {row.company_id}
-                  </CustomTableCell>
-                  <CustomTableCell align="right">
                     {row.company_name}
                   </CustomTableCell>
                   <CustomTableCell align="right">{row.contact_email}</CustomTableCell>
@@ -91,7 +87,7 @@ class CustomizedTable extends React.Component<Props, State> {
                   <CustomTableCell align="right">{row.contact_person}</CustomTableCell>
                 </TableRow>
               ))}
-            </TableBody>
+            </TableBody>}
           </Table>
         </Paper>
       </main>

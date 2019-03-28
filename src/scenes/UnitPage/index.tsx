@@ -97,26 +97,22 @@ class UnitPage extends React.Component<Props, State> {
             <Table className={classes.table}>
               <TableHead>
                 <TableRow>
-                  <CustomTableCell>unit_id</CustomTableCell>
-                  <CustomTableCell align="right">unit_name</CustomTableCell>
+                  <CustomTableCell>unit_name</CustomTableCell>
                   <CustomTableCell align="right">unit_type</CustomTableCell>
                   <CustomTableCell align="right">Action</CustomTableCell>
                 </TableRow>
               </TableHead>
-              <TableBody>
+              {this.props.unitList.length > 0 && <TableBody>
                 {this.props.unitList.map(row => (
                   <TableRow className={classes.row} key={row.unit_id}>
                     <CustomTableCell component="th" scope="row">
-                      {row.unit_id}
-                    </CustomTableCell>
-                    <CustomTableCell align="right">
                       {row.unit_name}
                     </CustomTableCell>
                     <CustomTableCell align="right">{row.unit_type}</CustomTableCell>
                     <CustomTableCell align="right"><Button onClick={() => this.handleViewButtonClick(row)}>view</Button></CustomTableCell>
                   </TableRow>
                 ))}
-              </TableBody>
+              </TableBody>}
             </Table>
           </Paper>
         </main>

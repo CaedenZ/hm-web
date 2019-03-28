@@ -99,7 +99,7 @@ class SubUnitPage extends React.Component<Props, State> {
                                     <CustomTableCell align="right">Action</CustomTableCell>
                                 </TableRow>
                             </TableHead>
-                            <TableBody>
+                            {this.props.subUnitList.length > 0 && <TableBody>
                                 {this.props.subUnitList.map(row => (
                                     <TableRow className={classes.row} key={row.unit_id}>
                                         <CustomTableCell component="th" scope="row">
@@ -112,7 +112,7 @@ class SubUnitPage extends React.Component<Props, State> {
                                         <CustomTableCell align="right"><Button onClick={() => this.handleViewButtonClick(row)}>view</Button></CustomTableCell>
                                     </TableRow>
                                 ))}
-                            </TableBody>
+                            </TableBody>}
                         </Table>
                     </Paper>
                 </main>

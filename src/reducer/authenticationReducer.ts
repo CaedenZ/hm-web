@@ -9,8 +9,8 @@ import {
     flatMap,
 } from "rxjs/operators"
 import { of, from } from "rxjs"
-import { login } from "../api/authenticationAPI";
-import { loginAction } from "../actions/authenticationAction";
+import { login, forgetPassword } from "../api/authenticationAPI";
+import { loginAction, forgetPasswordAction } from "../actions/authenticationAction";
 import { isActionOf } from "typesafe-actions";
 
 
@@ -55,6 +55,17 @@ export const loginEpic: Epic<any, any, any, any> = (action$, state$) =>
             from(login(action.payload)).pipe(
                 map((token: string) => loginAction.success(token)),
                 catchError(error => of(loginAction.failure(error.message)))
+            )
+        )
+    )
+
+export const forgetPasswordEpic: Epic<any, any, any, any> = (action$, state$) =>
+    action$.pipe(
+        filter(isActionOf([forgetPasswordAction.request])),
+        switchMap((action) =>
+            from(forgetPassword(action.payload)).pipe(
+                map(() => forgetPasswordAction.success()),
+                catchError(error => of(forgetPasswordAction.failure(error.message)))
             )
         )
     )

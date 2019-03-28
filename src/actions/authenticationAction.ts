@@ -1,5 +1,5 @@
 import { createAction, createAsyncAction } from "typesafe-actions"
-import { LOGINCRED } from "../interface/credInterface";
+import { LOGINCRED, FORGETPWCRED } from "../interface/credInterface";
 
 
 
@@ -22,3 +22,12 @@ export const logoutAction = createAction(LOG_OUT,
   action => {
     return () => action()
   })
+
+const FORGET_PASSWORD_REQUEST = "FORGET_PASSWORD_REQUEST"
+const FORGET_PASSWORD_SUCCESS = "FORGET_PASSWORD_SUCCESS"
+const FORGET_PASSWORD_FAILURE = "FORGET_PASSWORD_FAILURE"
+export const forgetPasswordAction = createAsyncAction(
+  FORGET_PASSWORD_REQUEST,
+  FORGET_PASSWORD_SUCCESS,
+  FORGET_PASSWORD_FAILURE
+)<FORGETPWCRED, void, void>()

@@ -21,6 +21,10 @@ import ChildUnitPage from "../scenes/UnitPage/childUnit"
 import CreateUnitPage from "../scenes/UnitPage/create"
 import CreateMainUnitPage from "../scenes/UnitPage/createmainunit"
 import RolePage from "../scenes/RolePage";
+import JobFunctionPage from "../scenes/JobFunctionPage";
+import CreateJobFunctionPage from "../scenes/JobFunctionPage/create";
+import CreateSubJobFunctionPage from "../scenes/JobFunctionPage/createsub";
+
 
 export interface Props extends InState { }
 
@@ -55,6 +59,9 @@ class RootRoute extends React.Component<Props, State>{
                         <Route exact path="/unit/create" render={() => (<ResponsiveDrawer> <CreateUnitPage /> </ResponsiveDrawer>)} />
                         <Route exact path="/unit/createmainunit" render={() => (<ResponsiveDrawer> <CreateMainUnitPage /> </ResponsiveDrawer>)} />
                         <Route exact path="/role" render={() => (<ResponsiveDrawer> <RolePage /> </ResponsiveDrawer>)} />
+                        <Route exact path="/jobfunction" render={() => (<ResponsiveDrawer> <JobFunctionPage /> </ResponsiveDrawer>)} />
+                        <Route exact path="/jobfunction/create" render={() => (<ResponsiveDrawer> <CreateJobFunctionPage /> </ResponsiveDrawer>)} />
+                        <Route exact path="/jobfunction/createsub" render={() => (<ResponsiveDrawer> <CreateSubJobFunctionPage /> </ResponsiveDrawer>)} />
                     </Switch>
                 </Router>
             )

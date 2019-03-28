@@ -1,8 +1,9 @@
-import { loginAction, logoutAction } from "../actions/authenticationAction";
+import { loginAction, logoutAction, forgetPasswordAction } from "../actions/authenticationAction";
 import { getUserListAction, createUserAction } from "../actions/userAction";
 import { LOGINCRED } from "../interface/credInterface";
 import { SharedDispatchProps } from "../interface/propsInterface";
 import { getCompanyListAction, getChildCompanyListAction, selectCompanyAction, createCompanyAction, createUnitAction, getChildUnitListAction, getUnitListAction, selectUnitAction, createSubUnitAction } from "../actions/companyAction";
+import { getJobFunctionListAction, createJobFunctionAction, createSubJobFunctionAction, selectJobFunctionAction, deleteJobFunctionAction, deleteSubJobFunctionAction } from "../actions/jobFunctionAction";
 
 
 
@@ -17,7 +18,6 @@ export function mapDispatchToProps(dispatch): SharedDispatchProps {
             dispatch(logoutAction())
         },
         getUserList: () => {
-            // console.log('scuus')
             dispatch(getUserListAction.request())
         },
         getCompanyList: () => {
@@ -49,6 +49,27 @@ export function mapDispatchToProps(dispatch): SharedDispatchProps {
         },
         createSubUnit: (payload) => {
             dispatch(createSubUnitAction.request(payload))
+        },
+        getJobFunctionList: () => {
+            dispatch(getJobFunctionListAction.request())
+        },
+        createJobFunction: (payload) => {
+            dispatch(createJobFunctionAction.request(payload))
+        },
+        createSubJobFunction: (payload) => {
+            dispatch(createSubJobFunctionAction.request(payload))
+        },
+        selectJobFunction: (payload) => {
+            dispatch(selectJobFunctionAction(payload))
+        },
+        forgetPassword: (payload) => {
+            dispatch(forgetPasswordAction.request(payload))
+        },
+        deleteJobFunction: (payload) => {
+            dispatch(deleteJobFunctionAction.request(payload))
+        },
+        deleteSubJobFunction: (payload) => {
+            dispatch(deleteSubJobFunctionAction.request(payload))
         },
     }
 }

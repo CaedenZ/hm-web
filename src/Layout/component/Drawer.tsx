@@ -104,6 +104,14 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
       {
         title: "Role",
         path: "/role"
+      },
+      {
+        title: "Setting",
+        path: "/setting"
+      },
+      {
+        title: "Job Function",
+        path: "/jobfunction"
       }
     ];
 
@@ -112,10 +120,6 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
         title: "Logout",
         path: "/login"
       },
-      {
-        title: "Setting",
-        path: "/setting"
-      }
     ];
 
     return (

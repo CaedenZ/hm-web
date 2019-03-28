@@ -19,3 +19,10 @@ export const createUser = async (payload) => {
         });
     return 'asd'
 }
+
+export const forgetPassword = async (payload) => {
+
+    console.log(payload)
+    const response = await $axios.post('/user/forgetPassword', payload)
+    return response.data.data
+}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -11,9 +11,12 @@ import InputLabel from '@material-ui/core/InputLabel';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import withStyles from '@material-ui/core/styles/withStyles';
+import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
+import { connect } from 'react-redux';
+import { mapDispatchToProps } from '../../helper/dispachProps';
+import { SharedDispatchProps } from '../../interface/propsInterface';
 
-const styles = (theme:any) => ({
+const styles = (theme: any) => ({
   main: {
     width: 'auto',
     display: 'block', // Fix IE 11 issue.
@@ -45,38 +48,74 @@ const styles = (theme:any) => ({
   },
 });
 
-function ForgetPasswordPage(props:any) {
-  const { classes } = props;
+export interface Props extends SharedDispatchProps, InState, WithStyles<typeof styles> { }
 
-  return (
-    <main className={classes.main}>
-      <CssBaseline />
-      <Paper className={classes.paper}>
-        <Typography component="h1" variant="h5">
-          Enter your email
-        </Typography>
-        <form className={classes.form}>
-          <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="email">Email Address</InputLabel>
-            <Input id="email" name="email" autoComplete="email" autoFocus />
-          </FormControl>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Submit
-          </Button>
-        </form>
-      </Paper>
-    </main>
-  );
+interface InState {
+  usertoken: string;
+}
+export interface State {
+  email: string;
+  app_key: string;
 }
 
-ForgetPasswordPage.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
+class ForgetPasswordPage extends Component<Props, State> {
 
-export default withStyles(styles)(ForgetPasswordPage);
+  constructor(props) {
+    super(props);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.dynSetState = this.dynSetState.bind(this);
+  }
+
+  state = {
+    email: 'zfy0120@gmail.com',
+    app_key: 'p9Eg6HN7FFXjA9WTNZ5n'
+  }
+
+
+  handleChange(event) {
+    this.dynSetState(event.target.id, event.target.value);
+    // console.dir(event.target)
+  }
+
+  dynSetState(key: keyof State, value: string) {
+    this.setState({
+      [key]: value
+    } as Pick<State, keyof State>)
+  }
+  handleSubmit = () => {
+    console.log(this.state)
+  }
+
+  render() {
+    const { classes } = this.props;
+
+    return (
+      <main className={classes.main}>
+        <CssBaseline />
+        <Paper className={classes.paper}>
+          <Typography component="h1" variant="h5">
+            Enter your email
+        </Typography>
+          <form className={classes.form}>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="email">Email Address</InputLabel>
+              <Input id="email" name="email" autoComplete="email" autoFocus value={this.state.email} onChange={this.handleChange} />
+            </FormControl>
+            <Button
+              fullWidth
+              variant="contained"
+              color="primary"
+              onClick={() => this.handleSubmit()}
+            >
+              Submit
+          </Button>
+          </form>
+        </Paper>
+      </main>
+    );
+  }
+}
+
+
+export default connect(null, mapDispatchToProps)(withStyles(styles)(ForgetPasswordPage));

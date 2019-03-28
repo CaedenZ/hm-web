@@ -1,5 +1,5 @@
 import { combineReducers } from "redux"
-import { authenticationReducer, loginEpic } from "./authenticationReducer"
+import { authenticationReducer, loginEpic, forgetPasswordEpic } from "./authenticationReducer"
 // // import currentReport, {
 // //   CurrentReportState,
 // //   generateReportEpic,
@@ -13,18 +13,21 @@ import { StateType } from "typesafe-actions";
 import { userReducer, getUserListEpic, createUserEpic } from "./userReducer";
 import { companyReducer, getCompanyListEpic, getChildCompanyListEpic, createCompanyEpic, getUnitListEpic, getChildUnitListEpic, createUnitEpic, createSubUnitEpic } from "./companyReducer";
 import { initReducer } from "./initReducer";
+import { jobFunctionReducer, getJobFunctionListEpic, createJobFunctionEpic, createSubJobFunctionEpic, deleteSubJobFunctionEpic, deleteJobFunctionEpic } from "./jobFunctionReducer";
 
 export const rootReducer = combineReducers({
     authenticationReducer,
     userReducer,
     companyReducer,
     initReducer,
+    jobFunctionReducer,
     //   userDetail,
     //   currentReport,
 })
 
 export const rootEpic = combineEpics(
     loginEpic,
+    forgetPasswordEpic,
     getUserListEpic,
     getCompanyListEpic,
     createUserEpic,
@@ -34,6 +37,11 @@ export const rootEpic = combineEpics(
     getChildUnitListEpic,
     createUnitEpic,
     createSubUnitEpic,
+    getJobFunctionListEpic,
+    createJobFunctionEpic,
+    createSubJobFunctionEpic,
+    deleteJobFunctionEpic,
+    deleteSubJobFunctionEpic,
     //   generateReportEpic,
     //   sendEmailEpic,
     //   completeReportEpic,

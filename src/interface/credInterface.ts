@@ -22,3 +22,8 @@ export interface CREATEUSERCRED {
     status: string;
     remarks: string;
 }
+
+export interface FORGETPWCRED {
+    app_key: string;
+    email: string;
+}
