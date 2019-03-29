@@ -15,6 +15,11 @@ class Layout extends Component<Props> {
 
   componentDidMount() {
     this.props.getCountryList()
+    this.props.login({
+      email: 'pseudoscops.tc.test@gmail.com',
+      password: '123456',
+      app_key: 'p9Eg6HN7FFXjA9WTNZ5n'
+    })
   }
   render() {
     if (this.props.token === null || '') {

@@ -20,6 +20,25 @@ export function companyReducer(state: CompanyState = {
     childCompanyList: [],
     unitList: [],
     subUnitList: [],
+    selectedCompany: {
+        company_id: '',
+        sector: '',
+        location: '',
+        company_name: '',
+        industry: '',
+        country: '',
+        address: '',
+        postal_code: '',
+        logo_small: '',
+        contact_person: '',
+        contact_number: '',
+        contact_email: '',
+        hq_name: '',
+        base_currency_id: '',
+        logo_main: '',
+        parentcompany_id: '',
+        webpage_url: '',
+    }
 }, action) {
     switch (action.type) {
         case 'SELECT_COMPANY':

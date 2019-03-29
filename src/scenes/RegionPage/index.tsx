@@ -74,7 +74,7 @@ class RegionPage extends React.Component<Props, State> {
 
 
   componentDidMount() {
-    this.props.getRegionList()
+    // this.props.getRegionList()
   }
 
   handleUpdateButtonClick = (unit) => {

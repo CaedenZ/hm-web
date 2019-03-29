@@ -12,6 +12,7 @@ import { of, from } from "rxjs"
 import { login, forgetPassword } from "../api/authenticationAPI";
 import { loginAction, forgetPasswordAction } from "../actions/authenticationAction";
 import { isActionOf } from "typesafe-actions";
+import { push } from "connected-react-router";
 
 
 interface AuthenticationState {
@@ -33,7 +34,7 @@ export function authenticationReducer(state: AuthenticationState = {
                 ...state,
                 email: action.payload
             }
-        case 'LOG_IN_SUCCESS':
+        case 'LOG_IN_SUCCESS': 
             return {
                 ...state,
                 token: action.payload

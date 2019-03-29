@@ -13,7 +13,6 @@ import { getCountryListAction } from "../actions/countryAction";
 export function mapDispatchToProps(dispatch): SharedDispatchProps {
     return {
         login: (payload) => {
-            // console.log('scuus')
             dispatch(loginAction.request(payload))
         },
         logout: () => {

@@ -92,7 +92,6 @@ class SignIn extends Component<Props, State> {
   render() {
     const { classes } = this.props;
     if (this.props.usertoken == null) {
-
       return (
         <main className={classes.main}>
           <CssBaseline />
