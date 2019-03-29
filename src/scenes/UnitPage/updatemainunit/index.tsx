@@ -21,6 +21,7 @@ import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../interface/propsInterface";
 import { RootState } from "../../../reducer";
+import { Unit, Company } from "../../../interface/companyInterface";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -65,64 +66,84 @@ const styles = (theme: Theme) =>
     }
   });
 
-export interface CreateJobFunctionState {
-  job_name: string;
-  description: string;
+export interface CreateUnitState {
+  unit_name: string,
+  unit_type: string,
+  unit_data: string,
+  parent_unit: string,
+  main_unit: string,
+  company_id: string,
 }
-export interface Props extends WithStyles<typeof styles>, SharedDispatchProps { }
+export interface Props extends WithStyles<typeof styles>, SharedDispatchProps, InState { }
 
 
+interface InState {
+  parentCompany: Company;
+}
 
-class CreateJobFunctionPage extends Component<Props, CreateJobFunctionState> {
+class CreateMainUnitPage extends Component<Props, CreateUnitState> {
 
 
   constructor(props) {
     super(props)
-    this.handleCreateJobFunction = this.handleCreateJobFunction.bind(this)
+    this.handleCreateUnit = this.handleCreateUnit.bind(this)
   }
 
 
-  state: CreateJobFunctionState = {
-    job_name: "",
-    description: ""
+  state: CreateUnitState = {
+    unit_name: '',
+    unit_type: '',
+    unit_data: '',
+    parent_unit: '',
+    main_unit: '',
+    company_id: '',
   }
 
-  handleChange = (statekay: keyof CreateJobFunctionState) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ [statekay]: event.target.value } as Pick<CreateJobFunctionState, keyof CreateJobFunctionState>);
+  handleChange = (statekay: keyof CreateUnitState) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ [statekay]: event.target.value } as Pick<CreateUnitState, keyof CreateUnitState>);
   };
 
-  handleCreateJobFunction = () => {
-    this.props.createJobFunction(this.state)
+  handleCreateUnit = () => {
+    this.props.createUnit(this.state)
   }
 
-  // componentDidMount = () => {
-  // }
+  componentDidMount = () => {
+    this.setState({ company_id: this.props.parentCompany.company_id })
+  }
 
   render() {
     const { classes } = this.props;
     return (
       <div className={classes.root}>
         <Typography component="h1" variant="h5">
-          New JobFunction
+          New Unit
       </Typography>
         <Paper>
           <Grid container className={classes.grid} spacing={16}>
             <Grid item justify="center" container xs>
               <div style={{ margin: 20 }}>
                 <TextField
-                  id="job_name"
-                  label="job_name"
+                  id="unit_name"
+                  label="unit_name"
                   className={classes.textField}
-                  value={this.state.job_name}
-                  onChange={this.handleChange('job_name')}
+                  value={this.state.unit_name}
+                  onChange={this.handleChange('unit_name')}
                   margin="normal"
                 />
                 <TextField
-                  id="description"
-                  label="description"
+                  id="unit_type"
+                  label="unit_type"
                   className={classes.textField}
-                  value={this.state.description}
-                  onChange={this.handleChange('description')}
+                  value={this.state.unit_type}
+                  onChange={this.handleChange('unit_type')}
+                  margin="normal"
+                />
+                <TextField
+                  id="unit_data"
+                  label="unit_data"
+                  className={classes.textField}
+                  value={this.state.unit_data}
+                  onChange={this.handleChange('unit_data')}
                   margin="normal"
                 />
               </div>
@@ -135,7 +156,7 @@ class CreateJobFunctionPage extends Component<Props, CreateJobFunctionState> {
             flexDirection: 'row',
             justifyContent: 'center', alignItems: 'flex-end'
           }}>
-            <Button onClick={this.handleCreateJobFunction}>Submmit</Button>
+            <Button onClick={this.handleCreateUnit}>Submmit</Button>
           </div>
 
         </Paper>
@@ -144,15 +165,15 @@ class CreateJobFunctionPage extends Component<Props, CreateJobFunctionState> {
   }
 }
 
-(CreateJobFunctionPage as React.ComponentClass<Props>).propTypes = {
+(CreateMainUnitPage as React.ComponentClass<Props>).propTypes = {
   classes: PropTypes.object.isRequired
 } as any;
 
-function mapStateToProps(state: any) {
+function mapStateToProps(state: RootState) {
   return {
     parentCompany: state.companyReducer.selectedCompany,
   }
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CreateJobFunctionPage));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CreateMainUnitPage));

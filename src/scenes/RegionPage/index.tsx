@@ -14,13 +14,14 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { render } from "react-dom";
 import CustomButton from "./component/CustomButton";
-import { SharedDispatchProps } from "../../interface/propsInterface";
-import { Company } from "../../interface/companyInterface";
 import { RootState } from "../../reducer";
 import { mapDispatchToProps } from "../../helper/dispachProps";
 import { connect } from "react-redux";
+import { SharedDispatchProps } from "../../interface/propsInterface";
+import { User } from "../../interface/userInterface";
 import { Button, IconButton } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
+import { Region } from "../../interface/regionInterface";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -49,23 +50,35 @@ const styles = (theme: Theme) =>
     }
   });
 
+let id = 0;
+function createData(
+  name: any,
+  calories: any,
+  fat: any,
+  carbs: any,
+  protein: any
+) {
+  id += 1;
+  return { id, name, calories, fat, carbs, protein };
+}
+
+
 export interface Props extends WithStyles<typeof styles>, SharedDispatchProps, InState { }
 
 interface State { }
 
 interface InState {
-  companyList: Company[]
+  regionList: Region[]
 }
-
-class CustomizedTable extends React.Component<Props, State> {
+class RegionPage extends React.Component<Props, State> {
 
 
   componentDidMount() {
-    this.props.getChildCompanyList()
+    this.props.getRegionList()
   }
 
   handleUpdateButtonClick = (unit) => {
-    console.log('clicked')
+    console.log(this.props.regionList)
     // this.props.selectUnit(unit)
     // this.setState({
     //   redirect: true
@@ -76,36 +89,31 @@ class CustomizedTable extends React.Component<Props, State> {
     console.log('clicked')
   }
 
-
   render() {
     const { classes } = this.props;
 
     return (
       <main>
-        <CustomButton link="/company/create">New Company</CustomButton>
+        <CustomButton link="/user/create">New User</CustomButton>
         <Paper className={classes.root}>
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
-                <CustomTableCell>company_name</CustomTableCell>
-                <CustomTableCell align="right">contact_email</CustomTableCell>
-                <CustomTableCell align="right">contact_number</CustomTableCell>
-                <CustomTableCell align="right">contact_person</CustomTableCell>
+                <CustomTableCell>Name</CustomTableCell>
+                <CustomTableCell align="right">Countrys</CustomTableCell>
                 <CustomTableCell align="right">Action</CustomTableCell>
               </TableRow>
             </TableHead>
-            {this.props.companyList.length > 0 && <TableBody>
-              {this.props.companyList.map(row => (
-                <TableRow className={classes.row} key={row.company_id}>
-                  <CustomTableCell component="th" scope="row">
-                    {row.company_name}
-                  </CustomTableCell>
-                  <CustomTableCell align="right">{row.contact_email}</CustomTableCell>
-                  <CustomTableCell align="right">{row.contact_number}</CustomTableCell>
-                  <CustomTableCell align="right">{row.contact_person}</CustomTableCell>
+            {this.props.regionList.length > 0 && <TableBody>
+              {this.props.regionList.map(row => (
+                <TableRow className={classes.row} key={row.region_id}>
+                  <CustomTableCell component="th" scope="row">{row.region_name}</CustomTableCell>
+                  <CustomTableCell align="right">{row.country_list.map(country => (
+                    country.country_name + "  "
+                  ))}</CustomTableCell>
                   <CustomTableCell align="right">
                     <Button color="primary" variant="contained" onClick={() => this.handleUpdateButtonClick(row)}>view</Button>
-                    <IconButton onClick={() => this.handleDelete(row.company_id)}><DeleteIcon /></IconButton>
+                    <IconButton onClick={() => this.handleDelete(row.region_id)}><DeleteIcon /></IconButton>
                   </CustomTableCell>
                 </TableRow>
               ))}
@@ -117,14 +125,14 @@ class CustomizedTable extends React.Component<Props, State> {
   }
 }
 
-(CustomizedTable as React.ComponentClass<Props>).propTypes = {
+(RegionPage as React.ComponentClass<Props>).propTypes = {
   classes: PropTypes.object.isRequired
 } as any;
 
-function mapStateToProps(state: any) {
+function mapStateToProps(state: RootState) {
   return {
-    companyList: state.companyReducer.childCompanyList
+    regionList: state.regionReducer.regionList
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CustomizedTable));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(RegionPage));

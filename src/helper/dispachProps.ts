@@ -4,6 +4,8 @@ import { LOGINCRED } from "../interface/credInterface";
 import { SharedDispatchProps } from "../interface/propsInterface";
 import { getCompanyListAction, getChildCompanyListAction, selectCompanyAction, createCompanyAction, createUnitAction, getChildUnitListAction, getUnitListAction, selectUnitAction, createSubUnitAction } from "../actions/companyAction";
 import { getJobFunctionListAction, createJobFunctionAction, createSubJobFunctionAction, selectJobFunctionAction, deleteJobFunctionAction, deleteSubJobFunctionAction } from "../actions/jobFunctionAction";
+import { getRegionListAction } from "../actions/regionAction";
+import { getCountryListAction } from "../actions/countryAction";
 
 
 
@@ -22,6 +24,12 @@ export function mapDispatchToProps(dispatch): SharedDispatchProps {
         },
         getCompanyList: () => {
             dispatch(getCompanyListAction.request())
+        },
+        getRegionList: () => {
+            dispatch(getRegionListAction.request())
+        },
+        getCountryList: () => {
+            dispatch(getCountryListAction.request())
         },
         createUser: (payload) => {
             dispatch(createUserAction.request(payload))

@@ -2,7 +2,7 @@ import React from "react";
 import { SharedDispatchProps } from "../interface/propsInterface";
 
 import LoginPage from "../scenes/LoginPage";
-import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
+import { Switch, Route, BrowserRouter } from "react-router-dom";
 import HomePage from "../scenes/HomePage";
 import ResponsiveDrawer from "../Layout/default";
 import ForgetPasswordPage from "../scenes/ForgetPasswordPage";
@@ -24,6 +24,9 @@ import RolePage from "../scenes/RolePage";
 import JobFunctionPage from "../scenes/JobFunctionPage";
 import CreateJobFunctionPage from "../scenes/JobFunctionPage/create";
 import CreateSubJobFunctionPage from "../scenes/JobFunctionPage/createsub";
+import { ConnectedRouter } from "connected-react-router";
+import { history } from '../store'
+import RegionPage from "../scenes/RegionPage";
 
 
 export interface Props extends InState { }
@@ -38,7 +41,7 @@ class RootRoute extends React.Component<Props, State>{
     render() {
         if (this.props.init) {
             return (
-                <Router>
+                <ConnectedRouter history={history}>
                     <Switch>
                         {/* <Route exact path="/" component={Home} /> */}
                         {/* both /roster and /roster/:number begin with /roster */}
@@ -62,8 +65,9 @@ class RootRoute extends React.Component<Props, State>{
                         <Route exact path="/jobfunction" render={() => (<ResponsiveDrawer> <JobFunctionPage /> </ResponsiveDrawer>)} />
                         <Route exact path="/jobfunction/create" render={() => (<ResponsiveDrawer> <CreateJobFunctionPage /> </ResponsiveDrawer>)} />
                         <Route exact path="/jobfunction/createsub" render={() => (<ResponsiveDrawer> <CreateSubJobFunctionPage /> </ResponsiveDrawer>)} />
+                        <Route exact path="/region" render={() => (<ResponsiveDrawer> <RegionPage /> </ResponsiveDrawer>)} />
                     </Switch>
-                </Router>
+                </ConnectedRouter>
             )
         }
         else {
@@ -74,7 +78,7 @@ class RootRoute extends React.Component<Props, State>{
     }
 }
 
-function mapStateToProps(state: RootState) {
+function mapStateToProps(state: any) {
     return {
         init: state.initReducer.init
     }

@@ -21,7 +21,7 @@ import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../interface/propsInterface";
 import { RootState } from "../../../reducer";
-import { SubJobFunction, JobFunction } from "../../../interface/jobfunctionInterface";
+import { Unit, Company } from "../../../interface/companyInterface";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -66,41 +66,49 @@ const styles = (theme: Theme) =>
     }
   });
 
-export interface CreateSubJobFunctionState {
-  subjob_name: string;
-  description: string;
-  jobfunction_id: string;
+export interface CreateUnitState {
+  unit_name: string,
+  unit_type: string,
+  unit_data: string,
+  parent_unit: string,
+  main_unit: string,
+  company_id: string,
 }
 export interface Props extends WithStyles<typeof styles>, SharedDispatchProps, InState { }
 
 interface InState {
-  parentJobFunction: string;
+  parentUnit: Unit;
+  parentCompany: Company;
 }
-class CreateSubJobFunctionPage extends Component<Props, CreateSubJobFunctionState> {
+
+class CreateUnitPage extends Component<Props, CreateUnitState> {
 
 
   constructor(props) {
     super(props)
-    this.handleCreateSubJobFunction = this.handleCreateSubJobFunction.bind(this)
+    this.handleCreateUnit = this.handleCreateUnit.bind(this)
   }
 
 
-  state: CreateSubJobFunctionState = {
-    subjob_name: "",
-    description: "",
-    jobfunction_id: "",
+  state: CreateUnitState = {
+    unit_name: '',
+    unit_type: '',
+    unit_data: '',
+    parent_unit: '',
+    main_unit: '',
+    company_id: '',
   }
 
-  handleChange = (statekay: keyof CreateSubJobFunctionState) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ [statekay]: event.target.value } as Pick<CreateSubJobFunctionState, keyof CreateSubJobFunctionState>);
+  handleChange = (statekay: keyof CreateUnitState) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ [statekay]: event.target.value } as Pick<CreateUnitState, keyof CreateUnitState>);
   };
 
-  handleCreateSubJobFunction = () => {
-    this.props.createSubJobFunction(this.state)
+  handleCreateUnit = () => {
+    this.props.createSubUnit(this.state)
   }
 
   componentDidMount = () => {
-    this.setState({ jobfunction_id: this.props.parentJobFunction })
+    this.setState({ parent_unit: this.props.parentUnit.unit_id, main_unit: this.props.parentUnit.main_unit, company_id: this.props.parentCompany.company_id })
   }
 
   render() {
@@ -108,35 +116,56 @@ class CreateSubJobFunctionPage extends Component<Props, CreateSubJobFunctionStat
     return (
       <div className={classes.root}>
         <Typography component="h1" variant="h5">
-          New SubJobFunction
+          New Unit
       </Typography>
         <Paper>
           <Grid container className={classes.grid} spacing={16}>
             <Grid item justify="center" container xs>
               <div style={{ margin: 20 }}>
                 <TextField
-                  id="subjob_name"
-                  label="subjob_name"
+                  id="unit_name"
+                  label="unit_name"
                   className={classes.textField}
-                  value={this.state.subjob_name}
-                  onChange={this.handleChange('subjob_name')}
+                  value={this.state.unit_name}
+                  onChange={this.handleChange('unit_name')}
                   margin="normal"
                 />
                 <TextField
-                  id="description"
-                  label="description"
+                  id="unit_type"
+                  label="unit_type"
                   className={classes.textField}
-                  value={this.state.description}
-                  onChange={this.handleChange('description')}
+                  value={this.state.unit_type}
+                  onChange={this.handleChange('unit_type')}
+                  margin="normal"
+                />
+                <TextField
+                  id="unit_data"
+                  label="unit_data"
+                  className={classes.textField}
+                  value={this.state.unit_data}
+                  onChange={this.handleChange('unit_data')}
+                  margin="normal"
+                />
+              </div>
+            </Grid>
+            <Grid item justify="center" container xs>
+              <div style={{ margin: 20 }}>
+                <TextField
+                  disabled
+                  id="parent_unit"
+                  label="parent_unit"
+                  className={classes.textField}
+                  value={this.state.parent_unit}
+                  onChange={this.handleChange('parent_unit')}
                   margin="normal"
                 />
                 <TextField
                   disabled
-                  id="jobfunction_id"
-                  label="jobfunction_id"
+                  id="main_unit"
+                  label="main_unit"
                   className={classes.textField}
-                  value={this.state.jobfunction_id}
-                  onChange={this.handleChange('jobfunction_id')}
+                  value={this.state.main_unit}
+                  onChange={this.handleChange('main_unit')}
                   margin="normal"
                 />
               </div>
@@ -149,7 +178,7 @@ class CreateSubJobFunctionPage extends Component<Props, CreateSubJobFunctionStat
             flexDirection: 'row',
             justifyContent: 'center', alignItems: 'flex-end'
           }}>
-            <Button onClick={this.handleCreateSubJobFunction}>Submmit</Button>
+            <Button onClick={this.handleCreateUnit}>Submmit</Button>
           </div>
 
         </Paper>
@@ -158,15 +187,15 @@ class CreateSubJobFunctionPage extends Component<Props, CreateSubJobFunctionStat
   }
 }
 
-(CreateSubJobFunctionPage as React.ComponentClass<Props>).propTypes = {
+(CreateUnitPage as React.ComponentClass<Props>).propTypes = {
   classes: PropTypes.object.isRequired
 } as any;
 
-function mapStateToProps(state: any) {
+function mapStateToProps(state: RootState) {
   return {
-    parentJobFunction: state.jobFunctionReducer.selectedJobFunction,
+    parentUnit: state.companyReducer.selectedUnit,
+    parentCompany: state.companyReducer.selectedCompany,
   }
 }
 
-
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CreateSubJobFunctionPage));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CreateUnitPage));

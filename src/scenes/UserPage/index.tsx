@@ -19,6 +19,8 @@ import { mapDispatchToProps } from "../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../interface/propsInterface";
 import { User } from "../../interface/userInterface";
+import { Button, IconButton } from "@material-ui/core";
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -74,6 +76,18 @@ class CustomizedTable extends React.Component<Props, State> {
     this.props.getUserList()
   }
 
+  handleUpdateButtonClick = (unit) => {
+    console.log('clicked')
+    // this.props.selectUnit(unit)
+    // this.setState({
+    //   redirect: true
+    // })
+  }
+
+  handleDelete = (id) => {
+    console.log('clicked')
+  }
+
   render() {
     const { classes } = this.props;
 
@@ -87,14 +101,8 @@ class CustomizedTable extends React.Component<Props, State> {
                 <CustomTableCell>Email</CustomTableCell>
                 <CustomTableCell align="right">Firstname</CustomTableCell>
                 <CustomTableCell align="right">Lastname</CustomTableCell>
-                <CustomTableCell align="right">Contact</CustomTableCell>
-                <CustomTableCell align="right">Address</CustomTableCell>
-                <CustomTableCell align="right">Country</CustomTableCell>
-                <CustomTableCell align="right">Employee ID</CustomTableCell>
-                <CustomTableCell align="right">Job Function</CustomTableCell>
-                <CustomTableCell align="right">Postal Code</CustomTableCell>
                 <CustomTableCell align="right">Status</CustomTableCell>
-                <CustomTableCell align="right">Remarks</CustomTableCell>
+                <CustomTableCell align="right">Action</CustomTableCell>
               </TableRow>
             </TableHead>
             {this.props.userList.length > 0 && <TableBody>
@@ -103,14 +111,11 @@ class CustomizedTable extends React.Component<Props, State> {
                   <CustomTableCell component="th" scope="row">{row.email}</CustomTableCell>
                   <CustomTableCell align="right">{row.firstname}</CustomTableCell>
                   <CustomTableCell align="right">{row.lastname}</CustomTableCell>
-                  <CustomTableCell align="right">{row.contact}</CustomTableCell>
-                  <CustomTableCell align="right">{row.address}</CustomTableCell>
-                  <CustomTableCell align="right">{row.country}</CustomTableCell>
-                  <CustomTableCell align="right">{row.employee_id}</CustomTableCell>
-                  <CustomTableCell align="right">{row.jobfunction}</CustomTableCell>
-                  <CustomTableCell align="right">{row.postal_code}</CustomTableCell>
                   <CustomTableCell align="right">{row.status}</CustomTableCell>
-                  <CustomTableCell align="right">{row.remarks}</CustomTableCell>
+                  <CustomTableCell align="right">
+                    <Button color="primary" variant="contained" onClick={() => this.handleUpdateButtonClick(row)}>view</Button>
+                    <IconButton onClick={() => this.handleDelete(row.email)}><DeleteIcon /></IconButton>
+                  </CustomTableCell>
                 </TableRow>
               ))}
             </TableBody>}

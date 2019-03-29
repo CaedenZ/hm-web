@@ -19,8 +19,9 @@ import { Company, Unit } from "../../interface/companyInterface";
 import { RootState } from "../../reducer";
 import { mapDispatchToProps } from "../../helper/dispachProps";
 import { connect } from "react-redux";
-import { Button } from "@material-ui/core";
+import { Button, IconButton } from "@material-ui/core";
 import { Redirect } from "react-router-dom";
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -64,7 +65,7 @@ class UnitPage extends React.Component<Props, State> {
   constructor(props) {
     super(props)
     this.handleViewButtonClick = this.handleViewButtonClick.bind(this)
-
+    this.handleDelete = this.handleDelete.bind(this)
   }
   state = {
     redirect: false
@@ -81,6 +82,10 @@ class UnitPage extends React.Component<Props, State> {
     this.setState({
       redirect: true
     })
+  }
+
+  handleDelete = (id) => {
+    console.log('clicked')
   }
 
   render() {
@@ -109,7 +114,11 @@ class UnitPage extends React.Component<Props, State> {
                       {row.unit_name}
                     </CustomTableCell>
                     <CustomTableCell align="right">{row.unit_type}</CustomTableCell>
-                    <CustomTableCell align="right"><Button onClick={() => this.handleViewButtonClick(row)}>view</Button></CustomTableCell>
+                    <CustomTableCell align="right">
+                      <Button color="primary" variant="contained" onClick={() => this.handleViewButtonClick(row)}>view</Button>
+                      <Button color="primary" variant="contained" onClick={() => this.handleViewButtonClick(row)}>view</Button>
+                      <IconButton onClick={() => this.handleDelete(row.unit_id)}><DeleteIcon /></IconButton>
+                    </CustomTableCell>
                   </TableRow>
                 ))}
               </TableBody>}

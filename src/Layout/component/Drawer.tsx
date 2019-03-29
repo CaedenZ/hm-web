@@ -112,6 +112,10 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
       {
         title: "Job Function",
         path: "/jobfunction"
+      },
+      {
+        title: "Region",
+        path: "/region"
       }
     ];
 

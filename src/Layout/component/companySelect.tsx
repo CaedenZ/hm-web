@@ -118,7 +118,7 @@ class CompanySelectMenu extends React.Component<Props, State> {
   classes: PropTypes.object.isRequired
 } as any;
 
-function mapStateToProps(state: RootState) {
+function mapStateToProps(state: any) {
   return {
     companyList: state.companyReducer.companyList,
     selectedCompany: state.companyReducer.selectedCompany,

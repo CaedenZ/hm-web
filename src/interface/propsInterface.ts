@@ -13,6 +13,8 @@ export interface SharedDispatchProps {
     getUserList: () => void,
     getCompanyList: () => void,
     getChildCompanyList: () => void,
+    getRegionList: () => void,
+    getCountryList: () => void,
     createUser: (cred: CreateUserState) => void,
     selectCompany: (company: Company) => void,
     createCompany: (cred: CreateCompanyState) => void,

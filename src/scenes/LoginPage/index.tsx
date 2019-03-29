@@ -149,7 +149,7 @@ class SignIn extends Component<Props, State> {
   }
 }
 
-function mapStateToProps(state: RootState) {
+function mapStateToProps(state: any) {
   return {
     usertoken: state.authenticationReducer.token
   }

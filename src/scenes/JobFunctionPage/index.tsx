@@ -171,7 +171,7 @@ class CustomizedTable extends React.Component<Props, any> {
   classes: PropTypes.object.isRequired
 } as any;
 
-function mapStateToProps(state: RootState) {
+function mapStateToProps(state: any) {
   return {
     jobFunctionList: state.jobFunctionReducer.jobFunctionList
   }

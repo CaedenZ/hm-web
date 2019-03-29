@@ -14,6 +14,13 @@ import { userReducer, getUserListEpic, createUserEpic } from "./userReducer";
 import { companyReducer, getCompanyListEpic, getChildCompanyListEpic, createCompanyEpic, getUnitListEpic, getChildUnitListEpic, createUnitEpic, createSubUnitEpic } from "./companyReducer";
 import { initReducer } from "./initReducer";
 import { jobFunctionReducer, getJobFunctionListEpic, createJobFunctionEpic, createSubJobFunctionEpic, deleteSubJobFunctionEpic, deleteJobFunctionEpic } from "./jobFunctionReducer";
+import { connectRouter } from 'connected-react-router'
+import { createBrowserHistory } from "history";
+import { getCountryListEpic, countryReducer } from "./countryReducer";
+import { regionReducer, getRegionListEpic } from "./regionReducer";
+
+
+export const history = createBrowserHistory()
 
 export const rootReducer = combineReducers({
     authenticationReducer,
@@ -21,6 +28,9 @@ export const rootReducer = combineReducers({
     companyReducer,
     initReducer,
     jobFunctionReducer,
+    countryReducer,
+    regionReducer,
+    router: connectRouter(history),
     //   userDetail,
     //   currentReport,
 })
@@ -42,6 +52,8 @@ export const rootEpic = combineEpics(
     createSubJobFunctionEpic,
     deleteJobFunctionEpic,
     deleteSubJobFunctionEpic,
+    getCountryListEpic,
+    getRegionListEpic,
     //   generateReportEpic,
     //   sendEmailEpic,
     //   completeReportEpic,
@@ -50,6 +62,6 @@ export const rootEpic = combineEpics(
 
 // export type DetailState = DetailState
 // export type CurrentReportState = CurrentReportState
-export type RootState = StateType<typeof rootReducer>
+export type RootState = any
 
 // export default 's'

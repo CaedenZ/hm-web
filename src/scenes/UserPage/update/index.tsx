@@ -154,7 +154,6 @@ class CreateUserPage extends Component<Props, CreateUserState> {
             <Grid item justify="center" xs container>
               <div style={{ margin: 20 }}>
                 <TextField
-                  required
                   id="email"
                   label="Email"
                   className={classes.textField}
@@ -163,7 +162,6 @@ class CreateUserPage extends Component<Props, CreateUserState> {
                   margin="normal"
                 />
                 <TextField
-                  required
                   id="standard-password-input"
                   label="Password"
                   className={classes.textField}
@@ -178,7 +176,6 @@ class CreateUserPage extends Component<Props, CreateUserState> {
             <Grid item justify="center" xs container>
               <div style={{ margin: 20 }}>
                 <TextField
-                  required
                   id="firstname"
                   label="Firstname"
                   className={classes.textField}
@@ -243,7 +240,6 @@ class CreateUserPage extends Component<Props, CreateUserState> {
                   margin="normal"
                 />
                 <TextField
-                  required
                   id="contact"
                   label="contact"
                   className={classes.textField}
@@ -264,7 +260,6 @@ class CreateUserPage extends Component<Props, CreateUserState> {
                   margin="normal"
                 />
                 <TextField
-                  required
                   id="status"
                   label="status"
                   className={classes.textField}
