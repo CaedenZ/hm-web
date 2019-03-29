@@ -35,7 +35,8 @@ export function companyReducer(state: CompanyState = {
         case 'GET_COMPANY_LIST_SUCCESS':
             return {
                 ...state,
-                companyList: action.payload
+                companyList: action.payload,
+                selectedCompany: action.payload[0]
             }
         case 'GET_CHILD_COMPANY_LIST_SUCCESS':
             return {

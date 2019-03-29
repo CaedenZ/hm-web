@@ -50,7 +50,7 @@ interface InState {
 class CompanySelectMenu extends React.Component<Props, State> {
   state = {
     anchorEl: null,
-    selectedIndex: 1,
+    selectedIndex: 0,
   };
 
   componentDidMount() {
