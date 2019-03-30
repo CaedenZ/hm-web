@@ -39,16 +39,42 @@ export const getUnitList = async (token, identifier, ID): Promise<Unit[]> => {
 
 export const createUnit = async (token, identifier, payload: CreateUnitState): Promise<Unit[]> => {
 
-    if ((identifier === 1) && (payload.parent_unit !== payload.main_unit)) {
-        identifier = 2
-    }
+    
     let data = {
         ...payload,
         session_key: token,
         identifier: identifier,
     }
+    if ((identifier === 1) && (payload.parent_unit !== payload.main_unit)) {
+        data.identifier = 2
+    }
 
     const response = await $axios.post('/company/createUnit', data)
+    console.log(response.data.data)
+    return response.data.data
+}
+
+export const updateUnit = async (token, identifier, payload: CreateUnitState): Promise<Unit[]> => {
+
+    let data = {
+        ...payload,
+        identifier: identifier,
+        session_key: token,
+    }
+
+    const response = await $axios.post('/company/updateUnit', data)
+    console.log(response.data.data)
+    return response.data.data
+}
+
+export const deleteUnit = async (token, identifier, payload: string): Promise<Unit[]> => {
+    let data = {
+        session_key: token,
+        identifier: identifier,
+        unit_id: payload,
+    }
+
+    const response = await $axios.post('/company/deleteUnit', data)
     console.log(response.data.data)
     return response.data.data
 }

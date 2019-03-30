@@ -19,8 +19,9 @@ import { Company, Unit } from "../../../interface/companyInterface";
 import { RootState } from "../../../reducer";
 import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
-import { Button } from "@material-ui/core";
-import { Redirect } from "react-router-dom";
+import { Button, IconButton } from "@material-ui/core";
+import DeleteIcon from '@material-ui/icons/Delete';
+import { history } from "../../../store";
 
 const CustomTableCell = withStyles(theme => ({
     head: {
@@ -63,61 +64,63 @@ class SubUnitPage extends React.Component<Props, State> {
         super(props)
         this.handleViewButtonClick = this.handleViewButtonClick.bind(this)
     }
-
-    state = {
-        redirect: false
-    }
     componentDidMount() {
-        this.props.getChildUnitList()
+        this.props.getSubUnitList()
 
     }
 
     handleViewButtonClick = (unit) => {
-        this.props.selectUnit(unit)
-        this.setState({
-            redirect: true
-        })
+        this.props.selectSubUnit(unit)
+        history.push('/unit/subunit/childunit')
+    }
+
+    handleUpdateButtonClick = (unit) => {
+        console.log('clicked')
+        this.props.selectSubUnit(unit)
+        history.push('/unit/subunit/update')
+    }
+
+    handleDelete = (id) => {
+        this.props.deleteSubUnit(id)
     }
 
     render() {
         const { classes } = this.props;
-        const { redirect } = this.state;
-        if (redirect) {
-            return <Redirect to='/unit/childunit' />;
-        }
-        else {
-            return (
-                <main>
-                    <CustomButton link="/unit/create">New unit</CustomButton>
-                    <Paper className={classes.root}>
-                        <Table className={classes.table}>
-                            <TableHead>
-                                <TableRow>
-                                    <CustomTableCell>unit_id</CustomTableCell>
-                                    <CustomTableCell align="right">unit_name</CustomTableCell>
-                                    <CustomTableCell align="right">unit_type</CustomTableCell>
-                                    <CustomTableCell align="right">Action</CustomTableCell>
+        return (
+            <main>
+                <CustomButton link="/unit/subunit/create">New unit</CustomButton>
+                <Paper className={classes.root}>
+                    <Table className={classes.table}>
+                        <TableHead>
+                            <TableRow>
+                                <CustomTableCell>unit_id</CustomTableCell>
+                                <CustomTableCell align="right">unit_name</CustomTableCell>
+                                <CustomTableCell align="right">unit_type</CustomTableCell>
+                                <CustomTableCell align="right">Action</CustomTableCell>
+                            </TableRow>
+                        </TableHead>
+                        {this.props.subUnitList.length > 0 && <TableBody>
+                            {this.props.subUnitList.map(row => (
+                                <TableRow className={classes.row} key={row.unit_id}>
+                                    <CustomTableCell component="th" scope="row">
+                                        {row.unit_id}
+                                    </CustomTableCell>
+                                    <CustomTableCell align="right">
+                                        {row.unit_name}
+                                    </CustomTableCell>
+                                    <CustomTableCell align="right">{row.unit_type}</CustomTableCell>
+                                    <CustomTableCell align="right">
+                                        <Button color="primary" variant="contained" onClick={() => this.handleViewButtonClick(row)}>view</Button>
+                                        <Button color="primary" variant="contained" onClick={() => this.handleUpdateButtonClick(row)}>update</Button>
+                                        <IconButton onClick={() => this.handleDelete(row.unit_id)}><DeleteIcon /></IconButton>
+                                    </CustomTableCell>
                                 </TableRow>
-                            </TableHead>
-                            {this.props.subUnitList.length > 0 && <TableBody>
-                                {this.props.subUnitList.map(row => (
-                                    <TableRow className={classes.row} key={row.unit_id}>
-                                        <CustomTableCell component="th" scope="row">
-                                            {row.unit_id}
-                                        </CustomTableCell>
-                                        <CustomTableCell align="right">
-                                            {row.unit_name}
-                                        </CustomTableCell>
-                                        <CustomTableCell align="right">{row.unit_type}</CustomTableCell>
-                                        <CustomTableCell align="right"><Button onClick={() => this.handleViewButtonClick(row)}>view</Button></CustomTableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>}
-                        </Table>
-                    </Paper>
-                </main>
-            );
-        }
+                            ))}
+                        </TableBody>}
+                    </Table>
+                </Paper>
+            </main>
+        );
     }
 }
 

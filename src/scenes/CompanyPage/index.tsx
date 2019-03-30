@@ -123,7 +123,7 @@ class CustomizedTable extends React.Component<Props, State> {
 
 function mapStateToProps(state: any) {
   return {
-    companyList: state.companyReducer.childCompanyList
+    companyList: state.companyReducer.companyList
   }
 }
 

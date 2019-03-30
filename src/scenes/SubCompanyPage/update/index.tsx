@@ -13,18 +13,13 @@ import {
   FormControl,
   Checkbox,
   FormControlLabel,
-  Button,
-  Select,
-  MenuItem
+  Button
 } from "@material-ui/core";
 import CustomButton from "../component/CustomButton";
 import Avatar from 'react-avatar-edit'
 import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../interface/propsInterface";
-import { RootState } from "../../../reducer";
-import { Country } from "../../../interface/countryInterface";
-import { history } from "../../../store";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -88,11 +83,7 @@ export interface CreateCompanyState {
   parentcompany_id: string;
   webpage_url: string;
 }
-export interface Props extends WithStyles<typeof styles>, SharedDispatchProps, InState { }
-
-interface InState {
-  countryList: Country[]
-}
+export interface Props extends WithStyles<typeof styles>, SharedDispatchProps { }
 
 class CreateCompanyPage extends Component<Props, CreateCompanyState> {
 
@@ -150,9 +141,7 @@ class CreateCompanyPage extends Component<Props, CreateCompanyState> {
   };
 
   handleCreateCompany = () => {
-    // console.log(this.props.countryList)
     this.props.createCompany(this.state)
-    history.push('/company')
   }
 
   render() {
@@ -210,20 +199,14 @@ class CreateCompanyPage extends Component<Props, CreateCompanyState> {
             </Grid>
             <Grid item justify="center" container xs>
               <div style={{ margin: 20 }}>
-                {this.props.countryList.length > 0 && <Select
+                <TextField
                   id="country"
+                  label="Country"
                   className={classes.textField}
                   value={this.state.country}
-                  onChange={() => this.handleChange('country')}
-                  inputProps={{
-                    name: 'country',
-                    id: 'country-simple',
-                  }}>
-                  {this.props.countryList.map((country) =>
-                    <MenuItem key={country.country_name} value={country.country_name}>{country.country_name}</MenuItem>
-                  )}
-                  <MenuItem value={30}>Thirty</MenuItem>
-                </Select>}
+                  onChange={this.handleChange('country')}
+                  margin="normal"
+                />
                 <TextField
                   id="address"
                   label="Address"
@@ -339,7 +322,7 @@ class CreateCompanyPage extends Component<Props, CreateCompanyState> {
           </div>
 
         </Paper>
-      </div >
+      </div>
     );
   }
 }
@@ -348,10 +331,4 @@ class CreateCompanyPage extends Component<Props, CreateCompanyState> {
   classes: PropTypes.object.isRequired
 } as any;
 
-function mapStateToProps(state: RootState) {
-  return {
-    countryList: state.countryReducer.countryList
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CreateCompanyPage));
+export default connect(null, mapDispatchToProps)(withStyles(styles)(CreateCompanyPage));

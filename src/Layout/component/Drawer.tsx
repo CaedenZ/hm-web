@@ -89,13 +89,16 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
         title: "Dashboard",
         path: "/"
       },
+    ];
+
+    const itemlist2 = [
       {
         title: "User",
         path: "/user"
       },
       {
-        title: "Company",
-        path: "/company"
+        title: "Sub Company",
+        path: "/subcompany"
       },
       {
         title: "Unit",
@@ -106,6 +109,13 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
         path: "/role"
       },
       {
+        title: "Region",
+        path: "/region"
+      }
+    ];
+
+    const adminfunction = [
+      {
         title: "Setting",
         path: "/setting"
       },
@@ -114,12 +124,12 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
         path: "/jobfunction"
       },
       {
-        title: "Region",
-        path: "/region"
-      }
+        title: "Company",
+        path: "/company"
+      },
     ];
 
-    const itemlist2 = [
+    const itemlist3 = [
       {
         title: "Logout",
         path: "/login"
@@ -142,14 +152,46 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
             <img className={classes.logo} src={logo} />
           </div>
           <Divider className={classes.menudivider} />
+          <List className={classes.menubar}>
+            {itemlist1.map((item, index) => (
+              <Link key={item.title} to={item.path} style={{ textDecoration: "none" }}>
+                <ListItem button >
+                  <ListItemIcon>
+                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  </ListItemIcon>
+                  <ListItemText primary={item.title} />
+                </ListItem>
+              </Link>
+            ))}
+          </List>
+          <Divider />
           <ListItem className={classes.menubar}>
             <ListItemIcon>
               <MenuIcon />
             </ListItemIcon>
-            <ListItemText primary="menu" />
+            <ListItemText primary="company" />
           </ListItem>
           <List className={classes.navlist}>
-            {itemlist1.map((item, index) => (
+            {itemlist2.map((item, index) => (
+              <Link key={item.title} to={item.path} style={{ textDecoration: "none" }}>
+                <ListItem button >
+                  <ListItemIcon style={{ marginLeft: "20px" }}>
+                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  </ListItemIcon>
+                  <ListItemText primary={item.title} />
+                </ListItem>
+              </Link>
+            ))}
+          </List>
+          <Divider />
+          <ListItem className={classes.menubar}>
+            <ListItemIcon>
+              <MenuIcon />
+            </ListItemIcon>
+            <ListItemText primary="admin" />
+          </ListItem>
+          <List className={classes.navlist}>
+            {adminfunction.map((item, index) => (
               <Link key={item.title} to={item.path} style={{ textDecoration: "none" }}>
                 <ListItem button >
                   <ListItemIcon style={{ marginLeft: "20px" }}>
@@ -162,7 +204,7 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
           </List>
           <Divider />
           <List>
-            {itemlist2.map((item, index) => (
+            {itemlist3.map((item, index) => (
               <Link key={item.title} to={item.path} style={{ textDecoration: "none" }}>
                 <ListItem button onClick={() => this.handleLogout()}>
                   <ListItemIcon>
@@ -172,6 +214,11 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
                 </ListItem>
               </Link>
             ))}
+          </List>
+          <List>
+            <ListItem button onClick={() => this.props.showSnackBar()}>
+              <ListItemText primary={'SnackBar'} />
+            </ListItem>
           </List>
         </Drawer>
         <main className={classes.content}>

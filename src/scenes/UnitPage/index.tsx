@@ -22,6 +22,7 @@ import { connect } from "react-redux";
 import { Button, IconButton } from "@material-ui/core";
 import { Redirect } from "react-router-dom";
 import DeleteIcon from '@material-ui/icons/Delete';
+import { history } from "../../store";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -65,10 +66,8 @@ class UnitPage extends React.Component<Props, State> {
   constructor(props) {
     super(props)
     this.handleViewButtonClick = this.handleViewButtonClick.bind(this)
+    this.handleUpdateButtonClick = this.handleUpdateButtonClick.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
-  }
-  state = {
-    redirect: false
   }
 
 
@@ -77,56 +76,53 @@ class UnitPage extends React.Component<Props, State> {
   }
 
   handleViewButtonClick = (unit) => {
+    this.props.selectUnit(unit)
+    history.push('/unit/subunit')
+  }
+
+  handleUpdateButtonClick = (unit) => {
     console.log('clicked')
     this.props.selectUnit(unit)
-    this.setState({
-      redirect: true
-    })
+    history.push('/unit/update')
   }
 
   handleDelete = (id) => {
-    console.log('clicked')
+    this.props.deleteUnit(id)
   }
 
   render() {
     const { classes } = this.props;
-    const { redirect } = this.state;
-    if (redirect) {
-      return <Redirect to='/unit/subunit' />;
-    }
-    else {
-      return (
-        <main>
-          <CustomButton link="/unit/createmainunit">New unit</CustomButton>
-          <Paper className={classes.root}>
-            <Table className={classes.table}>
-              <TableHead>
-                <TableRow>
-                  <CustomTableCell>unit_name</CustomTableCell>
-                  <CustomTableCell align="right">unit_type</CustomTableCell>
-                  <CustomTableCell align="right">Action</CustomTableCell>
+    return (
+      <main>
+        <CustomButton link="/unit/create">New unit</CustomButton>
+        <Paper className={classes.root}>
+          <Table className={classes.table}>
+            <TableHead>
+              <TableRow>
+                <CustomTableCell>unit_name</CustomTableCell>
+                <CustomTableCell align="right">unit_type</CustomTableCell>
+                <CustomTableCell align="right">Action</CustomTableCell>
+              </TableRow>
+            </TableHead>
+            {this.props.unitList.length > 0 && <TableBody>
+              {this.props.unitList.map(row => (
+                <TableRow className={classes.row} key={row.unit_id}>
+                  <CustomTableCell component="th" scope="row">
+                    {row.unit_name}
+                  </CustomTableCell>
+                  <CustomTableCell align="right">{row.unit_type}</CustomTableCell>
+                  <CustomTableCell align="right">
+                    <Button color="primary" variant="contained" onClick={() => this.handleViewButtonClick(row)}>view</Button>
+                    <Button color="primary" variant="contained" onClick={() => this.handleUpdateButtonClick(row)}>update</Button>
+                    <IconButton onClick={() => this.handleDelete(row.unit_id)}><DeleteIcon /></IconButton>
+                  </CustomTableCell>
                 </TableRow>
-              </TableHead>
-              {this.props.unitList.length > 0 && <TableBody>
-                {this.props.unitList.map(row => (
-                  <TableRow className={classes.row} key={row.unit_id}>
-                    <CustomTableCell component="th" scope="row">
-                      {row.unit_name}
-                    </CustomTableCell>
-                    <CustomTableCell align="right">{row.unit_type}</CustomTableCell>
-                    <CustomTableCell align="right">
-                      <Button color="primary" variant="contained" onClick={() => this.handleViewButtonClick(row)}>view</Button>
-                      <Button color="primary" variant="contained" onClick={() => this.handleViewButtonClick(row)}>view</Button>
-                      <IconButton onClick={() => this.handleDelete(row.unit_id)}><DeleteIcon /></IconButton>
-                    </CustomTableCell>
-                  </TableRow>
-                ))}
-              </TableBody>}
-            </Table>
-          </Paper>
-        </main>
-      );
-    }
+              ))}
+            </TableBody>}
+          </Table>
+        </Paper>
+      </main>
+    );
   }
 }
 

@@ -102,7 +102,7 @@ const styles = (theme: Theme) =>
     }
   });
 
-export interface Props extends WithStyles<typeof styles> {}
+export interface Props extends WithStyles<typeof styles> { }
 
 interface State {
   anchorEl: null | HTMLElement;
@@ -187,8 +187,8 @@ class PrimarySearchAppBar extends React.Component<Props, State> {
     return (
       <div className={classes.root}>
         <AppBar position="fixed" className={classes.appBar}>
-          <Toolbar style={{padding:0}}>
-            <CompanySelect/>
+          <Toolbar style={{ padding: 0 }}>
+            <CompanySelect />
             <div className={classes.search}>
               <div className={classes.searchIcon}>
                 <SearchIcon />
@@ -203,7 +203,7 @@ class PrimarySearchAppBar extends React.Component<Props, State> {
             </div>
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
-              <IconButton color="inherit">
+              {/* <IconButton color="inherit">
                 <Badge badgeContent={4} color="secondary">
                   <MailIcon />
                 </Badge>
@@ -212,7 +212,7 @@ class PrimarySearchAppBar extends React.Component<Props, State> {
                 <Badge badgeContent={17} color="secondary">
                   <NotificationsIcon />
                 </Badge>
-              </IconButton>
+              </IconButton> */}
               <IconButton
                 aria-owns={isMenuOpen ? "material-appbar" : undefined}
                 aria-haspopup="true"

@@ -8,6 +8,7 @@ import ResponsiveDrawer from "../Layout/default";
 import ForgetPasswordPage from "../scenes/ForgetPasswordPage";
 import ResetPasswordPage from "../scenes/ResetPasswordPage";
 import CreateUserPage from "../scenes/UserPage/create/index";
+import UpdateUserPage from "../scenes/UserPage/update/index";
 import CreateCompanyPage from "../scenes/CompanyPage/create/index";
 import UserPage from "../scenes/UserPage";
 import CompanyPage from "../scenes/CompanyPage";
@@ -16,10 +17,14 @@ import { RootState } from "../reducer";
 import { connect } from "react-redux";
 import { mapDispatchToProps } from "../helper/dispachProps";
 import UnitPage from "../scenes/UnitPage";
-import SubUnitPage from "../scenes/UnitPage/subUnit"
-import ChildUnitPage from "../scenes/UnitPage/childUnit"
 import CreateUnitPage from "../scenes/UnitPage/create"
-import CreateMainUnitPage from "../scenes/UnitPage/createmainunit"
+import UpdateUnitPage from "../scenes/UnitPage/update"
+import SubUnitPage from "../scenes/UnitPage/subUnit"
+import CreateSubUnitPage from "../scenes/UnitPage/subUnit/create"
+import UpdateSubUnitPage from "../scenes/UnitPage/subUnit/update"
+import ChildUnitPage from "../scenes/UnitPage/subUnit/childUnit"
+import CreateChildUnitPage from "../scenes/UnitPage/subUnit/childUnit/create"
+import UpdateChildUnitPage from "../scenes/UnitPage/subUnit/childUnit/update"
 import RolePage from "../scenes/RolePage";
 import JobFunctionPage from "../scenes/JobFunctionPage";
 import CreateJobFunctionPage from "../scenes/JobFunctionPage/create";
@@ -27,6 +32,8 @@ import CreateSubJobFunctionPage from "../scenes/JobFunctionPage/createsub";
 import { ConnectedRouter } from "connected-react-router";
 import { history } from '../store'
 import RegionPage from "../scenes/RegionPage";
+import SubCompanyPage from "../scenes/SubCompanyPage";
+import CreateSubCompanyPage from "../scenes/SubCompanyPage/create";
 
 
 export interface Props extends InState { }
@@ -54,13 +61,20 @@ class RootRoute extends React.Component<Props, State>{
                         <Route exact path="/profile" render={() => (<ResponsiveDrawer><ProfilePage /></ResponsiveDrawer>)} />
                         <Route exact path="/user" render={() => (<ResponsiveDrawer> <UserPage /> </ResponsiveDrawer>)} />
                         <Route exact path="/user/create" render={() => (<ResponsiveDrawer> <CreateUserPage /> </ResponsiveDrawer>)} />
+                        <Route exact path="/user/update" render={() => (<ResponsiveDrawer> <UpdateUserPage /> </ResponsiveDrawer>)} />
                         <Route exact path="/company" render={() => (<ResponsiveDrawer> <CompanyPage /> </ResponsiveDrawer>)} />
                         <Route exact path="/company/create" render={() => (<ResponsiveDrawer> <CreateCompanyPage /> </ResponsiveDrawer>)} />
+                        <Route exact path="/subcompany" render={() => (<ResponsiveDrawer> <SubCompanyPage /> </ResponsiveDrawer>)} />
+                        <Route exact path="/subcompany/create" render={() => (<ResponsiveDrawer> <CreateSubCompanyPage /> </ResponsiveDrawer>)} />
                         <Route exact path="/unit" render={() => (<ResponsiveDrawer> <UnitPage /> </ResponsiveDrawer>)} />
-                        <Route exact path="/unit/subunit" render={() => (<ResponsiveDrawer> <SubUnitPage /> </ResponsiveDrawer>)} />
-                        <Route exact path="/unit/childunit" render={() => (<ResponsiveDrawer> <ChildUnitPage /> </ResponsiveDrawer>)} />
                         <Route exact path="/unit/create" render={() => (<ResponsiveDrawer> <CreateUnitPage /> </ResponsiveDrawer>)} />
-                        <Route exact path="/unit/createmainunit" render={() => (<ResponsiveDrawer> <CreateMainUnitPage /> </ResponsiveDrawer>)} />
+                        <Route exact path="/unit/update" render={() => (<ResponsiveDrawer> <UpdateUnitPage /> </ResponsiveDrawer>)} />
+                        <Route exact path="/unit/subunit" render={() => (<ResponsiveDrawer> <SubUnitPage /> </ResponsiveDrawer>)} />
+                        <Route exact path="/unit/subunit/create" render={() => (<ResponsiveDrawer> <CreateSubUnitPage /> </ResponsiveDrawer>)} />
+                        <Route exact path="/unit/subunit/update" render={() => (<ResponsiveDrawer> <UpdateSubUnitPage /> </ResponsiveDrawer>)} />
+                        <Route exact path="/unit/subunit/childunit" render={() => (<ResponsiveDrawer> <ChildUnitPage /> </ResponsiveDrawer>)} />
+                        <Route exact path="/unit/subunit/childunit/create" render={() => (<ResponsiveDrawer> <CreateChildUnitPage /> </ResponsiveDrawer>)} />
+                        <Route exact path="/unit/subunit/childunit/update" render={() => (<ResponsiveDrawer> <UpdateChildUnitPage /> </ResponsiveDrawer>)} />
                         <Route exact path="/role" render={() => (<ResponsiveDrawer> <RolePage /> </ResponsiveDrawer>)} />
                         <Route exact path="/jobfunction" render={() => (<ResponsiveDrawer> <JobFunctionPage /> </ResponsiveDrawer>)} />
                         <Route exact path="/jobfunction/create" render={() => (<ResponsiveDrawer> <CreateJobFunctionPage /> </ResponsiveDrawer>)} />

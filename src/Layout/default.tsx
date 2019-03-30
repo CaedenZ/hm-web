@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { mapDispatchToProps } from "../helper/dispachProps";
 import { SharedDispatchProps } from "../interface/propsInterface";
+import CustomSnackBar from "./component/snackBar";
 
 export interface Props extends SharedDispatchProps {
   token: string
@@ -26,7 +27,9 @@ class Layout extends Component<Props> {
       return (<Redirect to='/login' />)
     }
     else {
-      return <PermanentDrawerLeft>{this.props.children}</PermanentDrawerLeft>;
+      return <PermanentDrawerLeft>{this.props.children}
+        <CustomSnackBar />
+      </PermanentDrawerLeft>;
     }
   }
 }

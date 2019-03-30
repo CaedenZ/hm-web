@@ -14,14 +14,13 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { render } from "react-dom";
 import CustomButton from "./component/CustomButton";
+import { SharedDispatchProps } from "../../interface/propsInterface";
+import { Company } from "../../interface/companyInterface";
 import { RootState } from "../../reducer";
 import { mapDispatchToProps } from "../../helper/dispachProps";
 import { connect } from "react-redux";
-import { SharedDispatchProps } from "../../interface/propsInterface";
-import { User } from "../../interface/userInterface";
 import { Button, IconButton } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
-import { history } from "../../store";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -50,36 +49,22 @@ const styles = (theme: Theme) =>
     }
   });
 
-let id = 0;
-function createData(
-  name: any,
-  calories: any,
-  fat: any,
-  carbs: any,
-  protein: any
-) {
-  id += 1;
-  return { id, name, calories, fat, carbs, protein };
-}
-
-
 export interface Props extends WithStyles<typeof styles>, SharedDispatchProps, InState { }
 
 interface State { }
 
 interface InState {
-  userList: User[]
+  companyList: Company[]
 }
+
 class CustomizedTable extends React.Component<Props, State> {
 
 
   componentDidMount() {
-    this.props.getUserList()
+    this.props.getChildCompanyList()
   }
 
-  handleUpdateButtonClick = (user) => {
-    this.props.selectUser(user)
-    history.push('/user/update')
+  handleUpdateButtonClick = (unit) => {
     console.log('clicked')
     // this.props.selectUnit(unit)
     // this.setState({
@@ -87,37 +72,40 @@ class CustomizedTable extends React.Component<Props, State> {
     // })
   }
 
-  handleDelete = (id, index) => {
-    this.props.deleteUser(id)
+  handleDelete = (id) => {
+    console.log('clicked')
   }
+
 
   render() {
     const { classes } = this.props;
 
     return (
       <main>
-        <CustomButton link="/user/create">New User</CustomButton>
+        <CustomButton link="/subcompany/create">New Sub Company</CustomButton>
         <Paper className={classes.root}>
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
-                <CustomTableCell>Email</CustomTableCell>
-                <CustomTableCell align="right">Firstname</CustomTableCell>
-                <CustomTableCell align="right">Lastname</CustomTableCell>
-                <CustomTableCell align="right">Status</CustomTableCell>
+                <CustomTableCell>company_name</CustomTableCell>
+                <CustomTableCell align="right">contact_email</CustomTableCell>
+                <CustomTableCell align="right">contact_number</CustomTableCell>
+                <CustomTableCell align="right">contact_person</CustomTableCell>
                 <CustomTableCell align="right">Action</CustomTableCell>
               </TableRow>
             </TableHead>
-            {this.props.userList.length > 0 && <TableBody>
-              {this.props.userList.map((row, index) => (
-                <TableRow className={classes.row} key={row.email}>
-                  <CustomTableCell component="th" scope="row">{row.email}</CustomTableCell>
-                  <CustomTableCell align="right">{row.firstname}</CustomTableCell>
-                  <CustomTableCell align="right">{row.lastname}</CustomTableCell>
-                  <CustomTableCell align="right">{row.status}</CustomTableCell>
+            {this.props.companyList.length > 0 && <TableBody>
+              {this.props.companyList.map(row => (
+                <TableRow className={classes.row} key={row.company_id}>
+                  <CustomTableCell component="th" scope="row">
+                    {row.company_name}
+                  </CustomTableCell>
+                  <CustomTableCell align="right">{row.contact_email}</CustomTableCell>
+                  <CustomTableCell align="right">{row.contact_number}</CustomTableCell>
+                  <CustomTableCell align="right">{row.contact_person}</CustomTableCell>
                   <CustomTableCell align="right">
                     <Button color="primary" variant="contained" onClick={() => this.handleUpdateButtonClick(row)}>view</Button>
-                    <IconButton onClick={() => this.handleDelete(row.email, index)}><DeleteIcon /></IconButton>
+                    <IconButton onClick={() => this.handleDelete(row.company_id)}><DeleteIcon /></IconButton>
                   </CustomTableCell>
                 </TableRow>
               ))}
@@ -133,9 +121,9 @@ class CustomizedTable extends React.Component<Props, State> {
   classes: PropTypes.object.isRequired
 } as any;
 
-function mapStateToProps(state: RootState) {
+function mapStateToProps(state: any) {
   return {
-    userList: state.userReducer.userList
+    companyList: state.companyReducer.childCompanyList
   }
 }
 

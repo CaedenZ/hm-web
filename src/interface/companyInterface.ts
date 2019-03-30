@@ -23,14 +23,18 @@ export interface Unit {
     unit_name: string,
     unit_type: string,
     unit_data: string,
+    parent_unit: string,
     main_unit: string,
+    company_id: string,
 }
 
 export interface CompanyState {
     unitList: Unit[],
     subUnitList: Unit[],
+    childUnitList: Unit[],
     companyList: Company[],
     childCompanyList: Company[],
     selectedCompany?: Company,
     selectedUnit?: Unit,
+    selectedSubUnit?: Unit,
 }

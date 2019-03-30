@@ -15,14 +15,12 @@ import {
   FormControlLabel,
   Button
 } from "@material-ui/core";
-import CustomButton from "../component/CustomButton";
-import Avatar from 'react-avatar-edit'
-import { mapDispatchToProps } from "../../../helper/dispachProps";
+import { mapDispatchToProps } from "../../../../../helper/dispachProps";
 import { connect } from "react-redux";
-import { SharedDispatchProps } from "../../../interface/propsInterface";
-import { RootState } from "../../../reducer";
-import { Unit, Company } from "../../../interface/companyInterface";
-import { history } from "../../../store";
+import { SharedDispatchProps } from "../../../../../interface/propsInterface";
+import { RootState } from "../../../../../reducer";
+import { Unit, Company } from "../../../../../interface/companyInterface";
+import { history } from "../../../../../store";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -67,8 +65,7 @@ const styles = (theme: Theme) =>
     }
   });
 
-export interface UpdateUnitState {
-  unit_id: string,
+export interface CreateUnitState {
   unit_name: string,
   unit_type: string,
   unit_data: string,
@@ -79,20 +76,19 @@ export interface UpdateUnitState {
 export interface Props extends WithStyles<typeof styles>, SharedDispatchProps, InState { }
 
 interface InState {
-  selectedUnit: Unit;
+  parentUnit: Unit;
 }
 
-class UpdateMainUnitPage extends Component<Props, UpdateUnitState> {
+class CreateUnitPage extends Component<Props, CreateUnitState> {
 
 
   constructor(props) {
     super(props)
-    this.handleUpdateUnit = this.handleUpdateUnit.bind(this)
+    this.handleCreateUnit = this.handleCreateUnit.bind(this)
   }
 
 
-  state: UpdateUnitState = {
-    unit_id: '',
+  state: CreateUnitState = {
     unit_name: '',
     unit_type: '',
     unit_data: '',
@@ -101,17 +97,17 @@ class UpdateMainUnitPage extends Component<Props, UpdateUnitState> {
     company_id: '',
   }
 
-  handleChange = (statekay: keyof UpdateUnitState) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ [statekay]: event.target.value } as Pick<UpdateUnitState, keyof UpdateUnitState>);
+  handleChange = (statekay: keyof CreateUnitState) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ [statekay]: event.target.value } as Pick<CreateUnitState, keyof CreateUnitState>);
   };
 
-  handleUpdateUnit = () => {
-    this.props.updateUnit(this.state)
-    history.push('/unit')
+  handleCreateUnit = () => {
+    this.props.createChildUnit(this.state)
+    history.goBack()
   }
 
   componentDidMount = () => {
-    this.setState(this.props.selectedUnit)
+    this.setState({ parent_unit: this.props.parentUnit.unit_id, main_unit: this.props.parentUnit.main_unit, company_id: this.props.parentUnit.company_id })
   }
 
   render() {
@@ -119,7 +115,7 @@ class UpdateMainUnitPage extends Component<Props, UpdateUnitState> {
     return (
       <div className={classes.root}>
         <Typography component="h1" variant="h5">
-          Update Unit
+          New Unit
       </Typography>
         <Paper>
           <Grid container className={classes.grid} spacing={16}>
@@ -181,7 +177,7 @@ class UpdateMainUnitPage extends Component<Props, UpdateUnitState> {
             flexDirection: 'row',
             justifyContent: 'center', alignItems: 'flex-end'
           }}>
-            <Button onClick={this.handleUpdateUnit}>Submmit</Button>
+            <Button onClick={this.handleCreateUnit}>Submmit</Button>
           </div>
 
         </Paper>
@@ -190,14 +186,14 @@ class UpdateMainUnitPage extends Component<Props, UpdateUnitState> {
   }
 }
 
-(UpdateMainUnitPage as React.ComponentClass<Props>).propTypes = {
+(CreateUnitPage as React.ComponentClass<Props>).propTypes = {
   classes: PropTypes.object.isRequired
 } as any;
 
 function mapStateToProps(state: RootState) {
   return {
-    selectedUnit: state.companyReducer.selectedUnit,
+    parentUnit: state.companyReducer.selectedSubUnit,
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(UpdateMainUnitPage));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CreateUnitPage));

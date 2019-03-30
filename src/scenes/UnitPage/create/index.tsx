@@ -20,7 +20,7 @@ import Avatar from 'react-avatar-edit'
 import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../interface/propsInterface";
-import { RootState } from "../../../reducer";
+import { RootState, history } from "../../../reducer";
 import { Unit, Company } from "../../../interface/companyInterface";
 
 const styles = (theme: Theme) =>
@@ -76,12 +76,12 @@ export interface CreateUnitState {
 }
 export interface Props extends WithStyles<typeof styles>, SharedDispatchProps, InState { }
 
+
 interface InState {
-  parentUnit: Unit;
   parentCompany: Company;
 }
 
-class CreateUnitPage extends Component<Props, CreateUnitState> {
+class CreateMainUnitPage extends Component<Props, CreateUnitState> {
 
 
   constructor(props) {
@@ -104,11 +104,12 @@ class CreateUnitPage extends Component<Props, CreateUnitState> {
   };
 
   handleCreateUnit = () => {
-    this.props.createSubUnit(this.state)
+    this.props.createUnit(this.state)
+    history.push('/unit')
   }
 
   componentDidMount = () => {
-    this.setState({ parent_unit: this.props.parentUnit.unit_id, main_unit: this.props.parentUnit.main_unit, company_id: this.props.parentCompany.company_id })
+    this.setState({ company_id: this.props.parentCompany.company_id })
   }
 
   render() {
@@ -148,28 +149,6 @@ class CreateUnitPage extends Component<Props, CreateUnitState> {
                 />
               </div>
             </Grid>
-            <Grid item justify="center" container xs>
-              <div style={{ margin: 20 }}>
-                <TextField
-                  disabled
-                  id="parent_unit"
-                  label="parent_unit"
-                  className={classes.textField}
-                  value={this.state.parent_unit}
-                  onChange={this.handleChange('parent_unit')}
-                  margin="normal"
-                />
-                <TextField
-                  disabled
-                  id="main_unit"
-                  label="main_unit"
-                  className={classes.textField}
-                  value={this.state.main_unit}
-                  onChange={this.handleChange('main_unit')}
-                  margin="normal"
-                />
-              </div>
-            </Grid>
           </Grid>
           <Divider />
           <Divider />
@@ -187,15 +166,15 @@ class CreateUnitPage extends Component<Props, CreateUnitState> {
   }
 }
 
-(CreateUnitPage as React.ComponentClass<Props>).propTypes = {
+(CreateMainUnitPage as React.ComponentClass<Props>).propTypes = {
   classes: PropTypes.object.isRequired
 } as any;
 
 function mapStateToProps(state: RootState) {
   return {
-    parentUnit: state.companyReducer.selectedUnit,
     parentCompany: state.companyReducer.selectedCompany,
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CreateUnitPage));
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CreateMainUnitPage));

@@ -13,11 +13,11 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { render } from "react-dom";
-import CustomButton from "../component/CustomButton";
-import { SharedDispatchProps } from "../../../interface/propsInterface";
-import { Company, Unit } from "../../../interface/companyInterface";
-import { RootState } from "../../../reducer";
-import { mapDispatchToProps } from "../../../helper/dispachProps";
+import CustomButton from "../../component/CustomButton";
+import { SharedDispatchProps } from "../../../../interface/propsInterface";
+import { Company, Unit } from "../../../../interface/companyInterface";
+import { RootState } from "../../../../reducer";
+import { mapDispatchToProps } from "../../../../helper/dispachProps";
 import { connect } from "react-redux";
 import { Button } from "@material-ui/core";
 import { Redirect } from "react-router-dom";
@@ -75,7 +75,7 @@ class ChildUnitPage extends React.Component<Props, State> {
         const { classes } = this.props;
         return (
             <main>
-                <CustomButton link="/unit/create">New unit</CustomButton>
+                <CustomButton link="/unit/subunit/childunit/create">New unit</CustomButton>
                 <Paper className={classes.root}>
                     <Table className={classes.table}>
                         <TableHead>
@@ -111,7 +111,7 @@ class ChildUnitPage extends React.Component<Props, State> {
 
 function mapStateToProps(state: RootState) {
     return {
-        subUnitList: state.companyReducer.subUnitList
+        subUnitList: state.companyReducer.childUnitList
     }
 }
 

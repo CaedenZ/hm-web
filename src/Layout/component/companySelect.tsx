@@ -13,6 +13,7 @@ import { mapDispatchToProps } from '../../helper/dispachProps';
 import { connect } from 'react-redux';
 import { Company } from '../../interface/companyInterface';
 import { SharedDispatchProps } from '../../interface/propsInterface';
+import logo from 'assets/images/companylogo1.png';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -82,7 +83,7 @@ class CompanySelectMenu extends React.Component<Props, State> {
           onClick={this.handleClickListItem}
           className={classes.listitem}
         >
-          <img style={{ height: '50px' }} src={this.props.companyList[this.state.selectedIndex].logo_small} />
+          <img style={{ height: '50px' }} src={this.props.companyList[this.state.selectedIndex].logo_small === '' ? logo : this.props.companyList[this.state.selectedIndex].logo_small} />
           <ListItemText
             primary={this.props.companyList[this.state.selectedIndex].company_name}
             secondary={`location: ${this.props.companyList[this.state.selectedIndex].location}`}
@@ -101,7 +102,7 @@ class CompanySelectMenu extends React.Component<Props, State> {
               selected={index === this.state.selectedIndex}
               onClick={event => this.handleMenuItemClick(event, index)}
             >
-              <img style={{ height: '100%' }} src={company.logo_small} />
+              <img style={{ height: '100%' }} src={company.logo_small === '' ? logo : company.logo_small} />
               <div style={{ marginLeft: '10px' }} >
                 <Typography>{company.company_name}</Typography>
                 <Typography>{`location: ${company.location}`}</Typography>

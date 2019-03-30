@@ -15,14 +15,12 @@ import {
   FormControlLabel,
   Button
 } from "@material-ui/core";
-import CustomButton from "../component/CustomButton";
-import Avatar from 'react-avatar-edit'
-import { mapDispatchToProps } from "../../../helper/dispachProps";
+import { mapDispatchToProps } from "../../../../helper/dispachProps";
 import { connect } from "react-redux";
-import { SharedDispatchProps } from "../../../interface/propsInterface";
-import { RootState } from "../../../reducer";
-import { Unit, Company } from "../../../interface/companyInterface";
-import { history } from "../../../store";
+import { SharedDispatchProps } from "../../../../interface/propsInterface";
+import { RootState } from "../../../../reducer";
+import { Unit } from "../../../../interface/companyInterface";
+import { history } from "../../../../store";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -82,7 +80,7 @@ interface InState {
   selectedUnit: Unit;
 }
 
-class UpdateMainUnitPage extends Component<Props, UpdateUnitState> {
+class UpdateUnitPage extends Component<Props, UpdateUnitState> {
 
 
   constructor(props) {
@@ -106,8 +104,8 @@ class UpdateMainUnitPage extends Component<Props, UpdateUnitState> {
   };
 
   handleUpdateUnit = () => {
-    this.props.updateUnit(this.state)
-    history.push('/unit')
+    this.props.updateSubUnit(this.state)
+    history.goBack()
   }
 
   componentDidMount = () => {
@@ -119,7 +117,7 @@ class UpdateMainUnitPage extends Component<Props, UpdateUnitState> {
     return (
       <div className={classes.root}>
         <Typography component="h1" variant="h5">
-          Update Unit
+          New Unit
       </Typography>
         <Paper>
           <Grid container className={classes.grid} spacing={16}>
@@ -190,14 +188,14 @@ class UpdateMainUnitPage extends Component<Props, UpdateUnitState> {
   }
 }
 
-(UpdateMainUnitPage as React.ComponentClass<Props>).propTypes = {
+(UpdateUnitPage as React.ComponentClass<Props>).propTypes = {
   classes: PropTypes.object.isRequired
 } as any;
 
 function mapStateToProps(state: RootState) {
   return {
-    selectedUnit: state.companyReducer.selectedUnit,
+    selectedUnit: state.companyReducer.selectedSubUnit,
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(UpdateMainUnitPage));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(UpdateUnitPage));

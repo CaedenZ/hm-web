@@ -1,17 +1,24 @@
 import { loginAction, logoutAction, forgetPasswordAction } from "../actions/authenticationAction";
-import { getUserListAction, createUserAction } from "../actions/userAction";
+import { getUserListAction, createUserAction, deleteUserAction, updateUserAction, selectUserAction } from "../actions/userAction";
 import { LOGINCRED } from "../interface/credInterface";
 import { SharedDispatchProps } from "../interface/propsInterface";
-import { getCompanyListAction, getChildCompanyListAction, selectCompanyAction, createCompanyAction, createUnitAction, getChildUnitListAction, getUnitListAction, selectUnitAction, createSubUnitAction } from "../actions/companyAction";
+import { getCompanyListAction, getChildCompanyListAction, selectCompanyAction, createCompanyAction, createUnitAction, getChildUnitListAction, getUnitListAction, selectUnitAction, createSubUnitAction, deleteUnitAction, updateSubUnitAction, deleteSubUnitAction, updateUnitAction, selectSubUnitAction, getSubUnitListAction, createChildUnitAction, updateChildUnitAction, deleteChildUnitAction, createSubCompanyAction } from "../actions/companyAction";
 import { getJobFunctionListAction, createJobFunctionAction, createSubJobFunctionAction, selectJobFunctionAction, deleteJobFunctionAction, deleteSubJobFunctionAction } from "../actions/jobFunctionAction";
 import { getRegionListAction } from "../actions/regionAction";
 import { getCountryListAction } from "../actions/countryAction";
+import { closeSnackBarAction, showSnackBarAction } from "../actions/snackBarAction";
 
 
 
 
 export function mapDispatchToProps(dispatch): SharedDispatchProps {
     return {
+        showSnackBar: () => {
+            dispatch(showSnackBarAction())
+        },
+        closeSnackBar: () => {
+            dispatch(closeSnackBarAction())
+        },
         login: (payload) => {
             dispatch(loginAction.request(payload))
         },
@@ -33,6 +40,15 @@ export function mapDispatchToProps(dispatch): SharedDispatchProps {
         createUser: (payload) => {
             dispatch(createUserAction.request(payload))
         },
+        selectUser: (payload) => {
+            dispatch(selectUserAction(payload))
+        },
+        updateUser: (payload) => {
+            dispatch(updateUserAction.request(payload))
+        },
+        deleteUser: (payload) => {
+            dispatch(deleteUserAction.request(payload))
+        },
         getChildCompanyList: () => {
             dispatch(getChildCompanyListAction.request())
         },
@@ -42,8 +58,14 @@ export function mapDispatchToProps(dispatch): SharedDispatchProps {
         createCompany: (payload) => {
             dispatch(createCompanyAction.request(payload))
         },
+        createSubCompany: (payload) => {
+            dispatch(createSubCompanyAction.request(payload))
+        },
         getUnitList: () => {
             dispatch(getUnitListAction.request())
+        },
+        getSubUnitList: () => {
+            dispatch(getSubUnitListAction.request())
         },
         getChildUnitList: () => {
             dispatch(getChildUnitListAction.request())
@@ -51,11 +73,35 @@ export function mapDispatchToProps(dispatch): SharedDispatchProps {
         selectUnit: (payload) => {
             dispatch(selectUnitAction(payload))
         },
+        selectSubUnit: (payload) => {
+            dispatch(selectSubUnitAction(payload))
+        },
         createUnit: (payload) => {
             dispatch(createUnitAction.request(payload))
         },
+        updateUnit: (payload) => {
+            dispatch(updateUnitAction.request(payload))
+        },
         createSubUnit: (payload) => {
             dispatch(createSubUnitAction.request(payload))
+        },
+        updateSubUnit: (payload) => {
+            dispatch(updateSubUnitAction.request(payload))
+        },
+        deleteSubUnit: (payload) => {
+            dispatch(deleteSubUnitAction.request(payload))
+        },
+        createChildUnit: (payload) => {
+            dispatch(createChildUnitAction.request(payload))
+        },
+        updateChildUnit: (payload) => {
+            dispatch(updateChildUnitAction.request(payload))
+        },
+        deleteChildUnit: (payload) => {
+            dispatch(deleteChildUnitAction.request(payload))
+        },
+        deleteUnit: (payload) => {
+            dispatch(deleteUnitAction.request(payload))
         },
         getJobFunctionList: () => {
             dispatch(getJobFunctionListAction.request())

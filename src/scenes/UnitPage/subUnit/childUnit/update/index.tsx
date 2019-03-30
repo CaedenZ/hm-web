@@ -15,13 +15,12 @@ import {
   FormControlLabel,
   Button
 } from "@material-ui/core";
-import CustomButton from "../component/CustomButton";
-import Avatar from 'react-avatar-edit'
-import { mapDispatchToProps } from "../../../helper/dispachProps";
+import { mapDispatchToProps } from "../../../../../helper/dispachProps";
 import { connect } from "react-redux";
-import { SharedDispatchProps } from "../../../interface/propsInterface";
-import { RootState } from "../../../reducer";
-import { Unit, Company } from "../../../interface/companyInterface";
+import { SharedDispatchProps } from "../../../../../interface/propsInterface";
+import { RootState } from "../../../../../reducer";
+import { Unit } from "../../../../../interface/companyInterface";
+import { history } from "../../../../../store";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -66,7 +65,8 @@ const styles = (theme: Theme) =>
     }
   });
 
-export interface CreateUnitState {
+export interface UpdateUnitState {
+  unit_id: string,
   unit_name: string,
   unit_type: string,
   unit_data: string,
@@ -76,21 +76,21 @@ export interface CreateUnitState {
 }
 export interface Props extends WithStyles<typeof styles>, SharedDispatchProps, InState { }
 
-
 interface InState {
-  parentCompany: Company;
+  selectedUnit: Unit;
 }
 
-class CreateMainUnitPage extends Component<Props, CreateUnitState> {
+class UpdateUnitPage extends Component<Props, UpdateUnitState> {
 
 
   constructor(props) {
     super(props)
-    this.handleCreateUnit = this.handleCreateUnit.bind(this)
+    this.handleUpdateUnit = this.handleUpdateUnit.bind(this)
   }
 
 
-  state: CreateUnitState = {
+  state: UpdateUnitState = {
+    unit_id: '',
     unit_name: '',
     unit_type: '',
     unit_data: '',
@@ -99,16 +99,17 @@ class CreateMainUnitPage extends Component<Props, CreateUnitState> {
     company_id: '',
   }
 
-  handleChange = (statekay: keyof CreateUnitState) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ [statekay]: event.target.value } as Pick<CreateUnitState, keyof CreateUnitState>);
+  handleChange = (statekay: keyof UpdateUnitState) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ [statekay]: event.target.value } as Pick<UpdateUnitState, keyof UpdateUnitState>);
   };
 
-  handleCreateUnit = () => {
-    this.props.createUnit(this.state)
+  handleUpdateUnit = () => {
+    this.props.updateChildUnit(this.state)
+    history.goBack()
   }
 
   componentDidMount = () => {
-    this.setState({ company_id: this.props.parentCompany.company_id })
+    this.setState(this.props.selectedUnit)
   }
 
   render() {
@@ -148,6 +149,28 @@ class CreateMainUnitPage extends Component<Props, CreateUnitState> {
                 />
               </div>
             </Grid>
+            <Grid item justify="center" container xs>
+              <div style={{ margin: 20 }}>
+                <TextField
+                  disabled
+                  id="parent_unit"
+                  label="parent_unit"
+                  className={classes.textField}
+                  value={this.state.parent_unit}
+                  onChange={this.handleChange('parent_unit')}
+                  margin="normal"
+                />
+                <TextField
+                  disabled
+                  id="main_unit"
+                  label="main_unit"
+                  className={classes.textField}
+                  value={this.state.main_unit}
+                  onChange={this.handleChange('main_unit')}
+                  margin="normal"
+                />
+              </div>
+            </Grid>
           </Grid>
           <Divider />
           <Divider />
@@ -156,7 +179,7 @@ class CreateMainUnitPage extends Component<Props, CreateUnitState> {
             flexDirection: 'row',
             justifyContent: 'center', alignItems: 'flex-end'
           }}>
-            <Button onClick={this.handleCreateUnit}>Submmit</Button>
+            <Button onClick={this.handleUpdateUnit}>Submmit</Button>
           </div>
 
         </Paper>
@@ -165,15 +188,14 @@ class CreateMainUnitPage extends Component<Props, CreateUnitState> {
   }
 }
 
-(CreateMainUnitPage as React.ComponentClass<Props>).propTypes = {
+(UpdateUnitPage as React.ComponentClass<Props>).propTypes = {
   classes: PropTypes.object.isRequired
 } as any;
 
 function mapStateToProps(state: RootState) {
   return {
-    parentCompany: state.companyReducer.selectedCompany,
+    selectedUnit: state.companyReducer.selectedUnit,
   }
 }
 
-
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CreateMainUnitPage));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(UpdateUnitPage));

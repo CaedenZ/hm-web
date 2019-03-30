@@ -48,9 +48,6 @@ const styles = (theme: any) => ({
     width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing.unit
   },
-  submit: {
-    marginTop: theme.spacing.unit * 3
-  }
 });
 
 export interface Props extends SharedDispatchProps, InState, WithStyles<typeof styles> { }
@@ -89,6 +86,12 @@ class SignIn extends Component<Props, State> {
     // console.dir(event.target)
   }
 
+  handleLogin = (event) => {
+    event.preventDefault();
+    this.props.login(this.state)
+    // console.log('s')
+  }
+
   render() {
     const { classes } = this.props;
     if (this.props.usertoken == null) {
@@ -96,13 +99,7 @@ class SignIn extends Component<Props, State> {
         <main className={classes.main}>
           <CssBaseline />
           <Paper className={classes.paper}>
-            {/* <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography> */}
-            <form className={classes.form}>
+            <form onSubmit={this.handleLogin}>
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="email">Email Address</InputLabel>
                 <Input id="email" name="email" autoComplete="email" autoFocus value={this.state.email} onChange={this.handleChange} />
@@ -126,17 +123,7 @@ class SignIn extends Component<Props, State> {
               <div style={{ marginTop: 20 }}>
                 <Link to="/forgetpassword">Forget password</Link>
               </div>
-              <Button
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-                onClick={() => {
-                  this.props.login(this.state)
-                }}
-              >
-                Sign in
-          </Button>
+              <Button fullWidth variant="contained" color="primary" type="submit">Sign in</Button>
             </form>
           </Paper>
         </main>
