@@ -83,8 +83,10 @@ class ForgetPasswordPage extends Component<Props, State> {
       [key]: value
     } as Pick<State, keyof State>)
   }
-  handleSubmit = () => {
+  handleSubmit = (e) => {
+    e.preventDefault()
     console.log(this.state)
+    this.props.forgetPassword(this.state)
   }
 
   render() {
@@ -97,7 +99,7 @@ class ForgetPasswordPage extends Component<Props, State> {
           <Typography component="h1" variant="h5">
             Enter your email
         </Typography>
-          <form className={classes.form}>
+          <form onSubmit={this.handleSubmit} className={classes.form}>
             <FormControl margin="normal" required fullWidth>
               <InputLabel htmlFor="email">Email Address</InputLabel>
               <Input id="email" name="email" autoComplete="email" autoFocus value={this.state.email} onChange={this.handleChange} />
@@ -106,7 +108,7 @@ class ForgetPasswordPage extends Component<Props, State> {
               fullWidth
               variant="contained"
               color="primary"
-              onClick={() => this.handleSubmit()}
+              type="submit"
             >
               Submit
           </Button>

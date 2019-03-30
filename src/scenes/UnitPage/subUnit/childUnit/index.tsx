@@ -19,7 +19,7 @@ import { Company, Unit } from "../../../../interface/companyInterface";
 import { RootState } from "../../../../reducer";
 import { mapDispatchToProps } from "../../../../helper/dispachProps";
 import { connect } from "react-redux";
-import { Button } from "@material-ui/core";
+import { Button, Typography } from "@material-ui/core";
 import { Redirect } from "react-router-dom";
 
 const CustomTableCell = withStyles(theme => ({
@@ -46,7 +46,16 @@ const styles = (theme: Theme) =>
             "&:nth-of-type(odd)": {
                 backgroundColor: theme.palette.background.default
             }
-        }
+        },
+        parentrow: {
+            "&:nth-of-type(odd)": {
+                backgroundColor: theme.palette.background.default
+            },
+            height: 20
+        },
+        parentTable: {
+            width: 300
+        },
     });
 
 export interface Props extends WithStyles<typeof styles>, SharedDispatchProps, InState { }
@@ -54,7 +63,9 @@ export interface Props extends WithStyles<typeof styles>, SharedDispatchProps, I
 interface State { }
 
 interface InState {
-    subUnitList: Unit[]
+    subUnitList: Unit[],
+    parentUnit: Unit,
+    mainUnit: Unit,
 }
 
 class ChildUnitPage extends React.Component<Props, State> {
@@ -75,6 +86,25 @@ class ChildUnitPage extends React.Component<Props, State> {
         const { classes } = this.props;
         return (
             <main>
+                <div>
+                    <Typography>Parent</Typography>
+                    <Table className={classes.parentTable}>
+                        <TableHead>
+                            <TableRow className={classes.parentrow}>
+                                <CustomTableCell>unit_name</CustomTableCell>
+                                <CustomTableCell align="right">unit_type</CustomTableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableRow className={classes.parentrow}>
+                            <CustomTableCell component="th" scope="row">{this.props.mainUnit.unit_name}</CustomTableCell>
+                            <CustomTableCell align="right">{this.props.mainUnit.unit_type}</CustomTableCell>
+                        </TableRow>
+                        <TableRow className={classes.parentrow}>
+                            <CustomTableCell component="th" scope="row">{this.props.parentUnit.unit_name}</CustomTableCell>
+                            <CustomTableCell align="right">{this.props.parentUnit.unit_type}</CustomTableCell>
+                        </TableRow>
+                    </Table>
+                </div>
                 <CustomButton link="/unit/subunit/childunit/create">New unit</CustomButton>
                 <Paper className={classes.root}>
                     <Table className={classes.table}>
@@ -111,7 +141,9 @@ class ChildUnitPage extends React.Component<Props, State> {
 
 function mapStateToProps(state: RootState) {
     return {
-        subUnitList: state.companyReducer.childUnitList
+        subUnitList: state.companyReducer.childUnitList,
+        mainUnit: state.companyReducer.selectedUnit,
+        parentUnit: state.companyReducer.selectedSubUnit
     }
 }
 

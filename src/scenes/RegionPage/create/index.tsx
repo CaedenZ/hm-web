@@ -13,18 +13,27 @@ import {
   FormControl,
   Checkbox,
   FormControlLabel,
-  Button
+  Button,
+  Chip,
+  Select,
+  MenuItem
 } from "@material-ui/core";
 import CustomButton from "../component/CustomButton";
 import Avatar from 'react-avatar-edit'
+import { mapDispatchToProps } from "../../../helper/dispachProps";
+import { connect } from "react-redux";
+import { SharedDispatchProps } from "../../../interface/propsInterface";
+import { RootState } from "../../../reducer";
+import { Country } from "../../../interface/countryInterface";
+import { history } from "../../../store";
 
 const styles = (theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1
     },
-    grid:{
-      margin:20
+    grid: {
+      margin: 20
     },
     textField: {
       width: 200,
@@ -37,9 +46,9 @@ const styles = (theme: Theme) =>
       padding: theme.spacing.unit * 2,
       textAlign: "center",
       color: theme.palette.text.secondary,
-      flexDirection:"column"
+      flexDirection: "column"
     },
-    preview:{
+    preview: {
     },
     divAvatar: {
       margin: theme.spacing.unit * 3,
@@ -58,209 +67,139 @@ const styles = (theme: Theme) =>
       flex: 1,
       alignItems: "center",
       justifyContent: "center"
-    }
+    },
+    chip: {
+      margin: theme.spacing.unit / 2,
+    },
   });
-export interface Props extends WithStyles<typeof styles> {}
 
-export interface State {
-  email: string;
-  password: string;
-  firstname: string;
-  lastname: string;
-  country: string;
-  address: string;
-  postalcode: string;
-  multiline: string;
-  currency: string;
-  preview: any;
-  src: any;
-  roles: any;
+export interface CreateRegionState {
+  region_name: string;
+  country_list: Country[];
+}
+export interface Props extends InState, WithStyles<typeof styles>, SharedDispatchProps { }
+
+interface InState {
+  countryList: Country[],
 }
 
-class CreateUserPage extends Component<Props, State> {
+
+class CreateRegionPage extends Component<Props, CreateRegionState> {
 
 
   constructor(props) {
     super(props)
-    
-    
-    this.onCrop = this.onCrop.bind(this)
-    this.onClose = this.onClose.bind(this)
+    this.handleCreateRegion = this.handleCreateRegion.bind(this)
   }
 
 
-  state: State = {
-    preview: null,
-    src: '',
-    email: '',
-    password: '',
-    firstname: '',
-    lastname: '',
-    country: '',
-    address: '',
-    postalcode: '',
-    multiline: 'Controlled',
-    currency: 'EUR',
-    roles: [
-      {
-        id:1,
-        title:'Dummy 1',
-        checked: false
-      },
-      {
-        id:2,
-        title:'Dummy 2',
-        checked: false
-      },
-    ]
+  state: CreateRegionState = {
+    region_name: "",
+    country_list: [],
   }
 
-  onClose() {
-    this.setState({preview: null})
-  }
-  
-  onCrop(preview) {
-    this.setState({preview})
+  handleCreateRegion = (e) => {
+    e.preventDefault()
+    this.props.createRegion(this.state)
+    history.goBack()
   }
 
-  handleChange = (statekay: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ [statekay]: event.target.value } as Pick<State, keyof State>);
+  handleDelete = country => () => {
+
+    this.setState(state => {
+      const countryList = [...state.country_list];
+      const chipToDelete = countryList.indexOf(country);
+      countryList.splice(chipToDelete, 1);
+      return { country_list: countryList };
+    });
   };
 
-  handleCheckbox = (index: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.state.roles[index].checked = event.target.checked
-    this.forceUpdate()
-    console.log(this.state.roles)
+  handleChange = (e) => {
+    console.log(e)
+    this.setState(state => {
+      const countryList = [...state.country_list];
+      const newCountry: Country = {
+        country_name: e.target.value
+      }
+      countryList.push(newCountry)
+      return { country_list: countryList };
+    });
   };
-  
+
+
   render() {
     const { classes } = this.props;
-    const that = this;
     return (
       <div className={classes.root}>
-      <Typography component="h1" variant="h5">
-          New User
+        <Typography component="h1" variant="h5">
+          New Region
       </Typography>
-      <Paper>
-      <Grid container className={classes.grid} spacing={16}>
-        <Grid item justify="center" xs container>
-            <Grid container direction="column" spacing={16} xs>
-              <div style = {{margin:20, justifyContent: 'center'}}>
-                <Avatar
-                    width={200}
-                    height={150}
-                    onCrop={this.onCrop}
-                    onClose={this.onClose}
-                    src={this.state.src}
+        <Paper>
+          <form onSubmit={this.handleCreateRegion}>
+            <Grid container className={classes.grid} spacing={16}>
+              <Grid item justify="center" container xs>
+                <div style={{ margin: 20 }}>
+                  <TextField
+                    id="region_name"
+                    label="region_name"
+                    className={classes.textField}
+                    value={this.state.region_name}
+                    onChange={(e) => this.setState({ region_name: e.target.value })}
+                    margin="normal"
                   />
-                  <Typography variant="h6">Profile Picture</Typography>
                 </div>
-                
+              </Grid>
+              <Grid item justify="center" container xs>
+                <Typography>Country</Typography>
+                {this.props.countryList.length > 0 && <Select
+                  id="country"
+                  className={classes.textField}
+                  onChange={(e) => this.handleChange(e)}
+                  inputProps={{
+                    name: 'country',
+                    id: 'country-simple',
+                  }}>
+                  {this.props.countryList.map((country) =>
+                    <MenuItem key={country.country_name} value={country.country_name}>{country.country_name}</MenuItem>
+                  )}
+                </Select>}
+              </Grid>
+              <Grid item justify="center" container xs={12}>
+                {this.state.country_list.map(country =>
+                  <Chip
+                    key={country.country_name}
+                    label={country.country_name}
+                    onDelete={this.handleDelete(country)}
+                    className={classes.chip}
+                  />
+                )}
+              </Grid>
             </Grid>
-        </Grid>
-        <Grid item justify="center" xs container>
-        <div style = {{margin:20}}>
-          <TextField
-            id="email"
-            label="Email"
-            className={classes.textField}
-            value={this.state.email}
-            onChange={this.handleChange('email')}
-            margin="normal"
-          />
-          <TextField
-            id="standard-password-input"
-            label="Password"
-            className={classes.textField}
-            type="password"
-            autoComplete="current-password"
-            margin="normal"
-          />
-          </div>
-        </Grid>
-        <Grid item justify="center" xs container>
-        <div style = {{margin:20}}>
-          <TextField
-            id="firstname"
-            label="Firstname"
-            className={classes.textField}
-            value={this.state.firstname}
-            onChange={this.handleChange('firstname')}
-            margin="normal"
-          />
-          <TextField
-            id="lastname"
-            label="Lastname"
-            className={classes.textField}
-            value={this.state.lastname}
-            onChange={this.handleChange('lastname')}
-            margin="normal"
-          />
-          </div>
-        </Grid>
-        <Grid item justify="center" container xs>
-        <div style = {{margin:20}}>
-          <TextField
-            id="country"
-            label="Country"
-            className={classes.textField}
-            value={this.state.country}
-            onChange={this.handleChange('country')}
-            margin="normal"
-          />
-          <TextField
-            id="address"
-            label="Address"
-            className={classes.textField}
-            value={this.state.address}
-            onChange={this.handleChange('address')}
-            margin="normal"
-          />
-          <TextField
-            id="postal_code"
-            label="Postal Code"
-            className={classes.textField}
-            value={this.state.postalcode}
-            onChange={this.handleChange('postalcode')}
-            margin="normal"
-          />
-          </div>
-        </Grid>
-        
-      </Grid>
-      <Typography style={{margin:20}} component="h1" variant="h5">
-          Role
-      </Typography>
-      <Divider/>
-      <Grid container className={classes.grid} spacing={16}>
-          {this.state.roles.map(function(role:any, index:number){
-                        return (
-                          <Grid item justify="center" xs container>
-                            <FormControlLabel
-                              control={
-                                <Checkbox checked={role.checked} onChange={that.handleCheckbox(index)} value={role.title} />
-                              }
-                              label="Gilad Gray"
-                            />
-                          </Grid>
-                        );
-                      })}
-      </Grid>
-      <Divider/>
-      <div style={{width:'100%',flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'center',alignItems:'flex-end'}}>
-      <CustomButton link = "">Submmit</CustomButton>
-      </div>
-      
-      </Paper>
+            <Divider />
+            <Divider />
+            <div style={{
+              width: '100%', flex: 1,
+              flexDirection: 'row',
+              justifyContent: 'center', alignItems: 'flex-end'
+            }}>
+              <Button variant="contained" color="primary" type="submit">Submit</Button>
+            </div>
+          </form>
+        </Paper>
       </div>
     );
   }
 }
 
-(CreateUserPage as React.ComponentClass<Props>).propTypes = {
+(CreateRegionPage as React.ComponentClass<Props>).propTypes = {
   classes: PropTypes.object.isRequired
 } as any;
 
-export default withStyles(styles)(CreateUserPage);
+function mapStateToProps(state: any) {
+  return {
+    countryList: state.countryReducer.countryList
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CreateRegionPage));

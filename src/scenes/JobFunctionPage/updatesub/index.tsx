@@ -22,6 +22,7 @@ import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../interface/propsInterface";
 import { RootState } from "../../../reducer";
 import { SubJobFunction, JobFunction } from "../../../interface/jobfunctionInterface";
+import { history } from "../../../store";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -95,8 +96,10 @@ class CreateSubJobFunctionPage extends Component<Props, CreateSubJobFunctionStat
     this.setState({ [statekay]: event.target.value } as Pick<CreateSubJobFunctionState, keyof CreateSubJobFunctionState>);
   };
 
-  handleCreateSubJobFunction = () => {
+  handleCreateSubJobFunction = (e) => {
+    e.preventDefault()
     this.props.createSubJobFunction(this.state)
+    history.goBack()
   }
 
   componentDidMount = () => {
@@ -111,47 +114,48 @@ class CreateSubJobFunctionPage extends Component<Props, CreateSubJobFunctionStat
           New SubJobFunction
       </Typography>
         <Paper>
-          <Grid container className={classes.grid} spacing={16}>
-            <Grid item justify="center" container xs>
-              <div style={{ margin: 20 }}>
-                <TextField
-                  id="subjob_name"
-                  label="subjob_name"
-                  className={classes.textField}
-                  value={this.state.subjob_name}
-                  onChange={this.handleChange('subjob_name')}
-                  margin="normal"
-                />
-                <TextField
-                  id="description"
-                  label="description"
-                  className={classes.textField}
-                  value={this.state.description}
-                  onChange={this.handleChange('description')}
-                  margin="normal"
-                />
-                <TextField
-                  disabled
-                  id="jobfunction_id"
-                  label="jobfunction_id"
-                  className={classes.textField}
-                  value={this.state.jobfunction_id}
-                  onChange={this.handleChange('jobfunction_id')}
-                  margin="normal"
-                />
-              </div>
+          <form onSubmit={this.handleCreateSubJobFunction}>
+            <Grid container className={classes.grid} spacing={16}>
+              <Grid item justify="center" container xs>
+                <div style={{ margin: 20 }}>
+                  <TextField
+                    id="subjob_name"
+                    label="subjob_name"
+                    className={classes.textField}
+                    value={this.state.subjob_name}
+                    onChange={this.handleChange('subjob_name')}
+                    margin="normal"
+                  />
+                  <TextField
+                    id="description"
+                    label="description"
+                    className={classes.textField}
+                    value={this.state.description}
+                    onChange={this.handleChange('description')}
+                    margin="normal"
+                  />
+                  <TextField
+                    disabled
+                    id="jobfunction_id"
+                    label="jobfunction_id"
+                    className={classes.textField}
+                    value={this.state.jobfunction_id}
+                    onChange={this.handleChange('jobfunction_id')}
+                    margin="normal"
+                  />
+                </div>
+              </Grid>
             </Grid>
-          </Grid>
-          <Divider />
-          <Divider />
-          <div style={{
-            width: '100%', flex: 1,
-            flexDirection: 'row',
-            justifyContent: 'center', alignItems: 'flex-end'
-          }}>
-            <Button onClick={this.handleCreateSubJobFunction}>Submmit</Button>
-          </div>
-
+            <Divider />
+            <Divider />
+            <div style={{
+              width: '100%', flex: 1,
+              flexDirection: 'row',
+              justifyContent: 'center', alignItems: 'flex-end'
+            }}>
+              <Button variant="contained" color="primary" type="submit">Submit</Button>
+            </div>
+          </form>
         </Paper>
       </div>
     );

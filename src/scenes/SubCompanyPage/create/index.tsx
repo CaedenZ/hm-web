@@ -151,7 +151,6 @@ class CreateSubCompanyPage extends Component<Props, CreateCompanyState> {
 
   handleCreateCompany = (e) => {
     e.preventDefault()
-    // console.log(this.props.countryList)
     this.props.createSubCompany(this.state)
     history.goBack()
   }

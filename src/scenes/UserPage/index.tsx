@@ -101,9 +101,9 @@ class CustomizedTable extends React.Component<Props, State> {
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
-                <CustomTableCell>Email</CustomTableCell>
-                <CustomTableCell align="right">Firstname</CustomTableCell>
+                <CustomTableCell>Firstname</CustomTableCell>
                 <CustomTableCell align="right">Lastname</CustomTableCell>
+                <CustomTableCell align="right">Email</CustomTableCell>
                 <CustomTableCell align="right">Status</CustomTableCell>
                 <CustomTableCell align="right">Action</CustomTableCell>
               </TableRow>
@@ -111,9 +111,9 @@ class CustomizedTable extends React.Component<Props, State> {
             {this.props.userList.length > 0 && <TableBody>
               {this.props.userList.map((row, index) => (
                 <TableRow className={classes.row} key={row.email}>
-                  <CustomTableCell component="th" scope="row">{row.email}</CustomTableCell>
-                  <CustomTableCell align="right">{row.firstname}</CustomTableCell>
+                  <CustomTableCell component="th" scope="row">{row.firstname}</CustomTableCell>
                   <CustomTableCell align="right">{row.lastname}</CustomTableCell>
+                  <CustomTableCell align="right">{row.email}</CustomTableCell>
                   <CustomTableCell align="right">{row.status}</CustomTableCell>
                   <CustomTableCell align="right">
                     <Button color="primary" variant="contained" onClick={() => this.handleUpdateButtonClick(row)}>view</Button>

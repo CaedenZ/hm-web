@@ -21,6 +21,9 @@ import { JobFunction } from "../../interface/jobfunctionInterface";
 import { Collapse, Button, IconButton } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import DeleteIcon from '@material-ui/icons/Delete';
+import AddIcon from '@material-ui/icons/Add';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import classnames from 'classnames';
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -46,7 +49,17 @@ const styles = (theme: Theme) =>
       "&:nth-of-type(odd)": {
         backgroundColor: theme.palette.background.default
       }
-    }
+    },
+    expand: {
+      transform: 'rotate(0deg)',
+      marginLeft: 'auto',
+      transition: theme.transitions.create('transform', {
+        duration: theme.transitions.duration.shortest,
+      }),
+    },
+    expandOpen: {
+      transform: 'rotate(180deg)',
+    },
   });
 
 let id = 0;
@@ -134,11 +147,22 @@ class CustomizedTable extends React.Component<Props, any> {
                   <CustomTableCell component="th" scope="row">{row.job_name}</CustomTableCell>
                   <CustomTableCell align="right">{row.description}</CustomTableCell>
                   <CustomTableCell align="right">
-                    <Button color="secondary" fullWidth variant="contained" onClick={() => this.handleClick(index)} >Expend Child</Button>
-                    <Link to='/jobfunction/createsub' style={{ textDecoration: "none" }}><Button color="primary" fullWidth variant="contained" onClick={() => this.handleNewJobFunctionClick(row)} >New SubJobFunction</Button></Link>
+                    <IconButton
+                      className={classnames(classes.expand, {
+                        [classes.expandOpen]: this.state[index],
+                      })}
+                      onClick={() => this.handleClick(index)}
+                      aria-expanded={this.state[index]}
+                      aria-label="Show more"
+                    >
+                      <ExpandMoreIcon />
+                    </IconButton>
                   </CustomTableCell>
-                  <CustomTableCell align="right">
-                    {!this.state[index] ? <IconButton onClick={() => this.handleDeleteJF(row.jobfunction_id)}><DeleteIcon /></IconButton> :
+
+                  {!this.state[index] ? <CustomTableCell align="right">
+                    <Link to='/jobfunction/createsub' style={{ textDecoration: "none" }}><Button color="primary" variant="contained" onClick={() => this.handleNewJobFunctionClick(row)} >New SubJobFunction</Button></Link>
+                    <IconButton onClick={() => this.handleDeleteJF(row.jobfunction_id)}><DeleteIcon /></IconButton> </CustomTableCell> :
+                    <CustomTableCell align="right">
                       <Collapse key={row.job_name} in={this.state[index]} timeout="auto" unmountOnExit={true}>
                         {row.sjobfunction.length > 0 && <TableBody>
                           {row.sjobfunction.map(row => (
@@ -154,15 +178,15 @@ class CustomizedTable extends React.Component<Props, any> {
                         </TableBody>
                         }
                       </Collapse>
-                    }
-                  </CustomTableCell>
+                    </CustomTableCell>
+                  }
                 </TableRow>,
               ]
               ))}
             </TableBody>}
           </Table>
         </Paper>
-      </main>
+      </main >
     );
   }
 }

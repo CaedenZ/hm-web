@@ -131,9 +131,10 @@ class UpdateUserPage extends Component<Props, UpdateUserState> {
     this.setState({ [statekay]: event.target.value } as Pick<UpdateUserState, keyof UpdateUserState>);
   };
 
-  handleUpdateUser = () => {
+  handleUpdateUser = (e) => {
+    e.preventDefault()
     this.props.updateUser(this.state)
-    history.push('/user')
+    history.goBack()
   }
 
   render() {

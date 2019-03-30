@@ -13,7 +13,6 @@ import CreateCompanyPage from "../scenes/CompanyPage/create/index";
 import UserPage from "../scenes/UserPage";
 import CompanyPage from "../scenes/CompanyPage";
 import ProfilePage from "../scenes/ProfilePage";
-import { RootState } from "../reducer";
 import { connect } from "react-redux";
 import { mapDispatchToProps } from "../helper/dispachProps";
 import UnitPage from "../scenes/UnitPage";
@@ -32,6 +31,7 @@ import CreateSubJobFunctionPage from "../scenes/JobFunctionPage/createsub";
 import { ConnectedRouter } from "connected-react-router";
 import { history } from '../store'
 import RegionPage from "../scenes/RegionPage";
+import CreateRegionPage from "../scenes/RegionPage/create";
 import SubCompanyPage from "../scenes/SubCompanyPage";
 import CreateSubCompanyPage from "../scenes/SubCompanyPage/create";
 
@@ -80,6 +80,8 @@ class RootRoute extends React.Component<Props, State>{
                         <Route exact path="/jobfunction/create" render={() => (<ResponsiveDrawer> <CreateJobFunctionPage /> </ResponsiveDrawer>)} />
                         <Route exact path="/jobfunction/createsub" render={() => (<ResponsiveDrawer> <CreateSubJobFunctionPage /> </ResponsiveDrawer>)} />
                         <Route exact path="/region" render={() => (<ResponsiveDrawer> <RegionPage /> </ResponsiveDrawer>)} />
+                        <Route exact path="/region/create" render={() => (<ResponsiveDrawer> <CreateRegionPage /> </ResponsiveDrawer>)} />
+
                     </Switch>
                 </ConnectedRouter>
             )

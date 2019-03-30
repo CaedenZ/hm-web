@@ -17,7 +17,7 @@ import { jobFunctionReducer, getJobFunctionListEpic, createJobFunctionEpic, crea
 import { connectRouter } from 'connected-react-router'
 import { createBrowserHistory } from "history";
 import { getCountryListEpic, countryReducer } from "./countryReducer";
-import { regionReducer, getRegionListEpic } from "./regionReducer";
+import { regionReducer, getRegionListEpic, createRegionEpic } from "./regionReducer";
 import { snackBarReducer } from "./snackBarReducer";
 
 
@@ -42,18 +42,21 @@ export const rootEpic = combineEpics(
     forgetPasswordEpic,
 
     getUserListEpic,
-    getCompanyListEpic,
-    getChildCompanyListEpic,
     getCountryListEpic,
+
+    createRegionEpic,   
     getRegionListEpic,
-    getJobFunctionListEpic,
+
 
     getUnitListEpic,
     getSubUnitListEpic,
     getChildUnitListEpic,
 
+    getCompanyListEpic,
+    getChildCompanyListEpic,
     createCompanyEpic,
 
+    getJobFunctionListEpic,
     createJobFunctionEpic,
     createSubJobFunctionEpic,
     deleteJobFunctionEpic,

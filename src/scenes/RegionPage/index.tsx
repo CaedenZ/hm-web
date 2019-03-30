@@ -74,7 +74,7 @@ class RegionPage extends React.Component<Props, State> {
 
 
   componentDidMount() {
-    // this.props.getRegionList()
+    this.props.getRegionList()
   }
 
   handleUpdateButtonClick = (unit) => {
@@ -94,7 +94,7 @@ class RegionPage extends React.Component<Props, State> {
 
     return (
       <main>
-        <CustomButton link="/user/create">New User</CustomButton>
+        <CustomButton link="/region/create">New Region</CustomButton>
         <Paper className={classes.root}>
           <Table className={classes.table}>
             <TableHead>

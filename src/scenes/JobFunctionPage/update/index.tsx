@@ -21,6 +21,7 @@ import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../interface/propsInterface";
 import { RootState } from "../../../reducer";
+import { history } from "../../../store";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -91,8 +92,10 @@ class CreateJobFunctionPage extends Component<Props, CreateJobFunctionState> {
     this.setState({ [statekay]: event.target.value } as Pick<CreateJobFunctionState, keyof CreateJobFunctionState>);
   };
 
-  handleCreateJobFunction = () => {
+  handleCreateJobFunction = (e) => {
+    e.preventDefault()
     this.props.createJobFunction(this.state)
+    history.goBack()
   }
 
   // componentDidMount = () => {
@@ -106,38 +109,39 @@ class CreateJobFunctionPage extends Component<Props, CreateJobFunctionState> {
           New JobFunction
       </Typography>
         <Paper>
-          <Grid container className={classes.grid} spacing={16}>
-            <Grid item justify="center" container xs>
-              <div style={{ margin: 20 }}>
-                <TextField
-                  id="job_name"
-                  label="job_name"
-                  className={classes.textField}
-                  value={this.state.job_name}
-                  onChange={this.handleChange('job_name')}
-                  margin="normal"
-                />
-                <TextField
-                  id="description"
-                  label="description"
-                  className={classes.textField}
-                  value={this.state.description}
-                  onChange={this.handleChange('description')}
-                  margin="normal"
-                />
-              </div>
+          <form onSubmit={this.handleCreateJobFunction}>
+            <Grid container className={classes.grid} spacing={16}>
+              <Grid item justify="center" container xs>
+                <div style={{ margin: 20 }}>
+                  <TextField
+                    id="job_name"
+                    label="job_name"
+                    className={classes.textField}
+                    value={this.state.job_name}
+                    onChange={this.handleChange('job_name')}
+                    margin="normal"
+                  />
+                  <TextField
+                    id="description"
+                    label="description"
+                    className={classes.textField}
+                    value={this.state.description}
+                    onChange={this.handleChange('description')}
+                    margin="normal"
+                  />
+                </div>
+              </Grid>
             </Grid>
-          </Grid>
-          <Divider />
-          <Divider />
-          <div style={{
-            width: '100%', flex: 1,
-            flexDirection: 'row',
-            justifyContent: 'center', alignItems: 'flex-end'
-          }}>
-            <Button onClick={this.handleCreateJobFunction}>Submmit</Button>
-          </div>
-
+            <Divider />
+            <Divider />
+            <div style={{
+              width: '100%', flex: 1,
+              flexDirection: 'row',
+              justifyContent: 'center', alignItems: 'flex-end'
+            }}>
+              <Button variant="contained" color="primary" type="submit">Submit</Button>
+            </div>
+          </form>
         </Paper>
       </div>
     );

@@ -18,6 +18,14 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
+import UserIcon from "@material-ui/icons/Person";
+import CompanyIcon from "@material-ui/icons/Business";
+import UnitIcon from "@material-ui/icons/Group";
+import RoleIcon from "@material-ui/icons/Functions";
+import RegionIcon from "@material-ui/icons/SwapHoriz";
+import SettingIcon from "@material-ui/icons/Settings";
+import JobFunctionIcon from "@material-ui/icons/AccountCircle";
+import LogoutIcon from "@material-ui/icons/PowerSettingsNew";
 import MenuIcon from "@material-ui/icons/Menu";
 import PrimarySearchAppBar from "./AppBar";
 import { Link } from "react-router-dom";
@@ -94,45 +102,54 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
     const itemlist2 = [
       {
         title: "User",
-        path: "/user"
+        path: "/user",
+        icon: <UserIcon />,
       },
       {
         title: "Sub Company",
-        path: "/subcompany"
+        path: "/subcompany",
+        icon: <CompanyIcon />,
       },
       {
         title: "Unit",
-        path: "/unit"
+        path: "/unit",
+        icon: <UnitIcon />,
       },
       {
         title: "Role",
-        path: "/role"
+        path: "/role",
+        icon: <RoleIcon />,
       },
       {
         title: "Region",
-        path: "/region"
+        path: "/region",
+        icon: <RegionIcon />,
       }
     ];
 
     const adminfunction = [
       {
         title: "Setting",
-        path: "/setting"
+        path: "/setting",
+        icon: <SettingIcon />,
       },
       {
         title: "Job Function",
-        path: "/jobfunction"
+        path: "/jobfunction",
+        icon: <JobFunctionIcon />,
       },
       {
         title: "Company",
-        path: "/company"
+        path: "/company",
+        icon: <CompanyIcon />,
       },
     ];
 
     const itemlist3 = [
       {
         title: "Logout",
-        path: "/login"
+        path: "/login",
+        icon: <LogoutIcon />,
       },
     ];
 
@@ -176,7 +193,7 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
               <Link key={item.title} to={item.path} style={{ textDecoration: "none" }}>
                 <ListItem button >
                   <ListItemIcon style={{ marginLeft: "20px" }}>
-                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                    {item.icon}
                   </ListItemIcon>
                   <ListItemText primary={item.title} />
                 </ListItem>
@@ -195,7 +212,7 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
               <Link key={item.title} to={item.path} style={{ textDecoration: "none" }}>
                 <ListItem button >
                   <ListItemIcon style={{ marginLeft: "20px" }}>
-                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                    {item.icon}
                   </ListItemIcon>
                   <ListItemText primary={item.title} />
                 </ListItem>
@@ -208,7 +225,7 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
               <Link key={item.title} to={item.path} style={{ textDecoration: "none" }}>
                 <ListItem button onClick={() => this.handleLogout()}>
                   <ListItemIcon>
-                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                    {item.icon}
                   </ListItemIcon>
                   <ListItemText primary={item.title} />
                 </ListItem>

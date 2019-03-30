@@ -105,9 +105,10 @@ class UpdateMainUnitPage extends Component<Props, UpdateUnitState> {
     this.setState({ [statekay]: event.target.value } as Pick<UpdateUnitState, keyof UpdateUnitState>);
   };
 
-  handleUpdateUnit = () => {
+  handleUpdateUnit = (e) => {
+    e.preventDefault()
     this.props.updateUnit(this.state)
-    history.push('/unit')
+    history.goBack()
   }
 
   componentDidMount = () => {
@@ -122,68 +123,69 @@ class UpdateMainUnitPage extends Component<Props, UpdateUnitState> {
           Update Unit
       </Typography>
         <Paper>
-          <Grid container className={classes.grid} spacing={16}>
-            <Grid item justify="center" container xs>
-              <div style={{ margin: 20 }}>
-                <TextField
-                  id="unit_name"
-                  label="unit_name"
-                  className={classes.textField}
-                  value={this.state.unit_name}
-                  onChange={this.handleChange('unit_name')}
-                  margin="normal"
-                />
-                <TextField
-                  id="unit_type"
-                  label="unit_type"
-                  className={classes.textField}
-                  value={this.state.unit_type}
-                  onChange={this.handleChange('unit_type')}
-                  margin="normal"
-                />
-                <TextField
-                  id="unit_data"
-                  label="unit_data"
-                  className={classes.textField}
-                  value={this.state.unit_data}
-                  onChange={this.handleChange('unit_data')}
-                  margin="normal"
-                />
-              </div>
+          <form onSubmit={this.handleUpdateUnit}>
+            <Grid container className={classes.grid} spacing={16}>
+              <Grid item justify="center" container xs>
+                <div style={{ margin: 20 }}>
+                  <TextField
+                    id="unit_name"
+                    label="unit_name"
+                    className={classes.textField}
+                    value={this.state.unit_name}
+                    onChange={this.handleChange('unit_name')}
+                    margin="normal"
+                  />
+                  <TextField
+                    id="unit_type"
+                    label="unit_type"
+                    className={classes.textField}
+                    value={this.state.unit_type}
+                    onChange={this.handleChange('unit_type')}
+                    margin="normal"
+                  />
+                  <TextField
+                    id="unit_data"
+                    label="unit_data"
+                    className={classes.textField}
+                    value={this.state.unit_data}
+                    onChange={this.handleChange('unit_data')}
+                    margin="normal"
+                  />
+                </div>
+              </Grid>
+              <Grid item justify="center" container xs>
+                <div style={{ margin: 20 }}>
+                  <TextField
+                    disabled
+                    id="parent_unit"
+                    label="parent_unit"
+                    className={classes.textField}
+                    value={this.state.parent_unit}
+                    onChange={this.handleChange('parent_unit')}
+                    margin="normal"
+                  />
+                  <TextField
+                    disabled
+                    id="main_unit"
+                    label="main_unit"
+                    className={classes.textField}
+                    value={this.state.main_unit}
+                    onChange={this.handleChange('main_unit')}
+                    margin="normal"
+                  />
+                </div>
+              </Grid>
             </Grid>
-            <Grid item justify="center" container xs>
-              <div style={{ margin: 20 }}>
-                <TextField
-                  disabled
-                  id="parent_unit"
-                  label="parent_unit"
-                  className={classes.textField}
-                  value={this.state.parent_unit}
-                  onChange={this.handleChange('parent_unit')}
-                  margin="normal"
-                />
-                <TextField
-                  disabled
-                  id="main_unit"
-                  label="main_unit"
-                  className={classes.textField}
-                  value={this.state.main_unit}
-                  onChange={this.handleChange('main_unit')}
-                  margin="normal"
-                />
-              </div>
-            </Grid>
-          </Grid>
-          <Divider />
-          <Divider />
-          <div style={{
-            width: '100%', flex: 1,
-            flexDirection: 'row',
-            justifyContent: 'center', alignItems: 'flex-end'
-          }}>
-            <Button onClick={this.handleUpdateUnit}>Submmit</Button>
-          </div>
-
+            <Divider />
+            <Divider />
+            <div style={{
+              width: '100%', flex: 1,
+              flexDirection: 'row',
+              justifyContent: 'center', alignItems: 'flex-end'
+            }}>
+              <Button variant="contained" color="primary" type="submit">Submit</Button>
+            </div>
+          </form>
         </Paper>
       </div>
     );

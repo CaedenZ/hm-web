@@ -9,6 +9,7 @@ import { JobFunction } from "./jobfunctionInterface";
 import { UpdateUserState } from "../scenes/UserPage/update";
 import { User } from "./userInterface";
 import { UpdateUnitState } from "../scenes/UnitPage/update";
+import { CreateRegionState } from "../scenes/RegionPage/create";
 
 export interface SharedDispatchProps {
     showSnackBar: () => void,
@@ -19,6 +20,7 @@ export interface SharedDispatchProps {
     getCompanyList: () => void,
     getChildCompanyList: () => void,
     getRegionList: () => void,
+    createRegion: (cred: CreateRegionState) => void,
     getCountryList: () => void,
     createUser: (cred: CreateUserState) => void,
     selectUser: (user: User) => void,
