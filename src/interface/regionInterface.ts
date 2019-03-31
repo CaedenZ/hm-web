@@ -7,5 +7,6 @@ export interface Region {
 }
 
 export interface RegionState {
-    regionList: Region[]
+    regionList: Region[],
+    selectedRegion?: Region,
 }

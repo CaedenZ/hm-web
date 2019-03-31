@@ -37,4 +37,6 @@ export interface CompanyState {
     selectedCompany?: Company,
     selectedUnit?: Unit,
     selectedSubUnit?: Unit,
+    selectUpdateCompany?: Company,
+    selectUpdateUnit?: Unit,
 }

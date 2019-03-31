@@ -46,7 +46,8 @@ export interface Props extends WithStyles<typeof styles>, SharedDispatchProps, I
 interface State { }
 
 interface InState {
-  companyList: Company[]
+  companyList: Company[],
+  selectedCompany: Company,
 }
 class CompanySelectMenu extends React.Component<Props, State> {
   state = {
@@ -65,6 +66,11 @@ class CompanySelectMenu extends React.Component<Props, State> {
   handleMenuItemClick = (event, index) => {
     this.setState({ selectedIndex: index, anchorEl: null });
     this.props.selectCompany(this.props.companyList[index])
+    this.props.getChildCompanyList()
+    this.props.getRegionList()
+    this.props.getChildCompanyList()
+    this.props.getUnitList()
+    this.props.getRoleList()
   };
 
   handleClose = () => {
@@ -84,10 +90,12 @@ class CompanySelectMenu extends React.Component<Props, State> {
           className={classes.listitem}
         >
           <img style={{ height: '50px' }} src={this.props.companyList[this.state.selectedIndex].logo_small === '' ? logo : this.props.companyList[this.state.selectedIndex].logo_small} />
-          <ListItemText
-            primary={this.props.companyList[this.state.selectedIndex].company_name}
-            secondary={`location: ${this.props.companyList[this.state.selectedIndex].location}`}
-          />
+          {this.props.selectedCompany.company_id !== '' ? <ListItemText
+            primary={this.props.selectedCompany.company_name}
+            secondary={`location: ${this.props.selectedCompany.location}`} /> : <ListItemText
+              primary='select a company'
+              secondary={`location:`}
+            />}
         </ListItem>}
         {this.props.companyList.length > 0 && <Menu
           id="lock-menu"

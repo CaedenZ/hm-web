@@ -14,6 +14,7 @@ import {
   Checkbox,
   FormControlLabel,
   Button,
+  InputLabel,
   Select,
   MenuItem
 } from "@material-ui/core";
@@ -22,9 +23,8 @@ import Avatar from 'react-avatar-edit'
 import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../interface/propsInterface";
-import { RootState } from "../../../reducer";
+import { Company } from "../../../interface/companyInterface";
 import { Country } from "../../../interface/countryInterface";
-import { history } from "../../../store";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -69,7 +69,8 @@ const styles = (theme: Theme) =>
     }
   });
 
-export interface CreateCompanyState {
+export interface UpdateCompanyState {
+  company_id: string;
   sector: string;
   location: string;
   company_name: string;
@@ -88,13 +89,13 @@ export interface CreateCompanyState {
   parentcompany_id: string;
   webpage_url: string;
 }
-export interface Props extends WithStyles<typeof styles>, SharedDispatchProps, InState { }
+export interface Props extends InState, WithStyles<typeof styles>, SharedDispatchProps { }
 
 interface InState {
-  countryList: Country[]
+  updatingCompany: Company;
+  countryList: Country[];
 }
-
-class CreateSubCompanyPage extends Component<Props, CreateCompanyState> {
+class UpdateCompanyPage extends Component<Props, UpdateCompanyState> {
 
 
   constructor(props) {
@@ -103,11 +104,12 @@ class CreateSubCompanyPage extends Component<Props, CreateCompanyState> {
     this.onClose = this.onClose.bind(this)
     this.onMainCrop = this.onMainCrop.bind(this)
     this.onMainClose = this.onMainClose.bind(this)
-    this.handleCreateCompany = this.handleCreateCompany.bind(this)
+    this.handleUpdateCompany = this.handleUpdateCompany.bind(this)
   }
 
 
-  state: CreateCompanyState = {
+  state: UpdateCompanyState = {
+    company_id: '',
     sector: '',
     location: '',
     company_name: '',
@@ -127,6 +129,9 @@ class CreateSubCompanyPage extends Component<Props, CreateCompanyState> {
     webpage_url: '',
   }
 
+  componentDidMount() {
+    this.setState(this.props.updatingCompany)
+  }
   onClose() {
     this.setState({ logo_small: '' })
   }
@@ -145,14 +150,17 @@ class CreateSubCompanyPage extends Component<Props, CreateCompanyState> {
     console.log(this.state)
   }
 
-  handleChange = (statekay: keyof CreateCompanyState) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ [statekay]: event.target.value } as Pick<CreateCompanyState, keyof CreateCompanyState>);
+  handleChange = (statekay: keyof UpdateCompanyState) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ [statekay]: event.target.value } as Pick<UpdateCompanyState, keyof UpdateCompanyState>);
   };
 
-  handleCreateCompany = (e) => {
-    e.preventDefault()
-    this.props.createSubCompany(this.state)
-    history.goBack()
+
+  handleChangeSelect = (statekay: keyof UpdateCompanyState) => (event: React.ChangeEvent<HTMLSelectElement>) => {
+    this.setState({ [statekay]: event.target.value } as Pick<UpdateCompanyState, keyof UpdateCompanyState>);
+  };
+
+  handleUpdateCompany = () => {
+    this.props.createCompany(this.state)
   }
 
   render() {
@@ -163,7 +171,7 @@ class CreateSubCompanyPage extends Component<Props, CreateCompanyState> {
           New Company
       </Typography>
         <Paper>
-          <form onSubmit={this.handleCreateCompany}>
+          <form onSubmit={this.handleUpdateCompany}>
             <Grid container className={classes.grid} spacing={16}>
               <Grid item justify="center" xs container>
                 <Grid container direction="column" spacing={16}>
@@ -211,20 +219,21 @@ class CreateSubCompanyPage extends Component<Props, CreateCompanyState> {
               </Grid>
               <Grid item justify="center" container xs>
                 <div style={{ margin: 20 }}>
-                  {this.props.countryList.length > 0 && <Select
-                    id="country"
-                    className={classes.textField}
-                    value={this.state.country}
-                    onChange={() => this.handleChange('country')}
-                    inputProps={{
-                      name: 'country',
-                      id: 'country-simple',
-                    }}>
-                    {this.props.countryList.map((country) =>
-                      <MenuItem key={country.country_name} value={country.country_name}>{country.country_name}</MenuItem>
-                    )}
-                    <MenuItem value={30}>Thirty</MenuItem>
-                  </Select>}
+                  {this.props.countryList.length > 0 && <FormControl>
+                    <InputLabel>Country</InputLabel>
+                    <Select
+                      id="country"
+                      className={classes.textField}
+                      value={this.state.country}
+                      onChange={this.handleChangeSelect('country')}
+                      inputProps={{
+                        name: 'country',
+                        id: 'country-simple',
+                      }}>
+                      {this.props.countryList.map((country) =>
+                        <MenuItem key={country.country_name} value={country.country_name}>{country.country_name}</MenuItem>
+                      )}
+                    </Select></FormControl>}
                   <TextField
                     id="address"
                     label="Address"
@@ -340,19 +349,20 @@ class CreateSubCompanyPage extends Component<Props, CreateCompanyState> {
             </div>
           </form>
         </Paper>
-      </div >
+      </div>
     );
   }
 }
 
-(CreateSubCompanyPage as React.ComponentClass<Props>).propTypes = {
+(UpdateCompanyPage as React.ComponentClass<Props>).propTypes = {
   classes: PropTypes.object.isRequired
 } as any;
 
-function mapStateToProps(state: RootState) {
+function mapStateToProps(state: any) {
   return {
+    updatingCompany: state.companyReducer.selectedUpdateCompany,
     countryList: state.countryReducer.countryList
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CreateSubCompanyPage));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(UpdateCompanyPage));

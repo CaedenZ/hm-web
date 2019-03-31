@@ -47,6 +47,17 @@ export function userReducer(state: UserState = {
                 userList: action.payload
             }
         case 'DELETE_USER_SUCCESS':
+            action.asyncDispatch(getUserListAction.request())
+            return {
+                ...state
+            }
+        case 'UPDATE_USER_SUCCESS':
+            action.asyncDispatch(getUserListAction.request())
+            return {
+                ...state
+            }
+        case 'CREATE_USER_SUCCESS':
+            action.asyncDispatch(getUserListAction.request())
             return {
                 ...state
             }
@@ -71,7 +82,9 @@ export const createUserEpic: Epic<any, any, any, any> = (action$, state$) =>
         filter(isActionOf(createUserAction.request)),
         switchMap((action) =>
             from(createUser(state$.value.authenticationReducer.token, action.payload)).pipe(
-                map(() => createUserAction.success()),
+                map(() => {
+                    createUserAction.success()
+                }),
                 catchError(error => of(createUserAction.failure(error.message)))
             )
         )

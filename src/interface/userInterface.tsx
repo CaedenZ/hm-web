@@ -1,16 +1,10 @@
-export interface Function {
-    function_name: string
-}
+import { Role } from "./roleInterface";
 
-export interface Role {
-    role: string,
-    functions: Function[]
-}
 export interface Info {
     company_id: string,
     company_name: string,
     primary: number,
-    roles: Role
+    roles: Role[]
 }
 
 export interface User {

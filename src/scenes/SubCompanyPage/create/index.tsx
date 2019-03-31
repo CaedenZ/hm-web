@@ -15,7 +15,8 @@ import {
   FormControlLabel,
   Button,
   Select,
-  MenuItem
+  MenuItem,
+  InputLabel
 } from "@material-ui/core";
 import CustomButton from "../component/CustomButton";
 import Avatar from 'react-avatar-edit'
@@ -25,6 +26,7 @@ import { SharedDispatchProps } from "../../../interface/propsInterface";
 import { RootState } from "../../../reducer";
 import { Country } from "../../../interface/countryInterface";
 import { history } from "../../../store";
+import { Company } from "../../../interface/companyInterface";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -91,7 +93,8 @@ export interface CreateCompanyState {
 export interface Props extends WithStyles<typeof styles>, SharedDispatchProps, InState { }
 
 interface InState {
-  countryList: Country[]
+  countryList: Country[],
+  selectedCompany: Company,
 }
 
 class CreateSubCompanyPage extends Component<Props, CreateCompanyState> {
@@ -127,6 +130,10 @@ class CreateSubCompanyPage extends Component<Props, CreateCompanyState> {
     webpage_url: '',
   }
 
+  componentDidMount() {
+    this.setState({ parentcompany_id: this.props.selectedCompany.company_id })
+  }
+
   onClose() {
     this.setState({ logo_small: '' })
   }
@@ -146,6 +153,10 @@ class CreateSubCompanyPage extends Component<Props, CreateCompanyState> {
   }
 
   handleChange = (statekay: keyof CreateCompanyState) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ [statekay]: event.target.value } as Pick<CreateCompanyState, keyof CreateCompanyState>);
+  };
+
+  handleChangeSelect = (statekay: keyof CreateCompanyState) => (event: React.ChangeEvent<HTMLSelectElement>) => {
     this.setState({ [statekay]: event.target.value } as Pick<CreateCompanyState, keyof CreateCompanyState>);
   };
 
@@ -211,20 +222,22 @@ class CreateSubCompanyPage extends Component<Props, CreateCompanyState> {
               </Grid>
               <Grid item justify="center" container xs>
                 <div style={{ margin: 20 }}>
-                  {this.props.countryList.length > 0 && <Select
-                    id="country"
-                    className={classes.textField}
-                    value={this.state.country}
-                    onChange={() => this.handleChange('country')}
-                    inputProps={{
-                      name: 'country',
-                      id: 'country-simple',
-                    }}>
-                    {this.props.countryList.map((country) =>
-                      <MenuItem key={country.country_name} value={country.country_name}>{country.country_name}</MenuItem>
-                    )}
-                    <MenuItem value={30}>Thirty</MenuItem>
-                  </Select>}
+                  {this.props.countryList.length > 0 && <FormControl>
+                    <InputLabel>Country</InputLabel>
+                    <Select
+                      id="country"
+                      className={classes.textField}
+                      value={this.state.country}
+                      onChange={this.handleChangeSelect('country')}
+                      inputProps={{
+                        name: 'country',
+                        id: 'country-simple',
+                      }}>
+                      {this.props.countryList.map((country) =>
+                        <MenuItem key={country.country_name} value={country.country_name}>{country.country_name}</MenuItem>
+                      )}
+                      <MenuItem value={30}>Thirty</MenuItem>
+                    </Select></FormControl>}
                   <TextField
                     id="address"
                     label="Address"
@@ -351,7 +364,8 @@ class CreateSubCompanyPage extends Component<Props, CreateCompanyState> {
 
 function mapStateToProps(state: RootState) {
   return {
-    countryList: state.countryReducer.countryList
+    countryList: state.countryReducer.countryList,
+    selectedCompany: state.companyReducer.selectedCompany
   }
 }
 

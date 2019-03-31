@@ -32,11 +32,33 @@ export function jobFunctionReducer(state: JobFunctionState = {
                 ...state,
                 selectedJobFunction: action.payload.jobfunction_id
             }
+        case 'CREATE_JOBFUNCTION_SUCCESS':
+            action.asyncDispatch(getJobFunctionListAction.request())
+            return {
+                ...state,
+            }
+        case 'CREATE_SUBJOBFUNCTION_SUCCESS':
+            action.asyncDispatch(getJobFunctionListAction.request())
+            return {
+                ...state,
+            }
+        case 'UPDATE_JOBFUNCTION_SUCCESS':
+            action.asyncDispatch(getJobFunctionListAction.request())
+            return {
+                ...state,
+            }
+        case 'UPDATE_SUBJOBFUNCTION_SUCCESS':
+            action.asyncDispatch(getJobFunctionListAction.request())
+            return {
+                ...state,
+            }
         case 'DELETE_JOBFUNCTION_SUCCESS':
+            action.asyncDispatch(getJobFunctionListAction.request())
             return {
                 ...state,
             }
         case 'DELETE_SUBJOBFUNCTION_SUCCESS':
+            action.asyncDispatch(getJobFunctionListAction.request())
             return {
                 ...state,
             }

@@ -50,19 +50,6 @@ const styles = (theme: Theme) =>
     }
   });
 
-let id = 0;
-function createData(
-  name: any,
-  calories: any,
-  fat: any,
-  carbs: any,
-  protein: any
-) {
-  id += 1;
-  return { id, name, calories, fat, carbs, protein };
-}
-
-
 export interface Props extends WithStyles<typeof styles>, SharedDispatchProps, InState { }
 
 interface State { }
@@ -74,17 +61,13 @@ class CustomizedTable extends React.Component<Props, State> {
 
 
   componentDidMount() {
-    this.props.getUserList()
+    console.log('UserPage MOunt')
   }
 
   handleUpdateButtonClick = (user) => {
     this.props.selectUser(user)
     history.push('/user/update')
     console.log('clicked')
-    // this.props.selectUnit(unit)
-    // this.setState({
-    //   redirect: true
-    // })
   }
 
   handleDelete = (id, index) => {

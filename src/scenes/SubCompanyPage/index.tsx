@@ -21,6 +21,7 @@ import { mapDispatchToProps } from "../../helper/dispachProps";
 import { connect } from "react-redux";
 import { Button, IconButton } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
+import { history } from "../../store";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -61,15 +62,12 @@ class CustomizedTable extends React.Component<Props, State> {
 
 
   componentDidMount() {
-    this.props.getChildCompanyList()
+    console.log('clicked')
   }
 
-  handleUpdateButtonClick = (unit) => {
-    console.log('clicked')
-    // this.props.selectUnit(unit)
-    // this.setState({
-    //   redirect: true
-    // })
+  handleUpdateButtonClick = (company) => {
+    this.props.selectUpdateCompany(company)
+    history.push('/subcompany/update')
   }
 
   handleDelete = (id) => {

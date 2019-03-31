@@ -134,7 +134,7 @@ class CreateSubJobFunctionPage extends Component<Props, CreateSubJobFunctionStat
                     onChange={this.handleChange('description')}
                     margin="normal"
                   />
-                  <TextField
+                  {/* <TextField
                     disabled
                     id="jobfunction_id"
                     label="jobfunction_id"
@@ -142,7 +142,7 @@ class CreateSubJobFunctionPage extends Component<Props, CreateSubJobFunctionStat
                     value={this.state.jobfunction_id}
                     onChange={this.handleChange('jobfunction_id')}
                     margin="normal"
-                  />
+                  /> */}
                 </div>
               </Grid>
             </Grid>

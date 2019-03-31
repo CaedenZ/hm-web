@@ -72,7 +72,7 @@ class UnitPage extends React.Component<Props, State> {
 
 
   componentDidMount() {
-    this.props.getUnitList()
+    console.log('Unit Page Mount')
   }
 
   handleViewButtonClick = (unit) => {
@@ -82,7 +82,7 @@ class UnitPage extends React.Component<Props, State> {
 
   handleUpdateButtonClick = (unit) => {
     console.log('clicked')
-    this.props.selectUnit(unit)
+    this.props.selectUpdateUnit(unit)
     history.push('/unit/update')
   }
 

@@ -11,14 +11,15 @@ import { authenticationReducer, loginEpic, forgetPasswordEpic } from "./authenti
 import { combineEpics } from "redux-observable"
 import { StateType } from "typesafe-actions";
 import { userReducer, getUserListEpic, createUserEpic, deleteUserEpic, updateUserEpic } from "./userReducer";
-import { companyReducer, getCompanyListEpic, getChildCompanyListEpic, createCompanyEpic, getUnitListEpic, getChildUnitListEpic, createUnitEpic, createSubUnitEpic, updateUnitEpic, deleteUnitEpic, updateSubUnitEpic, deleteSubUnitEpic, getSubUnitListEpic, createChildUnitEpic, updateChildUnitEpic, deleteChildUnitEpic } from "./companyReducer";
+import { companyReducer, getCompanyListEpic, getChildCompanyListEpic, createCompanyEpic, getUnitListEpic, getChildUnitListEpic, createUnitEpic, createSubUnitEpic, updateUnitEpic, deleteUnitEpic, updateSubUnitEpic, deleteSubUnitEpic, getSubUnitListEpic, createChildUnitEpic, updateChildUnitEpic, deleteChildUnitEpic, createSubCompanyEpic, updateCompanyEpic, updateSubCompanyEpic, deleteCompanyEpic, deleteSubCompanyEpic } from "./companyReducer";
 import { initReducer } from "./initReducer";
 import { jobFunctionReducer, getJobFunctionListEpic, createJobFunctionEpic, createSubJobFunctionEpic, deleteSubJobFunctionEpic, deleteJobFunctionEpic } from "./jobFunctionReducer";
 import { connectRouter } from 'connected-react-router'
 import { createBrowserHistory } from "history";
 import { getCountryListEpic, countryReducer } from "./countryReducer";
-import { regionReducer, getRegionListEpic, createRegionEpic } from "./regionReducer";
+import { regionReducer, getRegionListEpic, createRegionEpic, deleteRegionEpic, updateRegionEpic } from "./regionReducer";
 import { snackBarReducer } from "./snackBarReducer";
+import { getRoleListEpic, getRoleFunctionListEpic, updateRoleEpic, createRoleEpic, deleteRoleEpic, roleReducer } from "./roleReducer";
 
 
 export const history = createBrowserHistory()
@@ -32,6 +33,7 @@ export const rootReducer = combineReducers({
     countryReducer,
     regionReducer,
     snackBarReducer,
+    roleReducer,
     router: connectRouter(history),
     //   userDetail,
     //   currentReport,
@@ -42,29 +44,43 @@ export const rootEpic = combineEpics(
     forgetPasswordEpic,
 
     getUserListEpic,
+    createUserEpic,
+    deleteUserEpic,
+    updateUserEpic,
+
     getCountryListEpic,
 
-    createRegionEpic,   
+    createRegionEpic,
     getRegionListEpic,
+    updateRegionEpic,
+    deleteRegionEpic,
 
-
-    getUnitListEpic,
-    getSubUnitListEpic,
-    getChildUnitListEpic,
+    getRoleListEpic,
+    getRoleFunctionListEpic,
+    createRoleEpic,
+    updateRoleEpic,
+    deleteRoleEpic,
 
     getCompanyListEpic,
     getChildCompanyListEpic,
     createCompanyEpic,
+    createSubCompanyEpic,
+    updateCompanyEpic,
+    updateSubCompanyEpic,
+    deleteCompanyEpic,
+    deleteSubCompanyEpic,
 
     getJobFunctionListEpic,
     createJobFunctionEpic,
     createSubJobFunctionEpic,
+    // updateJobFunctionEpic,
+    // updateSubJobFunctionEpic,
     deleteJobFunctionEpic,
     deleteSubJobFunctionEpic,
 
-    createUserEpic,
-    deleteUserEpic,
-    updateUserEpic,
+    getUnitListEpic,
+    getSubUnitListEpic,
+    getChildUnitListEpic,
 
     createUnitEpic,
     updateUnitEpic,

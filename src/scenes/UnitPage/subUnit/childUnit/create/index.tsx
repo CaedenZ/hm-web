@@ -13,7 +13,10 @@ import {
   FormControl,
   Checkbox,
   FormControlLabel,
-  Button
+  Button,
+  InputLabel,
+  Select,
+  MenuItem
 } from "@material-ui/core";
 import { mapDispatchToProps } from "../../../../../helper/dispachProps";
 import { connect } from "react-redux";
@@ -21,6 +24,8 @@ import { SharedDispatchProps } from "../../../../../interface/propsInterface";
 import { RootState } from "../../../../../reducer";
 import { Unit, Company } from "../../../../../interface/companyInterface";
 import { history } from "../../../../../store";
+import { Country } from "../../../../../interface/countryInterface";
+import { Region } from "../../../../../interface/regionInterface";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -62,7 +67,11 @@ const styles = (theme: Theme) =>
       flex: 1,
       alignItems: "center",
       justifyContent: "center"
-    }
+    },
+    formControl: {
+      margin: theme.spacing.unit,
+      minWidth: 120,
+    },
   });
 
 export interface CreateUnitState {
@@ -77,6 +86,8 @@ export interface Props extends WithStyles<typeof styles>, SharedDispatchProps, I
 
 interface InState {
   parentUnit: Unit;
+  countryList: Country[];
+  regionList: Region[]
 }
 
 class CreateUnitPage extends Component<Props, CreateUnitState> {
@@ -101,6 +112,22 @@ class CreateUnitPage extends Component<Props, CreateUnitState> {
     this.setState({ [statekay]: event.target.value } as Pick<CreateUnitState, keyof CreateUnitState>);
   };
 
+  handleChangeSelect = (statekay: keyof CreateUnitState) => (event: React.ChangeEvent<HTMLSelectElement>) => {
+    this.setState({ [statekay]: event.target.value } as Pick<CreateUnitState, keyof CreateUnitState>);
+  };
+
+  handleChangeSelectRegionData = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    // this.setState({ unit_data: this.props.regionList[event.target.value] });
+    this.setState({ unit_data: event.target.value });
+    // console.log(this.state.unit_data.region_name)
+  };
+
+  handleChangeSelectCountryData = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    // this.setState({ unit_data: this.props.countryList[event.target.value] } as Pick<CreateUnitState, keyof CreateUnitState>);
+    this.setState({ unit_data: event.target.value });
+    // console.log(this.state.unit_data.country_name)
+  };
+
   handleCreateUnit = (e) => {
     e.preventDefault()
     this.props.createChildUnit(this.state)
@@ -113,6 +140,52 @@ class CreateUnitPage extends Component<Props, CreateUnitState> {
 
   render() {
     const { classes } = this.props;
+    const unitData = () => {
+      switch (this.state.unit_type) {
+        case 'BU':
+          return <TextField
+            id="unit_data"
+            label="unit_data"
+            className={classes.textField}
+            value={this.state.unit_data}
+            onChange={this.handleChange('unit_data')}
+            margin="normal"
+          />
+        case 'region':
+          return <FormControl className={classes.formControl}>
+            <InputLabel>Unit Data</InputLabel>
+            <Select
+              value={this.state.unit_data}
+              onChange={this.handleChangeSelectRegionData}
+              inputProps={{
+                name: 'unit_data',
+                id: 'unit_data',
+              }}
+            >
+              {this.props.regionList.map((region, index) =>
+                <MenuItem key={region.region_id} value={region.region_name}>{region.region_name}</MenuItem>
+              )}
+            </Select>
+          </FormControl>
+        case 'country':
+          return <FormControl className={classes.formControl}>
+            <InputLabel>Unit Data</InputLabel>
+            <Select
+              value={this.state.unit_data}
+              onChange={this.handleChangeSelectCountryData}
+              inputProps={{
+                name: 'unit_data',
+                id: 'unit_data',
+              }}
+            >
+              {this.props.countryList.map((country, index) =>
+                <MenuItem key={country.country_name} value={country.country_name}>{country.country_name}</MenuItem>
+              )}
+            </Select>
+          </FormControl>
+      }
+    }
+
     return (
       <div className={classes.root}>
         <Typography component="h1" variant="h5">
@@ -122,7 +195,7 @@ class CreateUnitPage extends Component<Props, CreateUnitState> {
           <form onSubmit={this.handleCreateUnit}>
             <Grid container className={classes.grid} spacing={16}>
               <Grid item justify="center" container xs>
-                <div style={{ margin: 20 }}>
+                <div style={{ margin: 20, display: 'flex', flexDirection: 'column' }}>
                   <TextField
                     id="unit_name"
                     label="unit_name"
@@ -131,22 +204,22 @@ class CreateUnitPage extends Component<Props, CreateUnitState> {
                     onChange={this.handleChange('unit_name')}
                     margin="normal"
                   />
-                  <TextField
-                    id="unit_type"
-                    label="unit_type"
-                    className={classes.textField}
-                    value={this.state.unit_type}
-                    onChange={this.handleChange('unit_type')}
-                    margin="normal"
-                  />
-                  <TextField
-                    id="unit_data"
-                    label="unit_data"
-                    className={classes.textField}
-                    value={this.state.unit_data}
-                    onChange={this.handleChange('unit_data')}
-                    margin="normal"
-                  />
+                  <FormControl className={classes.formControl}>
+                    <InputLabel htmlFor="age-simple">Unit Type</InputLabel>
+                    <Select
+                      value={this.state.unit_type}
+                      onChange={this.handleChangeSelect('unit_type')}
+                      inputProps={{
+                        name: 'unit_type',
+                        id: 'unit_type',
+                      }}
+                    >
+                      <MenuItem value={'BU'}>BU</MenuItem>
+                      <MenuItem value={'region'}>region</MenuItem>
+                      <MenuItem value={'country'}>country</MenuItem>
+                    </Select>
+                  </FormControl>
+                  {unitData()}
                 </div>
               </Grid>
               <Grid item justify="center" container xs>
@@ -195,6 +268,8 @@ class CreateUnitPage extends Component<Props, CreateUnitState> {
 function mapStateToProps(state: RootState) {
   return {
     parentUnit: state.companyReducer.selectedSubUnit,
+    regionList: state.regionReducer.regionList,
+    countryList: state.countryReducer.countryList,
   }
 }
 

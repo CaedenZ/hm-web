@@ -7,6 +7,7 @@ import { rootReducer, rootEpic } from "../reducer"
 import { createEpicMiddleware } from "redux-observable"
 import { createBrowserHistory } from 'history'
 import { routerMiddleware } from "connected-react-router";
+import { asyncDispatchMiddleware } from "../plugin/asyncmiddleware";
 
 const epicMiddleware = createEpicMiddleware()
 const persistConfig: PersistConfig = {
@@ -22,7 +23,7 @@ const customLogger = createLogger({ collapsed: true })
 export const pReducer = persistReducer(persistConfig, rootReducer)
 export const store = createStore(
     pReducer,
-    applyMiddleware(customLogger, epicMiddleware, routerMiddleware(history))
+    applyMiddleware(customLogger, epicMiddleware, routerMiddleware(history), asyncDispatchMiddleware)
 )
 
 epicMiddleware.run(rootEpic)

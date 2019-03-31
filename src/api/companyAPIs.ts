@@ -28,6 +28,62 @@ export const createCompany = async (token, payload: CreateCompanyState): Promise
     console.log(response.data.data)
     return response.data.data
 }
+export const updateCompany = async (token, payload: CreateCompanyState): Promise<Company[]> => {
+    // todo
+    let data = {
+        ...payload,
+        session_key: token,
+    }
+
+    const response = await $axios.post('/company/updateCompany', data)
+    console.log(response.data.data)
+    return response.data.data
+}
+export const deleteCompany = async (token, payload: string) => {
+    // todo
+    let data = {
+        company_id: payload,
+        session_key: token,
+    }
+
+    const response = await $axios.post('/company/deleteCompany', data)
+    console.log(response.data.data)
+    return response.data.data
+}
+
+export const createSubCompany = async (token, payload: CreateCompanyState): Promise<Company[]> => {
+    // todo
+    let data = {
+        ...payload,
+        session_key: token,
+    }
+
+    const response = await $axios.post('/company/createCompany', data)
+    console.log(response.data.data)
+    return response.data.data
+}
+export const updateSubCompany = async (token, payload: CreateCompanyState): Promise<Company[]> => {
+    // todo
+    let data = {
+        ...payload,
+        session_key: token,
+    }
+
+    const response = await $axios.post('/company/createCompany', data)
+    console.log(response.data.data)
+    return response.data.data
+}
+export const deleteSubCompany = async (token, payload: string) => {
+    // todo
+    let data = {
+        id: payload,
+        session_key: token,
+    }
+
+    const response = await $axios.post('/company/createCompany', data)
+    console.log(response.data.data)
+    return response.data.data
+}
 
 
 export const getUnitList = async (token, identifier, ID): Promise<Unit[]> => {
@@ -39,7 +95,7 @@ export const getUnitList = async (token, identifier, ID): Promise<Unit[]> => {
 
 export const createUnit = async (token, identifier, payload: CreateUnitState): Promise<Unit[]> => {
 
-    
+
     let data = {
         ...payload,
         session_key: token,

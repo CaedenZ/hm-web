@@ -13,6 +13,12 @@ export const selectCompanyAction = createAction(SELECT_COMPANY,
         return (company: Company) => action(company)
     })
 
+const SELECT_UPDATE_COMPANY = "SELECT_UPDATE_COMPANY"
+export const selectUpdateCompanyAction = createAction(SELECT_UPDATE_COMPANY,
+    action => {
+        return (company: Company) => action(company)
+    })
+
 const SELECT_UNIT = "SELECT_UNIT"
 export const selectUnitAction = createAction(SELECT_UNIT,
     action => {
@@ -21,6 +27,12 @@ export const selectUnitAction = createAction(SELECT_UNIT,
 
 const SELECT_SUBUNIT = "SELECT_SUBUNIT"
 export const selectSubUnitAction = createAction(SELECT_SUBUNIT,
+    action => {
+        return (unit: Unit) => action(unit)
+    })
+
+const SELECT_UPDATE_UNIT = "SELECT_UPDATE_UNIT"
+export const selectUpdateUnitAction = createAction(SELECT_UPDATE_UNIT,
     action => {
         return (unit: Unit) => action(unit)
     })
@@ -43,6 +55,7 @@ export const getChildCompanyListAction = createAsyncAction(
     GET_CHILD_COMPANY_LIST_FAILURE
 )<void, Company[], void>()
 
+
 const CREATE_COMPANY_REQUEST = "CREATE_COMPANY_REQUEST"
 const CREATE_COMPANY_SUCCESS = "CREATE_COMPANY_SUCCESS"
 const CREATE_COMPANY_FAILURE = "CREATE_COMPANY_FAILURE"
@@ -60,6 +73,44 @@ export const createSubCompanyAction = createAsyncAction(
     CREATE_SUBCOMPANY_SUCCESS,
     CREATE_SUBCOMPANY_FAILURE
 )<CreateCompanyState, void, void>()
+
+const UPDATE_COMPANY_REQUEST = "UPDATE_COMPANY_REQUEST"
+const UPDATE_COMPANY_SUCCESS = "UPDATE_COMPANY_SUCCESS"
+const UPDATE_COMPANY_FAILURE = "UPDATE_COMPANY_FAILURE"
+export const updateCompanyAction = createAsyncAction(
+    UPDATE_COMPANY_REQUEST,
+    UPDATE_COMPANY_SUCCESS,
+    UPDATE_COMPANY_FAILURE
+)<CreateCompanyState, void, void>()
+
+const UPDATE_SUBCOMPANY_REQUEST = "UPDATE_SUBCOMPANY_REQUEST"
+const UPDATE_SUBCOMPANY_SUCCESS = "UPDATE_SUBCOMPANY_SUCCESS"
+const UPDATE_SUBCOMPANY_FAILURE = "UPDATE_SUBCOMPANY_FAILURE"
+export const updateSubCompanyAction = createAsyncAction(
+    UPDATE_SUBCOMPANY_REQUEST,
+    UPDATE_SUBCOMPANY_SUCCESS,
+    UPDATE_SUBCOMPANY_FAILURE
+)<CreateCompanyState, void, void>()
+
+const DELETE_COMPANY_REQUEST = "DELETE_COMPANY_REQUEST"
+const DELETE_COMPANY_SUCCESS = "DELETE_COMPANY_SUCCESS"
+const DELETE_COMPANY_FAILURE = "DELETE_COMPANY_FAILURE"
+export const deleteCompanyAction = createAsyncAction(
+    DELETE_COMPANY_REQUEST,
+    DELETE_COMPANY_SUCCESS,
+    DELETE_COMPANY_FAILURE
+)<string, void, void>()
+
+const DELETE_SUBCOMPANY_REQUEST = "DELETE_SUBCOMPANY_REQUEST"
+const DELETE_SUBCOMPANY_SUCCESS = "DELETE_SUBCOMPANY_SUCCESS"
+const DELETE_SUBCOMPANY_FAILURE = "DELETE_SUBCOMPANY_FAILURE"
+export const deleteSubCompanyAction = createAsyncAction(
+    DELETE_SUBCOMPANY_REQUEST,
+    DELETE_SUBCOMPANY_SUCCESS,
+    DELETE_SUBCOMPANY_FAILURE
+)<string, void, void>()
+
+
 
 const GET_UNIT_LIST_REQUEST = "GET_UNIT_LIST_REQUEST"
 const GET_UNIT_LIST_SUCCESS = "GET_UNIT_LIST_SUCCESS"

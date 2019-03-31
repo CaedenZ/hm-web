@@ -24,6 +24,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import classnames from 'classnames';
+import { history } from "../../store";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -97,11 +98,12 @@ class CustomizedTable extends React.Component<Props, any> {
   }
 
   componentDidMount() {
-    this.props.getJobFunctionList()
+    console.log('JobFunctionPage Mount')
   }
 
   handleNewJobFunctionClick = (jobFunction: JobFunction) => {
     this.props.selectJobFunction(jobFunction)
+    history.push('/jobfunction/createsub')
   }
 
   handleDeleteJF = (id) => {
@@ -160,14 +162,12 @@ class CustomizedTable extends React.Component<Props, any> {
                   </CustomTableCell>
 
                   {!this.state[index] ? <CustomTableCell align="right">
-                    <Link to='/jobfunction/createsub' style={{ textDecoration: "none" }}><Button color="primary" variant="contained" onClick={() => this.handleNewJobFunctionClick(row)} >New SubJobFunction</Button></Link>
                     <IconButton onClick={() => this.handleDeleteJF(row.jobfunction_id)}><DeleteIcon /></IconButton> </CustomTableCell> :
                     <CustomTableCell align="right">
                       <Collapse key={row.job_name} in={this.state[index]} timeout="auto" unmountOnExit={true}>
                         {row.sjobfunction.length > 0 && <TableBody>
                           {row.sjobfunction.map(row => (
                             <TableRow className={classes.row} key={row.sjobfunction_id}>
-                              {/* <CustomTableCell component="th" scope="row">{row.sjobfunction_id}</CustomTableCell> */}
                               <CustomTableCell align="right">{row.subjob_name}</CustomTableCell>
                               <CustomTableCell align="right">{row.description}</CustomTableCell>
                               <CustomTableCell align="right">
@@ -175,6 +175,7 @@ class CustomizedTable extends React.Component<Props, any> {
                               </CustomTableCell>
                             </TableRow>
                           ))}
+                          <Button color="primary" variant="contained" onClick={() => this.handleNewJobFunctionClick(row)} >New SubJobFunction</Button>
                         </TableBody>
                         }
                       </Collapse>

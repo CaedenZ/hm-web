@@ -15,7 +15,8 @@ import {
   FormControlLabel,
   Button,
   Select,
-  MenuItem
+  MenuItem,
+  InputLabel
 } from "@material-ui/core";
 import CustomButton from "../component/CustomButton";
 import Avatar from 'react-avatar-edit'
@@ -149,6 +150,10 @@ class CreateCompanyPage extends Component<Props, CreateCompanyState> {
     this.setState({ [statekay]: event.target.value } as Pick<CreateCompanyState, keyof CreateCompanyState>);
   };
 
+  handleChangeSelect = (statekay: keyof CreateCompanyState) => (event: React.ChangeEvent<HTMLSelectElement>) => {
+    this.setState({ [statekay]: event.target.value } as Pick<CreateCompanyState, keyof CreateCompanyState>);
+  };
+
   handleCreateCompany = (e) => {
     e.preventDefault()
     // console.log(this.props.countryList)
@@ -212,20 +217,22 @@ class CreateCompanyPage extends Component<Props, CreateCompanyState> {
               </Grid>
               <Grid item justify="center" container xs>
                 <div style={{ margin: 20 }}>
-                  {this.props.countryList.length > 0 && <Select
-                    id="country"
-                    className={classes.textField}
-                    value={this.state.country}
-                    onChange={() => this.handleChange('country')}
-                    inputProps={{
-                      name: 'country',
-                      id: 'country-simple',
-                    }}>
-                    {this.props.countryList.map((country) =>
-                      <MenuItem key={country.country_name} value={country.country_name}>{country.country_name}</MenuItem>
-                    )}
-                    <MenuItem value={30}>Thirty</MenuItem>
-                  </Select>}
+                  {this.props.countryList.length > 0 && <FormControl>
+                    <InputLabel>Country</InputLabel>
+                    <Select
+                      id="country"
+                      className={classes.textField}
+                      value={this.state.country}
+                      onChange={this.handleChangeSelect('country')}
+                      inputProps={{
+                        name: 'country',
+                        id: 'country-simple',
+                      }}>
+                      {this.props.countryList.map((country) =>
+                        <MenuItem key={country.country_name} value={country.country_name}>{country.country_name}</MenuItem>
+                      )}
+                      <MenuItem value={30}>Thirty</MenuItem>
+                    </Select></FormControl>}
                   <TextField
                     id="address"
                     label="Address"

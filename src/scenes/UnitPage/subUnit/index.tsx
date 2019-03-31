@@ -86,7 +86,7 @@ class SubUnitPage extends React.Component<Props, State> {
 
     handleUpdateButtonClick = (unit) => {
         console.log('clicked')
-        this.props.selectSubUnit(unit)
+        this.props.selectUpdateUnit(unit)
         history.push('/unit/subunit/update')
     }
 

@@ -14,6 +14,15 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { render } from "react-dom";
 import CustomButton from "./component/CustomButton";
+import { RootState } from "../../reducer";
+import { mapDispatchToProps } from "../../helper/dispachProps";
+import { connect } from "react-redux";
+import { SharedDispatchProps } from "../../interface/propsInterface";
+import { User } from "../../interface/userInterface";
+import { Button, IconButton } from "@material-ui/core";
+import DeleteIcon from '@material-ui/icons/Delete';
+import { Role } from "../../interface/roleInterface";
+import { history } from "../../store";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -54,51 +63,58 @@ function createData(
   return { id, name, calories, fat, carbs, protein };
 }
 
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9)
-];
 
-export interface Props extends WithStyles<typeof styles> { }
+export interface Props extends WithStyles<typeof styles>, SharedDispatchProps, InState { }
 
 interface State { }
 
+interface InState {
+  roleList: Role[]
+}
 class RolePage extends React.Component<Props, State> {
+
+
+  componentDidMount() {
+    console.log('Role Page Mounted')
+  }
+
+  handleUpdateButtonClick = (role) => {
+    this.props.selectRole(role)
+    history.push('/role/update')
+  }
+
+  handleDelete = (id) => {
+    console.log('clicked')
+    this.props.deleteRole(id)
+  }
+
   render() {
     const { classes } = this.props;
 
     return (
       <main>
-        <CustomButton link="/user/create">New User</CustomButton>
+        <CustomButton link="/role/create">New Role</CustomButton>
         <Paper className={classes.root}>
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
-                <CustomTableCell>Dessert (100g serving)</CustomTableCell>
-                <CustomTableCell align="right">Calories</CustomTableCell>
-                <CustomTableCell align="right">Fat (g)</CustomTableCell>
-                <CustomTableCell align="right">Carbs (g)</CustomTableCell>
-                <CustomTableCell align="right">Protein (g)</CustomTableCell>
+                <CustomTableCell>Name</CustomTableCell>
+                <CustomTableCell align="right">Description</CustomTableCell>
+                <CustomTableCell align="right">Action</CustomTableCell>
               </TableRow>
             </TableHead>
-            <TableBody>
-              {rows.map(row => (
-                <TableRow className={classes.row} key={row.id}>
-                  <CustomTableCell component="th" scope="row">
-                    {row.name}
-                  </CustomTableCell>
+            {this.props.roleList.length > 0 && <TableBody>
+              {this.props.roleList.map(row => (
+                <TableRow className={classes.row} key={row.role_id}>
+                  <CustomTableCell component="th" scope="row">{row.role_name}</CustomTableCell>
+                  <CustomTableCell align="right">{row.role_description}</CustomTableCell>
                   <CustomTableCell align="right">
-                    {row.calories}
+                    <Button color="primary" variant="contained" onClick={() => this.handleUpdateButtonClick(row)}>view</Button>
+                    <IconButton onClick={() => this.handleDelete(row.role_id)}><DeleteIcon /></IconButton>
                   </CustomTableCell>
-                  <CustomTableCell align="right">{row.fat}</CustomTableCell>
-                  <CustomTableCell align="right">{row.carbs}</CustomTableCell>
-                  <CustomTableCell align="right">{row.protein}</CustomTableCell>
                 </TableRow>
               ))}
-            </TableBody>
+            </TableBody>}
           </Table>
         </Paper>
       </main>
@@ -110,4 +126,10 @@ class RolePage extends React.Component<Props, State> {
   classes: PropTypes.object.isRequired
 } as any;
 
-export default withStyles(styles)(RolePage);
+function mapStateToProps(state: RootState) {
+  return {
+    roleList: state.roleReducer.roleList
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(RolePage));

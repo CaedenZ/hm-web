@@ -19,8 +19,9 @@ import { Company, Unit } from "../../../../interface/companyInterface";
 import { RootState } from "../../../../reducer";
 import { mapDispatchToProps } from "../../../../helper/dispachProps";
 import { connect } from "react-redux";
-import { Button, Typography } from "@material-ui/core";
-import { Redirect } from "react-router-dom";
+import { Button, Typography, IconButton } from "@material-ui/core";
+import DeleteIcon from '@material-ui/icons/Delete';
+import { history } from "../../../../store";
 
 const CustomTableCell = withStyles(theme => ({
     head: {
@@ -82,6 +83,17 @@ class ChildUnitPage extends React.Component<Props, State> {
 
     }
 
+    handleDelete = (id) => {
+        this.props.deleteSubUnit(id)
+    }
+
+
+    handleUpdateButtonClick = (unit) => {
+        console.log('clicked')
+        this.props.selectUpdateUnit(unit)
+        history.push('/unit/subunit/childunit/update')
+    }
+
     render() {
         const { classes } = this.props;
         return (
@@ -113,6 +125,7 @@ class ChildUnitPage extends React.Component<Props, State> {
                                 <CustomTableCell>unit_id</CustomTableCell>
                                 <CustomTableCell align="right">unit_name</CustomTableCell>
                                 <CustomTableCell align="right">unit_type</CustomTableCell>
+                                <CustomTableCell align="right">Action</CustomTableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -125,6 +138,10 @@ class ChildUnitPage extends React.Component<Props, State> {
                                         {row.unit_name}
                                     </CustomTableCell>
                                     <CustomTableCell align="right">{row.unit_type}</CustomTableCell>
+                                    <CustomTableCell align="right">
+                                        <Button color="primary" variant="contained" onClick={() => this.handleUpdateButtonClick(row)}>update</Button>
+                                        <IconButton onClick={() => this.handleDelete(row.unit_id)}><DeleteIcon /></IconButton>
+                                    </CustomTableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

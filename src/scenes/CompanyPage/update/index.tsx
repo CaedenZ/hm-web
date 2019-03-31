@@ -13,13 +13,18 @@ import {
   FormControl,
   Checkbox,
   FormControlLabel,
-  Button
+  Button,
+  InputLabel,
+  Select,
+  MenuItem
 } from "@material-ui/core";
 import CustomButton from "../component/CustomButton";
 import Avatar from 'react-avatar-edit'
 import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../interface/propsInterface";
+import { Company } from "../../../interface/companyInterface";
+import { Country } from "../../../interface/countryInterface";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -64,7 +69,8 @@ const styles = (theme: Theme) =>
     }
   });
 
-export interface CreateCompanyState {
+export interface UpdateCompanyState {
+  company_id: string;
   sector: string;
   location: string;
   company_name: string;
@@ -83,9 +89,13 @@ export interface CreateCompanyState {
   parentcompany_id: string;
   webpage_url: string;
 }
-export interface Props extends WithStyles<typeof styles>, SharedDispatchProps { }
+export interface Props extends InState, WithStyles<typeof styles>, SharedDispatchProps { }
 
-class CreateCompanyPage extends Component<Props, CreateCompanyState> {
+interface InState {
+  updatingCompany: Company;
+  countryList: Country[];
+}
+class UpdateCompanyPage extends Component<Props, UpdateCompanyState> {
 
 
   constructor(props) {
@@ -94,11 +104,12 @@ class CreateCompanyPage extends Component<Props, CreateCompanyState> {
     this.onClose = this.onClose.bind(this)
     this.onMainCrop = this.onMainCrop.bind(this)
     this.onMainClose = this.onMainClose.bind(this)
-    this.handleCreateCompany = this.handleCreateCompany.bind(this)
+    this.handleUpdateCompany = this.handleUpdateCompany.bind(this)
   }
 
 
-  state: CreateCompanyState = {
+  state: UpdateCompanyState = {
+    company_id: '',
     sector: '',
     location: '',
     company_name: '',
@@ -118,6 +129,9 @@ class CreateCompanyPage extends Component<Props, CreateCompanyState> {
     webpage_url: '',
   }
 
+  componentDidMount() {
+    this.setState(this.props.updatingCompany)
+  }
   onClose() {
     this.setState({ logo_small: '' })
   }
@@ -136,11 +150,15 @@ class CreateCompanyPage extends Component<Props, CreateCompanyState> {
     console.log(this.state)
   }
 
-  handleChange = (statekay: keyof CreateCompanyState) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ [statekay]: event.target.value } as Pick<CreateCompanyState, keyof CreateCompanyState>);
+  handleChange = (statekay: keyof UpdateCompanyState) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ [statekay]: event.target.value } as Pick<UpdateCompanyState, keyof UpdateCompanyState>);
   };
 
-  handleCreateCompany = () => {
+  handleChangeSelect = (statekay: keyof UpdateCompanyState) => (event: React.ChangeEvent<HTMLSelectElement>) => {
+    this.setState({ [statekay]: event.target.value } as Pick<UpdateCompanyState, keyof UpdateCompanyState>);
+  };
+
+  handleUpdateCompany = () => {
     this.props.createCompany(this.state)
   }
 
@@ -152,7 +170,7 @@ class CreateCompanyPage extends Component<Props, CreateCompanyState> {
           New Company
       </Typography>
         <Paper>
-          <form onSubmit={this.handleCreateCompany}>
+          <form onSubmit={this.handleUpdateCompany}>
             <Grid container className={classes.grid} spacing={16}>
               <Grid item justify="center" xs container>
                 <Grid container direction="column" spacing={16}>
@@ -200,14 +218,21 @@ class CreateCompanyPage extends Component<Props, CreateCompanyState> {
               </Grid>
               <Grid item justify="center" container xs>
                 <div style={{ margin: 20 }}>
-                  <TextField
-                    id="country"
-                    label="Country"
-                    className={classes.textField}
-                    value={this.state.country}
-                    onChange={this.handleChange('country')}
-                    margin="normal"
-                  />
+                  {this.props.countryList.length > 0 && <FormControl>
+                    <InputLabel>Country</InputLabel>
+                    <Select
+                      id="country"
+                      className={classes.textField}
+                      value={this.state.country}
+                      onChange={this.handleChangeSelect('country')}
+                      inputProps={{
+                        name: 'country',
+                        id: 'country-simple',
+                      }}>
+                      {this.props.countryList.map((country) =>
+                        <MenuItem key={country.country_name} value={country.country_name}>{country.country_name}</MenuItem>
+                      )}
+                    </Select></FormControl>}
                   <TextField
                     id="address"
                     label="Address"
@@ -328,8 +353,15 @@ class CreateCompanyPage extends Component<Props, CreateCompanyState> {
   }
 }
 
-(CreateCompanyPage as React.ComponentClass<Props>).propTypes = {
+(UpdateCompanyPage as React.ComponentClass<Props>).propTypes = {
   classes: PropTypes.object.isRequired
 } as any;
 
-export default connect(null, mapDispatchToProps)(withStyles(styles)(CreateCompanyPage));
+function mapStateToProps(state: any) {
+  return {
+    updatingCompany: state.companyReducer.selectedUpdateCompany,
+    countryList: state.countryReducer.countryList
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(UpdateCompanyPage));
