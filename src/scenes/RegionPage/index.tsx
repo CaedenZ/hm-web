@@ -107,9 +107,9 @@ class RegionPage extends React.Component<Props, State> {
               {this.props.regionList.map(row => (
                 <TableRow className={classes.row} key={row.region_id}>
                   <CustomTableCell component="th" scope="row">{row.region_name}</CustomTableCell>
-                  {row.country_list.length > 0 && <CustomTableCell align="right">{row.country_list.map(country => (
+                  {row.country_list.length > 0 ? <CustomTableCell align="right">{row.country_list.map(country => (
                     country.country_name + "  "
-                  ))}</CustomTableCell>}
+                  ))}</CustomTableCell> : <CustomTableCell />}
                   <CustomTableCell align="right">
                     <Button color="primary" variant="contained" onClick={() => this.handleUpdateButtonClick(row)}>view</Button>
                     <IconButton onClick={() => this.handleDelete(row.region_id)}><DeleteIcon /></IconButton>

@@ -6,7 +6,7 @@ export interface Role {
     role_function: Function[]
 }
 export interface Function {
-    function: string
+    function_id: string
 }
 export interface RoleState {
     roleList: Role[],

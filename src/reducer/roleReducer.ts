@@ -72,7 +72,7 @@ export const createRoleEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
         filter(isActionOf(createRoleAction.request)),
         switchMap((action) =>
-            from(createRole(state$.value.authenticationReducer.token, action.payload, state$.value.companyReducer.selectedCompany.company_id)).pipe(
+            from(createRole(state$.value.authenticationReducer.token, state$.value.companyReducer.selectedCompany.company_id, action.payload)).pipe(
                 map(() => createRoleAction.success()),
                 catchError(error => of(createRoleAction.failure(error.message)))
             )

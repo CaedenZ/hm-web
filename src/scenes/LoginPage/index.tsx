@@ -94,7 +94,7 @@ class SignIn extends Component<Props, State> {
 
   render() {
     const { classes } = this.props;
-    if (this.props.usertoken == null) {
+    if (this.props.usertoken === "") {
       return (
         <main className={classes.main}>
           <CssBaseline />
@@ -102,7 +102,7 @@ class SignIn extends Component<Props, State> {
             <form onSubmit={this.handleLogin}>
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="email">Email Address</InputLabel>
-                <Input id="email" name="email" autoComplete="email" autoFocus value={this.state.email} onChange={this.handleChange} />
+                <Input type="email" id="email" name="email" autoComplete="email" autoFocus value={this.state.email} onChange={this.handleChange} />
               </FormControl>
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="password">Password</InputLabel>

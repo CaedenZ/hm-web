@@ -5,18 +5,22 @@ import { CreateUserState } from "../scenes/UserPage/create";
 import { history } from '../store'
 import { UpdateUserState } from "../scenes/UserPage/update";
 
-export const getUserList = async (payload): Promise<User[]> => {
+export const getUserList = async (token, payload): Promise<User[]> => {
 
-
-    const response = await $axios.post('/user/', { session_key: payload })
+    let data = {
+        company_id: payload,
+        session_key: token,
+    }
+    const response = await $axios.post('/user/', data)
     console.log(response.data.data)
     return response.data.data
 }
 
-export const createUser = async (token, payload: CreateUserState): Promise<User[]> => {
+export const createUser = async (token, payload: CreateUserState, companyid): Promise<User[]> => {
 
     let data = {
         ...payload,
+        company_id: companyid,
         session_key: token,
     }
 

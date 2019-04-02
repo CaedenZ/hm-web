@@ -13,7 +13,10 @@ import {
   FormControl,
   Checkbox,
   FormControlLabel,
-  Button
+  Button,
+  InputLabel,
+  Select,
+  MenuItem
 } from "@material-ui/core";
 import CustomButton from "../component/CustomButton";
 import Avatar from 'react-avatar-edit'
@@ -23,6 +26,7 @@ import { SharedDispatchProps } from "../../../interface/propsInterface";
 import { history } from "../../../store"
 import { RootState } from "../../../reducer";
 import { User } from "../../../interface/userInterface";
+import { Country } from "../../../interface/countryInterface";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -64,7 +68,11 @@ const styles = (theme: Theme) =>
       flex: 1,
       alignItems: "center",
       justifyContent: "center"
-    }
+    },
+    formControl: {
+      margin: theme.spacing.unit,
+      minWidth: 120,
+    },
   });
 
 export interface UpdateUserState {
@@ -85,6 +93,7 @@ export interface UpdateUserState {
 export interface Props extends InState, WithStyles<typeof styles>, SharedDispatchProps { }
 interface InState {
   user: User,
+  countryList: Country[],
 }
 
 class UpdateUserPage extends Component<Props, UpdateUserState> {
@@ -128,6 +137,10 @@ class UpdateUserPage extends Component<Props, UpdateUserState> {
   }
 
   handleChange = (statekay: keyof UpdateUserState) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ [statekay]: event.target.value } as Pick<UpdateUserState, keyof UpdateUserState>);
+  };
+
+  handleChangeSelect = (statekay: keyof UpdateUserState) => (event: React.ChangeEvent<HTMLSelectElement>) => {
     this.setState({ [statekay]: event.target.value } as Pick<UpdateUserState, keyof UpdateUserState>);
   };
 
@@ -199,14 +212,21 @@ class UpdateUserPage extends Component<Props, UpdateUserState> {
               </Grid>
               <Grid item justify="center" container xs>
                 <div style={{ margin: 20 }}>
-                  <TextField
-                    id="country"
-                    label="Country"
-                    className={classes.textField}
-                    value={this.state.country}
-                    onChange={this.handleChange('country')}
-                    margin="normal"
-                  />
+                  {this.props.countryList.length > 0 && <FormControl>
+                    <InputLabel>Country</InputLabel>
+                    <Select
+                      id="country"
+                      className={classes.textField}
+                      value={this.state.country}
+                      onChange={this.handleChangeSelect('country')}
+                      inputProps={{
+                        name: 'country',
+                        id: 'country-simple',
+                      }}>
+                      {this.props.countryList.map((country) =>
+                        <MenuItem key={country.country_name} value={country.country_name}>{country.country_name}</MenuItem>
+                      )}
+                    </Select></FormControl>}
                   <TextField
                     id="address"
                     label="Address"
@@ -264,15 +284,20 @@ class UpdateUserPage extends Component<Props, UpdateUserState> {
                     onChange={this.handleChange('jobfunction')}
                     margin="normal"
                   />
-                  <TextField
-                    required
-                    id="status"
-                    label="status"
-                    className={classes.textField}
-                    value={this.state.status}
-                    onChange={this.handleChange('status')}
-                    margin="normal"
-                  />
+                  <FormControl className={classes.formControl}>
+                    <InputLabel>status</InputLabel>
+                    <Select
+                      value={this.state.status}
+                      onChange={this.handleChangeSelect('status')}
+                      inputProps={{
+                        name: 'status',
+                        id: 'status',
+                      }}
+                    >
+                      <MenuItem value={'Active'}>Active</MenuItem>
+                      <MenuItem value={'Inactive'}>Inactive</MenuItem>
+                    </Select>
+                  </FormControl>
                   <TextField
                     id="remarks"
                     label="remarks"
@@ -307,7 +332,8 @@ class UpdateUserPage extends Component<Props, UpdateUserState> {
 
 function mapStateToProps(state: RootState) {
   return {
-    user: state.userReducer.user
+    user: state.userReducer.user,
+    countryList: state.countryReducer.countryList,
   }
 }
 

@@ -18,6 +18,8 @@ export interface Company {
     webpage_url: string,
 }
 
+
+
 export interface Unit {
     unit_id: string,
     unit_name: string,

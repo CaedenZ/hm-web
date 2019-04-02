@@ -71,6 +71,7 @@ class CompanySelectMenu extends React.Component<Props, State> {
     this.props.getChildCompanyList()
     this.props.getUnitList()
     this.props.getRoleList()
+    this.props.getUserList()
   };
 
   handleClose = () => {

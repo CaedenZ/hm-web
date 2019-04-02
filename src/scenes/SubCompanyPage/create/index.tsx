@@ -84,7 +84,7 @@ export interface CreateCompanyState {
   contact_number: string;
   contact_email: string;
   hq_name: string;
-  financialyr_id: string;
+  financialyr_dt: string;
   base_currency_id: string;
   logo_main: string;
   parentcompany_id: string;
@@ -123,7 +123,7 @@ class CreateSubCompanyPage extends Component<Props, CreateCompanyState> {
     contact_number: '',
     contact_email: '',
     hq_name: '',
-    financialyr_id: '',
+    financialyr_dt: '',
     base_currency_id: '',
     logo_main: '',
     parentcompany_id: '',
@@ -236,7 +236,6 @@ class CreateSubCompanyPage extends Component<Props, CreateCompanyState> {
                       {this.props.countryList.map((country) =>
                         <MenuItem key={country.country_name} value={country.country_name}>{country.country_name}</MenuItem>
                       )}
-                      <MenuItem value={30}>Thirty</MenuItem>
                     </Select></FormControl>}
                   <TextField
                     id="address"
@@ -295,11 +294,11 @@ class CreateSubCompanyPage extends Component<Props, CreateCompanyState> {
                     margin="normal"
                   />
                   <TextField
-                    id="financialyr_id"
-                    label="financialyr_id"
+                    id="financialyr_dt"
+                    label="financialyr_dt"
                     className={classes.textField}
-                    value={this.state.financialyr_id}
-                    onChange={this.handleChange('financialyr_id')}
+                    value={this.state.financialyr_dt}
+                    onChange={this.handleChange('financialyr_dt')}
                     margin="normal"
                   />
                   <TextField

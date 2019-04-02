@@ -13,7 +13,10 @@ import {
   FormControl,
   Checkbox,
   FormControlLabel,
-  Button
+  Button,
+  MenuItem,
+  InputLabel,
+  Select
 } from "@material-ui/core";
 import CustomButton from "../component/CustomButton";
 import Avatar from 'react-avatar-edit'
@@ -21,6 +24,8 @@ import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../interface/propsInterface";
 import { history } from "../../../store"
+import { RootState } from "../../../reducer";
+import { Country } from "../../../interface/countryInterface";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -62,7 +67,11 @@ const styles = (theme: Theme) =>
       flex: 1,
       alignItems: "center",
       justifyContent: "center"
-    }
+    },
+    formControl: {
+      margin: theme.spacing.unit,
+      minWidth: 120,
+    },
   });
 
 export interface CreateUserState {
@@ -81,7 +90,11 @@ export interface CreateUserState {
   alias: string;
   employee_id: string;
 }
-export interface Props extends WithStyles<typeof styles>, SharedDispatchProps { }
+export interface Props extends InState, WithStyles<typeof styles>, SharedDispatchProps { }
+
+interface InState {
+  countryList: Country[],
+}
 
 class CreateUserPage extends Component<Props, CreateUserState> {
 
@@ -124,6 +137,10 @@ class CreateUserPage extends Component<Props, CreateUserState> {
     this.setState({ [statekay]: event.target.value } as Pick<CreateUserState, keyof CreateUserState>);
   };
 
+  handleChangeSelect = (statekay: keyof CreateUserState) => (event: React.ChangeEvent<HTMLSelectElement>) => {
+    this.setState({ [statekay]: event.target.value } as Pick<CreateUserState, keyof CreateUserState>);
+  };
+
   handleCreateUser = (e) => {
     e.preventDefault();
     this.props.createUser(this.state)
@@ -159,6 +176,7 @@ class CreateUserPage extends Component<Props, CreateUserState> {
                 <div style={{ margin: 20 }}>
                   <TextField
                     required
+                    type="email"
                     id="email"
                     label="Email"
                     className={classes.textField}
@@ -202,14 +220,21 @@ class CreateUserPage extends Component<Props, CreateUserState> {
               </Grid>
               <Grid item justify="center" container xs>
                 <div style={{ margin: 20 }}>
-                  <TextField
-                    id="country"
-                    label="Country"
-                    className={classes.textField}
-                    value={this.state.country}
-                    onChange={this.handleChange('country')}
-                    margin="normal"
-                  />
+                  {this.props.countryList.length > 0 && <FormControl>
+                    <InputLabel>Country</InputLabel>
+                    <Select
+                      id="country"
+                      className={classes.textField}
+                      value={this.state.country}
+                      onChange={this.handleChangeSelect('country')}
+                      inputProps={{
+                        name: 'country',
+                        id: 'country-simple',
+                      }}>
+                      {this.props.countryList.map((country) =>
+                        <MenuItem key={country.country_name} value={country.country_name}>{country.country_name}</MenuItem>
+                      )}
+                    </Select></FormControl>}
                   <TextField
                     id="address"
                     label="Address"
@@ -267,15 +292,20 @@ class CreateUserPage extends Component<Props, CreateUserState> {
                     onChange={this.handleChange('jobfunction')}
                     margin="normal"
                   />
-                  <TextField
-                    required
-                    id="status"
-                    label="status"
-                    className={classes.textField}
-                    value={this.state.status}
-                    onChange={this.handleChange('status')}
-                    margin="normal"
-                  />
+                  <FormControl className={classes.formControl}>
+                    <InputLabel>status</InputLabel>
+                    <Select
+                      value={this.state.status}
+                      onChange={this.handleChangeSelect('status')}
+                      inputProps={{
+                        name: 'status',
+                        id: 'status',
+                      }}
+                    >
+                      <MenuItem value={'Active'}>Active</MenuItem>
+                      <MenuItem value={'Inactive'}>Inactive</MenuItem>
+                    </Select>
+                  </FormControl>
                   <TextField
                     id="remarks"
                     label="remarks"
@@ -304,8 +334,11 @@ class CreateUserPage extends Component<Props, CreateUserState> {
   }
 }
 
-(CreateUserPage as React.ComponentClass<Props>).propTypes = {
-  classes: PropTypes.object.isRequired
-} as any;
 
-export default connect(null, mapDispatchToProps)(withStyles(styles)(CreateUserPage));
+function mapStateToProps(state: RootState) {
+  return {
+    countryList: state.countryReducer.countryList,
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CreateUserPage));

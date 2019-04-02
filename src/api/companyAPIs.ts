@@ -28,10 +28,11 @@ export const createCompany = async (token, payload: CreateCompanyState): Promise
     console.log(response.data.data)
     return response.data.data
 }
-export const updateCompany = async (token, payload: CreateCompanyState): Promise<Company[]> => {
+export const updateCompany = async (token, identifier, payload: CreateCompanyState): Promise<Company[]> => {
     // todo
     let data = {
         ...payload,
+        identifier: identifier,
         session_key: token,
     }
 
@@ -39,11 +40,12 @@ export const updateCompany = async (token, payload: CreateCompanyState): Promise
     console.log(response.data.data)
     return response.data.data
 }
-export const deleteCompany = async (token, payload: string) => {
+export const deleteCompany = async (token, identifier, payload: string) => {
     // todo
     let data = {
         company_id: payload,
         session_key: token,
+        identifier: identifier,
     }
 
     const response = await $axios.post('/company/deleteCompany', data)

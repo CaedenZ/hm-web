@@ -25,6 +25,7 @@ import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../interface/propsInterface";
 import { Company } from "../../../interface/companyInterface";
 import { Country } from "../../../interface/countryInterface";
+import { history } from "../../../store";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -83,7 +84,7 @@ export interface UpdateCompanyState {
   contact_number: string;
   contact_email: string;
   hq_name: string;
-  financialyr_id: string;
+  financialyr_dt: string;
   base_currency_id: string;
   logo_main: string;
   parentcompany_id: string;
@@ -122,7 +123,7 @@ class UpdateCompanyPage extends Component<Props, UpdateCompanyState> {
     contact_number: '',
     contact_email: '',
     hq_name: '',
-    financialyr_id: '',
+    financialyr_dt: '',
     base_currency_id: '',
     logo_main: '',
     parentcompany_id: '',
@@ -159,8 +160,10 @@ class UpdateCompanyPage extends Component<Props, UpdateCompanyState> {
     this.setState({ [statekay]: event.target.value } as Pick<UpdateCompanyState, keyof UpdateCompanyState>);
   };
 
-  handleUpdateCompany = () => {
-    this.props.createCompany(this.state)
+  handleUpdateCompany = (e) => {
+    e.preventDefault()
+    this.props.updateSubCompany(this.state)
+    history.goBack()
   }
 
   render() {
@@ -291,11 +294,11 @@ class UpdateCompanyPage extends Component<Props, UpdateCompanyState> {
                     margin="normal"
                   />
                   <TextField
-                    id="financialyr_id"
-                    label="financialyr_id"
+                    id="financialyr_dt"
+                    label="financialyr_dt"
                     className={classes.textField}
-                    value={this.state.financialyr_id}
-                    onChange={this.handleChange('financialyr_id')}
+                    value={this.state.financialyr_dt}
+                    onChange={this.handleChange('financialyr_dt')}
                     margin="normal"
                   />
                   <TextField

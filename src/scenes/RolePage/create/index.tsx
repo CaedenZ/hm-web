@@ -115,7 +115,7 @@ class CreateRolePage extends Component<Props, CREATEROLE> {
     this.setState(state => {
       const roleFunctionList = [...state.role_function];
       const newRoleFunction: Function = {
-        function: e.target.value
+        function_id: e.target.value
       }
       roleFunctionList.push(newRoleFunction)
       return { role_function: roleFunctionList };
@@ -171,8 +171,8 @@ class CreateRolePage extends Component<Props, CREATEROLE> {
               <Grid item justify="center" container xs={12}>
                 {this.state.role_function.map(roleFunction =>
                   <Chip
-                    key={roleFunction.function}
-                    label={roleFunction.function}
+                    key={roleFunction.function_id}
+                    label={roleFunction.function_id}
                     onDelete={this.handleDelete(roleFunction)}
                     className={classes.chip}
                   />

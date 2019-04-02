@@ -71,7 +71,7 @@ class CustomizedTable extends React.Component<Props, State> {
   }
 
   handleDelete = (id) => {
-    console.log('clicked')
+    this.props.deleteSubCompany(id)
   }
 
 

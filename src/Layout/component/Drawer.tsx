@@ -234,7 +234,7 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
           </List>
           <List>
             <ListItem button onClick={() => this.props.showSnackBar()}>
-              <ListItemText primary={'SnackBar'} />
+              <ListItemText primary={'V1.11'} />
             </ListItem>
           </List>
         </Drawer>

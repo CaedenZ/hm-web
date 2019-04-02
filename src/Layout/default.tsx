@@ -15,13 +15,13 @@ export interface Props extends SharedDispatchProps {
 class Layout extends Component<Props> {
 
   componentDidMount() {
+    console.log(this.props.token)
     this.props.getCountryList()
     this.props.getJobFunctionList()
-    this.props.getUserList()
     this.props.getRoleFunctionList()
   }
   render() {
-    if (this.props.token === null || '') {
+    if (this.props.token === '') {
       return (<Redirect to='/login' />)
     }
     else {

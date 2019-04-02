@@ -175,9 +175,10 @@ class CustomizedTable extends React.Component<Props, any> {
                               </CustomTableCell>
                             </TableRow>
                           ))}
-                          <Button color="primary" variant="contained" onClick={() => this.handleNewJobFunctionClick(row)} >New SubJobFunction</Button>
+
                         </TableBody>
                         }
+                        <Button color="primary" variant="contained" onClick={() => this.handleNewJobFunctionClick(row)} >New SubJobFunction</Button>
                       </Collapse>
                     </CustomTableCell>
                   }

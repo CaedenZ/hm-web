@@ -47,7 +47,10 @@ const styles = (theme: Theme) =>
       "&:nth-of-type(odd)": {
         backgroundColor: theme.palette.background.default
       }
-    }
+    },
+    logo: {
+      height: "20px"
+    },
   });
 
 export interface Props extends WithStyles<typeof styles>, SharedDispatchProps, InState { }
@@ -84,21 +87,23 @@ class CustomizedTable extends React.Component<Props, State> {
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
-                <CustomTableCell>Firstname</CustomTableCell>
-                <CustomTableCell align="right">Lastname</CustomTableCell>
-                <CustomTableCell align="right">Email</CustomTableCell>
-                <CustomTableCell align="right">Status</CustomTableCell>
-                <CustomTableCell align="right">Action</CustomTableCell>
+                <CustomTableCell>/</CustomTableCell>
+                <CustomTableCell align="left">Firstname</CustomTableCell>
+                <CustomTableCell align="left">Lastname</CustomTableCell>
+                <CustomTableCell align="left">Email</CustomTableCell>
+                <CustomTableCell align="left">Status</CustomTableCell>
+                <CustomTableCell align="left">Action</CustomTableCell>
               </TableRow>
             </TableHead>
             {this.props.userList.length > 0 && <TableBody>
               {this.props.userList.map((row, index) => (
                 <TableRow className={classes.row} key={row.email}>
-                  <CustomTableCell component="th" scope="row">{row.firstname}</CustomTableCell>
-                  <CustomTableCell align="right">{row.lastname}</CustomTableCell>
-                  <CustomTableCell align="right">{row.email}</CustomTableCell>
-                  <CustomTableCell align="right">{row.status}</CustomTableCell>
-                  <CustomTableCell align="right">
+                  <CustomTableCell component="th" scope="row"><img className={classes.logo} src={row.image} /></CustomTableCell>
+                  <CustomTableCell align="left">{row.firstname}</CustomTableCell>
+                  <CustomTableCell align="left">{row.lastname}</CustomTableCell>
+                  <CustomTableCell align="left">{row.email}</CustomTableCell>
+                  <CustomTableCell align="left">{row.status}</CustomTableCell>
+                  <CustomTableCell align="left">
                     <Button color="primary" variant="contained" onClick={() => this.handleUpdateButtonClick(row)}>view</Button>
                     <IconButton onClick={() => this.handleDelete(row.email, index)}><DeleteIcon /></IconButton>
                   </CustomTableCell>

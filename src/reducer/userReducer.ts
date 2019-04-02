@@ -70,7 +70,7 @@ export const getUserListEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
         filter(isActionOf(getUserListAction.request)),
         switchMap((action) =>
-            from(getUserList(state$.value.authenticationReducer.token)).pipe(
+            from(getUserList(state$.value.authenticationReducer.token, state$.value.companyReducer.selectedCompany.company_id)).pipe(
                 map((userList: User[]) => getUserListAction.success(userList)),
                 catchError(error => of(getUserListAction.failure(error.message)))
             )
@@ -81,10 +81,8 @@ export const createUserEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
         filter(isActionOf(createUserAction.request)),
         switchMap((action) =>
-            from(createUser(state$.value.authenticationReducer.token, action.payload)).pipe(
-                map(() => {
-                    createUserAction.success()
-                }),
+            from(createUser(state$.value.authenticationReducer.token, action.payload, state$.value.companyReducer.selectedCompany.company_id)).pipe(
+                map(() => createUserAction.success()),
                 catchError(error => of(createUserAction.failure(error.message)))
             )
         )

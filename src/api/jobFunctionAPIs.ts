@@ -43,7 +43,7 @@ export const deleteJobFunction = async (token, payload: string): Promise<any> =>
         session_key: token,
     }
 
-    const response = await $axios.post('/admin/createJobFunc', data)
+    const response = await $axios.post('/admin/deleteJobFunc', data)
     console.log(response.data.data)
     return response.data.data
 }
@@ -55,7 +55,7 @@ export const deleteSubJobFunction = async (token, payload: string): Promise<any>
         session_key: token,
     }
 
-    const response = await $axios.post('/admin/createSjobFunc', data)
+    const response = await $axios.post('/admin/deleteSjobFunc', data)
     console.log(response.data.data)
     return response.data.data
 }

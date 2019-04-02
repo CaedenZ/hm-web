@@ -34,7 +34,7 @@ export function authenticationReducer(state: AuthenticationState = {
                 ...state,
                 email: action.payload
             }
-        case 'LOG_IN_SUCCESS': 
+        case 'LOG_IN_SUCCESS':
             return {
                 ...state,
                 token: action.payload
@@ -42,7 +42,7 @@ export function authenticationReducer(state: AuthenticationState = {
         case 'LOG_OUT':
             return {
                 ...state,
-                token: null
+                token: "",
             }
         default:
             return state
