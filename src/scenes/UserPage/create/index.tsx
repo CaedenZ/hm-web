@@ -119,7 +119,7 @@ class CreateUserPage extends Component<Props, CreateUserState> {
     address: '',
     postal_code: '',
     remarks: '',
-    status: '',
+    status: 'Active',
     jobfunction: '',
     contact: '',
   }

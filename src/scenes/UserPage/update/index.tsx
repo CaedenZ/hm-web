@@ -163,16 +163,18 @@ class UpdateUserPage extends Component<Props, UpdateUserState> {
             <Grid container className={classes.grid} spacing={16}>
               <Grid item justify="center" xs container>
                 <Grid container direction="column" spacing={16}>
-                  <div style={{ margin: 20, justifyContent: 'center' }}>
-                    <Avatar
-                      width={200}
-                      height={150}
-                      onCrop={this.onCrop}
-                      onClose={this.onClose}
-                    />
-                    <Typography variant="h6">Profile Picture</Typography>
+                  <div style={{ display: 'flex' }}>
+                    <div style={{ margin: 20, justifyContent: 'center' }}>
+                      <Avatar
+                        width={200}
+                        height={150}
+                        onCrop={this.onCrop}
+                        onClose={this.onClose}
+                      />
+                      <Typography variant="h6">Profile Picture</Typography>
+                    </div>
+                    <img src={this.state.image} />
                   </div>
-
                 </Grid>
               </Grid>
               <Grid item justify="center" xs container>

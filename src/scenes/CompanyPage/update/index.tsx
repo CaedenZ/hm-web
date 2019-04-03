@@ -24,7 +24,7 @@ import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../interface/propsInterface";
 import { Company } from "../../../interface/companyInterface";
-import { Country } from "../../../interface/countryInterface";
+import { Country, CountryState } from "../../../interface/countryInterface";
 import { history } from "../../../store";
 
 const styles = (theme: Theme) =>
@@ -72,11 +72,11 @@ const styles = (theme: Theme) =>
 
 export interface UpdateCompanyState {
   company_id: string;
-  sector: string;
+  sector: any;
   location: string;
   company_name: string;
-  industry: string;
-  country: string;
+  industry: any;
+  country: any;
   address: string;
   postal_code: string;
   logo_small: string;
@@ -94,7 +94,7 @@ export interface Props extends InState, WithStyles<typeof styles>, SharedDispatc
 
 interface InState {
   updatingCompany: Company;
-  countryList: Country[];
+  paremeterList: CountryState;
 }
 class UpdateCompanyPage extends Component<Props, UpdateCompanyState> {
 
@@ -115,7 +115,7 @@ class UpdateCompanyPage extends Component<Props, UpdateCompanyState> {
     location: '',
     company_name: '',
     industry: '',
-    country: '',
+    country: [],
     address: '',
     postal_code: '',
     logo_small: '',
@@ -152,11 +152,11 @@ class UpdateCompanyPage extends Component<Props, UpdateCompanyState> {
   }
 
   handleChange = (statekay: keyof UpdateCompanyState) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ [statekay]: event.target.value } as Pick<UpdateCompanyState, keyof UpdateCompanyState>);
+    this.setState({ [statekay]: event.target.value } as unknown as Pick<UpdateCompanyState, keyof UpdateCompanyState>);
   };
 
   handleChangeSelect = (statekay: keyof UpdateCompanyState) => (event: React.ChangeEvent<HTMLSelectElement>) => {
-    this.setState({ [statekay]: event.target.value } as Pick<UpdateCompanyState, keyof UpdateCompanyState>);
+    this.setState({ [statekay]: event.target.value } as unknown as Pick<UpdateCompanyState, keyof UpdateCompanyState>);
   };
 
   handleUpdateCompany = (e) => {
@@ -177,25 +177,32 @@ class UpdateCompanyPage extends Component<Props, UpdateCompanyState> {
             <Grid container className={classes.grid} spacing={16}>
               <Grid item justify="center" xs container>
                 <Grid container direction="column" spacing={16}>
-                  <div style={{ margin: 20, justifyContent: 'center' }}>
-                    <Avatar
-                      width={200}
-                      height={150}
-                      onCrop={this.onMainCrop}
-                      onClose={this.onMainClose}
-                    />
-                    <Typography variant="h6">Main Logo</Typography>
+                  <div style={{ display: 'flex' }}>
+                    <div style={{ margin: 20, justifyContent: 'center' }}>
+                      <Avatar
+                        width={200}
+                        height={150}
+                        onCrop={this.onMainCrop}
+                        onClose={this.onMainClose}
+                      />
+                      <Typography variant="h6">Main Logo</Typography>
+                    </div>
+                    <img src={this.state.logo_main} />
                   </div>
                 </Grid>
-                <Grid container direction="column" spacing={16}>
-                  <div style={{ margin: 20, justifyContent: 'center' }}>
-                    <Avatar
-                      width={200}
-                      height={150}
-                      onCrop={this.onCrop}
-                      onClose={this.onClose}
-                    />
-                    <Typography variant="h6">Small Logo</Typography>
+                <Grid container direction="row" spacing={16}>
+                  <div style={{ display: 'flex' }}>
+                    <div style={{ margin: 20, justifyContent: 'center' }}>
+                      <Avatar
+                        width={200}
+                        height={150}
+                        src={this.state.logo_small}
+                        onCrop={this.onCrop}
+                        onClose={this.onClose}
+                      />
+                      <Typography variant="h6">Small Logo</Typography>
+                    </div>
+                    <img src={this.state.logo_small} />
                   </div>
                 </Grid>
               </Grid>
@@ -221,18 +228,19 @@ class UpdateCompanyPage extends Component<Props, UpdateCompanyState> {
               </Grid>
               <Grid item justify="center" container xs>
                 <div style={{ margin: 20 }}>
-                  {this.props.countryList.length > 0 && <FormControl>
+                  {this.props.paremeterList.countryList.length > 0 && <FormControl>
                     <InputLabel>Country</InputLabel>
                     <Select
                       id="country"
+                      multiple
                       className={classes.textField}
-                      value={this.state.country}
+                      value={this.state.country === '' ? [] : this.state.country}
                       onChange={this.handleChangeSelect('country')}
                       inputProps={{
                         name: 'country',
                         id: 'country-simple',
                       }}>
-                      {this.props.countryList.map((country) =>
+                      {this.props.paremeterList.countryList.map((country) =>
                         <MenuItem key={country.country_name} value={country.country_name}>{country.country_name}</MenuItem>
                       )}
                     </Select></FormControl>}
@@ -312,22 +320,38 @@ class UpdateCompanyPage extends Component<Props, UpdateCompanyState> {
               </Grid>
               <Grid item justify="center" container xs>
                 <div style={{ margin: 20 }}>
-                  <TextField
-                    id="industry"
-                    label="industry"
-                    className={classes.textField}
-                    value={this.state.industry}
-                    onChange={this.handleChange('industry')}
-                    margin="normal"
-                  />
-                  <TextField
-                    id="sector"
-                    label="sector"
-                    className={classes.textField}
-                    value={this.state.sector}
-                    onChange={this.handleChange('sector')}
-                    margin="normal"
-                  />
+                  {this.props.paremeterList.industryList.length > 0 && <FormControl>
+                    <InputLabel>Industry</InputLabel>
+                    <Select
+                      id="industry"
+                      multiple
+                      className={classes.textField}
+                      value={this.state.industry === '' ? [] : this.state.industry}
+                      onChange={this.handleChangeSelect('industry')}
+                      inputProps={{
+                        name: 'industry',
+                        id: 'industry-simple',
+                      }}>
+                      {this.props.paremeterList.industryList.map((industry) =>
+                        <MenuItem key={industry.name} value={industry.name}>{industry.name}</MenuItem>
+                      )}
+                    </Select></FormControl>}
+                  {this.props.paremeterList.industryList.length > 0 && <FormControl>
+                    <InputLabel>Sector</InputLabel>
+                    <Select
+                      id="sector"
+                      multiple
+                      className={classes.textField}
+                      value={this.state.sector === '' ? [] : this.state.sector}
+                      onChange={this.handleChangeSelect('sector')}
+                      inputProps={{
+                        name: 'sector',
+                        id: 'sector-simple',
+                      }}>
+                      {this.props.paremeterList.sectorList.map((sector) =>
+                        <MenuItem key={sector.name} value={sector.name}>{sector.name}</MenuItem>
+                      )}
+                    </Select></FormControl>}
                   <TextField
                     id="webpage_url"
                     label="webpage_url"
@@ -363,7 +387,7 @@ class UpdateCompanyPage extends Component<Props, UpdateCompanyState> {
 function mapStateToProps(state: any) {
   return {
     updatingCompany: state.companyReducer.selectedUpdateCompany,
-    countryList: state.countryReducer.countryList
+    paremeterList: state.countryReducer
   }
 }
 

@@ -23,6 +23,7 @@ import { Button, IconButton } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 import { Role } from "../../interface/roleInterface";
 import { history } from "../../store";
+import UpdateIcon from '@material-ui/icons/PlaylistAddCheck';
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -84,8 +85,12 @@ class RolePage extends React.Component<Props, State> {
   }
 
   handleDelete = (id) => {
-    console.log('clicked')
-    this.props.deleteRole(id)
+    const payload = {
+      type: 'delete',
+      object: 'role',
+      id: id,
+    }
+    this.props.showDialog(payload)
   }
 
   render() {
@@ -109,7 +114,7 @@ class RolePage extends React.Component<Props, State> {
                   <CustomTableCell component="th" scope="row">{row.role_name}</CustomTableCell>
                   <CustomTableCell align="right">{row.role_description}</CustomTableCell>
                   <CustomTableCell align="right">
-                    <Button color="primary" variant="contained" onClick={() => this.handleUpdateButtonClick(row)}>view</Button>
+                    <IconButton onClick={() => this.handleUpdateButtonClick(row)}><UpdateIcon /></IconButton>
                     <IconButton onClick={() => this.handleDelete(row.role_id)}><DeleteIcon /></IconButton>
                   </CustomTableCell>
                 </TableRow>

@@ -107,13 +107,21 @@ class CustomizedTable extends React.Component<Props, any> {
   }
 
   handleDeleteJF = (id) => {
-    console.log(this.state)
-    this.props.deleteJobFunction(id)
+    const payload = {
+      type: 'delete',
+      object: 'jobfunction',
+      id: id,
+    }
+    this.props.showDialog(payload)
   }
 
   handleDeleteSJF = (id) => {
-    console.log(this.state)
-    this.props.deleteSubJobFunction(id)
+    const payload = {
+      type: 'delete',
+      object: 'subjobfunction',
+      id: id,
+    }
+    this.props.showDialog(payload)
   }
 
   handleClick = (index: any) => {
@@ -178,7 +186,8 @@ class CustomizedTable extends React.Component<Props, any> {
 
                         </TableBody>
                         }
-                        <Button color="primary" variant="contained" onClick={() => this.handleNewJobFunctionClick(row)} >New SubJobFunction</Button>
+                        {/* <Button color="primary" variant="contained" onClick={() => this.handleNewJobFunctionClick(row)} >New SubJobFunction</Button> */}
+                        <IconButton onClick={() => this.handleNewJobFunctionClick(row)}><AddIcon /></IconButton>
                       </Collapse>
                     </CustomTableCell>
                   }

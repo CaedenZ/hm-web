@@ -1,5 +1,6 @@
 import { createAction, createAsyncAction } from "typesafe-actions"
 import { LOGINCRED, FORGETPWCRED } from "../interface/credInterface";
+import { Profile } from "../interface/authInterface";
 
 
 
@@ -31,3 +32,12 @@ export const forgetPasswordAction = createAsyncAction(
   FORGET_PASSWORD_SUCCESS,
   FORGET_PASSWORD_FAILURE
 )<FORGETPWCRED, void, void>()
+
+const GET_USER_PROFILE_REQUEST = "GET_USER_PROFILE_REQUEST"
+const GET_USER_PROFILE_SUCCESS = "GET_USER_PROFILE_SUCCESS"
+const GET_USER_PROFILE_FAILURE = "GET_USER_PROFILE_FAILURE"
+export const getUserProfileAction = createAsyncAction(
+  GET_USER_PROFILE_REQUEST,
+  GET_USER_PROFILE_SUCCESS,
+  GET_USER_PROFILE_FAILURE
+)<string, Profile, void>()

@@ -1,5 +1,5 @@
 import { createAsyncAction } from "typesafe-actions";
-import { Country } from "../interface/countryInterface";
+import { Country, Currency, Industry, Sector } from "../interface/countryInterface";
 
 const GET_COUNTRY_LIST_REQUEST = "GET_COUNTRY_LIST_REQUEST"
 const GET_COUNTRY_LIST_SUCCESS = "GET_COUNTRY_LIST_SUCCESS"
@@ -9,3 +9,30 @@ export const getCountryListAction = createAsyncAction(
     GET_COUNTRY_LIST_SUCCESS,
     GET_COUNTRY_LIST_FAILURE
 )<void, Country[], void>()
+
+const GET_CURRENCY_LIST_REQUEST = "GET_CURRENCY_LIST_REQUEST"
+const GET_CURRENCY_LIST_SUCCESS = "GET_CURRENCY_LIST_SUCCESS"
+const GET_CURRENCY_LIST_FAILURE = "GET_CURRENCY_LIST_FAILURE"
+export const getCurrencyListAction = createAsyncAction(
+    GET_CURRENCY_LIST_REQUEST,
+    GET_CURRENCY_LIST_SUCCESS,
+    GET_CURRENCY_LIST_FAILURE
+)<void, Currency[], void>()
+
+const GET_INDUSTRY_LIST_REQUEST = "GET_INDUSTRY_LIST_REQUEST"
+const GET_INDUSTRY_LIST_SUCCESS = "GET_INDUSTRY_LIST_SUCCESS"
+const GET_INDUSTRY_LIST_FAILURE = "GET_INDUSTRY_LIST_FAILURE"
+export const getIndustryListAction = createAsyncAction(
+    GET_INDUSTRY_LIST_REQUEST,
+    GET_INDUSTRY_LIST_SUCCESS,
+    GET_INDUSTRY_LIST_FAILURE
+)<void, Industry[], void>()
+
+const GET_SECTOR_LIST_REQUEST = "GET_SECTOR_LIST_REQUEST"
+const GET_SECTOR_LIST_SUCCESS = "GET_SECTOR_LIST_SUCCESS"
+const GET_SECTOR_LIST_FAILURE = "GET_SECTOR_LIST_FAILURE"
+export const getSectorListAction = createAsyncAction(
+    GET_SECTOR_LIST_REQUEST,
+    GET_SECTOR_LIST_SUCCESS,
+    GET_SECTOR_LIST_FAILURE
+)<void, Sector[], void>()

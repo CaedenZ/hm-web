@@ -20,6 +20,7 @@ import logo from 'assets/images/companylogo2.png';
 import theme from "../../assets/theme";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { Profile } from "../../interface/authInterface";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -63,76 +64,59 @@ const styles = (theme: Theme) =>
       justifyContent: "center"
     }
   });
-export interface Props extends WithStyles<typeof styles> { }
+export interface Props extends InState, WithStyles<typeof styles> { }
 
 export interface State {
-  email: string;
-  password: string;
-  firstname: string;
-  lastname: string;
-  country: string;
-  address: string;
-  postalcode: string;
-  multiline: string;
-  currency: string;
-  preview: any;
-  src: any;
-  roles: any;
+  email: string,
+  firstname: string,
+  lastname: string,
+  alias: string,
+  employee_id: string,
+  image: string,
+  jobfunction: string,
+  country: string,
+  address: string,
+  postal_code: string,
+  status: string,
+  remarks: string,
+  info: any
 }
 
+interface InState {
+  profile: Profile,
+}
 class UserProfilePage extends Component<Props, State> {
 
 
   constructor(props) {
     super(props)
-    this.onCrop = this.onCrop.bind(this)
-    this.onClose = this.onClose.bind(this)
   }
 
 
   state: State = {
-    preview: 'adfgsf',
-    src: '',
-    email: 'em',
-    password: '',
-    firstname: 'fn',
-    lastname: 'ln',
-    country: 'c',
-    address: 'a',
-    postalcode: '111111',
-    multiline: 'Controlled',
-    currency: 'EUR',
-    roles: [
-      {
-        id: 1,
-        title: 'Dummy 1',
-        checked: false
-      },
-      {
-        id: 2,
-        title: 'Dummy 2',
-        checked: false
-      },
-    ]
+    email: '',
+    firstname: '',
+    lastname: '',
+    alias: '',
+    employee_id: '',
+    image: '',
+    jobfunction: '',
+    country: '',
+    address: '',
+    postal_code: '',
+    status: '',
+    remarks: '',
+    info: ''
   }
 
-  onClose() {
-    this.setState({ preview: null })
-  }
-
-  onCrop(preview) {
-    this.setState({ preview })
+  componentDidMount() {
+    this.setState(this.props.profile)
   }
 
   handleChange = (statekay: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ [statekay]: event.target.value } as Pick<State, keyof State>);
   };
 
-  handleCheckbox = (index: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.state.roles[index].checked = event.target.checked
-    this.forceUpdate()
-    console.log(this.state.roles)
-  };
 
   render() {
     const { classes } = this.props;
@@ -146,8 +130,8 @@ class UserProfilePage extends Component<Props, State> {
           <Grid container className={classes.grid} spacing={16}>
             <Grid item justify="center" xs container>
               <Grid container direction="column" spacing={16} xs>
-                <div style={{height:theme.spacing.unit * 40, margin: 20, justifyContent: 'center'}}>
-                  <img style={{height:'inherit'}} src={this.state.preview}  onError={(e:any)=>{e.target.onerror = null; e.target.src=logo}} alt="Preview" />
+                <div style={{ height: theme.spacing.unit * 40, margin: 20, justifyContent: 'center' }}>
+                  <img style={{ height: 'inherit' }} src={this.state.image} onError={(e: any) => { e.target.onerror = null; e.target.src = logo }} alt="Preview" />
                   <Typography variant="h6">Profile Picture</Typography>
                 </div>
 
@@ -209,8 +193,8 @@ class UserProfilePage extends Component<Props, State> {
                   id="postal_code"
                   label="Postal Code"
                   className={classes.textField}
-                  value={this.state.postalcode}
-                  onChange={this.handleChange('postalcode')}
+                  value={this.state.postal_code}
+                  onChange={this.handleChange('postal_code')}
                   margin="normal"
                 />
               </div>
@@ -221,15 +205,9 @@ class UserProfilePage extends Component<Props, State> {
             Role
       </Typography>
           <Divider />
-          <Grid container className={classes.grid} spacing={16}>
-            {this.state.roles.map(function (role: any, index: number) {
-              return (
-                <Grid key={role.title} item justify="center" xs container>
-                  <Typography>{role.title}</Typography>
-                </Grid>
-              );
-            })}
-          </Grid>
+          {this.state.info !== '' && <Grid container className={classes.grid} spacing={16}>
+            <Divider />
+          </Grid>}
           <Divider />
 
         </Paper>
@@ -243,11 +221,9 @@ class UserProfilePage extends Component<Props, State> {
 } as any;
 
 function mapStateToProps(state) {
-  return { todos: state.todos }
+  return {
+    profile: state.authenticationReducer.profile
+  }
 }
 
-function mapDispatchToProps(dispatch) {
-  return { actions: "s" }
-}
-
-export default (withStyles(styles)(UserProfilePage));
+export default connect(mapStateToProps, null)(withStyles(styles)(UserProfilePage));

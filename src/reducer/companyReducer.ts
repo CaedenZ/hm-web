@@ -13,6 +13,9 @@ import { CompanyState, Company, Unit } from "../interface/companyInterface";
 import { getCompanyList, getChildCompanyList, createCompany, getUnitList, createUnit, updateUnit, deleteUnit, createSubCompany, deleteSubCompany, deleteCompany, updateSubCompany, updateCompany } from "../api/companyAPIs";
 import { getCompanyListAction, getChildCompanyListAction, createCompanyAction, getUnitListAction, getChildUnitListAction, createUnitAction, createSubUnitAction, updateUnitAction, deleteUnitAction, updateSubUnitAction, deleteSubUnitAction, updateChildUnitAction, deleteChildUnitAction, getSubUnitListAction, createChildUnitAction, createSubCompanyAction, deleteSubCompanyAction, deleteCompanyAction, updateCompanyAction, updateSubCompanyAction } from "../actions/companyAction";
 import { isActionOf } from "typesafe-actions";
+import { getRegionListAction } from "../actions/regionAction";
+import { getUserListAction } from "../actions/userAction";
+import { getRoleListAction } from "../actions/roleAction";
 
 
 export function companyReducer(state: CompanyState = {
@@ -27,7 +30,7 @@ export function companyReducer(state: CompanyState = {
         location: '',
         company_name: '',
         industry: '',
-        country: '',
+        country: [],
         address: '',
         postal_code: '',
         logo_small: '',
@@ -43,6 +46,11 @@ export function companyReducer(state: CompanyState = {
 }, action) {
     switch (action.type) {
         case 'SELECT_COMPANY':
+            action.asyncDispatch(getChildCompanyListAction.request())
+            action.asyncDispatch(getRegionListAction.request())
+            action.asyncDispatch(getUnitListAction.request())
+            action.asyncDispatch(getRoleListAction.request())
+            action.asyncDispatch(getUserListAction.request())
             return {
                 ...state,
                 selectedCompany: action.payload

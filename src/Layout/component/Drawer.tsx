@@ -33,6 +33,7 @@ import logo from 'assets/images/3CGradient Full.png';
 import { mapDispatchToProps } from "../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../interface/propsInterface";
+import { Company } from "../../interface/companyInterface";
 
 const drawerWidth = 240;
 
@@ -76,8 +77,11 @@ const styles = (theme: Theme) =>
     }
   });
 
-export interface Props extends SharedDispatchProps, WithStyles<typeof styles> { }
+export interface Props extends InState, SharedDispatchProps, WithStyles<typeof styles> { }
 
+interface InState {
+  selectedCompany: Company
+}
 interface State { }
 
 class PermanentDrawerLeft extends React.Component<Props, State> {
@@ -127,23 +131,39 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
       }
     ];
 
-    const adminfunction = [
-      {
-        title: "Setting",
-        path: "/setting",
-        icon: <SettingIcon />,
-      },
-      {
-        title: "Job Function",
-        path: "/jobfunction",
-        icon: <JobFunctionIcon />,
-      },
-      {
-        title: "Company",
-        path: "/company",
-        icon: <CompanyIcon />,
-      },
-    ];
+    const adminfunction = (): any => {
+
+      let adm = [
+        {
+          title: "Setting",
+          path: "/setting",
+          icon: <SettingIcon />,
+        },
+        {
+          title: "Job Function",
+          path: "/jobfunction",
+          icon: <JobFunctionIcon />,
+        },
+        {
+          title: "Company",
+          path: "/company",
+          icon: <CompanyIcon />,
+        },
+      ]
+
+      let user = [
+        {
+          title: "Company",
+          path: "/company/update",
+          icon: <CompanyIcon />,
+        },
+      ]
+
+      if (this.props.selectedCompany.company_id === '5ZwOXIkeKuPhpFriTsmD') {
+        return adm
+      }
+      else return user
+    }
 
     const itemlist3 = [
       {
@@ -186,7 +206,7 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
             <ListItemIcon>
               <MenuIcon />
             </ListItemIcon>
-            <ListItemText primary="company" />
+            <ListItemText primary="Company" />
           </ListItem>
           <List className={classes.navlist}>
             {itemlist2.map((item, index) => (
@@ -205,10 +225,10 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
             <ListItemIcon>
               <MenuIcon />
             </ListItemIcon>
-            <ListItemText primary="admin" />
+            <ListItemText primary="Configuration" />
           </ListItem>
           <List className={classes.navlist}>
-            {adminfunction.map((item, index) => (
+            {adminfunction().map((item, index) => (
               <Link key={item.title} to={item.path} style={{ textDecoration: "none" }}>
                 <ListItem button >
                   <ListItemIcon style={{ marginLeft: "20px" }}>
@@ -234,7 +254,7 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
           </List>
           <List>
             <ListItem button onClick={() => this.props.showSnackBar()}>
-              <ListItemText primary={'V1.11'} />
+              <ListItemText primary={'V1.2'} />
             </ListItem>
           </List>
         </Drawer>
@@ -251,4 +271,11 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
   classes: PropTypes.object.isRequired
 } as any;
 
-export default connect(null, mapDispatchToProps)(withStyles(styles)(PermanentDrawerLeft));
+function mapStateToProps(state: any) {
+  return {
+    selectedCompany: state.companyReducer.selectedCompany,
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(PermanentDrawerLeft));

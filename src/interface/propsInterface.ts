@@ -18,6 +18,9 @@ import { CREATEROLE, UPDATEROLE, Role } from "./roleInterface";
 export interface SharedDispatchProps {
     showSnackBar: () => void,
     closeSnackBar: () => void,
+    showDialog: (payload) => void,
+    closeDialog: () => void,
+
     login: (cred: LOGINCRED) => void,
     logout: () => void,
 
@@ -39,6 +42,9 @@ export interface SharedDispatchProps {
     deleteRole: (cred: string) => void,
 
     getCountryList: () => void,
+    getIndustryList: () => void,
+    getCurrencyList: () => void,
+    getSectorList: () => void,
 
     createUser: (cred: CreateUserState) => void,
     selectUser: (user: User) => void,

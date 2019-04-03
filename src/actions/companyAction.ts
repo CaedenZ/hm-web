@@ -3,9 +3,6 @@ import { Company, Unit } from "../interface/companyInterface";
 import { CreateCompanyState } from "../scenes/CompanyPage/create";
 import { CreateUnitState } from "../scenes/UnitPage/create";
 
-interface GETCOMPANYLISTCRED {
-    session_key: string
-}
 
 const SELECT_COMPANY = "SELECT_COMPANY"
 export const selectCompanyAction = createAction(SELECT_COMPANY,

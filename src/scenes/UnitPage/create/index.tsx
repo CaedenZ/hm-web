@@ -144,6 +144,15 @@ class CreateMainUnitPage extends Component<Props, CreateUnitState> {
   render() {
     const { classes } = this.props;
 
+    const regionmenu = () => {
+      if (this.props.regionList.length > 0) {
+        return (this.props.regionList.map((region, index) =>
+          <MenuItem key={region.region_id} value={region.region_name}>{region.region_name}</MenuItem>
+        ))
+      }
+      else return <MenuItem value=''>Please Create a Region</MenuItem>
+    }
+
     const unitData = () => {
       switch (this.state.unit_type) {
         case 'BU':
@@ -166,9 +175,7 @@ class CreateMainUnitPage extends Component<Props, CreateUnitState> {
                 id: 'unit_data',
               }}
             >
-              {this.props.regionList.map((region, index) =>
-                <MenuItem key={region.region_id} value={region.region_name}>{region.region_name}</MenuItem>
-              )}
+              {regionmenu()}
             </Select>
           </FormControl>
         case 'country':

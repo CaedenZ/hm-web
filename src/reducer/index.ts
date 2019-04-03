@@ -1,5 +1,5 @@
 import { combineReducers } from "redux"
-import { authenticationReducer, loginEpic, forgetPasswordEpic } from "./authenticationReducer"
+import { authenticationReducer, loginEpic, forgetPasswordEpic, getUserProfileEpic } from "./authenticationReducer"
 // // import currentReport, {
 // //   CurrentReportState,
 // //   generateReportEpic,
@@ -16,10 +16,11 @@ import { initReducer } from "./initReducer";
 import { jobFunctionReducer, getJobFunctionListEpic, createJobFunctionEpic, createSubJobFunctionEpic, deleteSubJobFunctionEpic, deleteJobFunctionEpic } from "./jobFunctionReducer";
 import { connectRouter } from 'connected-react-router'
 import { createBrowserHistory } from "history";
-import { getCountryListEpic, countryReducer } from "./countryReducer";
+import { getCountryListEpic, countryReducer, getCurrencyListEpic, getIndustryListEpic, getSectorListEpic } from "./countryReducer";
 import { regionReducer, getRegionListEpic, createRegionEpic, deleteRegionEpic, updateRegionEpic } from "./regionReducer";
 import { snackBarReducer } from "./snackBarReducer";
 import { getRoleListEpic, getRoleFunctionListEpic, updateRoleEpic, createRoleEpic, deleteRoleEpic, roleReducer } from "./roleReducer";
+import { dialogReducer } from "./dialogReducer";
 
 
 export const history = createBrowserHistory()
@@ -33,6 +34,7 @@ export const rootReducer = combineReducers({
     countryReducer,
     regionReducer,
     snackBarReducer,
+    dialogReducer,
     roleReducer,
     router: connectRouter(history),
     //   userDetail,
@@ -42,6 +44,7 @@ export const rootReducer = combineReducers({
 export const rootEpic = combineEpics(
     loginEpic,
     forgetPasswordEpic,
+    getUserProfileEpic,
 
     getUserListEpic,
     createUserEpic,
@@ -49,6 +52,9 @@ export const rootEpic = combineEpics(
     updateUserEpic,
 
     getCountryListEpic,
+    getCurrencyListEpic,
+    getIndustryListEpic,
+    getSectorListEpic,
 
     createRegionEpic,
     getRegionListEpic,

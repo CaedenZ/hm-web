@@ -66,12 +66,12 @@ class CompanySelectMenu extends React.Component<Props, State> {
   handleMenuItemClick = (event, index) => {
     this.setState({ selectedIndex: index, anchorEl: null });
     this.props.selectCompany(this.props.companyList[index])
-    this.props.getChildCompanyList()
-    this.props.getRegionList()
-    this.props.getChildCompanyList()
-    this.props.getUnitList()
-    this.props.getRoleList()
-    this.props.getUserList()
+    this.props.selectUpdateCompany(this.props.companyList[index])
+    // this.props.getChildCompanyList()
+    // this.props.getRegionList()
+    // this.props.getUnitList()
+    // this.props.getRoleList()
+    // this.props.getUserList()
   };
 
   handleClose = () => {
@@ -135,4 +135,4 @@ function mapStateToProps(state: any) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CompanySelectMenu));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CompanySelectMenu)); 

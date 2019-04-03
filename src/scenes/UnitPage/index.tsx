@@ -23,6 +23,8 @@ import { Button, IconButton } from "@material-ui/core";
 import { Redirect } from "react-router-dom";
 import DeleteIcon from '@material-ui/icons/Delete';
 import { history } from "../../store";
+import UpdateIcon from '@material-ui/icons/PlaylistAddCheck';
+import ViewIcon from '@material-ui/icons/ZoomIn';
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -87,7 +89,13 @@ class UnitPage extends React.Component<Props, State> {
   }
 
   handleDelete = (id) => {
-    this.props.deleteUnit(id)
+    const payload = {
+      type: 'delete',
+      object: 'unit',
+      id: id,
+    }
+    this.props.showDialog(payload)
+    // this.props.deleteUnit(id)
   }
 
   render() {
@@ -112,8 +120,8 @@ class UnitPage extends React.Component<Props, State> {
                   </CustomTableCell>
                   <CustomTableCell align="right">{row.unit_type}</CustomTableCell>
                   <CustomTableCell align="right">
-                    <Button color="primary" variant="contained" onClick={() => this.handleViewButtonClick(row)}>view</Button>
-                    <Button color="primary" variant="contained" onClick={() => this.handleUpdateButtonClick(row)}>update</Button>
+                    <IconButton onClick={() => this.handleViewButtonClick(row)}><ViewIcon /></IconButton>
+                    <IconButton onClick={() => this.handleUpdateButtonClick(row)}><UpdateIcon /></IconButton>
                     <IconButton onClick={() => this.handleDelete(row.unit_id)}><DeleteIcon /></IconButton>
                   </CustomTableCell>
                 </TableRow>

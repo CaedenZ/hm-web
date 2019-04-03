@@ -22,6 +22,7 @@ import { User } from "../../interface/userInterface";
 import { Button, IconButton } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 import { history } from "../../store";
+import UpdateIcon from '@material-ui/icons/PlaylistAddCheck';
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -74,7 +75,13 @@ class CustomizedTable extends React.Component<Props, State> {
   }
 
   handleDelete = (id, index) => {
-    this.props.deleteUser(id)
+
+    const payload = {
+      type: 'delete',
+      object: 'user',
+      id: id,
+    }
+    this.props.showDialog(payload)
   }
 
   render() {
@@ -104,7 +111,7 @@ class CustomizedTable extends React.Component<Props, State> {
                   <CustomTableCell align="left">{row.email}</CustomTableCell>
                   <CustomTableCell align="left">{row.status}</CustomTableCell>
                   <CustomTableCell align="left">
-                    <Button color="primary" variant="contained" onClick={() => this.handleUpdateButtonClick(row)}>view</Button>
+                    <IconButton onClick={() => this.handleUpdateButtonClick(row)}><UpdateIcon /></IconButton>
                     <IconButton onClick={() => this.handleDelete(row.email, index)}><DeleteIcon /></IconButton>
                   </CustomTableCell>
                 </TableRow>

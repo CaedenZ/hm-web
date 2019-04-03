@@ -23,6 +23,7 @@ import { Button, IconButton } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 import { Region } from "../../interface/regionInterface";
 import { history } from "../../store";
+import UpdateIcon from '@material-ui/icons/PlaylistAddCheck';
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -84,8 +85,12 @@ class RegionPage extends React.Component<Props, State> {
   }
 
   handleDelete = (id) => {
-    console.log('clicked')
-    this.props.deleteRegion(id)
+    const payload = {
+      type: 'delete',
+      object: 'region',
+      id: id,
+    }
+    this.props.showDialog(payload)
   }
 
   render() {
@@ -111,7 +116,8 @@ class RegionPage extends React.Component<Props, State> {
                     country.country_name + "  "
                   ))}</CustomTableCell> : <CustomTableCell />}
                   <CustomTableCell align="right">
-                    <Button color="primary" variant="contained" onClick={() => this.handleUpdateButtonClick(row)}>view</Button>
+                    <IconButton onClick={() => this.handleUpdateButtonClick(row)}><UpdateIcon /></IconButton>
+                    {/* <Button color="primary" variant="contained" onClick={() => this.handleUpdateButtonClick(row)}>view</Button> */}
                     <IconButton onClick={() => this.handleDelete(row.region_id)}><DeleteIcon /></IconButton>
                   </CustomTableCell>
                 </TableRow>

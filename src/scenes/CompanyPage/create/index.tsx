@@ -24,7 +24,7 @@ import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../interface/propsInterface";
 import { RootState } from "../../../reducer";
-import { Country } from "../../../interface/countryInterface";
+import { Country, CountryState } from "../../../interface/countryInterface";
 import { history } from "../../../store";
 
 const styles = (theme: Theme) =>
@@ -71,11 +71,11 @@ const styles = (theme: Theme) =>
   });
 
 export interface CreateCompanyState {
-  sector: string;
+  sector: string[];
   location: string;
   company_name: string;
-  industry: string;
-  country: string;
+  industry: string[];
+  country: string[];
   address: string;
   postal_code: string;
   logo_small: string;
@@ -92,7 +92,7 @@ export interface CreateCompanyState {
 export interface Props extends WithStyles<typeof styles>, SharedDispatchProps, InState { }
 
 interface InState {
-  countryList: Country[]
+  paremeterList: CountryState
 }
 
 class CreateCompanyPage extends Component<Props, CreateCompanyState> {
@@ -109,11 +109,11 @@ class CreateCompanyPage extends Component<Props, CreateCompanyState> {
 
 
   state: CreateCompanyState = {
-    sector: '',
+    sector: [],
     location: '',
     company_name: '',
-    industry: '',
-    country: '',
+    industry: [],
+    country: [],
     address: '',
     postal_code: '',
     logo_small: '',
@@ -147,11 +147,15 @@ class CreateCompanyPage extends Component<Props, CreateCompanyState> {
   }
 
   handleChange = (statekay: keyof CreateCompanyState) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ [statekay]: event.target.value } as Pick<CreateCompanyState, keyof CreateCompanyState>);
+    this.setState({ [statekay]: event.target.value } as unknown as Pick<CreateCompanyState, keyof CreateCompanyState>);
+  };
+
+  handleChangeCompany = event => {
+    this.setState({ country: event.target.value });
   };
 
   handleChangeSelect = (statekay: keyof CreateCompanyState) => (event: React.ChangeEvent<HTMLSelectElement>) => {
-    this.setState({ [statekay]: event.target.value } as Pick<CreateCompanyState, keyof CreateCompanyState>);
+    this.setState({ [statekay]: event.target.value } as unknown as Pick<CreateCompanyState, keyof CreateCompanyState>);
   };
 
   handleCreateCompany = (e) => {
@@ -217,10 +221,11 @@ class CreateCompanyPage extends Component<Props, CreateCompanyState> {
               </Grid>
               <Grid item justify="center" container xs>
                 <div style={{ margin: 20 }}>
-                  {this.props.countryList.length > 0 && <FormControl>
+                  {this.props.paremeterList.countryList.length > 0 && <FormControl>
                     <InputLabel>Country</InputLabel>
                     <Select
                       id="country"
+                      multiple
                       className={classes.textField}
                       value={this.state.country}
                       onChange={this.handleChangeSelect('country')}
@@ -228,10 +233,9 @@ class CreateCompanyPage extends Component<Props, CreateCompanyState> {
                         name: 'country',
                         id: 'country-simple',
                       }}>
-                      {this.props.countryList.map((country) =>
+                      {this.props.paremeterList.countryList.map((country) =>
                         <MenuItem key={country.country_name} value={country.country_name}>{country.country_name}</MenuItem>
                       )}
-                      <MenuItem value={30}>Thirty</MenuItem>
                     </Select></FormControl>}
                   <TextField
                     id="address"
@@ -309,22 +313,38 @@ class CreateCompanyPage extends Component<Props, CreateCompanyState> {
               </Grid>
               <Grid item justify="center" container xs>
                 <div style={{ margin: 20 }}>
-                  <TextField
-                    id="industry"
-                    label="industry"
-                    className={classes.textField}
-                    value={this.state.industry}
-                    onChange={this.handleChange('industry')}
-                    margin="normal"
-                  />
-                  <TextField
-                    id="sector"
-                    label="sector"
-                    className={classes.textField}
-                    value={this.state.sector}
-                    onChange={this.handleChange('sector')}
-                    margin="normal"
-                  />
+                  {this.props.paremeterList.industryList.length > 0 && <FormControl>
+                    <InputLabel>Industry</InputLabel>
+                    <Select
+                      id="industry"
+                      multiple
+                      className={classes.textField}
+                      value={this.state.industry}
+                      onChange={this.handleChangeSelect('industry')}
+                      inputProps={{
+                        name: 'industry',
+                        id: 'industry-simple',
+                      }}>
+                      {this.props.paremeterList.industryList.map((industry) =>
+                        <MenuItem key={industry.name} value={industry.name}>{industry.name}</MenuItem>
+                      )}
+                    </Select></FormControl>}
+                  {this.props.paremeterList.industryList.length > 0 && <FormControl>
+                    <InputLabel>Sector</InputLabel>
+                    <Select
+                      id="sector"
+                      multiple
+                      className={classes.textField}
+                      value={this.state.sector}
+                      onChange={this.handleChangeSelect('sector')}
+                      inputProps={{
+                        name: 'sector',
+                        id: 'sector-simple',
+                      }}>
+                      {this.props.paremeterList.sectorList.map((sector) =>
+                        <MenuItem key={sector.name} value={sector.name}>{sector.name}</MenuItem>
+                      )}
+                    </Select></FormControl>}
                   <TextField
                     id="webpage_url"
                     label="webpage_url"
@@ -359,7 +379,7 @@ class CreateCompanyPage extends Component<Props, CreateCompanyState> {
 
 function mapStateToProps(state: RootState) {
   return {
-    countryList: state.countryReducer.countryList
+    paremeterList: state.countryReducer
   }
 }
 

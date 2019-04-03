@@ -9,10 +9,11 @@ import {
     flatMap,
 } from "rxjs/operators"
 import { of, from } from "rxjs"
-import { login, forgetPassword } from "../api/authenticationAPI";
-import { loginAction, forgetPasswordAction } from "../actions/authenticationAction";
+import { login, forgetPassword, getUserProfile } from "../api/authenticationAPI";
+import { loginAction, forgetPasswordAction, getUserProfileAction } from "../actions/authenticationAction";
 import { isActionOf } from "typesafe-actions";
 import { push } from "connected-react-router";
+import { Profile } from "../interface/authInterface";
 
 
 interface AuthenticationState {
@@ -20,6 +21,7 @@ interface AuthenticationState {
     firstName: string;
     lastName: string;
     token: string;
+    profile: Profile;
 }
 
 export function authenticationReducer(state: AuthenticationState = {
@@ -27,6 +29,21 @@ export function authenticationReducer(state: AuthenticationState = {
     firstName: '',
     lastName: '',
     token: '',
+    profile: {
+        email: '',
+        firstname: '',
+        lastname: '',
+        alias: '',
+        employee_id: '',
+        image: '',
+        jobfunction: '',
+        country: '',
+        address: '',
+        postal_code: '',
+        status: '',
+        remarks: '',
+        info: ''
+    }
 }, action) {
     switch (action.type) {
         case 'SET_CURRENT_USER':
@@ -35,14 +52,21 @@ export function authenticationReducer(state: AuthenticationState = {
                 email: action.payload
             }
         case 'LOG_IN_SUCCESS':
+            action.asyncDispatch(getUserProfileAction.request(action.payload.email))
             return {
                 ...state,
-                token: action.payload
+                email: action.payload.email,
+                token: action.payload.session_key
             }
         case 'LOG_OUT':
             return {
                 ...state,
                 token: "",
+            }
+        case 'GET_USER_PROFILE_SUCCESS':
+            return {
+                ...state,
+                profile: action.payload
             }
         default:
             return state
@@ -91,13 +115,13 @@ export const updateProfileEpic: Epic<any, any, any, any> = (action$, state$) =>
             )
         )
     )
-export const getProfileEpic: Epic<any, any, any, any> = (action$, state$) =>
+export const getUserProfileEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
-        ofType("LOG_IN_REQUEST"),
+        filter(isActionOf(getUserProfileAction.request)),
         switchMap((action) =>
-            from(login(action.payload)).pipe(
-                map((token: string) => loginAction.success(token)),
-                catchError(error => of(loginAction.failure(error.message)))
+            from(getUserProfile(state$.value.authenticationReducer.token, action.payload)).pipe(
+                map((profile: Profile) => getUserProfileAction.success(profile)),
+                catchError(error => of(getUserProfileAction.failure(error.message)))
             )
         )
     )

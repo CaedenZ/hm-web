@@ -22,6 +22,8 @@ import { connect } from "react-redux";
 import { Button, IconButton, Typography } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 import { history } from "../../../store";
+import UpdateIcon from '@material-ui/icons/PlaylistAddCheck';
+import ViewIcon from '@material-ui/icons/ZoomIn';
 
 const CustomTableCell = withStyles(theme => ({
     head: {
@@ -91,7 +93,13 @@ class SubUnitPage extends React.Component<Props, State> {
     }
 
     handleDelete = (id) => {
-        this.props.deleteSubUnit(id)
+        const payload = {
+            type: 'delete',
+            object: 'subunit',
+            id: id,
+          }
+          this.props.showDialog(payload)
+        // this.props.deleteSubUnit(id)
     }
 
     render() {
@@ -135,8 +143,8 @@ class SubUnitPage extends React.Component<Props, State> {
                                     </CustomTableCell>
                                     <CustomTableCell align="right">{row.unit_type}</CustomTableCell>
                                     <CustomTableCell align="right">
-                                        <Button color="primary" variant="contained" onClick={() => this.handleViewButtonClick(row)}>view</Button>
-                                        <Button color="primary" variant="contained" onClick={() => this.handleUpdateButtonClick(row)}>update</Button>
+                                    <IconButton onClick={() => this.handleViewButtonClick(row)}><ViewIcon /></IconButton>
+                                        <IconButton onClick={() => this.handleUpdateButtonClick(row)}><UpdateIcon /></IconButton>
                                         <IconButton onClick={() => this.handleDelete(row.unit_id)}><DeleteIcon /></IconButton>
                                     </CustomTableCell>
                                 </TableRow>

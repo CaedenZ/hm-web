@@ -8,7 +8,7 @@ export interface Company {
     location: string,
     address: string,
     postal_code: string,
-    country: string,
+    country: string[],
     contact_person: string,
     contact_number: string,
     contact_email: string,

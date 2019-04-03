@@ -4,9 +4,10 @@ import { SharedDispatchProps } from "../interface/propsInterface";
 import { getCompanyListAction, getChildCompanyListAction, selectCompanyAction, createCompanyAction, createUnitAction, getChildUnitListAction, getUnitListAction, selectUnitAction, createSubUnitAction, deleteUnitAction, updateSubUnitAction, deleteSubUnitAction, updateUnitAction, selectSubUnitAction, getSubUnitListAction, createChildUnitAction, updateChildUnitAction, deleteChildUnitAction, createSubCompanyAction, selectUpdateCompanyAction, updateCompanyAction, deleteCompanyAction, updateSubCompanyAction, deleteSubCompanyAction, selectUpdateUnitAction } from "../actions/companyAction";
 import { getJobFunctionListAction, createJobFunctionAction, createSubJobFunctionAction, selectJobFunctionAction, deleteJobFunctionAction, deleteSubJobFunctionAction } from "../actions/jobFunctionAction";
 import { getRegionListAction, createRegionAction, updateRegionAction, deleteRegionAction, selectRegionAction } from "../actions/regionAction";
-import { getCountryListAction } from "../actions/countryAction";
+import { getCountryListAction, getIndustryListAction, getCurrencyListAction, getSectorListAction } from "../actions/countryAction";
 import { closeSnackBarAction, showSnackBarAction } from "../actions/snackBarAction";
 import { selectRoleAction, createRoleAction, updateRoleAction, deleteRoleAction, getRoleListAction, getRoleFunctionListAction } from "../actions/roleAction";
+import { showDialogAction, closeDialogAction } from "../actions/deleteDialogAction";
 
 
 
@@ -15,10 +16,18 @@ export function mapDispatchToProps(dispatch): SharedDispatchProps {
     return {
         showSnackBar: () => { dispatch(showSnackBarAction()) },
         closeSnackBar: () => { dispatch(closeSnackBarAction()) },
+        showDialog: (payload) => { dispatch(showDialogAction(payload)) },
+        closeDialog: () => { dispatch(closeDialogAction()) },
+
+
         login: (payload) => { dispatch(loginAction.request(payload)) },
         logout: () => { dispatch(logoutAction()) },
         forgetPassword: (payload) => { dispatch(forgetPasswordAction.request(payload)) },
+
         getCountryList: () => { dispatch(getCountryListAction.request()) },
+        getIndustryList: () => { dispatch(getIndustryListAction.request()) },
+        getCurrencyList: () => { dispatch(getCurrencyListAction.request()) },
+        getSectorList: () => { dispatch(getSectorListAction.request()) },
 
         getUserList: () => { dispatch(getUserListAction.request()) },
         createUser: (payload) => { dispatch(createUserAction.request(payload)) },

@@ -22,6 +22,8 @@ import { connect } from "react-redux";
 import { Button, IconButton } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 import { history } from "../../store";
+import UpdateIcon from '@material-ui/icons/PlaylistAddCheck';
+import ViewIcon from '@material-ui/icons/ZoomIn';
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -70,8 +72,18 @@ class CustomizedTable extends React.Component<Props, State> {
     history.push('/subcompany/update')
   }
 
+  handleViewButtonClick = (company) => {
+    this.props.selectCompany(company)
+  }
+
   handleDelete = (id) => {
-    this.props.deleteSubCompany(id)
+    const payload = {
+      type: 'delete',
+      object: 'subcompany',
+      id: id,
+    }
+    this.props.showDialog(payload)
+    // this.props.deleteSubCompany(id)
   }
 
 
@@ -102,7 +114,8 @@ class CustomizedTable extends React.Component<Props, State> {
                   <CustomTableCell align="right">{row.contact_number}</CustomTableCell>
                   <CustomTableCell align="right">{row.contact_person}</CustomTableCell>
                   <CustomTableCell align="right">
-                    <Button color="primary" variant="contained" onClick={() => this.handleUpdateButtonClick(row)}>view</Button>
+                    <IconButton onClick={() => this.handleViewButtonClick(row)}><ViewIcon /></IconButton>
+                    <IconButton onClick={() => this.handleUpdateButtonClick(row)}><UpdateIcon /></IconButton>
                     <IconButton onClick={() => this.handleDelete(row.company_id)}><DeleteIcon /></IconButton>
                   </CustomTableCell>
                 </TableRow>

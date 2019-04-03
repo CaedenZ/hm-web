@@ -22,6 +22,7 @@ import { connect } from "react-redux";
 import { Button, IconButton } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 import { history } from "../../store";
+import UpdateIcon from '@material-ui/icons/PlaylistAddCheck';
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -72,8 +73,12 @@ class CustomizedTable extends React.Component<Props, State> {
   }
 
   handleDelete = (id) => {
-    this.props.deleteCompany(id)
-    console.log('clicked')
+    const payload = {
+      type: 'delete',
+      object: 'company',
+      id: id,
+    }
+    this.props.showDialog(payload)
   }
 
 
@@ -104,7 +109,8 @@ class CustomizedTable extends React.Component<Props, State> {
                   <CustomTableCell align="right">{row.contact_number}</CustomTableCell>
                   <CustomTableCell align="right">{row.contact_person}</CustomTableCell>
                   <CustomTableCell align="right">
-                    <Button color="primary" variant="contained" onClick={() => this.handleUpdateButtonClick(row)}>view</Button>
+                    <IconButton onClick={() => this.handleUpdateButtonClick(row)}><UpdateIcon /></IconButton>
+                    {/* <Button color="primary" variant="contained" onClick={() => this.handleUpdateButtonClick(row)}>view</Button> */}
                     <IconButton onClick={() => this.handleDelete(row.company_id)}><DeleteIcon /></IconButton>
                   </CustomTableCell>
                 </TableRow>
