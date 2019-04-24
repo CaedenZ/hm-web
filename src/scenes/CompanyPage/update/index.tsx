@@ -23,9 +23,10 @@ import Avatar from 'react-avatar-edit'
 import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../interface/propsInterface";
-import { Company } from "../../../interface/companyInterface";
+import { Company, UPDATECOMPANYCRED } from "../../../interface/companyInterface";
 import { Country, CountryState } from "../../../interface/countryInterface";
 import { history } from "../../../store";
+import FormPage from "../component/form"
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -72,11 +73,11 @@ const styles = (theme: Theme) =>
 
 export interface UpdateCompanyState {
   company_id: string;
-  sector: any;
+  sector: string[];
   location: string;
   company_name: string;
-  industry: any;
-  country: any;
+  industry: string[];
+  country: string[];
   address: string;
   postal_code: string;
   logo_small: string;
@@ -111,10 +112,10 @@ class UpdateCompanyPage extends Component<Props, UpdateCompanyState> {
 
   state: UpdateCompanyState = {
     company_id: '',
-    sector: '',
+    sector: [],
     location: '',
     company_name: '',
-    industry: '',
+    industry: [],
     country: [],
     address: '',
     postal_code: '',
@@ -130,9 +131,26 @@ class UpdateCompanyPage extends Component<Props, UpdateCompanyState> {
     webpage_url: '',
   }
 
-  componentDidMount() {
-    this.setState(this.props.updatingCompany)
-  }
+  // componentDidMount() {
+  //   const s: UpdateCompanyState = {
+  //     ...this.props.updatingCompany,
+  //     industry: [],
+  //     country: [],
+  //     sector: [],
+  //   }
+
+  //   this.props.updatingCompany.industry.forEach(element => {
+  //     s.industry.push(element.name)
+  //   });
+  //   this.props.updatingCompany.sector.forEach(element => {
+  //     s.sector.push(element.name)
+  //   });
+  //   this.props.updatingCompany.country.forEach(element => {
+  //     s.country.push(element.country_name)
+  //   });
+
+  //   this.setState(s)
+  // }
   onClose() {
     this.setState({ logo_small: '' })
   }
@@ -159,9 +177,28 @@ class UpdateCompanyPage extends Component<Props, UpdateCompanyState> {
     this.setState({ [statekay]: event.target.value } as unknown as Pick<UpdateCompanyState, keyof UpdateCompanyState>);
   };
 
-  handleUpdateCompany = (e) => {
+  handleUpdateCompany = (e, data) => {
     e.preventDefault()
-    this.props.updateCompany(this.state)
+    // const a: UPDATECOMPANYCRED = {
+    //   ...this.state,
+    //   country: [],
+    //   sector: [],
+    //   industry: [],
+    // }
+
+    // this.state.country.forEach(element => {
+    //   a.country.push({ country_name: element })
+    // });
+
+    // this.state.sector.forEach(element => {
+    //   a.sector.push({ name: element })
+    // });
+
+    // this.state.industry.forEach(element => {
+    //   a.industry.push({ name: element })
+    // });
+
+    this.props.updateCompany(data)
     history.goBack()
   }
 
@@ -172,209 +209,7 @@ class UpdateCompanyPage extends Component<Props, UpdateCompanyState> {
         <Typography component="h1" variant="h5">
           New Company
       </Typography>
-        <Paper>
-          <form onSubmit={this.handleUpdateCompany}>
-            <Grid container className={classes.grid} spacing={16}>
-              <Grid item justify="center" xs container>
-                <Grid container direction="column" spacing={16}>
-                  <div style={{ display: 'flex' }}>
-                    <div style={{ margin: 20, justifyContent: 'center' }}>
-                      <Avatar
-                        width={200}
-                        height={150}
-                        onCrop={this.onMainCrop}
-                        onClose={this.onMainClose}
-                      />
-                      <Typography variant="h6">Main Logo</Typography>
-                    </div>
-                    <img src={this.state.logo_main} />
-                  </div>
-                </Grid>
-                <Grid container direction="row" spacing={16}>
-                  <div style={{ display: 'flex' }}>
-                    <div style={{ margin: 20, justifyContent: 'center' }}>
-                      <Avatar
-                        width={200}
-                        height={150}
-                        src={this.state.logo_small}
-                        onCrop={this.onCrop}
-                        onClose={this.onClose}
-                      />
-                      <Typography variant="h6">Small Logo</Typography>
-                    </div>
-                    <img src={this.state.logo_small} />
-                  </div>
-                </Grid>
-              </Grid>
-              <Grid item justify="center" xs container>
-                <div style={{ margin: 20 }}>
-                  <TextField
-                    id="company_name"
-                    label="company_name"
-                    className={classes.textField}
-                    value={this.state.company_name}
-                    onChange={this.handleChange('company_name')}
-                    margin="normal"
-                  />
-                  <TextField
-                    id="hq_name"
-                    label="hq_name"
-                    className={classes.textField}
-                    value={this.state.hq_name}
-                    onChange={this.handleChange('hq_name')}
-                    margin="normal"
-                  />
-                </div>
-              </Grid>
-              <Grid item justify="center" container xs>
-                <div style={{ margin: 20 }}>
-                  {this.props.paremeterList.countryList.length > 0 && <FormControl>
-                    <InputLabel>Country</InputLabel>
-                    <Select
-                      id="country"
-                      multiple
-                      className={classes.textField}
-                      value={this.state.country === '' ? [] : this.state.country}
-                      onChange={this.handleChangeSelect('country')}
-                      inputProps={{
-                        name: 'country',
-                        id: 'country-simple',
-                      }}>
-                      {this.props.paremeterList.countryList.map((country) =>
-                        <MenuItem key={country.country_name} value={country.country_name}>{country.country_name}</MenuItem>
-                      )}
-                    </Select></FormControl>}
-                  <TextField
-                    id="address"
-                    label="Address"
-                    className={classes.textField}
-                    value={this.state.address}
-                    onChange={this.handleChange('address')}
-                    margin="normal"
-                  />
-                  <TextField
-                    id="postal_code"
-                    label="Postal Code"
-                    className={classes.textField}
-                    value={this.state.postal_code}
-                    onChange={this.handleChange('postal_code')}
-                    margin="normal"
-                  />
-                </div>
-              </Grid>
-              <Grid item justify="center" container xs>
-                <div style={{ margin: 20 }}>
-                  <TextField
-                    id="contact_email"
-                    label="contact_email"
-                    className={classes.textField}
-                    value={this.state.contact_email}
-                    onChange={this.handleChange('contact_email')}
-                    margin="normal"
-                  />
-                  <TextField
-                    id="contact_number"
-                    label="contact_number"
-                    className={classes.textField}
-                    value={this.state.contact_number}
-                    onChange={this.handleChange('contact_number')}
-                    margin="normal"
-                  />
-                  <TextField
-                    id="contact_person"
-                    label="contact_person"
-                    className={classes.textField}
-                    value={this.state.contact_person}
-                    onChange={this.handleChange('contact_person')}
-                    margin="normal"
-                  />
-                </div>
-              </Grid>
-              <Grid item justify="center" container xs>
-                <div style={{ margin: 20 }}>
-                  <TextField
-                    id="base_currency_id"
-                    label="base_currency_id"
-                    className={classes.textField}
-                    value={this.state.base_currency_id}
-                    onChange={this.handleChange('base_currency_id')}
-                    margin="normal"
-                  />
-                  <TextField
-                    id="financialyr_dt"
-                    label="financialyr_dt"
-                    className={classes.textField}
-                    value={this.state.financialyr_dt}
-                    onChange={this.handleChange('financialyr_dt')}
-                    margin="normal"
-                  />
-                  <TextField
-                    id="parentcompany_id"
-                    label="parentcompany_id"
-                    className={classes.textField}
-                    value={this.state.parentcompany_id}
-                    onChange={this.handleChange('parentcompany_id')}
-                    margin="normal"
-                  />
-                </div>
-              </Grid>
-              <Grid item justify="center" container xs>
-                <div style={{ margin: 20 }}>
-                  {this.props.paremeterList.industryList.length > 0 && <FormControl>
-                    <InputLabel>Industry</InputLabel>
-                    <Select
-                      id="industry"
-                      multiple
-                      className={classes.textField}
-                      value={this.state.industry === '' ? [] : this.state.industry}
-                      onChange={this.handleChangeSelect('industry')}
-                      inputProps={{
-                        name: 'industry',
-                        id: 'industry-simple',
-                      }}>
-                      {this.props.paremeterList.industryList.map((industry) =>
-                        <MenuItem key={industry.name} value={industry.name}>{industry.name}</MenuItem>
-                      )}
-                    </Select></FormControl>}
-                  {this.props.paremeterList.industryList.length > 0 && <FormControl>
-                    <InputLabel>Sector</InputLabel>
-                    <Select
-                      id="sector"
-                      multiple
-                      className={classes.textField}
-                      value={this.state.sector === '' ? [] : this.state.sector}
-                      onChange={this.handleChangeSelect('sector')}
-                      inputProps={{
-                        name: 'sector',
-                        id: 'sector-simple',
-                      }}>
-                      {this.props.paremeterList.sectorList.map((sector) =>
-                        <MenuItem key={sector.name} value={sector.name}>{sector.name}</MenuItem>
-                      )}
-                    </Select></FormControl>}
-                  <TextField
-                    id="webpage_url"
-                    label="webpage_url"
-                    className={classes.textField}
-                    value={this.state.webpage_url}
-                    onChange={this.handleChange('webpage_url')}
-                    margin="normal"
-                  />
-                </div>
-              </Grid>
-
-            </Grid>
-            <Divider />
-            <Divider />
-            <div style={{
-              width: '100%', flex: 1,
-              flexDirection: 'row',
-              justifyContent: 'center', alignItems: 'flex-end'
-            }}>
-              <Button variant="contained" color="primary" type="submit">Submit</Button>
-            </div>
-          </form>
-        </Paper>
+        <FormPage create={false} updateData={this.props.updatingCompany} onSubmit={(e, data) => this.handleUpdateCompany(e, data)} />
       </div>
     );
   }

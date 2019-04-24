@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import { SharedDispatchProps } from '../../interface/propsInterface';
 import { DialogState } from '../../interface/dialogInterface';
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core';
+import { history } from '../../store';
 
 const styles = theme => ({
     close: {
@@ -34,12 +35,17 @@ class AlertDialog extends React.Component<Props, State> {
         id: '',
     }
     componentDidMount() {
-        console.log("SnackBar Loaded")
         this.setState(this.props.deleteDialog)
     }
     handleClose = () => {
         console.log("close")
         this.props.closeDialog()
+    };
+    handleExpired = () => {
+        console.log("close")
+        this.props.closeDialog()
+        this.props.logout()
+        history.push('/login')
     };
 
     handleConfirm = () => {
@@ -49,7 +55,7 @@ class AlertDialog extends React.Component<Props, State> {
                 this.props.deleteCompany(this.props.deleteDialog.id)
                 break
             case 'subcompany':
-                this.props.deleteSubCompany(this.props.deleteDialog.id)
+                this.props.deleteEntity(this.props.deleteDialog.id)
                 break
             case 'unit':
                 this.props.deleteUnit(this.props.deleteDialog.id)
@@ -75,6 +81,12 @@ class AlertDialog extends React.Component<Props, State> {
             case 'user':
                 this.props.deleteUser(this.props.deleteDialog.id)
                 break
+            case 'sector':
+                this.props.deleteSector(this.props.deleteDialog.id)
+                break
+            case 'industry':
+                this.props.deleteIndustry(this.props.deleteDialog.id)
+                break
             default:
                 break
         }
@@ -83,29 +95,105 @@ class AlertDialog extends React.Component<Props, State> {
 
     render() {
         const { classes } = this.props;
-        return (
-            <Dialog
-                open={this.props.deleteDialog.open}
-                onClose={this.handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">{"Confirm delete"}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        Do you confirm to delete the selected object?
-            </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={this.handleClose} color="primary">
-                        No
-            </Button>
-                    <Button onClick={this.handleConfirm} color="primary" autoFocus>
-                        Yes
-            </Button>
-                </DialogActions>
-            </Dialog>
-        )
+
+
+        switch (this.props.deleteDialog.type) {
+            case 'delete': {
+                return (
+                    <Dialog
+                        open={this.props.deleteDialog.open}
+                        onClose={this.handleClose}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                    >
+                        <DialogTitle id="alert-dialog-title">{"Confirm delete"}</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                Do you confirm to delete the selected object?
+                    </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={this.handleClose} color="primary">
+                                No
+                    </Button>
+                            <Button onClick={this.handleConfirm} color="primary" autoFocus>
+                                Yes
+                    </Button>
+                        </DialogActions>
+                    </Dialog>
+                )
+            }
+            case 'token': {
+                return (
+                    <Dialog
+                        open={this.props.deleteDialog.open}
+                        onClose={this.handleClose}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                    >
+                        <DialogTitle id="alert-dialog-title">{"Token expired"}</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                Return to login page
+                    </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={this.handleExpired} color="primary" autoFocus>
+                                Confirm
+                    </Button>
+                        </DialogActions>
+                    </Dialog>
+                )
+            }
+            case 'warning': {
+                return (
+                    <Dialog
+                        open={this.props.deleteDialog.open}
+                        onClose={this.handleClose}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                    >
+                        <DialogTitle id="alert-dialog-title">{"Message"}</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                {this.props.deleteDialog.object}
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={this.handleClose} color="primary" autoFocus>
+                                Confirm
+                    </Button>
+                        </DialogActions>
+                    </Dialog>
+                )
+            }
+            case 'exit': {
+                return (
+                    <Dialog
+                        open={this.props.deleteDialog.open}
+                        onClose={this.handleClose}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                    >
+                        <DialogTitle id="alert-dialog-title">{"Message"}</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                {this.props.deleteDialog.object}
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={this.handleExpired} color="primary" autoFocus>
+                                Confirm
+                    </Button>
+                        </DialogActions>
+                    </Dialog>
+                )
+            }
+            default: {
+                return <div />
+            }
+        }
+
 
     }
 }

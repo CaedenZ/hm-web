@@ -130,10 +130,13 @@ class UserProfilePage extends Component<Props, State> {
           <Grid container className={classes.grid} spacing={16}>
             <Grid item justify="center" xs container>
               <Grid container direction="column" spacing={16} xs>
-                <div style={{ height: theme.spacing.unit * 40, margin: 20, justifyContent: 'center' }}>
-                  <img style={{ height: 'inherit' }} src={this.state.image} onError={(e: any) => { e.target.onerror = null; e.target.src = logo }} alt="Preview" />
-                  <Typography variant="h6">Profile Picture</Typography>
+                <div style={{ height: 'inherit', justifyContent: 'center' }}>
+                  <div style={{ height: theme.spacing.unit * 10, margin: 20, justifyContent: 'center' }}>
+                    <img style={{ height: 'inherit' }} src={this.state.image} onError={(e: any) => { e.target.onerror = null; e.target.src = logo }} alt="Preview" />
+                    <Typography>Profile Picture</Typography>
+                  </div>
                 </div>
+
 
               </Grid>
             </Grid>

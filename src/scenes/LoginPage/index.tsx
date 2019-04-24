@@ -115,14 +115,14 @@ class SignIn extends Component<Props, State> {
                   onChange={this.handleChange}
                 />
               </FormControl>
-              <FormControlLabel
+              {/* <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
-              />
+              /> */}
               <Divider />
-              <div style={{ marginTop: 20 }}>
+              {/* <div style={{ marginTop: 20 }}>
                 <Link to="/forgetpassword">Forget password</Link>
-              </div>
+              </div> */}
               <Button fullWidth variant="contained" color="primary" type="submit">Sign in</Button>
             </form>
           </Paper>

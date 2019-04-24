@@ -10,8 +10,8 @@ import {
 } from "rxjs/operators"
 import { of, from } from "rxjs"
 import { CompanyState, Company, Unit } from "../interface/companyInterface";
-import { getCompanyList, getChildCompanyList, createCompany, getUnitList, createUnit, updateUnit, deleteUnit, createSubCompany, deleteSubCompany, deleteCompany, updateSubCompany, updateCompany } from "../api/companyAPIs";
-import { getCompanyListAction, getChildCompanyListAction, createCompanyAction, getUnitListAction, getChildUnitListAction, createUnitAction, createSubUnitAction, updateUnitAction, deleteUnitAction, updateSubUnitAction, deleteSubUnitAction, updateChildUnitAction, deleteChildUnitAction, getSubUnitListAction, createChildUnitAction, createSubCompanyAction, deleteSubCompanyAction, deleteCompanyAction, updateCompanyAction, updateSubCompanyAction } from "../actions/companyAction";
+import { getCompanyList, getChildCompanyList, createCompany, getUnitList, createUnit, updateUnit, deleteUnit, createEntity, deleteEntity, deleteCompany, updateEntity, updateCompany, getCompanyByRegion, getCompanyByCountry, getDivisionList } from "../api/companyAPIs";
+import { getCompanyListAction, getChildCompanyListAction, createCompanyAction, getUnitListAction, getChildUnitListAction, createUnitAction, createSubUnitAction, updateUnitAction, deleteUnitAction, updateSubUnitAction, deleteSubUnitAction, updateChildUnitAction, deleteChildUnitAction, getSubUnitListAction, createChildUnitAction, createEntityAction, deleteEntityAction, deleteCompanyAction, updateCompanyAction, updateEntityAction, selectCompanyAction, getCompanyByCountryAction, getCompanyByRegionAction, getDivisionListAction } from "../actions/companyAction";
 import { isActionOf } from "typesafe-actions";
 import { getRegionListAction } from "../actions/regionAction";
 import { getUserListAction } from "../actions/userAction";
@@ -24,12 +24,14 @@ export function companyReducer(state: CompanyState = {
     unitList: [],
     subUnitList: [],
     childUnitList: [],
+    unitEntity: [],
+    divisionList: [],
     selectedCompany: {
         company_id: '',
-        sector: '',
+        sector: [],
         location: '',
         company_name: '',
-        industry: '',
+        industry: [],
         country: [],
         address: '',
         postal_code: '',
@@ -42,12 +44,79 @@ export function companyReducer(state: CompanyState = {
         logo_main: '',
         parentcompany_id: '',
         webpage_url: '',
+        financialyr_dt: '',
     },
 }, action) {
     switch (action.type) {
+        case 'LOG_IN_SUCCESS':
+            return {
+                companyList: [],
+                childCompanyList: [],
+                unitList: [],
+                subUnitList: [],
+                childUnitList: [],
+                unitEntity: [],
+                divisionList: [],
+                selectedCompany: {
+                    company_id: '',
+                    sector: [],
+                    location: '',
+                    company_name: '',
+                    industry: [],
+                    country: [],
+                    address: '',
+                    postal_code: '',
+                    logo_small: '',
+                    contact_person: '',
+                    contact_number: '',
+                    contact_email: '',
+                    hq_name: '',
+                    base_currency_id: '',
+                    logo_main: '',
+                    parentcompany_id: '',
+                    webpage_url: '',
+                    financialyr_dt: '',
+                },
+            }
+        case 'LOG_OUT':
+            return {
+                companyList: [],
+                childCompanyList: [],
+                unitList: [],
+                subUnitList: [],
+                childUnitList: [],
+                unitEntity: [],
+                divisionList: [],
+                selectedCompany: {
+                    company_id: '',
+                    sector: [],
+                    location: '',
+                    company_name: '',
+                    industry: [],
+                    country: [],
+                    address: '',
+                    postal_code: '',
+                    logo_small: '',
+                    contact_person: '',
+                    contact_number: '',
+                    contact_email: '',
+                    hq_name: '',
+                    base_currency_id: '',
+                    logo_main: '',
+                    parentcompany_id: '',
+                    webpage_url: '',
+                    financialyr_dt: '',
+                },
+            }
+        case 'SELECT_INDEX':
+            return {
+                ...state,
+                selectedIndex: action.payload
+            }
         case 'SELECT_COMPANY':
             action.asyncDispatch(getChildCompanyListAction.request())
             action.asyncDispatch(getRegionListAction.request())
+            action.asyncDispatch(getDivisionListAction.request())
             action.asyncDispatch(getUnitListAction.request())
             action.asyncDispatch(getRoleListAction.request())
             action.asyncDispatch(getUserListAction.request())
@@ -59,6 +128,11 @@ export function companyReducer(state: CompanyState = {
             return {
                 ...state,
                 selectedUpdateCompany: action.payload
+            }
+        case 'SELECT_UPDATE_ENTITY':
+            return {
+                ...state,
+                selectedUpdateEntity: action.payload
             }
         case 'SELECT_UNIT':
             return {
@@ -76,15 +150,33 @@ export function companyReducer(state: CompanyState = {
                 selectUpdateUnit: action.payload
             }
         case 'GET_COMPANY_LIST_SUCCESS':
+            if (action.payload.length === 1) {
+                action.asyncDispatch(selectCompanyAction(action.payload[0]))
+            }
             return {
                 ...state,
                 companyList: action.payload,
                 // selectedCompany: action.payload[0]
             }
+        case 'GET_COMPANY_BY_COUNTRY_SUCCESS':
+            return {
+                ...state,
+                unitEntity: action.payload
+            }
+        case 'GET_COMPANY_BY_REGION_SUCCESS':
+            return {
+                ...state,
+                unitEntity: action.payload
+            }
         case 'GET_CHILD_COMPANY_LIST_SUCCESS':
             return {
                 ...state,
                 childCompanyList: action.payload
+            }
+        case 'GET_DIVISION_LIST_SUCCESS':
+            return {
+                ...state,
+                divisionList: action.payload
             }
         case 'GET_UNIT_LIST_SUCCESS':
             return {
@@ -116,63 +208,72 @@ export function companyReducer(state: CompanyState = {
             return {
                 ...state
             }
-        case 'DELETE_SUBCOMPANY_SUCCESS':
+        case 'DELETE_ENTITY_SUCCESS':
             action.asyncDispatch(getChildCompanyListAction.request())
             return {
                 ...state
             }
-        case 'UPDATE_SUBCOMPANY_SUCCESS':
+        case 'UPDATE_ENTITY_SUCCESS':
             action.asyncDispatch(getChildCompanyListAction.request())
             return {
                 ...state
             }
-        case 'CREATE_SUBCOMPANY_SUCCESS':
+        case 'CREATE_ENTITY_SUCCESS':
             action.asyncDispatch(getChildCompanyListAction.request())
             return {
                 ...state
             }
         case 'DELETE_UNIT_SUCCESS':
-            action.asyncDispatch(getUnitListAction.request())
+            // action.asyncDispatch(getUnitListAction.request())
+            action.asyncDispatch(getDivisionListAction.request())
             return {
                 ...state
             }
         case 'UPDATE_UNIT_SUCCESS':
-            action.asyncDispatch(getUnitListAction.request())
+            // action.asyncDispatch(getUnitListAction.request())
+            action.asyncDispatch(getDivisionListAction.request())
             return {
                 ...state
             }
         case 'CREATE_UNIT_SUCCESS':
-            action.asyncDispatch(getUnitListAction.request())
+            // action.asyncDispatch(getUnitListAction.request())
+            action.asyncDispatch(getDivisionListAction.request())
             return {
                 ...state
             }
         case 'DELETE_SUBUNIT_SUCCESS':
-            action.asyncDispatch(getSubUnitListAction.request())
+            // action.asyncDispatch(getSubUnitListAction.request())
+            action.asyncDispatch(getDivisionListAction.request())
             return {
                 ...state
             }
         case 'UPDATE_SUBUNIT_SUCCESS':
-            action.asyncDispatch(getSubUnitListAction.request())
+            // action.asyncDispatch(getSubUnitListAction.request())
+            action.asyncDispatch(getDivisionListAction.request())
             return {
                 ...state
             }
         case 'CREATE_SUBUNIT_SUCCESS':
-            action.asyncDispatch(getSubUnitListAction.request())
+            // action.asyncDispatch(getSubUnitListAction.request())
+            action.asyncDispatch(getDivisionListAction.request())
             return {
                 ...state
             }
         case 'DELETE_CHILDUNIT_SUCCESS':
-            action.asyncDispatch(getChildUnitListAction.request())
+            // action.asyncDispatch(getChildUnitListAction.request())
+            action.asyncDispatch(getDivisionListAction.request())
             return {
                 ...state
             }
         case 'UPDATE_CHILDUNIT_SUCCESS':
-            action.asyncDispatch(getChildUnitListAction.request())
+            // action.asyncDispatch(getChildUnitListAction.request())
+            action.asyncDispatch(getDivisionListAction.request())
             return {
                 ...state
             }
         case 'CREATE_CHILDUNIT_SUCCESS':
-            action.asyncDispatch(getChildUnitListAction.request())
+            // action.asyncDispatch(getChildUnitListAction.request())
+            action.asyncDispatch(getDivisionListAction.request())
             return {
                 ...state
             }
@@ -188,6 +289,28 @@ export const getCompanyListEpic: Epic<any, any, any, any> = (action$, state$) =>
             from(getCompanyList(state$.value.authenticationReducer.token)).pipe(
                 map((CompanyList: Company[]) => getCompanyListAction.success(CompanyList)),
                 catchError(error => of(getCompanyListAction.failure(error.message)))
+            )
+        )
+    )
+
+export const getCompanyByCountryEpic: Epic<any, any, any, any> = (action$, state$) =>
+    action$.pipe(
+        filter(isActionOf(getCompanyByCountryAction.request)),
+        switchMap((action) =>
+            from(getCompanyByCountry(state$.value.authenticationReducer.token, state$.value.companyReducer.selectedCompany.company_id, action.payload)).pipe(
+                map((CompanyList: Company[]) => getCompanyByCountryAction.success(CompanyList)),
+                catchError(error => of(getCompanyByCountryAction.failure(error.message)))
+            )
+        )
+    )
+
+export const getCompanyByRegionEpic: Epic<any, any, any, any> = (action$, state$) =>
+    action$.pipe(
+        filter(isActionOf(getCompanyByRegionAction.request)),
+        switchMap((action) =>
+            from(getCompanyByRegion(state$.value.authenticationReducer.token, state$.value.companyReducer.selectedCompany.company_id, action.payload)).pipe(
+                map((CompanyList: Company[]) => getCompanyByRegionAction.success(CompanyList)),
+                catchError(error => of(getCompanyByRegionAction.failure(error.message)))
             )
         )
     )
@@ -213,13 +336,13 @@ export const createCompanyEpic: Epic<any, any, any, any> = (action$, state$) =>
             )
         )
     )
-export const createSubCompanyEpic: Epic<any, any, any, any> = (action$, state$) =>
+export const createEntityEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
-        filter(isActionOf(createSubCompanyAction.request)),
+        filter(isActionOf(createEntityAction.request)),
         switchMap((action) =>
-            from(createCompany(state$.value.authenticationReducer.token, action.payload)).pipe(
-                map(() => createSubCompanyAction.success()),
-                catchError(error => of(createSubCompanyAction.failure(error.message)))
+            from(createEntity(state$.value.authenticationReducer.token, action.payload)).pipe(
+                map(() => createEntityAction.success()),
+                catchError(error => of(createEntityAction.failure(error.message)))
             )
         )
     )
@@ -228,19 +351,19 @@ export const updateCompanyEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
         filter(isActionOf(updateCompanyAction.request)),
         switchMap((action) =>
-            from(updateCompany(state$.value.authenticationReducer.token, 0, action.payload)).pipe(
+            from(updateCompany(state$.value.authenticationReducer.token, action.payload)).pipe(
                 map(() => updateCompanyAction.success()),
                 catchError(error => of(updateCompanyAction.failure(error.message)))
             )
         )
     )
-export const updateSubCompanyEpic: Epic<any, any, any, any> = (action$, state$) =>
+export const updateEntityEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
-        filter(isActionOf(updateSubCompanyAction.request)),
+        filter(isActionOf(updateEntityAction.request)),
         switchMap((action) =>
-            from(updateCompany(state$.value.authenticationReducer.token, 1, action.payload)).pipe(
-                map(() => updateSubCompanyAction.success()),
-                catchError(error => of(updateSubCompanyAction.failure(error.message)))
+            from(updateEntity(state$.value.authenticationReducer.token, action.payload)).pipe(
+                map(() => updateEntityAction.success()),
+                catchError(error => of(updateEntityAction.failure(error.message)))
             )
         )
     )
@@ -255,13 +378,24 @@ export const deleteCompanyEpic: Epic<any, any, any, any> = (action$, state$) =>
             )
         )
     )
-export const deleteSubCompanyEpic: Epic<any, any, any, any> = (action$, state$) =>
+export const deleteEntityEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
-        filter(isActionOf(deleteSubCompanyAction.request)),
+        filter(isActionOf(deleteEntityAction.request)),
         switchMap((action) =>
             from(deleteCompany(state$.value.authenticationReducer.token, 1, action.payload)).pipe(
-                map(() => deleteSubCompanyAction.success()),
-                catchError(error => of(deleteSubCompanyAction.failure(error.message)))
+                map(() => deleteEntityAction.success()),
+                catchError(error => of(deleteEntityAction.failure(error.message)))
+            )
+        )
+    )
+
+export const getDivisionListEpic: Epic<any, any, any, any> = (action$, state$) =>
+    action$.pipe(
+        filter(isActionOf(getDivisionListAction.request)),
+        switchMap((action) =>
+            from(getDivisionList(state$.value.authenticationReducer.token, state$.value.companyReducer.selectedCompany.company_id)).pipe(
+                map((UnitList: Unit[]) => getDivisionListAction.success(UnitList)),
+                catchError(error => of(getDivisionListAction.failure(error.message)))
             )
         )
     )

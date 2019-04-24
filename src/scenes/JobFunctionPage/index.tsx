@@ -146,7 +146,6 @@ class CustomizedTable extends React.Component<Props, any> {
             <TableHead>
               <TableRow>
                 <CustomTableCell align="right">job_name</CustomTableCell>
-                <CustomTableCell align="right">description</CustomTableCell>
                 <CustomTableCell align="right">Action</CustomTableCell>
                 <CustomTableCell align="right">Child</CustomTableCell>
               </TableRow>
@@ -155,7 +154,6 @@ class CustomizedTable extends React.Component<Props, any> {
               {this.props.jobFunctionList.map((row, index) => ([
                 <TableRow className={classes.row} key={row.jobfunction_id}>
                   <CustomTableCell component="th" scope="row">{row.job_name}</CustomTableCell>
-                  <CustomTableCell align="right">{row.description}</CustomTableCell>
                   <CustomTableCell align="right">
                     <IconButton
                       className={classnames(classes.expand, {
@@ -177,7 +175,6 @@ class CustomizedTable extends React.Component<Props, any> {
                           {row.sjobfunction.map(row => (
                             <TableRow className={classes.row} key={row.sjobfunction_id}>
                               <CustomTableCell align="right">{row.subjob_name}</CustomTableCell>
-                              <CustomTableCell align="right">{row.description}</CustomTableCell>
                               <CustomTableCell align="right">
                                 <IconButton onClick={() => this.handleDeleteSJF(row.sjobfunction_id)}><DeleteIcon /></IconButton>
                               </CustomTableCell>

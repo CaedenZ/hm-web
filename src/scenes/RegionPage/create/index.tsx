@@ -16,7 +16,8 @@ import {
   Button,
   Chip,
   Select,
-  MenuItem
+  MenuItem,
+  InputLabel
 } from "@material-ui/core";
 import CustomButton from "../component/CustomButton";
 import Avatar from 'react-avatar-edit'
@@ -26,6 +27,9 @@ import { SharedDispatchProps } from "../../../interface/propsInterface";
 import { RootState } from "../../../reducer";
 import { Country } from "../../../interface/countryInterface";
 import { history } from "../../../store";
+import { Company } from "../../../interface/companyInterface";
+import { CREATEREGIONCRED } from "../../../interface/regionInterface";
+import FormPage from "../component/form"
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -75,12 +79,13 @@ const styles = (theme: Theme) =>
 
 export interface CreateRegionState {
   region_name: string;
-  country_list: Country[];
+  country_list: string[];
 }
 export interface Props extends InState, WithStyles<typeof styles>, SharedDispatchProps { }
 
 interface InState {
   countryList: Country[],
+  selectedCompany: Company,
 }
 
 
@@ -98,32 +103,23 @@ class CreateRegionPage extends Component<Props, CreateRegionState> {
     country_list: [],
   }
 
-  handleCreateRegion = (e) => {
+  handleCreateRegion = (e, data) => {
     e.preventDefault()
-    this.props.createRegion(this.state)
+    // const a: CREATEREGIONCRED = {
+    //   ...this.state,
+    //   country_list: [],
+    // }
+
+    // this.state.country_list.forEach(element => {
+    //   a.country_list.push({ country_name: element })
+    // });
+
+    this.props.createRegion(data)
     history.goBack()
   }
 
-  handleDelete = country => () => {
-
-    this.setState(state => {
-      const countryList = [...state.country_list];
-      const chipToDelete = countryList.indexOf(country);
-      countryList.splice(chipToDelete, 1);
-      return { country_list: countryList };
-    });
-  };
-
-  handleChange = (e) => {
-    console.log(e)
-    this.setState(state => {
-      const countryList = [...state.country_list];
-      const newCountry: Country = {
-        country_name: e.target.value
-      }
-      countryList.push(newCountry)
-      return { country_list: countryList };
-    });
+  handleChangeSelect = (statekay: keyof CreateRegionState) => (event: React.ChangeEvent<HTMLSelectElement>) => {
+    this.setState({ [statekay]: event.target.value } as unknown as Pick<CreateRegionState, keyof CreateRegionState>);
   };
 
 
@@ -134,58 +130,7 @@ class CreateRegionPage extends Component<Props, CreateRegionState> {
         <Typography component="h1" variant="h5">
           New Region
       </Typography>
-        <Paper>
-          <form onSubmit={this.handleCreateRegion}>
-            <Grid container className={classes.grid} spacing={16}>
-              <Grid item justify="center" container xs>
-                <div style={{ margin: 20 }}>
-                  <TextField
-                    id="region_name"
-                    label="region_name"
-                    className={classes.textField}
-                    value={this.state.region_name}
-                    onChange={(e) => this.setState({ region_name: e.target.value })}
-                    margin="normal"
-                  />
-                </div>
-              </Grid>
-              <Grid item justify="center" container xs>
-                <Typography>Country</Typography>
-                {this.props.countryList.length > 0 && <Select
-                  id="country"
-                  className={classes.textField}
-                  onChange={(e) => this.handleChange(e)}
-                  inputProps={{
-                    name: 'country',
-                    id: 'country-simple',
-                  }}>
-                  {this.props.countryList.map((country) =>
-                    <MenuItem key={country.country_name} value={country.country_name}>{country.country_name}</MenuItem>
-                  )}
-                </Select>}
-              </Grid>
-              <Grid item justify="center" container xs={12}>
-                {this.state.country_list.map(country =>
-                  <Chip
-                    key={country.country_name}
-                    label={country.country_name}
-                    onDelete={this.handleDelete(country)}
-                    className={classes.chip}
-                  />
-                )}
-              </Grid>
-            </Grid>
-            <Divider />
-            <Divider />
-            <div style={{
-              width: '100%', flex: 1,
-              flexDirection: 'row',
-              justifyContent: 'center', alignItems: 'flex-end'
-            }}>
-              <Button variant="contained" color="primary" type="submit">Submit</Button>
-            </div>
-          </form>
-        </Paper>
+        <FormPage create={true} updateData='' onSubmit={(e, data) => this.handleCreateRegion(e, data)} />
       </div>
     );
   }
@@ -197,7 +142,8 @@ class CreateRegionPage extends Component<Props, CreateRegionState> {
 
 function mapStateToProps(state: any) {
   return {
-    countryList: state.countryReducer.countryList
+    countryList: state.countryReducer.countryList,
+    selectedCompany: state.companyReducer.selectedCompany
   }
 }
 

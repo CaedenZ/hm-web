@@ -11,6 +11,16 @@ export function roleReducer(state: RoleState = {
     roleFunctionList: [],
 }, action) {
     switch (action.type) {
+        case 'LOG_IN_SUCCESS':
+            return {
+                roleList: [],
+                roleFunctionList: [],
+            }
+        case 'LOG_OUT':
+            return {
+                roleList: [],
+                roleFunctionList: [],
+            }
         case 'SELECT_ROLE':
             return {
                 ...state,

@@ -24,6 +24,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import { Role } from "../../interface/roleInterface";
 import { history } from "../../store";
 import UpdateIcon from '@material-ui/icons/PlaylistAddCheck';
+import { Company } from "../../interface/companyInterface";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -70,6 +71,7 @@ export interface Props extends WithStyles<typeof styles>, SharedDispatchProps, I
 interface State { }
 
 interface InState {
+  selectedCompany: Company,
   roleList: Role[]
 }
 class RolePage extends React.Component<Props, State> {
@@ -77,6 +79,15 @@ class RolePage extends React.Component<Props, State> {
 
   componentDidMount() {
     console.log('Role Page Mounted')
+    if (this.props.selectedCompany.company_id === '') {
+      let data = {
+        type: 'warning',
+        object: 'Please Select a Company first',
+        id: '1'
+      }
+      this.props.showDialog(data)
+    }
+    else this.props.getRoleList()
   }
 
   handleUpdateButtonClick = (role) => {
@@ -133,6 +144,7 @@ class RolePage extends React.Component<Props, State> {
 
 function mapStateToProps(state: RootState) {
   return {
+    selectedCompany: state.companyReducer.selectedCompany,
     roleList: state.roleReducer.roleList
   }
 }

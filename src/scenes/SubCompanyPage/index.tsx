@@ -15,7 +15,7 @@ import Paper from "@material-ui/core/Paper";
 import { render } from "react-dom";
 import CustomButton from "./component/CustomButton";
 import { SharedDispatchProps } from "../../interface/propsInterface";
-import { Company } from "../../interface/companyInterface";
+import { Company, Entity } from "../../interface/companyInterface";
 import { RootState } from "../../reducer";
 import { mapDispatchToProps } from "../../helper/dispachProps";
 import { connect } from "react-redux";
@@ -23,7 +23,6 @@ import { Button, IconButton } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 import { history } from "../../store";
 import UpdateIcon from '@material-ui/icons/PlaylistAddCheck';
-import ViewIcon from '@material-ui/icons/ZoomIn';
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -57,7 +56,8 @@ export interface Props extends WithStyles<typeof styles>, SharedDispatchProps, I
 interface State { }
 
 interface InState {
-  companyList: Company[]
+  selectedCompany: Company,
+  companyList: Entity[]
 }
 
 class CustomizedTable extends React.Component<Props, State> {
@@ -65,11 +65,20 @@ class CustomizedTable extends React.Component<Props, State> {
 
   componentDidMount() {
     console.log('clicked')
+    if (this.props.selectedCompany.company_id === '') {
+      let data = {
+        type: 'warning',
+        object: 'Please Select a Company first',
+        id: '1'
+      }
+      this.props.showDialog(data)
+    }
+    else this.props.getChildCompanyList()
   }
 
   handleUpdateButtonClick = (company) => {
-    this.props.selectUpdateCompany(company)
-    history.push('/subcompany/update')
+    this.props.selectUpdateEntity(company)
+    history.push('/entity/update')
   }
 
   handleViewButtonClick = (company) => {
@@ -92,15 +101,16 @@ class CustomizedTable extends React.Component<Props, State> {
 
     return (
       <main>
-        <CustomButton link="/subcompany/create">New Sub Company</CustomButton>
+        <CustomButton link="/entity/create">New Entity</CustomButton>
         <Paper className={classes.root}>
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
-                <CustomTableCell>company_name</CustomTableCell>
-                <CustomTableCell align="right">contact_email</CustomTableCell>
-                <CustomTableCell align="right">contact_number</CustomTableCell>
-                <CustomTableCell align="right">contact_person</CustomTableCell>
+                <CustomTableCell>Company Name</CustomTableCell>
+                <CustomTableCell align="right">Contact Person</CustomTableCell>
+                <CustomTableCell align="right">Contact Number</CustomTableCell>
+                <CustomTableCell align="right">Contact Emai</CustomTableCell>
+                <CustomTableCell align="right">Country</CustomTableCell>
                 <CustomTableCell align="right">Action</CustomTableCell>
               </TableRow>
             </TableHead>
@@ -110,11 +120,12 @@ class CustomizedTable extends React.Component<Props, State> {
                   <CustomTableCell component="th" scope="row">
                     {row.company_name}
                   </CustomTableCell>
-                  <CustomTableCell align="right">{row.contact_email}</CustomTableCell>
-                  <CustomTableCell align="right">{row.contact_number}</CustomTableCell>
                   <CustomTableCell align="right">{row.contact_person}</CustomTableCell>
+                  <CustomTableCell align="right">{row.contact_number}</CustomTableCell>
+                  <CustomTableCell align="right">{row.contact_email}</CustomTableCell>
+                  <CustomTableCell align="right">{JSON.parse(row.country).country_name}</CustomTableCell>
                   <CustomTableCell align="right">
-                    <IconButton onClick={() => this.handleViewButtonClick(row)}><ViewIcon /></IconButton>
+                    {/* <IconButton onClick={() => this.handleViewButtonClick(row)}><ViewIcon /></IconButton> */}
                     <IconButton onClick={() => this.handleUpdateButtonClick(row)}><UpdateIcon /></IconButton>
                     <IconButton onClick={() => this.handleDelete(row.company_id)}><DeleteIcon /></IconButton>
                   </CustomTableCell>
@@ -134,6 +145,7 @@ class CustomizedTable extends React.Component<Props, State> {
 
 function mapStateToProps(state: any) {
   return {
+    selectedCompany: state.companyReducer.selectedCompany,
     companyList: state.companyReducer.childCompanyList
   }
 }

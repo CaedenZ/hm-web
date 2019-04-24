@@ -65,13 +65,12 @@ class CompanySelectMenu extends React.Component<Props, State> {
 
   handleMenuItemClick = (event, index) => {
     this.setState({ selectedIndex: index, anchorEl: null });
+    this.props.selectIndex(index)
     this.props.selectCompany(this.props.companyList[index])
     this.props.selectUpdateCompany(this.props.companyList[index])
-    // this.props.getChildCompanyList()
-    // this.props.getRegionList()
-    // this.props.getUnitList()
-    // this.props.getRoleList()
-    // this.props.getUserList()
+
+
+
   };
 
   handleClose = () => {
@@ -85,9 +84,9 @@ class CompanySelectMenu extends React.Component<Props, State> {
     return (
       <div className={classes.root}>
         {this.props.companyList.length > 0 && <ListItem
-          button
+          // button
           aria-haspopup="true"
-          onClick={this.handleClickListItem}
+          // onClick={this.handleClickListItem}
           className={classes.listitem}
         >
           <img style={{ height: '50px' }} src={this.props.companyList[this.state.selectedIndex].logo_small === '' ? logo : this.props.companyList[this.state.selectedIndex].logo_small} />

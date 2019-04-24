@@ -1,5 +1,5 @@
 import $axios from "../plugin/axios";
-import { Region } from "../interface/regionInterface";
+import { Region, CREATEREGIONCRED, UPDATEREGIONCRED } from "../interface/regionInterface";
 import { CreateRegionState } from "../scenes/RegionPage/create";
 import { UpdateRegionState } from "../scenes/RegionPage/update";
 
@@ -11,7 +11,7 @@ export const getRegionList = async (payload, id): Promise<Region[]> => {
     return response.data.data
 }
 
-export const createRegion = async (token, payload: CreateRegionState, companyId: string) => {
+export const createRegion = async (token, payload: CREATEREGIONCRED, companyId: string) => {
     console.log(payload)
     let data = {
         ...payload,
@@ -24,7 +24,7 @@ export const createRegion = async (token, payload: CreateRegionState, companyId:
     return response.data.data
 }
 
-export const updateRegion = async (token, payload: UpdateRegionState, companyId: string) => {
+export const updateRegion = async (token, payload: UPDATEREGIONCRED, companyId: string) => {
     console.log(payload)
     let data = {
         ...payload,

@@ -27,6 +27,7 @@ import { history } from "../../../store"
 import { RootState } from "../../../reducer";
 import { User } from "../../../interface/userInterface";
 import { Country } from "../../../interface/countryInterface";
+import FormPage from "../component/form"
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -85,7 +86,7 @@ export interface UpdateUserState {
   image: string;
   remarks: string;
   status: string;
-  jobfunction: string;
+  business_title: string;
   contact: string;
   alias: string;
   employee_id: string;
@@ -119,7 +120,7 @@ class UpdateUserPage extends Component<Props, UpdateUserState> {
     postal_code: '',
     remarks: '',
     status: '',
-    jobfunction: '',
+    business_title: '',
     contact: '',
   }
 
@@ -144,9 +145,9 @@ class UpdateUserPage extends Component<Props, UpdateUserState> {
     this.setState({ [statekay]: event.target.value } as Pick<UpdateUserState, keyof UpdateUserState>);
   };
 
-  handleUpdateUser = (e) => {
+  handleUpdateUser = (e, data) => {
     e.preventDefault()
-    this.props.updateUser(this.state)
+    this.props.updateUser(data)
     history.goBack()
   }
 
@@ -158,171 +159,7 @@ class UpdateUserPage extends Component<Props, UpdateUserState> {
         <Typography component="h1" variant="h5">
           Update User
       </Typography>
-        <Paper>
-          <form onSubmit={this.handleUpdateUser}>
-            <Grid container className={classes.grid} spacing={16}>
-              <Grid item justify="center" xs container>
-                <Grid container direction="column" spacing={16}>
-                  <div style={{ display: 'flex' }}>
-                    <div style={{ margin: 20, justifyContent: 'center' }}>
-                      <Avatar
-                        width={200}
-                        height={150}
-                        onCrop={this.onCrop}
-                        onClose={this.onClose}
-                      />
-                      <Typography variant="h6">Profile Picture</Typography>
-                    </div>
-                    <img src={this.state.image} />
-                  </div>
-                </Grid>
-              </Grid>
-              <Grid item justify="center" xs container>
-                <div style={{ margin: 20 }}>
-                  <TextField
-                    required
-                    disabled
-                    id="email"
-                    label="Email"
-                    className={classes.textField}
-                    value={this.state.email}
-                    onChange={this.handleChange('email')}
-                    margin="normal"
-                  />
-                </div>
-              </Grid>
-              <Grid item justify="center" xs container>
-                <div style={{ margin: 20 }}>
-                  <TextField
-                    required
-                    id="firstname"
-                    label="Firstname"
-                    className={classes.textField}
-                    value={this.state.firstname}
-                    onChange={this.handleChange('firstname')}
-                    margin="normal"
-                  />
-                  <TextField
-                    id="lastname"
-                    label="Lastname"
-                    className={classes.textField}
-                    value={this.state.lastname}
-                    onChange={this.handleChange('lastname')}
-                    margin="normal"
-                  />
-                </div>
-              </Grid>
-              <Grid item justify="center" container xs>
-                <div style={{ margin: 20 }}>
-                  {this.props.countryList.length > 0 && <FormControl>
-                    <InputLabel>Country</InputLabel>
-                    <Select
-                      id="country"
-                      className={classes.textField}
-                      value={this.state.country}
-                      onChange={this.handleChangeSelect('country')}
-                      inputProps={{
-                        name: 'country',
-                        id: 'country-simple',
-                      }}>
-                      {this.props.countryList.map((country) =>
-                        <MenuItem key={country.country_name} value={country.country_name}>{country.country_name}</MenuItem>
-                      )}
-                    </Select></FormControl>}
-                  <TextField
-                    id="address"
-                    label="Address"
-                    className={classes.textField}
-                    value={this.state.address}
-                    onChange={this.handleChange('address')}
-                    margin="normal"
-                  />
-                  <TextField
-                    id="postal_code"
-                    label="Postal Code"
-                    className={classes.textField}
-                    value={this.state.postal_code}
-                    onChange={this.handleChange('postal_code')}
-                    margin="normal"
-                  />
-                </div>
-              </Grid>
-              <Grid item justify="center" container xs>
-                <div style={{ margin: 20 }}>
-                  <TextField
-                    id="alias"
-                    label="alias"
-                    className={classes.textField}
-                    value={this.state.alias}
-                    onChange={this.handleChange('alias')}
-                    margin="normal"
-                  />
-                  <TextField
-                    id="employee_id"
-                    label="employee_id"
-                    className={classes.textField}
-                    value={this.state.employee_id}
-                    onChange={this.handleChange('employee_id')}
-                    margin="normal"
-                  />
-                  <TextField
-                    required
-                    id="contact"
-                    label="contact"
-                    className={classes.textField}
-                    value={this.state.contact}
-                    onChange={this.handleChange('contact')}
-                    margin="normal"
-                  />
-                </div>
-              </Grid>
-              <Grid item justify="center" container xs>
-                <div style={{ margin: 20 }}>
-                  <TextField
-                    id="jobfunction"
-                    label="jobfunction"
-                    className={classes.textField}
-                    value={this.state.jobfunction}
-                    onChange={this.handleChange('jobfunction')}
-                    margin="normal"
-                  />
-                  <FormControl className={classes.formControl}>
-                    <InputLabel>status</InputLabel>
-                    <Select
-                      value={this.state.status}
-                      onChange={this.handleChangeSelect('status')}
-                      inputProps={{
-                        name: 'status',
-                        id: 'status',
-                      }}
-                    >
-                      <MenuItem value={'Active'}>Active</MenuItem>
-                      <MenuItem value={'Inactive'}>Inactive</MenuItem>
-                    </Select>
-                  </FormControl>
-                  <TextField
-                    id="remarks"
-                    label="remarks"
-                    className={classes.textField}
-                    value={this.state.remarks}
-                    onChange={this.handleChange('remarks')}
-                    margin="normal"
-                  />
-                </div>
-              </Grid>
-
-            </Grid>
-            <Divider />
-            <Divider />
-            <div style={{
-              width: '100%', flex: 1,
-              flexDirection: 'row',
-              justifyContent: 'center', alignItems: 'flex-end'
-            }}>
-              <Button variant="contained" color="primary" type="submit">Submit</Button>
-            </div>
-          </form>
-        </Paper>
+        <FormPage create={false} updateData={this.props.user} onSubmit={(e, data) => this.handleUpdateUser(e, data)} />
       </div>
     );
   }

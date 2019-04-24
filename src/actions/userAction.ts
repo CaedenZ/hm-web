@@ -1,7 +1,5 @@
 import { createAction, createAsyncAction } from "typesafe-actions"
-import { User } from "../interface/userInterface";
-import { CREATEUSERCRED } from "../interface/credInterface";
-import { CreateUserState } from "../scenes/UserPage/create";
+import { User, CREATEUSERCRED } from "../interface/userInterface";
 import { UpdateUserState } from "../scenes/UserPage/update";
 
 interface GETUSERLISTCRED {
@@ -31,7 +29,7 @@ export const createUserAction = createAsyncAction(
     CREATE_USER_REQUEST,
     CREATE_USER_SUCCESS,
     CREATE_USER_FAILURE
-)<CreateUserState, void, void>()
+)<CREATEUSERCRED, void, void>()
 
 const UPDATE_USER_REQUEST = "UPDATE_USER_REQUEST"
 const UPDATE_USER_SUCCESS = "UPDATE_USER_SUCCESS"

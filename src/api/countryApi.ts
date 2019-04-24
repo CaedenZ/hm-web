@@ -1,5 +1,5 @@
 import $axios from "../plugin/axios";
-import { Country, Currency, Industry, Sector } from "../interface/countryInterface";
+import { Country, Currency, DistintCurrency } from "../interface/countryInterface";
 
 export const getCountryList = async (payload): Promise<Country[]> => {
 
@@ -15,17 +15,11 @@ export const getCurrencyList = async (payload): Promise<Currency[]> => {
     return response.data.data
 }
 
-export const getIndustryList = async (payload): Promise<Industry[]> => {
+export const getDistintCurrencyList = async (payload): Promise<DistintCurrency[]> => {
 
     console.log(payload)
-    const response = await $axios.post('/company/getIndustry', { session_key: payload })
+    const response = await $axios.post('/company/getDistinctCurrency', { session_key: payload })
     return response.data.data
 }
 
-export const getSectorList = async (payload): Promise<Sector[]> => {
-
-    console.log(payload)
-    const response = await $axios.post('/company/getSector', { session_key: payload })
-    return response.data.data
-}
 

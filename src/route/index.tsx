@@ -7,7 +7,9 @@ import { ConnectedRouter } from "connected-react-router";
 import { history } from '../store'
 import { mapDispatchToProps } from "../helper/dispachProps";
 
-import ResponsiveDrawer from "../Layout/default";
+import HomeLayout from "../Layout/default";
+import PrimaryLayout from "../Layout/PrimaryLayout";
+import SecondaryLayout from "../Layout/SecondaryLayout"
 
 import LoginPage from "../scenes/LoginPage";
 import ForgetPasswordPage from "../scenes/ForgetPasswordPage";
@@ -24,6 +26,7 @@ import UpdateUserPage from "../scenes/UserPage/update/index";
 import CompanyPage from "../scenes/CompanyPage";
 import CreateCompanyPage from "../scenes/CompanyPage/create/index";
 import UpdateCompanyPage from "../scenes/CompanyPage/update";
+import UpdateSelfCompanyPage from "../scenes/CompanyPage/updateself";
 
 import UnitPage from "../scenes/UnitPage";
 import CreateUnitPage from "../scenes/UnitPage/create"
@@ -43,6 +46,10 @@ import JobFunctionPage from "../scenes/JobFunctionPage";
 import CreateJobFunctionPage from "../scenes/JobFunctionPage/create";
 import CreateSubJobFunctionPage from "../scenes/JobFunctionPage/createsub";
 
+import SectorPage from "../scenes/SectorPage";
+import CreateSectorPage from "../scenes/SectorPage/create";
+import CreateIndustryPage from "../scenes/SectorPage/createsub";
+
 import RegionPage from "../scenes/RegionPage";
 import CreateRegionPage from "../scenes/RegionPage/create";
 import UpdateRegionPage from "../scenes/RegionPage/update";
@@ -50,6 +57,7 @@ import UpdateRegionPage from "../scenes/RegionPage/update";
 import SubCompanyPage from "../scenes/SubCompanyPage";
 import CreateSubCompanyPage from "../scenes/SubCompanyPage/create";
 import UpdateSubCompanyPage from "../scenes/SubCompanyPage/update";
+import DivisionPage from "../scenes/DivisionPage";
 
 
 export interface Props extends InState { }
@@ -68,47 +76,53 @@ class RootRoute extends React.Component<Props, State>{
                     <Switch>
                         {/* <Route exact path="/" component={Home} /> */}
                         {/* both /roster and /roster/:number begin with /roster */}
-                        <Route exact path="/login" component={LoginPage} />
+                        <Route exact path="/login" render={() => (<SecondaryLayout> <LoginPage /> </SecondaryLayout>)} />
                         <Route exact path="/forgetpassword" component={ForgetPasswordPage} />
                         <Route exact path="/resetpassword" component={ResetPasswordPage} />
-                        {/* <Route exact path="/" component={ResponsiveDrawer} /> */}
-                        <Route exact path="/" render={() => (<ResponsiveDrawer> <HomePage /> </ResponsiveDrawer>)} />
-                        <Route exact path="/profile" render={() => (<ResponsiveDrawer><ProfilePage /></ResponsiveDrawer>)} />
-                        <Route exact path="/setting" render={() => (<ResponsiveDrawer><SettingPage /></ResponsiveDrawer>)} />
+                        {/* <Route exact path="/" component={PrimaryLayout} /> */}
+                        <Route exact path="/" render={() => (<PrimaryLayout> <HomePage /> </PrimaryLayout>)} />
+                        <Route exact path="/profile" render={() => (<PrimaryLayout><ProfilePage /></PrimaryLayout>)} />
+                        <Route exact path="/setting" render={() => (<PrimaryLayout><SettingPage /></PrimaryLayout>)} />
 
-                        <Route exact path="/user" render={() => (<ResponsiveDrawer> <UserPage /> </ResponsiveDrawer>)} />
-                        <Route exact path="/user/create" render={() => (<ResponsiveDrawer> <CreateUserPage /> </ResponsiveDrawer>)} />
-                        <Route exact path="/user/update" render={() => (<ResponsiveDrawer> <UpdateUserPage /> </ResponsiveDrawer>)} />
+                        <Route exact path="/user" render={() => (<PrimaryLayout> <UserPage /> </PrimaryLayout>)} />
+                        <Route exact path="/user/create" render={() => (<PrimaryLayout> <CreateUserPage /> </PrimaryLayout>)} />
+                        <Route exact path="/user/update" render={() => (<PrimaryLayout> <UpdateUserPage /> </PrimaryLayout>)} />
 
-                        <Route exact path="/company" render={() => (<ResponsiveDrawer> <CompanyPage /> </ResponsiveDrawer>)} />
-                        <Route exact path="/company/create" render={() => (<ResponsiveDrawer> <CreateCompanyPage /> </ResponsiveDrawer>)} />
-                        <Route exact path="/company/update" render={() => (<ResponsiveDrawer> <UpdateCompanyPage /> </ResponsiveDrawer>)} />
+                        <Route exact path="/company" render={() => (<PrimaryLayout> <CompanyPage /> </PrimaryLayout>)} />
+                        <Route exact path="/company/create" render={() => (<PrimaryLayout> <CreateCompanyPage /> </PrimaryLayout>)} />
+                        <Route exact path="/company/update" render={() => (<PrimaryLayout> <UpdateCompanyPage /> </PrimaryLayout>)} />
+                        <Route exact path="/company/updateself" render={() => (<PrimaryLayout> <UpdateSelfCompanyPage /> </PrimaryLayout>)} />
 
-                        <Route exact path="/subcompany" render={() => (<ResponsiveDrawer> <SubCompanyPage /> </ResponsiveDrawer>)} />
-                        <Route exact path="/subcompany/create" render={() => (<ResponsiveDrawer> <CreateSubCompanyPage /> </ResponsiveDrawer>)} />
-                        <Route exact path="/subcompany/update" render={() => (<ResponsiveDrawer> <UpdateSubCompanyPage /> </ResponsiveDrawer>)} />
+                        <Route exact path="/entity" render={() => (<PrimaryLayout> <SubCompanyPage /> </PrimaryLayout>)} />
+                        <Route exact path="/entity/create" render={() => (<PrimaryLayout> <CreateSubCompanyPage /> </PrimaryLayout>)} />
+                        <Route exact path="/entity/update" render={() => (<PrimaryLayout> <UpdateSubCompanyPage /> </PrimaryLayout>)} />
 
-                        <Route exact path="/unit" render={() => (<ResponsiveDrawer> <UnitPage /> </ResponsiveDrawer>)} />
-                        <Route exact path="/unit/create" render={() => (<ResponsiveDrawer> <CreateUnitPage /> </ResponsiveDrawer>)} />
-                        <Route exact path="/unit/update" render={() => (<ResponsiveDrawer> <UpdateUnitPage /> </ResponsiveDrawer>)} />
-                        <Route exact path="/unit/subunit" render={() => (<ResponsiveDrawer> <SubUnitPage /> </ResponsiveDrawer>)} />
-                        <Route exact path="/unit/subunit/create" render={() => (<ResponsiveDrawer> <CreateSubUnitPage /> </ResponsiveDrawer>)} />
-                        <Route exact path="/unit/subunit/update" render={() => (<ResponsiveDrawer> <UpdateSubUnitPage /> </ResponsiveDrawer>)} />
-                        <Route exact path="/unit/subunit/childunit" render={() => (<ResponsiveDrawer> <ChildUnitPage /> </ResponsiveDrawer>)} />
-                        <Route exact path="/unit/subunit/childunit/create" render={() => (<ResponsiveDrawer> <CreateChildUnitPage /> </ResponsiveDrawer>)} />
-                        <Route exact path="/unit/subunit/childunit/update" render={() => (<ResponsiveDrawer> <UpdateChildUnitPage /> </ResponsiveDrawer>)} />
+                        <Route exact path="/division" render={() => (<PrimaryLayout> <UnitPage /> </PrimaryLayout>)} />
+                        <Route exact path="/unit" render={() => (<PrimaryLayout> <DivisionPage /> </PrimaryLayout>)} />
+                        <Route exact path="/unit/create" render={() => (<PrimaryLayout> <CreateUnitPage /> </PrimaryLayout>)} />
+                        <Route exact path="/unit/update" render={() => (<PrimaryLayout> <UpdateUnitPage /> </PrimaryLayout>)} />
+                        <Route exact path="/unit/subunit" render={() => (<PrimaryLayout> <SubUnitPage /> </PrimaryLayout>)} />
+                        <Route exact path="/unit/subunit/create" render={() => (<PrimaryLayout> <CreateSubUnitPage /> </PrimaryLayout>)} />
+                        <Route exact path="/unit/subunit/update" render={() => (<PrimaryLayout> <UpdateSubUnitPage /> </PrimaryLayout>)} />
+                        <Route exact path="/unit/subunit/childunit" render={() => (<PrimaryLayout> <ChildUnitPage /> </PrimaryLayout>)} />
+                        <Route exact path="/unit/subunit/childunit/create" render={() => (<PrimaryLayout> <CreateChildUnitPage /> </PrimaryLayout>)} />
+                        <Route exact path="/unit/subunit/childunit/update" render={() => (<PrimaryLayout> <UpdateChildUnitPage /> </PrimaryLayout>)} />
 
-                        <Route exact path="/role" render={() => (<ResponsiveDrawer> <RolePage /> </ResponsiveDrawer>)} />
-                        <Route exact path="/role/create" render={() => (<ResponsiveDrawer> <CreateRolePage /> </ResponsiveDrawer>)} />
-                        <Route exact path="/role/update" render={() => (<ResponsiveDrawer> <UpdateRolePage /> </ResponsiveDrawer>)} />
+                        <Route exact path="/role" render={() => (<PrimaryLayout> <RolePage /> </PrimaryLayout>)} />
+                        <Route exact path="/role/create" render={() => (<PrimaryLayout> <CreateRolePage /> </PrimaryLayout>)} />
+                        <Route exact path="/role/update" render={() => (<PrimaryLayout> <UpdateRolePage /> </PrimaryLayout>)} />
 
-                        <Route exact path="/jobfunction" render={() => (<ResponsiveDrawer> <JobFunctionPage /> </ResponsiveDrawer>)} />
-                        <Route exact path="/jobfunction/create" render={() => (<ResponsiveDrawer> <CreateJobFunctionPage /> </ResponsiveDrawer>)} />
-                        <Route exact path="/jobfunction/createsub" render={() => (<ResponsiveDrawer> <CreateSubJobFunctionPage /> </ResponsiveDrawer>)} />
+                        <Route exact path="/jobfunction" render={() => (<PrimaryLayout> <JobFunctionPage /> </PrimaryLayout>)} />
+                        <Route exact path="/jobfunction/create" render={() => (<PrimaryLayout> <CreateJobFunctionPage /> </PrimaryLayout>)} />
+                        <Route exact path="/jobfunction/createsub" render={() => (<PrimaryLayout> <CreateSubJobFunctionPage /> </PrimaryLayout>)} />
 
-                        <Route exact path="/region" render={() => (<ResponsiveDrawer> <RegionPage /> </ResponsiveDrawer>)} />
-                        <Route exact path="/region/create" render={() => (<ResponsiveDrawer> <CreateRegionPage /> </ResponsiveDrawer>)} />
-                        <Route exact path="/region/update" render={() => (<ResponsiveDrawer> <UpdateRegionPage /> </ResponsiveDrawer>)} />
+                        <Route exact path="/sector" render={() => (<PrimaryLayout> <SectorPage /> </PrimaryLayout>)} />
+                        <Route exact path="/sector/create" render={() => (<PrimaryLayout> <CreateSectorPage /> </PrimaryLayout>)} />
+                        <Route exact path="/sector/createindustry" render={() => (<PrimaryLayout> <CreateIndustryPage /> </PrimaryLayout>)} />
+
+                        <Route exact path="/region" render={() => (<PrimaryLayout> <RegionPage /> </PrimaryLayout>)} />
+                        <Route exact path="/region/create" render={() => (<PrimaryLayout> <CreateRegionPage /> </PrimaryLayout>)} />
+                        <Route exact path="/region/update" render={() => (<PrimaryLayout> <UpdateRegionPage /> </PrimaryLayout>)} />
 
                     </Switch>
                 </ConnectedRouter>

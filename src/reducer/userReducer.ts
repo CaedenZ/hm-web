@@ -31,11 +31,49 @@ export function userReducer(state: UserState = {
         postal_code: '',
         remarks: '',
         status: '',
-        jobfunction: '',
+        business_title: '',
         contact: '',
     },
 }, action) {
     switch (action.type) {
+        case 'LOG_IN_SUCCESS':
+            return {
+                userList: [],
+                user: {
+                    image: '',
+                    email: '',
+                    firstname: '',
+                    lastname: '',
+                    employee_id: '',
+                    alias: '',
+                    country: '',
+                    address: '',
+                    postal_code: '',
+                    remarks: '',
+                    status: '',
+                    business_title: '',
+                    contact: '',
+                },
+            }
+        case 'LOG_OUT':
+            return {
+                userList: [],
+                user: {
+                    image: '',
+                    email: '',
+                    firstname: '',
+                    lastname: '',
+                    employee_id: '',
+                    alias: '',
+                    country: '',
+                    address: '',
+                    postal_code: '',
+                    remarks: '',
+                    status: '',
+                    business_title: '',
+                    contact: '',
+                },
+            }
         case 'SELECT_USER':
             return {
                 ...state,

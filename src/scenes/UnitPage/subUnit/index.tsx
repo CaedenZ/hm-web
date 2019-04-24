@@ -19,11 +19,12 @@ import { Company, Unit } from "../../../interface/companyInterface";
 import { RootState } from "../../../reducer";
 import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
-import { Button, IconButton, Typography } from "@material-ui/core";
+import { Button, IconButton, Typography, Menu, MenuItem } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 import { history } from "../../../store";
 import UpdateIcon from '@material-ui/icons/PlaylistAddCheck';
 import ViewIcon from '@material-ui/icons/ZoomIn';
+import CompanyIcon from "@material-ui/icons/Business";
 
 const CustomTableCell = withStyles(theme => ({
     head: {
@@ -68,14 +69,21 @@ interface State { }
 interface InState {
     subUnitList: Unit[],
     parentUnit: Unit,
+    entityList: Company[]
 }
 
 class SubUnitPage extends React.Component<Props, State> {
+
 
     constructor(props) {
         super(props)
         this.handleViewButtonClick = this.handleViewButtonClick.bind(this)
     }
+
+    state = {
+        anchorEl: null,
+    };
+
     componentDidMount() {
         this.props.getSubUnitList()
 
@@ -92,18 +100,39 @@ class SubUnitPage extends React.Component<Props, State> {
         history.push('/unit/subunit/update')
     }
 
+    handleEntity = (row, event) => {
+        switch (row.unit_type) {
+            case 'country':
+                const a = JSON.parse(row.unit_data)
+                console.log(a.country_name)
+                this.props.getCompanyByCountry(a.country_name)
+                break
+            case 'region':
+                const b = JSON.parse(row.unit_data)
+                console.log(b.region_id)
+                this.props.getCompanyByRegion(b.region_id)
+                break
+        }
+        this.setState({ anchorEl: event.currentTarget });
+    }
+
+    handleClose = () => {
+        this.setState({ anchorEl: null });
+    };
+
     handleDelete = (id) => {
         const payload = {
             type: 'delete',
             object: 'subunit',
             id: id,
-          }
-          this.props.showDialog(payload)
+        }
+        this.props.showDialog(payload)
         // this.props.deleteSubUnit(id)
     }
 
     render() {
         const { classes } = this.props;
+        const { anchorEl } = this.state;
         return (
             <main>
                 <div>
@@ -111,8 +140,8 @@ class SubUnitPage extends React.Component<Props, State> {
                     <Table className={classes.parentTable}>
                         <TableHead>
                             <TableRow className={classes.parentrow}>
-                                <CustomTableCell>unit_name</CustomTableCell>
-                                <CustomTableCell align="right">unit_type</CustomTableCell>
+                                <CustomTableCell>division_name</CustomTableCell>
+                                <CustomTableCell align="right">division_type</CustomTableCell>
                             </TableRow>
                         </TableHead>
                         <TableRow className={classes.parentrow}>
@@ -121,14 +150,13 @@ class SubUnitPage extends React.Component<Props, State> {
                         </TableRow>
                     </Table>
                 </div>
-                <CustomButton link="/unit/subunit/create">New unit</CustomButton>
+                <CustomButton link="/unit/subunit/create">New Division</CustomButton>
                 <Paper className={classes.root}>
                     <Table className={classes.table}>
                         <TableHead>
                             <TableRow>
-                                <CustomTableCell>unit_id</CustomTableCell>
-                                <CustomTableCell align="right">unit_name</CustomTableCell>
-                                <CustomTableCell align="right">unit_type</CustomTableCell>
+                                <CustomTableCell>division_name</CustomTableCell>
+                                <CustomTableCell align="right">division_type</CustomTableCell>
                                 <CustomTableCell align="right">Action</CustomTableCell>
                             </TableRow>
                         </TableHead>
@@ -136,14 +164,22 @@ class SubUnitPage extends React.Component<Props, State> {
                             {this.props.subUnitList.map(row => (
                                 <TableRow className={classes.row} key={row.unit_id}>
                                     <CustomTableCell component="th" scope="row">
-                                        {row.unit_id}
-                                    </CustomTableCell>
-                                    <CustomTableCell align="right">
                                         {row.unit_name}
                                     </CustomTableCell>
-                                    <CustomTableCell align="right">{row.unit_type}</CustomTableCell>
+                                    <CustomTableCell align="right">{row.unit_type}{row.unit_type !== 'Division' && <IconButton onClick={(e) => this.handleEntity(row, e)}><CompanyIcon /></IconButton>}
+                                        <Menu
+                                            id="simple-menu"
+                                            anchorEl={anchorEl}
+                                            open={Boolean(anchorEl)}
+                                            onClose={this.handleClose}
+                                        >
+                                            {this.props.entityList.length > 0 ? this.props.entityList.map(e => {
+                                                return (<MenuItem key={e.company_id} onClick={this.handleClose}>{e.company_name}</MenuItem>)
+                                            }) : <MenuItem onClick={this.handleClose}>No exist entity</MenuItem>}
+                                        </Menu>
+                                    </CustomTableCell>
                                     <CustomTableCell align="right">
-                                    <IconButton onClick={() => this.handleViewButtonClick(row)}><ViewIcon /></IconButton>
+                                        <IconButton onClick={() => this.handleViewButtonClick(row)}><ViewIcon /></IconButton>
                                         <IconButton onClick={() => this.handleUpdateButtonClick(row)}><UpdateIcon /></IconButton>
                                         <IconButton onClick={() => this.handleDelete(row.unit_id)}><DeleteIcon /></IconButton>
                                     </CustomTableCell>
@@ -165,6 +201,7 @@ function mapStateToProps(state: RootState) {
     return {
         subUnitList: state.companyReducer.subUnitList,
         parentUnit: state.companyReducer.selectedUnit,
+        entityList: state.companyReducer.unitEntity,
     }
 }
 

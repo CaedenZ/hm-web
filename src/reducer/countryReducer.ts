@@ -1,16 +1,16 @@
-import { CountryState, Country, Currency, Industry, Sector } from "../interface/countryInterface";
+import { CountryState, Country, Currency, DistintCurrency } from "../interface/countryInterface";
 import { Epic } from "redux-observable";
 import { filter, switchMap, map, catchError } from "rxjs/operators";
 import { isActionOf } from "typesafe-actions";
-import { getCountryListAction, getCurrencyListAction, getIndustryListAction, getSectorListAction } from "../actions/countryAction";
+import { getCountryListAction, getCurrencyListAction, getDistintCurrencyListAction } from "../actions/countryAction";
 import { from, of } from "rxjs";
-import { getCountryList, getCurrencyList, getIndustryList, getSectorList } from "../api/countryApi";
+import { getCountryList, getCurrencyList, getDistintCurrencyList } from "../api/countryApi";
+import { getSectorListAction } from "../actions/sectorAction";
 
 export function countryReducer(state: CountryState = {
     countryList: [],
     currencyList: [],
-    sectorList: [],
-    industryList: [],
+    distintCurrencyList: [],
 }, action) {
     switch (action.type) {
         case 'GET_COUNTRY_LIST_SUCCESS':
@@ -23,15 +23,10 @@ export function countryReducer(state: CountryState = {
                 ...state,
                 currencyList: action.payload
             }
-        case 'GET_SECTOR_LIST_SUCCESS':
+        case 'GET_DISTINT_CURRENCY_LIST_SUCCESS':
             return {
                 ...state,
-                sectorList: action.payload
-            }
-        case 'GET_INDUSTRY_LIST_SUCCESS':
-            return {
-                ...state,
-                industryList: action.payload
+                distintCurrencyList: action.payload
             }
         default:
             return state
@@ -58,23 +53,14 @@ export const getCurrencyListEpic: Epic<any, any, any, any> = (action$, state$) =
             )
         )
     )
-export const getIndustryListEpic: Epic<any, any, any, any> = (action$, state$) =>
+
+export const getDistintCurrencyListEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
-        filter(isActionOf(getIndustryListAction.request)),
+        filter(isActionOf(getDistintCurrencyListAction.request)),
         switchMap((action) =>
-            from(getIndustryList(state$.value.authenticationReducer.token)).pipe(
-                map((IndustryList: Industry[]) => getIndustryListAction.success(IndustryList)),
-                catchError(error => of(getIndustryListAction.failure(error.message)))
-            )
-        )
-    )
-export const getSectorListEpic: Epic<any, any, any, any> = (action$, state$) =>
-    action$.pipe(
-        filter(isActionOf(getSectorListAction.request)),
-        switchMap((action) =>
-            from(getSectorList(state$.value.authenticationReducer.token)).pipe(
-                map((SectorList: Sector[]) => getSectorListAction.success(SectorList)),
-                catchError(error => of(getSectorListAction.failure(error.message)))
+            from(getDistintCurrencyList(state$.value.authenticationReducer.token)).pipe(
+                map((DistintCurrencyList: DistintCurrency[]) => getDistintCurrencyListAction.success(DistintCurrencyList)),
+                catchError(error => of(getDistintCurrencyListAction.failure(error.message)))
             )
         )
     )

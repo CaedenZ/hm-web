@@ -9,8 +9,8 @@ import {
     flatMap,
 } from "rxjs/operators"
 import { of, from } from "rxjs"
-import { login, forgetPassword, getUserProfile } from "../api/authenticationAPI";
-import { loginAction, forgetPasswordAction, getUserProfileAction } from "../actions/authenticationAction";
+import { login, forgetPassword, getUserProfile, updatePassword } from "../api/authenticationAPI";
+import { loginAction, forgetPasswordAction, getUserProfileAction, updatePasswordAction } from "../actions/authenticationAction";
 import { isActionOf } from "typesafe-actions";
 import { push } from "connected-react-router";
 import { Profile } from "../interface/authInterface";
@@ -127,11 +127,11 @@ export const getUserProfileEpic: Epic<any, any, any, any> = (action$, state$) =>
     )
 export const updatePasswordEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
-        ofType("LOG_IN_REQUEST"),
+        filter(isActionOf(updatePasswordAction.request)),
         switchMap((action) =>
-            from(login(action.payload)).pipe(
-                map((token: string) => loginAction.success(token)),
-                catchError(error => of(loginAction.failure(error.message)))
+            from(updatePassword(state$.value.authenticationReducer.token, state$.value.userReducer.user.email, action.payload)).pipe(
+                map(() => updatePasswordAction.success()),
+                catchError(error => of(updatePasswordAction.failure(error.message)))
             )
         )
     )

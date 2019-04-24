@@ -15,12 +15,29 @@ export interface User {
     employee_id: string,
     image: string,
     contact: string,
-    jobfunction: string,
+    business_title: string,
     country: string,
     address: string,
     postal_code: string,
     status: string,
     remarks: string,
+}
+
+export interface CREATEUSERCRED {
+    email: string;
+    password: string;
+    firstname: string;
+    lastname: string;
+    country: string;
+    address: string;
+    postal_code: string;
+    image: string;
+    remarks: string;
+    status: string;
+    business_title: string;
+    contact: string;
+    alias: string;
+    employee_id: string;
 }
 
 export interface UserState {
@@ -36,7 +53,7 @@ export interface UserProfile {
     employee_id: string,
     image: string,
     contact: string,
-    jobfunction: string,
+    business_title: string,
     country: string,
     address: string,
     postal_code: string,

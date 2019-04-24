@@ -23,6 +23,7 @@ import { Button, IconButton } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 import { history } from "../../store";
 import UpdateIcon from '@material-ui/icons/PlaylistAddCheck';
+import ViewIcon from '@material-ui/icons/ZoomIn';
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -63,6 +64,7 @@ class CustomizedTable extends React.Component<Props, State> {
 
 
   componentDidMount() {
+    this.props.getCompanyList()
     console.log('CompangPage Mount')
   }
 
@@ -81,6 +83,9 @@ class CustomizedTable extends React.Component<Props, State> {
     this.props.showDialog(payload)
   }
 
+  handleViewButtonClick = (company) => {
+    this.props.selectCompany(company)
+  }
 
   render() {
     const { classes } = this.props;
@@ -92,10 +97,10 @@ class CustomizedTable extends React.Component<Props, State> {
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
-                <CustomTableCell>company_name</CustomTableCell>
-                <CustomTableCell align="right">contact_email</CustomTableCell>
-                <CustomTableCell align="right">contact_number</CustomTableCell>
-                <CustomTableCell align="right">contact_person</CustomTableCell>
+                <CustomTableCell>Company Name</CustomTableCell>
+                <CustomTableCell align="right">Contact Person</CustomTableCell>
+                <CustomTableCell align="right">Contact Number</CustomTableCell>
+                <CustomTableCell align="right">Contact Emai</CustomTableCell>
                 <CustomTableCell align="right">Action</CustomTableCell>
               </TableRow>
             </TableHead>
@@ -105,13 +110,14 @@ class CustomizedTable extends React.Component<Props, State> {
                   <CustomTableCell component="th" scope="row">
                     {row.company_name}
                   </CustomTableCell>
-                  <CustomTableCell align="right">{row.contact_email}</CustomTableCell>
-                  <CustomTableCell align="right">{row.contact_number}</CustomTableCell>
                   <CustomTableCell align="right">{row.contact_person}</CustomTableCell>
+                  <CustomTableCell align="right">{row.contact_number}</CustomTableCell>
+                  <CustomTableCell align="right">{row.contact_email}</CustomTableCell>
                   <CustomTableCell align="right">
+                    <IconButton onClick={() => this.handleViewButtonClick(row)}><ViewIcon /></IconButton>
                     <IconButton onClick={() => this.handleUpdateButtonClick(row)}><UpdateIcon /></IconButton>
                     {/* <Button color="primary" variant="contained" onClick={() => this.handleUpdateButtonClick(row)}>view</Button> */}
-                    <IconButton onClick={() => this.handleDelete(row.company_id)}><DeleteIcon /></IconButton>
+                    {row.company_id !== '5ZwOXIkeKuPhpFriTsmD' && <IconButton onClick={() => this.handleDelete(row.company_id)}><DeleteIcon /></IconButton>}
                   </CustomTableCell>
                 </TableRow>
               ))}

@@ -22,7 +22,7 @@ export const history = createBrowserHistory()
 const customLogger = createLogger({ collapsed: true })
 export const pReducer = persistReducer(persistConfig, rootReducer)
 export const store = createStore(
-    pReducer,
+    pReducer    ,
     applyMiddleware(customLogger, epicMiddleware, routerMiddleware(history), asyncDispatchMiddleware)
 )
 

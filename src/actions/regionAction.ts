@@ -1,5 +1,5 @@
 import { createAsyncAction, createAction } from "typesafe-actions";
-import { Region } from "../interface/regionInterface";
+import { Region, CREATEREGIONCRED, UPDATEREGIONCRED } from "../interface/regionInterface";
 import { CreateRegionState } from "../scenes/RegionPage/create";
 import { UpdateRegionState } from "../scenes/RegionPage/update";
 
@@ -25,7 +25,7 @@ export const createRegionAction = createAsyncAction(
     CREATE_REGION_REQUEST,
     CREATE_REGION_SUCCESS,
     CREATE_REGION_FAILURE
-)<CreateRegionState, void, void>()
+)<CREATEREGIONCRED, void, void>()
 
 const UPDATE_REGION_REQUEST = "UPDATE_REGION_REQUEST"
 const UPDATE_REGION_SUCCESS = "UPDATE_REGION_SUCCESS"
@@ -34,7 +34,7 @@ export const updateRegionAction = createAsyncAction(
     UPDATE_REGION_REQUEST,
     UPDATE_REGION_SUCCESS,
     UPDATE_REGION_FAILURE
-)<UpdateRegionState, void, void>()
+)<UPDATEREGIONCRED, void, void>()
 
 const DELETE_REGION_REQUEST = "DELETE_REGION_REQUEST"
 const DELETE_REGION_SUCCESS = "DELETE_REGION_SUCCESS"

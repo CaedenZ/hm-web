@@ -23,6 +23,7 @@ export interface CREATEUSERCRED {
     remarks: string;
 }
 
+
 export interface FORGETPWCRED {
     app_key: string;
     email: string;

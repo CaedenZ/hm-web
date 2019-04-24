@@ -1,5 +1,5 @@
 import { combineReducers } from "redux"
-import { authenticationReducer, loginEpic, forgetPasswordEpic, getUserProfileEpic } from "./authenticationReducer"
+import { authenticationReducer, loginEpic, forgetPasswordEpic, getUserProfileEpic, updatePasswordEpic } from "./authenticationReducer"
 // // import currentReport, {
 // //   CurrentReportState,
 // //   generateReportEpic,
@@ -11,16 +11,17 @@ import { authenticationReducer, loginEpic, forgetPasswordEpic, getUserProfileEpi
 import { combineEpics } from "redux-observable"
 import { StateType } from "typesafe-actions";
 import { userReducer, getUserListEpic, createUserEpic, deleteUserEpic, updateUserEpic } from "./userReducer";
-import { companyReducer, getCompanyListEpic, getChildCompanyListEpic, createCompanyEpic, getUnitListEpic, getChildUnitListEpic, createUnitEpic, createSubUnitEpic, updateUnitEpic, deleteUnitEpic, updateSubUnitEpic, deleteSubUnitEpic, getSubUnitListEpic, createChildUnitEpic, updateChildUnitEpic, deleteChildUnitEpic, createSubCompanyEpic, updateCompanyEpic, updateSubCompanyEpic, deleteCompanyEpic, deleteSubCompanyEpic } from "./companyReducer";
+import { companyReducer, getCompanyListEpic, getChildCompanyListEpic, createCompanyEpic, getUnitListEpic, getChildUnitListEpic, createUnitEpic, createSubUnitEpic, updateUnitEpic, deleteUnitEpic, updateSubUnitEpic, deleteSubUnitEpic, getSubUnitListEpic, createChildUnitEpic, updateChildUnitEpic, deleteChildUnitEpic, createEntityEpic, updateCompanyEpic, updateEntityEpic, deleteCompanyEpic, deleteEntityEpic, getCompanyByCountryEpic, getCompanyByRegionEpic, getDivisionListEpic } from "./companyReducer";
 import { initReducer } from "./initReducer";
 import { jobFunctionReducer, getJobFunctionListEpic, createJobFunctionEpic, createSubJobFunctionEpic, deleteSubJobFunctionEpic, deleteJobFunctionEpic } from "./jobFunctionReducer";
 import { connectRouter } from 'connected-react-router'
 import { createBrowserHistory } from "history";
-import { getCountryListEpic, countryReducer, getCurrencyListEpic, getIndustryListEpic, getSectorListEpic } from "./countryReducer";
+import { getCountryListEpic, countryReducer, getCurrencyListEpic, getDistintCurrencyListEpic } from "./countryReducer";
 import { regionReducer, getRegionListEpic, createRegionEpic, deleteRegionEpic, updateRegionEpic } from "./regionReducer";
 import { snackBarReducer } from "./snackBarReducer";
 import { getRoleListEpic, getRoleFunctionListEpic, updateRoleEpic, createRoleEpic, deleteRoleEpic, roleReducer } from "./roleReducer";
 import { dialogReducer } from "./dialogReducer";
+import { getSectorListEpic, createSectorEpic, createIndustryEpic, updateSectorEpic, updateIndustryEpic, deleteSectorEpic, deleteIndustryEpic, sectorReducer } from "./sectorReducer";
 
 
 export const history = createBrowserHistory()
@@ -36,6 +37,7 @@ export const rootReducer = combineReducers({
     snackBarReducer,
     dialogReducer,
     roleReducer,
+    sectorReducer,
     router: connectRouter(history),
     //   userDetail,
     //   currentReport,
@@ -44,6 +46,7 @@ export const rootReducer = combineReducers({
 export const rootEpic = combineEpics(
     loginEpic,
     forgetPasswordEpic,
+    updatePasswordEpic,
     getUserProfileEpic,
 
     getUserListEpic,
@@ -53,8 +56,7 @@ export const rootEpic = combineEpics(
 
     getCountryListEpic,
     getCurrencyListEpic,
-    getIndustryListEpic,
-    getSectorListEpic,
+    getDistintCurrencyListEpic,
 
     createRegionEpic,
     getRegionListEpic,
@@ -70,11 +72,11 @@ export const rootEpic = combineEpics(
     getCompanyListEpic,
     getChildCompanyListEpic,
     createCompanyEpic,
-    createSubCompanyEpic,
+    createEntityEpic,
     updateCompanyEpic,
-    updateSubCompanyEpic,
+    updateEntityEpic,
     deleteCompanyEpic,
-    deleteSubCompanyEpic,
+    deleteEntityEpic,
 
     getJobFunctionListEpic,
     createJobFunctionEpic,
@@ -84,6 +86,15 @@ export const rootEpic = combineEpics(
     deleteJobFunctionEpic,
     deleteSubJobFunctionEpic,
 
+    getSectorListEpic,
+    createSectorEpic,
+    createIndustryEpic,
+    updateSectorEpic,
+    updateIndustryEpic,
+    deleteSectorEpic,
+    deleteIndustryEpic,
+
+    getDivisionListEpic,
     getUnitListEpic,
     getSubUnitListEpic,
     getChildUnitListEpic,
@@ -99,6 +110,9 @@ export const rootEpic = combineEpics(
     createChildUnitEpic,
     updateChildUnitEpic,
     deleteChildUnitEpic,
+
+    getCompanyByCountryEpic,
+    getCompanyByRegionEpic,
     //   generateReportEpic,
     //   sendEmailEpic,
     //   completeReportEpic,

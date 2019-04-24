@@ -24,6 +24,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import { Region } from "../../interface/regionInterface";
 import { history } from "../../store";
 import UpdateIcon from '@material-ui/icons/PlaylistAddCheck';
+import { Company } from "../../interface/companyInterface";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -70,6 +71,7 @@ export interface Props extends WithStyles<typeof styles>, SharedDispatchProps, I
 interface State { }
 
 interface InState {
+  selectedCompany: Company,
   regionList: Region[]
 }
 class RegionPage extends React.Component<Props, State> {
@@ -77,6 +79,15 @@ class RegionPage extends React.Component<Props, State> {
 
   componentDidMount() {
     console.log('Region Page Mounted')
+    if (this.props.selectedCompany.company_id === '') {
+      let data = {
+        type: 'warning',
+        object: 'Please Select a Company first',
+        id: '1'
+      }
+      this.props.showDialog(data)
+    }
+    else this.props.getRegionList()
   }
 
   handleUpdateButtonClick = (region) => {
@@ -113,7 +124,7 @@ class RegionPage extends React.Component<Props, State> {
                 <TableRow className={classes.row} key={row.region_id}>
                   <CustomTableCell component="th" scope="row">{row.region_name}</CustomTableCell>
                   {row.country_list.length > 0 ? <CustomTableCell align="right">{row.country_list.map(country => (
-                    country.country_name + "  "
+                    JSON.parse(country).country_name + "  "
                   ))}</CustomTableCell> : <CustomTableCell />}
                   <CustomTableCell align="right">
                     <IconButton onClick={() => this.handleUpdateButtonClick(row)}><UpdateIcon /></IconButton>
@@ -136,6 +147,7 @@ class RegionPage extends React.Component<Props, State> {
 
 function mapStateToProps(state: RootState) {
   return {
+    selectedCompany: state.companyReducer.selectedCompany,
     regionList: state.regionReducer.regionList
   }
 }

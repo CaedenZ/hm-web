@@ -27,6 +27,19 @@ export const forgetPassword = async (payload) => {
     return response.data.data
 }
 
+export const updatePassword = async (token, email, payload) => {
+
+
+    const data = {
+        session_key: token,
+        email: email,
+        password: payload,
+    }
+    console.log(data)
+    const response = await $axios.post('/user/updatePassword', data)
+    return response.data.data
+}
+
 export const getUserProfile = async (token, payload) => {
     const data = {
         session_key: token,

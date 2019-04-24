@@ -1,13 +1,14 @@
-import { loginAction, logoutAction, forgetPasswordAction } from "../actions/authenticationAction";
+import { loginAction, logoutAction, forgetPasswordAction, updatePasswordAction } from "../actions/authenticationAction";
 import { getUserListAction, createUserAction, deleteUserAction, updateUserAction, selectUserAction } from "../actions/userAction";
 import { SharedDispatchProps } from "../interface/propsInterface";
-import { getCompanyListAction, getChildCompanyListAction, selectCompanyAction, createCompanyAction, createUnitAction, getChildUnitListAction, getUnitListAction, selectUnitAction, createSubUnitAction, deleteUnitAction, updateSubUnitAction, deleteSubUnitAction, updateUnitAction, selectSubUnitAction, getSubUnitListAction, createChildUnitAction, updateChildUnitAction, deleteChildUnitAction, createSubCompanyAction, selectUpdateCompanyAction, updateCompanyAction, deleteCompanyAction, updateSubCompanyAction, deleteSubCompanyAction, selectUpdateUnitAction } from "../actions/companyAction";
+import { getCompanyListAction, getChildCompanyListAction, selectCompanyAction, createCompanyAction, createUnitAction, getChildUnitListAction, getUnitListAction, selectUnitAction, createSubUnitAction, deleteUnitAction, updateSubUnitAction, deleteSubUnitAction, updateUnitAction, selectSubUnitAction, getSubUnitListAction, createChildUnitAction, updateChildUnitAction, deleteChildUnitAction, createEntityAction, selectUpdateCompanyAction, updateCompanyAction, deleteCompanyAction, updateEntityAction, deleteEntityAction, selectUpdateUnitAction, selectIndexAction, getCompanyByCountryAction, getCompanyByRegionAction, selectUpdateEntityAction, getDivisionListAction } from "../actions/companyAction";
 import { getJobFunctionListAction, createJobFunctionAction, createSubJobFunctionAction, selectJobFunctionAction, deleteJobFunctionAction, deleteSubJobFunctionAction } from "../actions/jobFunctionAction";
 import { getRegionListAction, createRegionAction, updateRegionAction, deleteRegionAction, selectRegionAction } from "../actions/regionAction";
-import { getCountryListAction, getIndustryListAction, getCurrencyListAction, getSectorListAction } from "../actions/countryAction";
+import { getCountryListAction, getCurrencyListAction, getDistintCurrencyListAction } from "../actions/countryAction";
 import { closeSnackBarAction, showSnackBarAction } from "../actions/snackBarAction";
 import { selectRoleAction, createRoleAction, updateRoleAction, deleteRoleAction, getRoleListAction, getRoleFunctionListAction } from "../actions/roleAction";
 import { showDialogAction, closeDialogAction } from "../actions/deleteDialogAction";
+import { createSectorAction, createIndustryAction, updateSectorAction, updateIndustryAction, selectSectorAction, deleteSectorAction, deleteIndustryAction, getSectorListAction } from "../actions/sectorAction";
 
 
 
@@ -23,11 +24,12 @@ export function mapDispatchToProps(dispatch): SharedDispatchProps {
         login: (payload) => { dispatch(loginAction.request(payload)) },
         logout: () => { dispatch(logoutAction()) },
         forgetPassword: (payload) => { dispatch(forgetPasswordAction.request(payload)) },
+        updatePassword: (payload) => { dispatch(updatePasswordAction.request(payload)) },
 
         getCountryList: () => { dispatch(getCountryListAction.request()) },
-        getIndustryList: () => { dispatch(getIndustryListAction.request()) },
         getCurrencyList: () => { dispatch(getCurrencyListAction.request()) },
-        getSectorList: () => { dispatch(getSectorListAction.request()) },
+        getDistintCurrencyList: () => { dispatch(getDistintCurrencyListAction.request()) },
+        // getSectorList: () => { dispatch(getSectorListAction.request()) },
 
         getUserList: () => { dispatch(getUserListAction.request()) },
         createUser: (payload) => { dispatch(createUserAction.request(payload)) },
@@ -35,17 +37,20 @@ export function mapDispatchToProps(dispatch): SharedDispatchProps {
         updateUser: (payload) => { dispatch(updateUserAction.request(payload)) },
         deleteUser: (payload) => { dispatch(deleteUserAction.request(payload)) },
 
+        selectIndex: (payload) => { dispatch(selectIndexAction(payload)) },
         selectCompany: (payload) => { dispatch(selectCompanyAction(payload)) },
         selectUpdateCompany: (payload) => { dispatch(selectUpdateCompanyAction(payload)) },
+        selectUpdateEntity: (payload) => { dispatch(selectUpdateEntityAction(payload)) },
         getCompanyList: () => { dispatch(getCompanyListAction.request()) },
         getChildCompanyList: () => { dispatch(getChildCompanyListAction.request()) },
         createCompany: (payload) => { dispatch(createCompanyAction.request(payload)) },
         updateCompany: (payload) => { dispatch(updateCompanyAction.request(payload)) },
         deleteCompany: (payload) => { dispatch(deleteCompanyAction.request(payload)) },
-        createSubCompany: (payload) => { dispatch(createSubCompanyAction.request(payload)) },
-        updateSubCompany: (payload) => { dispatch(updateSubCompanyAction.request(payload)) },
-        deleteSubCompany: (payload) => { dispatch(deleteSubCompanyAction.request(payload)) },
+        createEntity: (payload) => { dispatch(createEntityAction.request(payload)) },
+        updateEntity: (payload) => { dispatch(updateEntityAction.request(payload)) },
+        deleteEntity: (payload) => { dispatch(deleteEntityAction.request(payload)) },
 
+        getDivisionList: () => { dispatch(getDivisionListAction.request()) },
         getUnitList: () => { dispatch(getUnitListAction.request()) },
         getSubUnitList: () => { dispatch(getSubUnitListAction.request()) },
         getChildUnitList: () => { dispatch(getChildUnitListAction.request()) },
@@ -69,6 +74,15 @@ export function mapDispatchToProps(dispatch): SharedDispatchProps {
         deleteJobFunction: (payload) => { dispatch(deleteJobFunctionAction.request(payload)) },
         deleteSubJobFunction: (payload) => { dispatch(deleteSubJobFunctionAction.request(payload)) },
 
+        getSectorList: () => { dispatch(getSectorListAction.request()) },
+        createSector: (payload) => { dispatch(createSectorAction.request(payload)) },
+        createIndustry: (payload) => { dispatch(createIndustryAction.request(payload)) },
+        updateSector: (payload) => { dispatch(updateSectorAction.request(payload)) },
+        updateIndustry: (payload) => { dispatch(updateIndustryAction.request(payload)) },
+        selectSector: (payload) => { dispatch(selectSectorAction(payload)) },
+        deleteSector: (payload) => { dispatch(deleteSectorAction.request(payload)) },
+        deleteIndustry: (payload) => { dispatch(deleteIndustryAction.request(payload)) },
+
         selectRegion: (payload) => { dispatch(selectRegionAction(payload)) },
         createRegion: (payload) => { dispatch(createRegionAction.request(payload)) },
         updateRegion: (payload) => { dispatch(updateRegionAction.request(payload)) },
@@ -81,5 +95,8 @@ export function mapDispatchToProps(dispatch): SharedDispatchProps {
         deleteRole: (payload) => { dispatch(deleteRoleAction.request(payload)) },
         getRoleList: () => { dispatch(getRoleListAction.request()) },
         getRoleFunctionList: () => { dispatch(getRoleFunctionListAction.request()) },
+
+        getCompanyByCountry: (payload) => { dispatch(getCompanyByCountryAction.request(payload)) },
+        getCompanyByRegion: (payload) => { dispatch(getCompanyByRegionAction.request(payload)) },
     }
 }

@@ -25,6 +25,7 @@ import RoleIcon from "@material-ui/icons/Functions";
 import RegionIcon from "@material-ui/icons/SwapHoriz";
 import SettingIcon from "@material-ui/icons/Settings";
 import JobFunctionIcon from "@material-ui/icons/AccountCircle";
+import SectorIcon from "@material-ui/icons/Work";
 import LogoutIcon from "@material-ui/icons/PowerSettingsNew";
 import MenuIcon from "@material-ui/icons/Menu";
 import PrimarySearchAppBar from "./AppBar";
@@ -34,6 +35,8 @@ import { mapDispatchToProps } from "../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../interface/propsInterface";
 import { Company } from "../../interface/companyInterface";
+import { Collapse } from "@material-ui/core";
+import packageJson from '../../../package.json';
 
 const drawerWidth = 240;
 
@@ -80,9 +83,12 @@ const styles = (theme: Theme) =>
 export interface Props extends InState, SharedDispatchProps, WithStyles<typeof styles> { }
 
 interface InState {
-  selectedCompany: Company
+  companyList: Company[]
 }
-interface State { }
+interface State {
+  expended1: boolean,
+  expended2: boolean
+}
 
 class PermanentDrawerLeft extends React.Component<Props, State> {
   constructor(props) {
@@ -90,12 +96,33 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
     this.handleLogout = this.handleLogout.bind(this);
   }
 
+  state: State = {
+    expended1: false,
+    expended2: false
+  }
+
   handleLogout = () => {
     this.props.logout()
   }
+
+  handleExpandClick1 = () => {
+    this.setState(state => ({
+      ...state,
+      expended1: !state.expended1
+    }));
+  };
+
+  handleExpandClick2 = () => {
+    this.setState(state => ({
+      ...state,
+      expended2: !state.expended2
+    }));
+    console.log(this.state)
+  };
+
+
   render() {
     const { classes } = this.props;
-
     const itemlist1 = [
       {
         title: "Dashboard",
@@ -103,34 +130,104 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
       },
     ];
 
-    const itemlist2 = [
-      {
-        title: "User",
-        path: "/user",
-        icon: <UserIcon />,
-      },
-      {
-        title: "Sub Company",
-        path: "/subcompany",
-        icon: <CompanyIcon />,
-      },
-      {
-        title: "Unit",
-        path: "/unit",
-        icon: <UnitIcon />,
-      },
-      {
-        title: "Role",
-        path: "/role",
-        icon: <RoleIcon />,
-      },
-      {
-        title: "Region",
-        path: "/region",
-        icon: <RegionIcon />,
-      }
-    ];
+    const companyfunction = (): any => {
+      let adm = [
+        {
+          title: "Division",
+          path: "/unit",
+          icon: <UnitIcon />,
+        },
+        // {
+        //   title: "Division",
+        //   path: "/division",
+        //   icon: <UnitIcon />,
+        // },
+        {
+          title: "Entity",
+          path: "/entity",
+          icon: <CompanyIcon />,
+        },
+        {
+          title: "Region",
+          path: "/region",
+          icon: <RegionIcon />,
+        },
+        {
+          title: "User",
+          path: "/user",
+          icon: <UserIcon />,
+        },
+        {
+          title: "Role",
+          path: "/role",
+          icon: <RoleIcon />,
+        },
+      ];
 
+      let user = [
+        {
+          title: "Division",
+          path: "/unit",
+          icon: <UnitIcon />,
+        },
+        // {
+        //   title: "Division",
+        //   path: "/division",
+        //   icon: <UnitIcon />,
+        // },
+        {
+          title: "Entity",
+          path: "/entity",
+          icon: <CompanyIcon />,
+        },
+        {
+          title: "Region",
+          path: "/region",
+          icon: <RegionIcon />,
+        },
+        {
+          title: "User",
+          path: "/user",
+          icon: <UserIcon />,
+        },
+        {
+          title: "Role",
+          path: "/role",
+          icon: <RoleIcon />,
+        },
+        {
+          title: "Company",
+          path: "/company/updateself",
+          icon: <CompanyIcon />,
+        },
+      ];
+      if (this.props.companyList.length > 1) {
+        return adm
+      }
+      else if (this.props.companyList.length === 1) {
+        if (this.props.companyList[0].company_id === '5ZwOXIkeKuPhpFriTsmD') { return adm }
+        else return user
+      }
+      else return user
+    }
+
+    const configurationfunctin = (): any => {
+      let adm = <ListItem className={classes.menubar} button onClick={this.handleExpandClick2}>
+        <ListItemIcon>
+          <MenuIcon />
+        </ListItemIcon>
+        <ListItemText primary="Configuration" />
+      </ListItem>
+
+      if (this.props.companyList.length > 1) {
+        return adm
+      }
+      else if (this.props.companyList.length === 1) {
+        if (this.props.companyList[0].company_id === '5ZwOXIkeKuPhpFriTsmD') { return adm }
+        else return null
+      }
+      else return null
+    }
     const adminfunction = (): any => {
 
       let adm = [
@@ -145,33 +242,18 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
           icon: <JobFunctionIcon />,
         },
         {
-          title: "Company",
+          title: "Sector",
+          path: "/sector",
+          icon: <SectorIcon />,
+        },
+        {
+          title: "Customer",
           path: "/company",
           icon: <CompanyIcon />,
         },
       ]
-
-      let user = [
-        {
-          title: "Company",
-          path: "/company/update",
-          icon: <CompanyIcon />,
-        },
-      ]
-
-      if (this.props.selectedCompany.company_id === '5ZwOXIkeKuPhpFriTsmD') {
-        return adm
-      }
-      else return user
+      return adm
     }
-
-    const itemlist3 = [
-      {
-        title: "Logout",
-        path: "/login",
-        icon: <LogoutIcon />,
-      },
-    ];
 
     return (
       <div className={classes.root}>
@@ -202,59 +284,46 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
             ))}
           </List>
           <Divider />
-          <ListItem className={classes.menubar}>
+          <ListItem className={classes.menubar} button onClick={this.handleExpandClick1}>
             <ListItemIcon>
               <MenuIcon />
             </ListItemIcon>
-            <ListItemText primary="Company" />
+            <ListItemText primary="Company Setup" />
           </ListItem>
-          <List className={classes.navlist}>
-            {itemlist2.map((item, index) => (
-              <Link key={item.title} to={item.path} style={{ textDecoration: "none" }}>
-                <ListItem button >
-                  <ListItemIcon style={{ marginLeft: "20px" }}>
-                    {item.icon}
-                  </ListItemIcon>
-                  <ListItemText primary={item.title} />
-                </ListItem>
-              </Link>
-            ))}
-          </List>
+          <Collapse in={this.state.expended1} timeout="auto" unmountOnExit>
+            <List className={classes.navlist}>
+              {companyfunction().map((item, index) => (
+                <Link key={item.title} to={item.path} style={{ textDecoration: "none" }}>
+                  <ListItem button >
+                    <ListItemIcon style={{ marginLeft: "20px" }}>
+                      {item.icon}
+                    </ListItemIcon>
+                    <ListItemText primary={item.title} />
+                  </ListItem>
+                </Link>
+              ))}
+            </List>
+          </Collapse>
           <Divider />
-          <ListItem className={classes.menubar}>
-            <ListItemIcon>
-              <MenuIcon />
-            </ListItemIcon>
-            <ListItemText primary="Configuration" />
-          </ListItem>
-          <List className={classes.navlist}>
-            {adminfunction().map((item, index) => (
-              <Link key={item.title} to={item.path} style={{ textDecoration: "none" }}>
-                <ListItem button >
-                  <ListItemIcon style={{ marginLeft: "20px" }}>
-                    {item.icon}
-                  </ListItemIcon>
-                  <ListItemText primary={item.title} />
-                </ListItem>
-              </Link>
-            ))}
-          </List>
+          {configurationfunctin()}
+          <Collapse in={this.state.expended2} timeout="auto" unmountOnExit>
+            <List className={classes.navlist}>
+              {adminfunction().map((item, index) => (
+                <Link key={item.title} to={item.path} style={{ textDecoration: "none" }}>
+                  <ListItem button >
+                    <ListItemIcon style={{ marginLeft: "20px" }}>
+                      {item.icon}
+                    </ListItemIcon>
+                    <ListItemText primary={item.title} />
+                  </ListItem>
+                </Link>
+              ))}
+            </List>
+          </Collapse>
           <Divider />
-          <List>
-            {itemlist3.map((item, index) => (
-              <Link key={item.title} to={item.path} style={{ textDecoration: "none" }}>
-                <ListItem button onClick={() => this.handleLogout()}>
-                  <ListItemIcon>
-                    {item.icon}
-                  </ListItemIcon>
-                  <ListItemText primary={item.title} />
-                </ListItem>
-              </Link>
-            ))}
-          </List>
           <List>
             <ListItem button onClick={() => this.props.showSnackBar()}>
-              <ListItemText primary={'V1.2'} />
+              <ListItemText primary={packageJson.version} />
             </ListItem>
           </List>
         </Drawer>
@@ -273,7 +342,7 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
 
 function mapStateToProps(state: any) {
   return {
-    selectedCompany: state.companyReducer.selectedCompany,
+    companyList: state.companyReducer.companyList,
   }
 }
 

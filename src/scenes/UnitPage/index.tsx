@@ -19,12 +19,13 @@ import { Company, Unit } from "../../interface/companyInterface";
 import { RootState } from "../../reducer";
 import { mapDispatchToProps } from "../../helper/dispachProps";
 import { connect } from "react-redux";
-import { Button, IconButton } from "@material-ui/core";
+import { Button, IconButton, Menu, MenuItem } from "@material-ui/core";
 import { Redirect } from "react-router-dom";
 import DeleteIcon from '@material-ui/icons/Delete';
 import { history } from "../../store";
 import UpdateIcon from '@material-ui/icons/PlaylistAddCheck';
 import ViewIcon from '@material-ui/icons/ZoomIn';
+import CompanyIcon from "@material-ui/icons/Business";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -56,14 +57,19 @@ const styles = (theme: Theme) =>
 export interface Props extends WithStyles<typeof styles>, SharedDispatchProps, InState { }
 
 interface State {
-  redirect: boolean
+  anchorEl: any,
 }
 
 interface InState {
-  unitList: Unit[]
+  unitList: Unit[],
+  entityList: Company[]
 }
 
 class UnitPage extends React.Component<Props, State> {
+
+  state = {
+    anchorEl: null,
+  };
 
   constructor(props) {
     super(props)
@@ -75,6 +81,7 @@ class UnitPage extends React.Component<Props, State> {
 
   componentDidMount() {
     console.log('Unit Page Mount')
+    this.props.getUnitList()
   }
 
   handleViewButtonClick = (unit) => {
@@ -88,6 +95,22 @@ class UnitPage extends React.Component<Props, State> {
     history.push('/unit/update')
   }
 
+  handleEntity = (row, event) => {
+    switch (row.unit_type) {
+      case 'country':
+        const a = JSON.parse(row.unit_data)
+        console.log(a.country_name)
+        this.props.getCompanyByCountry(a.country_name)
+        break
+      case 'region':
+        const b = JSON.parse(row.unit_data)
+        console.log(b.region_id)
+        this.props.getCompanyByRegion(b.region_id)
+        break
+    }
+    this.setState({ anchorEl: event.currentTarget });
+  }
+
   handleDelete = (id) => {
     const payload = {
       type: 'delete',
@@ -98,11 +121,16 @@ class UnitPage extends React.Component<Props, State> {
     // this.props.deleteUnit(id)
   }
 
+  handleClose = () => {
+    this.setState({ anchorEl: null });
+  };
+
   render() {
     const { classes } = this.props;
+    const { anchorEl } = this.state;
     return (
       <main>
-        <CustomButton link="/unit/create">New unit</CustomButton>
+        <CustomButton link="/unit/create">New Division</CustomButton>
         <Paper className={classes.root}>
           <Table className={classes.table}>
             <TableHead>
@@ -118,7 +146,20 @@ class UnitPage extends React.Component<Props, State> {
                   <CustomTableCell component="th" scope="row">
                     {row.unit_name}
                   </CustomTableCell>
-                  <CustomTableCell align="right">{row.unit_type}</CustomTableCell>
+                  <CustomTableCell align="right">{row.unit_type}
+                  {row.unit_type !== 'Division' &&
+                    <IconButton onClick={(e) => this.handleEntity(row, e)}><CompanyIcon /></IconButton>}
+                    <Menu
+                      id="simple-menu"
+                      anchorEl={anchorEl}
+                      open={Boolean(anchorEl)}
+                      onClose={this.handleClose}
+                    >
+                      {this.props.entityList.length > 0 ? this.props.entityList.map(e => {
+                        return (<MenuItem key={e.company_id} onClick={this.handleClose}>{e.company_name}</MenuItem>)
+                      }) : <MenuItem onClick={this.handleClose}>No exist entity</MenuItem>}
+                    </Menu>
+                  </CustomTableCell>
                   <CustomTableCell align="right">
                     <IconButton onClick={() => this.handleViewButtonClick(row)}><ViewIcon /></IconButton>
                     <IconButton onClick={() => this.handleUpdateButtonClick(row)}><UpdateIcon /></IconButton>
@@ -140,7 +181,8 @@ class UnitPage extends React.Component<Props, State> {
 
 function mapStateToProps(state: RootState) {
   return {
-    unitList: state.companyReducer.unitList
+    unitList: state.companyReducer.unitList,
+    entityList: state.companyReducer.unitEntity,
   }
 }
 

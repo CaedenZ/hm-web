@@ -42,21 +42,19 @@ const styles = (theme: Theme) =>
   });
 
 export interface Props extends WithStyles<typeof styles> {
-  link: string;
+  onClick: any;
 }
 
-interface State {}
+interface State { }
 
 class CustomButton extends React.Component<Props, State> {
   state: State = {};
 
   render() {
-    const { classes, children, link } = this.props;
+    const { classes, children } = this.props;
 
     return (
-      <Link to={link} style={{ textDecoration: "none" }}>
-        <Button className={classes.button}>{children || "New Button"}</Button>
-      </Link>
+      <Button className={classes.button} onClick={this.props.onClick}>{children || "New Button"}</Button>
     );
   }
 }

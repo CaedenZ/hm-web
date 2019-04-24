@@ -23,6 +23,10 @@ import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import CompanySelect from "./companySelect";
 import { Link } from "react-router-dom";
+import { history } from "../../store";
+import { mapDispatchToProps } from "../../helper/dispachProps";
+import { connect } from "react-redux";
+import { SharedDispatchProps } from "../../interface/propsInterface";
 
 const drawerWidth = 240;
 
@@ -102,7 +106,7 @@ const styles = (theme: Theme) =>
     }
   });
 
-export interface Props extends WithStyles<typeof styles> { }
+export interface Props extends SharedDispatchProps, WithStyles<typeof styles> { }
 
 interface State {
   anchorEl: null | HTMLElement;
@@ -146,8 +150,8 @@ class PrimarySearchAppBar extends React.Component<Props, State> {
         open={isMenuOpen}
         onClose={this.handleMenuClose}
       >
-        <Link to="/profile"><MenuItem>Profile</MenuItem></Link>
-        {/* <MenuItem onClick={this.handleMenuClose}>My account</MenuItem> */}
+        <MenuItem button onClick={() => history.push('/profile')}>Profile</MenuItem>
+        <MenuItem button onClick={() => this.props.logout()}>Log out</MenuItem>
       </Menu>
     );
 
@@ -244,4 +248,4 @@ class PrimarySearchAppBar extends React.Component<Props, State> {
   classes: PropTypes.object.isRequired
 } as any;
 
-export default withStyles(styles)(PrimarySearchAppBar);
+export default connect(null, mapDispatchToProps)(withStyles(styles)(PrimarySearchAppBar));

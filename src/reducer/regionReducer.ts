@@ -10,6 +10,14 @@ export function regionReducer(state: RegionState = {
     regionList: [],
 }, action) {
     switch (action.type) {
+        case 'LOG_IN_SUCCESS':
+            return {
+                regionList: [],
+            }
+        case 'LOG_OUT':
+            return {
+                regionList: [],
+            }
         case 'SELECT_REGION':
             return {
                 ...state,

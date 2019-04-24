@@ -1,7 +1,5 @@
 import $axios from "../plugin/axios";
-import { Company, Unit } from "../interface/companyInterface";
-import { CreateCompanyState } from "../scenes/CompanyPage/create";
-import { CreateUnitState } from "../scenes/UnitPage/create";
+import { Company, Unit, CREATECOMPANYCRED, UPDATECOMPANYCRED, CREATEUNITCRED, UPDATEUNITCRED, UPDATEENTITYCRED, CREATEENTITYCRED, Entity, Division } from "../interface/companyInterface";
 
 export const getCompanyList = async (payload): Promise<Company[]> => {
 
@@ -17,7 +15,7 @@ export const getChildCompanyList = async (payload, ID): Promise<Company[]> => {
 }
 
 
-export const createCompany = async (token, payload: CreateCompanyState): Promise<Company[]> => {
+export const createCompany = async (token, payload: CREATECOMPANYCRED): Promise<Company[]> => {
 
     let data = {
         ...payload,
@@ -28,14 +26,12 @@ export const createCompany = async (token, payload: CreateCompanyState): Promise
     console.log(response.data.data)
     return response.data.data
 }
-export const updateCompany = async (token, identifier, payload: CreateCompanyState): Promise<Company[]> => {
+export const updateCompany = async (token, payload: UPDATECOMPANYCRED): Promise<Company[]> => {
     // todo
     let data = {
         ...payload,
-        identifier: identifier,
         session_key: token,
     }
-
     const response = await $axios.post('/company/updateCompany', data)
     console.log(response.data.data)
     return response.data.data
@@ -53,36 +49,36 @@ export const deleteCompany = async (token, identifier, payload: string) => {
     return response.data.data
 }
 
-export const createSubCompany = async (token, payload: CreateCompanyState): Promise<Company[]> => {
+export const createEntity = async (token, payload: CREATEENTITYCRED): Promise<Entity[]> => {
     // todo
     let data = {
         ...payload,
         session_key: token,
     }
 
-    const response = await $axios.post('/company/createCompany', data)
+    const response = await $axios.post('/company/createEntity', data)
     console.log(response.data.data)
     return response.data.data
 }
-export const updateSubCompany = async (token, payload: CreateCompanyState): Promise<Company[]> => {
+export const updateEntity = async (token, payload: UPDATEENTITYCRED): Promise<Entity[]> => {
     // todo
     let data = {
         ...payload,
         session_key: token,
     }
 
-    const response = await $axios.post('/company/createCompany', data)
+    const response = await $axios.post('/company/updateEntity', data)
     console.log(response.data.data)
     return response.data.data
 }
-export const deleteSubCompany = async (token, payload: string) => {
+export const deleteEntity = async (token, payload: string) => {
     // todo
     let data = {
         id: payload,
         session_key: token,
     }
 
-    const response = await $axios.post('/company/createCompany', data)
+    const response = await $axios.post('/company/deleteEntity', data)
     console.log(response.data.data)
     return response.data.data
 }
@@ -95,7 +91,14 @@ export const getUnitList = async (token, identifier, ID): Promise<Unit[]> => {
     return response.data.data
 }
 
-export const createUnit = async (token, identifier, payload: CreateUnitState): Promise<Unit[]> => {
+export const getDivisionList = async (token, ID): Promise<Division[]> => {
+
+    console.log(token)
+    const response = await $axios.post('/company/getAllUnit/', { session_key: token, id: ID })
+    return response.data.data
+}
+
+export const createUnit = async (token, identifier, payload: CREATEUNITCRED): Promise<Unit[]> => {
 
 
     let data = {
@@ -112,7 +115,7 @@ export const createUnit = async (token, identifier, payload: CreateUnitState): P
     return response.data.data
 }
 
-export const updateUnit = async (token, identifier, payload: CreateUnitState): Promise<Unit[]> => {
+export const updateUnit = async (token, identifier, payload: UPDATEUNITCRED): Promise<Unit[]> => {
 
     let data = {
         ...payload,
@@ -133,6 +136,30 @@ export const deleteUnit = async (token, identifier, payload: string): Promise<Un
     }
 
     const response = await $axios.post('/company/deleteUnit', data)
+    console.log(response.data.data)
+    return response.data.data
+}
+
+export const getCompanyByCountry = async (token, id, payload: string): Promise<any[]> => {
+    let data = {
+        session_key: token,
+        country_name: payload,
+        company_id: id,
+    }
+
+    const response = await $axios.post('/company/getCompanyByCountry', data)
+    console.log(response.data.data)
+    return response.data.data
+}
+
+export const getCompanyByRegion = async (token, id, payload: string): Promise<any[]> => {
+    let data = {
+        session_key: token,
+        region_id: payload,
+        company_id: id,
+    }
+
+    const response = await $axios.post('/company/getCompanyByRegion', data)
     console.log(response.data.data)
     return response.data.data
 }

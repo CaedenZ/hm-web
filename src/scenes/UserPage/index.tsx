@@ -23,6 +23,10 @@ import { Button, IconButton } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 import { history } from "../../store";
 import UpdateIcon from '@material-ui/icons/PlaylistAddCheck';
+import ResetIcon from '@material-ui/icons/BorderColor';
+import ResetPassword from './component/resetPassword';
+import { Company } from "../../interface/companyInterface";
+
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -56,16 +60,32 @@ const styles = (theme: Theme) =>
 
 export interface Props extends WithStyles<typeof styles>, SharedDispatchProps, InState { }
 
-interface State { }
+interface State {
+  resetPassword: boolean
+}
 
 interface InState {
-  userList: User[]
+  selectedCompany: Company,
+  userList: User[],
+  currentUserEmail: string,
 }
 class CustomizedTable extends React.Component<Props, State> {
 
+  state = {
+    resetPassword: false,
+  }
 
   componentDidMount() {
     console.log('UserPage MOunt')
+    if (this.props.selectedCompany.company_id === '') {
+      let data = {
+        type: 'warning',
+        object: 'Please Select a Company first',
+        id: '1'
+      }
+      this.props.showDialog(data)
+    }
+    else this.props.getUserList()
   }
 
   handleUpdateButtonClick = (user) => {
@@ -74,6 +94,15 @@ class CustomizedTable extends React.Component<Props, State> {
     console.log('clicked')
   }
 
+  handleResetPassword = (user) => {
+    this.props.selectUser(user)
+    this.setState({ resetPassword: true })
+    console.log('clicked')
+  }
+
+  handleClose = () => {
+    this.setState({ resetPassword: false })
+  }
   handleDelete = (id, index) => {
 
     const payload = {
@@ -84,19 +113,23 @@ class CustomizedTable extends React.Component<Props, State> {
     this.props.showDialog(payload)
   }
 
+  handleNewUser = () => {
+    history.push('/user/create')
+  }
+
   render() {
     const { classes } = this.props;
 
     return (
       <main>
-        <CustomButton link="/user/create">New User</CustomButton>
+        <CustomButton onClick={this.handleNewUser}>New User</CustomButton>
         <Paper className={classes.root}>
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
-                <CustomTableCell>/</CustomTableCell>
-                <CustomTableCell align="left">Firstname</CustomTableCell>
-                <CustomTableCell align="left">Lastname</CustomTableCell>
+                <CustomTableCell />
+                <CustomTableCell align="left">First Name</CustomTableCell>
+                <CustomTableCell align="left">Last Name</CustomTableCell>
                 <CustomTableCell align="left">Email</CustomTableCell>
                 <CustomTableCell align="left">Status</CustomTableCell>
                 <CustomTableCell align="left">Action</CustomTableCell>
@@ -112,13 +145,15 @@ class CustomizedTable extends React.Component<Props, State> {
                   <CustomTableCell align="left">{row.status}</CustomTableCell>
                   <CustomTableCell align="left">
                     <IconButton onClick={() => this.handleUpdateButtonClick(row)}><UpdateIcon /></IconButton>
-                    <IconButton onClick={() => this.handleDelete(row.email, index)}><DeleteIcon /></IconButton>
+                    <IconButton onClick={() => this.handleResetPassword(row)}><ResetIcon /></IconButton>
+                    {row.email !== this.props.currentUserEmail &&<IconButton onClick={() => this.handleDelete(row.email, index)}><DeleteIcon /></IconButton>}
                   </CustomTableCell>
                 </TableRow>
               ))}
             </TableBody>}
           </Table>
         </Paper>
+        <ResetPassword open={this.state.resetPassword} handleClose={this.handleClose} />
       </main>
     );
   }
@@ -130,7 +165,9 @@ class CustomizedTable extends React.Component<Props, State> {
 
 function mapStateToProps(state: RootState) {
   return {
-    userList: state.userReducer.userList
+    selectedCompany: state.companyReducer.selectedCompany,
+    userList: state.userReducer.userList,
+    currentUserEmail: state.authenticationReducer.email,
   }
 }
 
