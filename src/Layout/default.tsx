@@ -19,13 +19,13 @@ export interface Props extends SharedDispatchProps {
 class Layout extends Component<Props> {
 
   componentDidMount() {
-    console.log(history.location.pathname.split('/'))
     this.props.getCountryList()
     this.props.getCurrencyList()
     this.props.getDistintCurrencyList()
     this.props.getSectorList()
     this.props.getJobFunctionList()
     this.props.getRoleFunctionList()
+    this.props.getJobGradeList()
   }
   render() {
 

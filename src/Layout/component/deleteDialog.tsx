@@ -75,6 +75,9 @@ class AlertDialog extends React.Component<Props, State> {
             case 'jobfunction':
                 this.props.deleteJobFunction(this.props.deleteDialog.id)
                 break
+            case 'jobgrade':
+                this.props.deleteJobGrade(this.props.deleteDialog.id)
+                break
             case 'subjobfunction':
                 this.props.deleteSubJobFunction(this.props.deleteDialog.id)
                 break

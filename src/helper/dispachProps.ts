@@ -9,6 +9,7 @@ import { closeSnackBarAction, showSnackBarAction } from "../actions/snackBarActi
 import { selectRoleAction, createRoleAction, updateRoleAction, deleteRoleAction, getRoleListAction, getRoleFunctionListAction } from "../actions/roleAction";
 import { showDialogAction, closeDialogAction } from "../actions/deleteDialogAction";
 import { createSectorAction, createIndustryAction, updateSectorAction, updateIndustryAction, selectSectorAction, deleteSectorAction, deleteIndustryAction, getSectorListAction } from "../actions/sectorAction";
+import { selectJobGradeAction, createJobGradeAction, updateJobGradeAction, deleteJobGradeAction, getJobGradeListAction } from "../actions/jobgradeAction";
 
 
 
@@ -88,6 +89,12 @@ export function mapDispatchToProps(dispatch): SharedDispatchProps {
         updateRegion: (payload) => { dispatch(updateRegionAction.request(payload)) },
         deleteRegion: (payload) => { dispatch(deleteRegionAction.request(payload)) },
         getRegionList: () => { dispatch(getRegionListAction.request()) },
+
+        selectJobGrade: (payload) => { dispatch(selectJobGradeAction(payload)) },
+        createJobGrade: (payload) => { dispatch(createJobGradeAction.request(payload)) },
+        updateJobGrade: (payload) => { dispatch(updateJobGradeAction.request(payload)) },
+        deleteJobGrade: (payload) => { dispatch(deleteJobGradeAction.request(payload)) },
+        getJobGradeList: () => { dispatch(getJobGradeListAction.request()) },
 
         selectRole: (payload) => { dispatch(selectRoleAction(payload)) },
         createRole: (payload) => { dispatch(createRoleAction.request(payload)) },

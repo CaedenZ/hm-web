@@ -22,6 +22,7 @@ import { snackBarReducer } from "./snackBarReducer";
 import { getRoleListEpic, getRoleFunctionListEpic, updateRoleEpic, createRoleEpic, deleteRoleEpic, roleReducer } from "./roleReducer";
 import { dialogReducer } from "./dialogReducer";
 import { getSectorListEpic, createSectorEpic, createIndustryEpic, updateSectorEpic, updateIndustryEpic, deleteSectorEpic, deleteIndustryEpic, sectorReducer } from "./sectorReducer";
+import { jobgradeReducer, createJobGradeEpic, getJobGradeListEpic, updateJobGradeEpic, deleteJobGradeEpic } from "./jobgradeReducer";
 
 
 export const history = createBrowserHistory()
@@ -38,6 +39,7 @@ export const rootReducer = combineReducers({
     dialogReducer,
     roleReducer,
     sectorReducer,
+    jobgradeReducer,
     router: connectRouter(history),
     //   userDetail,
     //   currentReport,
@@ -62,6 +64,11 @@ export const rootEpic = combineEpics(
     getRegionListEpic,
     updateRegionEpic,
     deleteRegionEpic,
+
+    createJobGradeEpic,
+    getJobGradeListEpic,
+    updateJobGradeEpic,
+    deleteJobGradeEpic,
 
     getRoleListEpic,
     getRoleFunctionListEpic,

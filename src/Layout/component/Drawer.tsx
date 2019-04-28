@@ -22,10 +22,12 @@ import UserIcon from "@material-ui/icons/Person";
 import CompanyIcon from "@material-ui/icons/Business";
 import UnitIcon from "@material-ui/icons/Group";
 import RoleIcon from "@material-ui/icons/Functions";
+import JobGradeIcon from "@material-ui/icons/Note";
 import RegionIcon from "@material-ui/icons/SwapHoriz";
 import SettingIcon from "@material-ui/icons/Settings";
 import JobFunctionIcon from "@material-ui/icons/AccountCircle";
 import SectorIcon from "@material-ui/icons/Work";
+import AllowanceIcon from "@material-ui/icons/MonetizationOn";
 import LogoutIcon from "@material-ui/icons/PowerSettingsNew";
 import MenuIcon from "@material-ui/icons/Menu";
 import PrimarySearchAppBar from "./AppBar";
@@ -87,7 +89,8 @@ interface InState {
 }
 interface State {
   expended1: boolean,
-  expended2: boolean
+  expended2: boolean,
+  expended3: boolean,
 }
 
 class PermanentDrawerLeft extends React.Component<Props, State> {
@@ -98,7 +101,8 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
 
   state: State = {
     expended1: false,
-    expended2: false
+    expended2: false,
+    expended3: false,
   }
 
   handleLogout = () => {
@@ -116,6 +120,14 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
     this.setState(state => ({
       ...state,
       expended2: !state.expended2
+    }));
+    console.log(this.state)
+  };
+
+  handleExpandClick3 = () => {
+    this.setState(state => ({
+      ...state,
+      expended3: !state.expended3
     }));
     console.log(this.state)
   };
@@ -255,6 +267,48 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
       return adm
     }
 
+    const jobgradefunction = (): any => {
+
+      let adm = [
+        {
+          title: "Job Grade",
+          path: "/jobgrade",
+          icon: <JobGradeIcon />,
+        },
+        {
+          title: "Salary Range",
+          path: "/salaryrange",
+          icon: <JobGradeIcon />,
+        },
+        {
+          title: "Allowances",
+          path: "/allowances",
+          icon: <JobGradeIcon />,
+        },
+        {
+          title: "Target Bonus",
+          path: "/targetbonus",
+          icon: <JobGradeIcon />,
+        },
+        {
+          title: "Equity Ranges",
+          path: "/equityrange",
+          icon: <JobGradeIcon />,
+        },
+        {
+          title: "Payroll Upload",
+          path: "/jobgrade",
+          icon: <JobGradeIcon />,
+        },
+        {
+          title: "Market Data Upload",
+          path: "/jobgrade",
+          icon: <JobGradeIcon />,
+        },
+      ]
+      return adm
+    }
+
     return (
       <div className={classes.root}>
         <CssBaseline />
@@ -309,6 +363,26 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
           <Collapse in={this.state.expended2} timeout="auto" unmountOnExit>
             <List className={classes.navlist}>
               {adminfunction().map((item, index) => (
+                <Link key={item.title} to={item.path} style={{ textDecoration: "none" }}>
+                  <ListItem button >
+                    <ListItemIcon style={{ marginLeft: "20px" }}>
+                      {item.icon}
+                    </ListItemIcon>
+                    <ListItemText primary={item.title} />
+                  </ListItem>
+                </Link>
+              ))}
+            </List>
+          </Collapse>
+          <ListItem className={classes.menubar} button onClick={this.handleExpandClick3}>
+            <ListItemIcon>
+              <MenuIcon />
+            </ListItemIcon>
+            <ListItemText primary="JobGrade Setup" />
+          </ListItem>
+          <Collapse in={this.state.expended3} timeout="auto" unmountOnExit>
+            <List className={classes.navlist}>
+              {jobgradefunction().map((item, index) => (
                 <Link key={item.title} to={item.path} style={{ textDecoration: "none" }}>
                   <ListItem button >
                     <ListItemIcon style={{ marginLeft: "20px" }}>

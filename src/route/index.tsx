@@ -59,6 +59,27 @@ import CreateSubCompanyPage from "../scenes/SubCompanyPage/create";
 import UpdateSubCompanyPage from "../scenes/SubCompanyPage/update";
 import DivisionPage from "../scenes/DivisionPage";
 
+import JobGradePage from "../scenes/CompensationSetup/JobGradePage";
+import CreateJobGradePage from "../scenes/CompensationSetup/JobGradePage/create";
+import UpdateJobGradePage from "../scenes/CompensationSetup/JobGradePage/update";
+
+import AllowancesPage from "../scenes/CompensationSetup/AllowancesPage";
+import CreateAllowancesPage from "../scenes/CompensationSetup/AllowancesPage/create";
+import UpdateAllowancesPage from "../scenes/CompensationSetup/AllowancesPage/update";
+
+import EquityRangePage from "../scenes/CompensationSetup/EquityRangePage";
+import CreateEquityRangePage from "../scenes/CompensationSetup/EquityRangePage/create";
+import UpdateEquityRangePage from "../scenes/CompensationSetup/EquityRangePage/update";
+
+import SalaryRangePage from "../scenes/CompensationSetup/SalaryRangePage";
+import CreateSalaryRangePage from "../scenes/CompensationSetup/SalaryRangePage/create";
+import UpdateSalaryRangePage from "../scenes/CompensationSetup/SalaryRangePage/update";
+
+import TargetBonusPage from "../scenes/CompensationSetup/TargetBonusPage";
+import CreateTargetBonusPage from "../scenes/CompensationSetup/TargetBonusPage/create";
+import UpdateTargetBonusPage from "../scenes/CompensationSetup/TargetBonusPage/update";
+// import JobGradePage from "../scenes/JobGradePage";
+
 
 export interface Props extends InState { }
 
@@ -123,6 +144,26 @@ class RootRoute extends React.Component<Props, State>{
                         <Route exact path="/region" render={() => (<PrimaryLayout> <RegionPage /> </PrimaryLayout>)} />
                         <Route exact path="/region/create" render={() => (<PrimaryLayout> <CreateRegionPage /> </PrimaryLayout>)} />
                         <Route exact path="/region/update" render={() => (<PrimaryLayout> <UpdateRegionPage /> </PrimaryLayout>)} />
+
+                        <Route exact path="/jobgrade" render={() => (<PrimaryLayout> <JobGradePage /> </PrimaryLayout>)} />
+                        <Route exact path="/jobgrade/create" render={() => (<PrimaryLayout> <CreateJobGradePage /> </PrimaryLayout>)} />
+                        <Route exact path="/jobgrade/update" render={() => (<PrimaryLayout> <UpdateJobGradePage /> </PrimaryLayout>)} />
+
+                        <Route exact path="/allowances" render={() => (<PrimaryLayout> <AllowancesPage /> </PrimaryLayout>)} />
+                        <Route exact path="/allowances/create" render={() => (<PrimaryLayout> <CreateAllowancesPage /> </PrimaryLayout>)} />
+                        <Route exact path="/allowances/update" render={() => (<PrimaryLayout> <UpdateAllowancesPage /> </PrimaryLayout>)} />
+
+                        <Route exact path="/equityrange" render={() => (<PrimaryLayout> <EquityRangePage /> </PrimaryLayout>)} />
+                        <Route exact path="/equityrange/create" render={() => (<PrimaryLayout> <CreateEquityRangePage /> </PrimaryLayout>)} />
+                        <Route exact path="/equityrange/update" render={() => (<PrimaryLayout> <UpdateEquityRangePage /> </PrimaryLayout>)} />
+
+                        <Route exact path="/salaryrange" render={() => (<PrimaryLayout> <SalaryRangePage /> </PrimaryLayout>)} />
+                        <Route exact path="/salaryrange/create" render={() => (<PrimaryLayout> <CreateSalaryRangePage /> </PrimaryLayout>)} />
+                        <Route exact path="/salaryrange/update" render={() => (<PrimaryLayout> <UpdateSalaryRangePage /> </PrimaryLayout>)} />
+
+                        <Route exact path="/targetbonus" render={() => (<PrimaryLayout> <TargetBonusPage /> </PrimaryLayout>)} />
+                        <Route exact path="/targetbonus/create" render={() => (<PrimaryLayout> <CreateTargetBonusPage /> </PrimaryLayout>)} />
+                        <Route exact path="/targetbonus/update" render={() => (<PrimaryLayout> <UpdateTargetBonusPage /> </PrimaryLayout>)} />
 
                     </Switch>
                 </ConnectedRouter>

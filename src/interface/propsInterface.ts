@@ -8,6 +8,7 @@ import { User, CREATEUSERCRED } from "./userInterface";
 import { Region, CREATEREGIONCRED, UPDATEREGIONCRED } from "./regionInterface";
 import { CREATEROLE, UPDATEROLE, Role } from "./roleInterface";
 import { CREATESECTORCRED, CREATEINDUSTRYCRED, Sector, UPDATESECTORCRED, UPDATEINDUSTRYCRED } from "./sectorInterface";
+import { JobGrade, CREATEJOBGRADECRED, UPDATEJOBGRADECRED } from "./jobgradeInterface";
 
 export interface SharedDispatchProps {
     showSnackBar: () => void,
@@ -29,6 +30,12 @@ export interface SharedDispatchProps {
     createRegion: (cred: CREATEREGIONCRED) => void,
     updateRegion: (cred: UPDATEREGIONCRED) => void,
     deleteRegion: (cred: string) => void,
+
+    getJobGradeList: () => void,
+    selectJobGrade: (jg: JobGrade) => void,
+    createJobGrade: (cred: CREATEJOBGRADECRED) => void,
+    updateJobGrade: (cred: UPDATEJOBGRADECRED) => void,
+    deleteJobGrade: (cred: string) => void,
 
     getRoleList: () => void,
     getRoleFunctionList: () => void,
