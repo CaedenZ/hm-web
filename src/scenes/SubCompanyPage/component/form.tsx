@@ -26,43 +26,9 @@ import { Company } from "../../../interface/companyInterface";
 
 const styles = (theme: Theme) =>
   createStyles({
-    root: {
-      flexGrow: 1
-    },
-    grid: {
-      margin: 20
-    },
     textField: {
-      width: 200,
-      margin: 20
-    },
-    // formControl: {
-    //   margin: theme.spacing.unit * 3,
-    // },
-    paper: {
-      padding: theme.spacing.unit * 2,
-      textAlign: "center",
-      color: theme.palette.text.secondary,
-      flexDirection: "column"
-    },
-    preview: {},
-    divAvatar: {
-      margin: theme.spacing.unit * 3,
-      alignSelf: "baseline",
-      flex: 1,
-      alignItems: "center",
-      justifyContent: "center"
-    },
-    bigAvatar: {
-      width: "auto",
-      height: "auto"
-    },
-    profilebutton: {
-      alignContent: "center",
-      alignSelf: "center",
-      flex: 1,
-      alignItems: "center",
-      justifyContent: "center"
+      width: "20rem",
+      margin: "1rem"
     }
   });
 
@@ -183,13 +149,17 @@ class CreateSubCompanyPage extends Component<Props, FormState> {
   render() {
     const { classes } = this.props;
     return (
-      <Paper>
-        <form onSubmit={e => this.props.onSubmit(e, this.state)}>
+      <Paper style={{ marginTop: "2rem" }}>
+        <form
+          onSubmit={e => this.props.onSubmit(e, this.state)}
+          style={{ padding: "2rem" }}
+        >
           <Typography component="h1" variant="h6">
             Company Infomation
           </Typography>
           <Grid justify="center" container>
             <Grid item xs={3}>
+              <Typography variant="h6">Main Logo</Typography>
               <div style={{ margin: 20, justifyContent: "center" }}>
                 <Avatar
                   width={200}
@@ -197,7 +167,6 @@ class CreateSubCompanyPage extends Component<Props, FormState> {
                   onCrop={this.onMainCrop}
                   onClose={this.onMainClose}
                 />
-                <Typography variant="h6">Main Logo</Typography>
               </div>
             </Grid>
             <Grid container item xs>
@@ -251,6 +220,7 @@ class CreateSubCompanyPage extends Component<Props, FormState> {
           </Grid>
           <Grid justify="center" container>
             <Grid item xs={3}>
+              <Typography variant="h6">Company Icon</Typography>
               <div style={{ margin: 20, justifyContent: "center" }}>
                 <Avatar
                   width={200}
@@ -258,7 +228,6 @@ class CreateSubCompanyPage extends Component<Props, FormState> {
                   onCrop={this.onCrop}
                   onClose={this.onClose}
                 />
-                <Typography variant="h6">Company Icon</Typography>
               </div>
             </Grid>
             <Grid container item xs>
@@ -266,7 +235,9 @@ class CreateSubCompanyPage extends Component<Props, FormState> {
                 <Grid container item xs={6}>
                   {this.props.selectedCompany.country.length > 0 && (
                     <FormControl>
-                      <InputLabel required>Country of Registration​</InputLabel>
+                      <InputLabel style={{ marginLeft: "20px" }} required>
+                        Country of Registration​
+                      </InputLabel>
                       <Select
                         id="country"
                         className={classes.textField}
@@ -397,14 +368,16 @@ class CreateSubCompanyPage extends Component<Props, FormState> {
           <Divider />
           <div
             style={{
-              width: "100%",
-              flex: 1,
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "flex-end"
+              display: "flex",
+              paddingTop: "1rem"
             }}
           >
-            <Button variant="contained" color="primary" type="submit">
+            <Button
+              variant="contained"
+              color="primary"
+              type="submit"
+              style={{ marginLeft: "auto" }}
+            >
               Submit
             </Button>
           </div>
