@@ -6,6 +6,7 @@ import { Redirect, Link as RouterLink } from "react-router-dom";
 import { mapDispatchToProps } from "../helper/dispachProps";
 import { SharedDispatchProps } from "../interface/propsInterface";
 import Breadcrumbs from "@material-ui/lab/Breadcrumbs";
+import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import Typography from "@material-ui/core/Typography";
 import CustomSnackBar from "./component/snackBar";
 import CustomDialog from "./component/deleteDialog";
@@ -56,7 +57,10 @@ class Layout extends Component<Props> {
       const breadcrumbList: any = [];
 
       return (
-        <Breadcrumbs separator="›" arial-label="Breadcrumb">
+        <Breadcrumbs
+          separator={<NavigateNextIcon fontSize="small" />}
+          arial-label="Breadcrumb"
+        >
           <RouterLink key="/" to="/">
             <p>Home</p>
           </RouterLink>
