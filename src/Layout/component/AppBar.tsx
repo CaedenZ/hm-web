@@ -27,13 +27,13 @@ import { mapDispatchToProps } from "../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../interface/propsInterface";
 
-const drawerWidth = 240;
+const drawerWidth = "15vw";
 
 const styles = (theme: Theme) =>
   createStyles({
     root: {},
     appBar: {
-      width: `calc(100% - ${drawerWidth}px)`,
+      width: `calc(100% - ${drawerWidth})`,
       marginLeft: drawerWidth,
       height: theme.spacing.unit * 10
       // backgroundColor:'white'

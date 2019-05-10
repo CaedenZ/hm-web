@@ -56,10 +56,6 @@ const styles = (theme: Theme) =>
     },
     menudivider: {},
     navlist: {},
-    appBar: {
-      width: `calc(100vw - ${drawerWidth})`,
-      marginLeft: drawerWidth
-    },
     drawer: {
       width: drawerWidth,
       flexShrink: 0
