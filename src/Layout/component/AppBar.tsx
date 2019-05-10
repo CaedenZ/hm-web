@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
 import InputBase from "@material-ui/core/InputBase";
 import Badge from "@material-ui/core/Badge";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -29,7 +28,6 @@ import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../interface/propsInterface";
 
 const drawerWidth = 240;
-
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -106,7 +104,7 @@ const styles = (theme: Theme) =>
     }
   });
 
-export interface Props extends SharedDispatchProps, WithStyles<typeof styles> { }
+export interface Props extends SharedDispatchProps, WithStyles<typeof styles> {}
 
 interface State {
   anchorEl: null | HTMLElement;
@@ -150,8 +148,12 @@ class PrimarySearchAppBar extends React.Component<Props, State> {
         open={isMenuOpen}
         onClose={this.handleMenuClose}
       >
-        <MenuItem button onClick={() => history.push('/profile')}>Profile</MenuItem>
-        <MenuItem button onClick={() => this.props.logout()}>Log out</MenuItem>
+        <MenuItem button onClick={() => history.push("/profile")}>
+          Profile
+        </MenuItem>
+        <MenuItem button onClick={() => this.props.logout()}>
+          Log out
+        </MenuItem>
       </Menu>
     );
 
@@ -248,4 +250,7 @@ class PrimarySearchAppBar extends React.Component<Props, State> {
   classes: PropTypes.object.isRequired
 } as any;
 
-export default connect(null, mapDispatchToProps)(withStyles(styles)(PrimarySearchAppBar));
+export default connect(
+  null,
+  mapDispatchToProps
+)(withStyles(styles)(PrimarySearchAppBar));
