@@ -214,7 +214,7 @@ class CreateMainUnitPage extends Component<Props, CreateUnitState> {
     };
 
     return (
-      <Paper>
+      <Paper style={{ marginTop: "2rem" }}>
         <form
           onSubmit={e => this.props.onSubmit(e, this.state)}
           style={{ padding: "2rem" }}
