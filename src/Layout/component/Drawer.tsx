@@ -27,8 +27,11 @@ import RegionIcon from "@material-ui/icons/SwapHoriz";
 import SettingIcon from "@material-ui/icons/Settings";
 import JobFunctionIcon from "@material-ui/icons/AccountCircle";
 import SectorIcon from "@material-ui/icons/Work";
+import TargetBonusIcon from "@material-ui/icons/Star";
 import AllowanceIcon from "@material-ui/icons/MonetizationOn";
-import LogoutIcon from "@material-ui/icons/PowerSettingsNew";
+import ShortIncentiveIcon from "@material-ui/icons/PlayArrow";
+import LongIncentiveIcon from "@material-ui/icons/FastForward";
+import SalaryRangeIcon from "@material-ui/icons/CompareArrows";
 import MenuIcon from "@material-ui/icons/Menu";
 import PrimarySearchAppBar from "./AppBar";
 import { Link } from "react-router-dom";
@@ -278,26 +281,36 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
         {
           title: "Salary Range",
           path: "/salaryrange",
-          icon: <JobGradeIcon />,
+          icon: <SalaryRangeIcon />,
         },
         {
           title: "Allowances",
           path: "/allowances",
-          icon: <JobGradeIcon />,
+          icon: <AllowanceIcon />,
         },
         {
           title: "Target Bonus",
           path: "/targetbonus",
-          icon: <JobGradeIcon />,
+          icon: <TargetBonusIcon />,
         },
         {
-          title: "Equity Ranges",
-          path: "/equityrange",
-          icon: <JobGradeIcon />,
+          title: "Signons",
+          path: "/signons",
+          icon: <TargetBonusIcon />,
+        },
+        {
+          title: "Short Term Incentive",
+          path: "/shortincentive",
+          icon: <ShortIncentiveIcon />,
+        },
+        {
+          title: "Long Term Incentive",
+          path: "/longincentive",
+          icon: <LongIncentiveIcon />,
         },
         {
           title: "Payroll Upload",
-          path: "/jobgrade",
+          path: "/payrollupload",
           icon: <JobGradeIcon />,
         },
         {
@@ -378,7 +391,7 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
             <ListItemIcon>
               <MenuIcon />
             </ListItemIcon>
-            <ListItemText primary="JobGrade Setup" />
+            <ListItemText primary="Compensation Setup" />
           </ListItem>
           <Collapse in={this.state.expended3} timeout="auto" unmountOnExit>
             <List className={classes.navlist}>

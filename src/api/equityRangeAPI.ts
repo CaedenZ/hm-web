@@ -1,52 +1,52 @@
 import $axios from "../plugin/axios";
-import { JobGrade, CREATEJOBGRADECRED, UPDATEJOBGRADECRED } from "../interface/jobgradeInterface";
+import { EquityRange, CREATEEQUITYRANGECRED, UPDATEEQUITYRANGECRED } from "../interface/equityRangeInterface";
 
-export const getJobGradeList = async (token, payload): Promise<JobGrade[]> => {
+export const getEquityRangeList = async (token, payload): Promise<EquityRange[]> => {
 
     let data = {
-        company_id: payload,
+        lti_id: payload,
         session_key: token,
     }
-    const response = await $axios.post('/company/getJobGrade', data)
+    const response = await $axios.post('/company/getEquityRange', data)
     console.log(response.data.data)
     return response.data.data
 }
 
-export const createJobGrade = async (token, payload: CREATEJOBGRADECRED, companyid): Promise<JobGrade[]> => {
+export const createEquityRange = async (token, payload: CREATEEQUITYRANGECRED, ltiid): Promise<EquityRange[]> => {
 
     let data = {
         ...payload,
-        company_id: companyid,
+        lti_id: ltiid,
         session_key: token,
     }
 
-    const response = await $axios.post('/company/createJobGrade', data)
+    const response = await $axios.post('/company/createEquityRange', data)
 
     console.log(response.data.data)
     return response.data.data
 }
 
-export const updateJobGrade = async (token, payload: UPDATEJOBGRADECRED): Promise<JobGrade[]> => {
+export const updateEquityRange = async (token, payload: UPDATEEQUITYRANGECRED): Promise<EquityRange[]> => {
 
     let data = {
         ...payload,
         session_key: token,
     }
 
-    const response = await $axios.post('/company/updateJobGrade', data)
+    const response = await $axios.post('/company/updateEquityRange', data)
 
     console.log(response.data.data)
     return response.data.data
 }
 
-export const deleteJobGrade = async (token, payload: string) => {
+export const deleteEquityRange = async (token, payload: string) => {
 
     let data = {
-        jobgrade_id: payload,
+        equityrange_id: payload,
         session_key: token,
     }
 
-    const response = await $axios.post('/company/deleteJobGrade', data)
+    const response = await $axios.post('/company/deleteEquityRange', data)
     console.log(response.data.data)
     return response.data.data
 }

@@ -188,7 +188,7 @@ export interface CompanyState {
     childUnitList: Unit[],
     companyList: Company[],
     childCompanyList: Company[],
-    selectedCompany?: Company,
+    selectedCompany: Company,
     selectedUnit?: Unit,
     selectedSubUnit?: Unit,
     selectUpdateCompany?: Company,

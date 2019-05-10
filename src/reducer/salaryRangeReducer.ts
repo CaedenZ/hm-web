@@ -9,46 +9,47 @@ import {
     flatMap,
 } from "rxjs/operators"
 import { of, from } from "rxjs"
-import { JobGradeState, JobGrade } from "../interface/jobgradeInterface";
-import { getJobGradeList, createJobGrade, deleteJobGrade, updateJobGrade } from "../api/jobgradeAPI";
-import { getJobGradeListAction, createJobGradeAction, deleteJobGradeAction, updateJobGradeAction } from "../actions/jobgradeAction";
+import { SalaryRangeState, SalaryRange } from "../interface/salaryrangeInterface";
+import { getSalaryRangeList, createSalaryRange, deleteSalaryRange, updateSalaryRange } from "../api/salaryRangeAPI";
+import { getSalaryRangeListAction, createSalaryRangeAction, deleteSalaryRangeAction, updateSalaryRangeAction } from "../actions/salaryRangeAction";
 import { isActionOf } from "typesafe-actions";
 
 
-export function jobgradeReducer(state: JobGradeState = {
-    jobgradeList: [],
-    selectJobGrade: {
+export function salaryRangeReducer(state: SalaryRangeState = {
+    salaryrangeList: [],
+    selectSalaryRange: {
+        salary_range_id: '',
         jobgrade_id: '',
         jobgrade_name: '',
         type: '',
         global: 0,
         country: '',
-        salary_range: '',
-        allowance: '',
-        target_bonus: '',
+        min: '',
+        mid: '',
+        max: '',
     },
 }, action) {
     switch (action.type) {
         case 'LOG_IN_SUCCESS':
             return {
-                jobgradeList: [],
-                selectJobGrade: {
+                salaryrangeList: [],
+                selectSalaryRange: {
+                    salary_range_id: '',
                     jobgrade_id: '',
-                    jobgrade_name: '',
                     type: '',
                     global: 0,
                     country: '',
-                    salary_range: '',
-                    allowance: '',
-                    target_bonus: '',
+                    min: '',
+                    mid: '',
+                    max: '',
                 },
             }
         case 'LOG_OUT':
             return {
-                jobgradeList: [],
-                selectJobGrade: {
-                    jobgrade_id: '',
-                    jobgrade_name: '',
+                salaryrangeList: [],
+                selectSalaryRange: {
+                    salaryrange_id: '',
+                    salaryrange_name: '',
                     type: '',
                     global: 0,
                     country: '',
@@ -57,28 +58,28 @@ export function jobgradeReducer(state: JobGradeState = {
                     target_bonus: '',
                 },
             }
-        case 'SELECT_JOBGRADE':
+        case 'SELECT_SALARYRANGE':
             return {
                 ...state,
-                selectJobGrade: action.payload
+                selectSalaryRange: action.payload
             }
-        case 'GET_JOBGRADE_LIST_SUCCESS':
+        case 'GET_SALARYRANGE_LIST_SUCCESS':
             return {
                 ...state,
-                jobgradeList: action.payload
+                salaryrangeList: action.payload
             }
-        case 'DELETE_JOBGRADE_SUCCESS':
-            action.asyncDispatch(getJobGradeListAction.request())
+        case 'DELETE_SALARYRANGE_SUCCESS':
+            action.asyncDispatch(getSalaryRangeListAction.request())
             return {
                 ...state
             }
-        case 'UPDATE_JOBGRADE_SUCCESS':
-            action.asyncDispatch(getJobGradeListAction.request())
+        case 'UPDATE_SALARYRANGE_SUCCESS':
+            action.asyncDispatch(getSalaryRangeListAction.request())
             return {
                 ...state
             }
-        case 'CREATE_JOBGRADE_SUCCESS':
-            action.asyncDispatch(getJobGradeListAction.request())
+        case 'CREATE_SALARYRANGE_SUCCESS':
+            action.asyncDispatch(getSalaryRangeListAction.request())
             return {
                 ...state
             }
@@ -87,46 +88,46 @@ export function jobgradeReducer(state: JobGradeState = {
     }
 }
 
-export const getJobGradeListEpic: Epic<any, any, any, any> = (action$, state$) =>
+export const getSalaryRangeListEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
-        filter(isActionOf(getJobGradeListAction.request)),
+        filter(isActionOf(getSalaryRangeListAction.request)),
         switchMap((action) =>
-            from(getJobGradeList(state$.value.authenticationReducer.token, state$.value.companyReducer.selectedCompany.company_id)).pipe(
-                map((jobgradeList: JobGrade[]) => getJobGradeListAction.success(jobgradeList)),
-                catchError(error => of(getJobGradeListAction.failure(error.message)))
+            from(getSalaryRangeList(state$.value.authenticationReducer.token, state$.value.companyReducer.selectedCompany.company_id)).pipe(
+                map((salaryrangeList: SalaryRange[]) => getSalaryRangeListAction.success(salaryrangeList)),
+                catchError(error => of(getSalaryRangeListAction.failure(error.message)))
             )
         )
     )
 
-export const createJobGradeEpic: Epic<any, any, any, any> = (action$, state$) =>
+export const createSalaryRangeEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
-        filter(isActionOf(createJobGradeAction.request)),
+        filter(isActionOf(createSalaryRangeAction.request)),
         switchMap((action) =>
-            from(createJobGrade(state$.value.authenticationReducer.token, action.payload, state$.value.companyReducer.selectedCompany.company_id)).pipe(
-                map(() => createJobGradeAction.success()),
-                catchError(error => of(createJobGradeAction.failure(error.message)))
+            from(createSalaryRange(state$.value.authenticationReducer.token, action.payload, state$.value.companyReducer.selectedCompany.company_id)).pipe(
+                map(() => createSalaryRangeAction.success()),
+                catchError(error => of(createSalaryRangeAction.failure(error.message)))
             )
         )
     )
 
-export const updateJobGradeEpic: Epic<any, any, any, any> = (action$, state$) =>
+export const updateSalaryRangeEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
-        filter(isActionOf(updateJobGradeAction.request)),
+        filter(isActionOf(updateSalaryRangeAction.request)),
         switchMap((action) =>
-            from(updateJobGrade(state$.value.authenticationReducer.token, action.payload)).pipe(
-                map(() => updateJobGradeAction.success()),
-                catchError(error => of(updateJobGradeAction.failure(error.message)))
+            from(updateSalaryRange(state$.value.authenticationReducer.token, action.payload)).pipe(
+                map(() => updateSalaryRangeAction.success()),
+                catchError(error => of(updateSalaryRangeAction.failure(error.message)))
             )
         )
     )
 
-export const deleteJobGradeEpic: Epic<any, any, any, any> = (action$, state$) =>
+export const deleteSalaryRangeEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
-        filter(isActionOf(deleteJobGradeAction.request)),
+        filter(isActionOf(deleteSalaryRangeAction.request)),
         switchMap((action) =>
-            from(deleteJobGrade(state$.value.authenticationReducer.token, action.payload)).pipe(
-                map(() => deleteJobGradeAction.success()),
-                catchError(error => of(deleteJobGradeAction.failure(error.message)))
+            from(deleteSalaryRange(state$.value.authenticationReducer.token, action.payload)).pipe(
+                map(() => deleteSalaryRangeAction.success()),
+                catchError(error => of(deleteSalaryRangeAction.failure(error.message)))
             )
         )
     )

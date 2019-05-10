@@ -67,9 +67,9 @@ import AllowancesPage from "../scenes/CompensationSetup/AllowancesPage";
 import CreateAllowancesPage from "../scenes/CompensationSetup/AllowancesPage/create";
 import UpdateAllowancesPage from "../scenes/CompensationSetup/AllowancesPage/update";
 
-import EquityRangePage from "../scenes/CompensationSetup/EquityRangePage";
-import CreateEquityRangePage from "../scenes/CompensationSetup/EquityRangePage/create";
-import UpdateEquityRangePage from "../scenes/CompensationSetup/EquityRangePage/update";
+import EquityRangePage from "../scenes/CompensationSetup/LongIncentivePage/EquityRangePage";
+import CreateEquityRangePage from "../scenes/CompensationSetup/LongIncentivePage/EquityRangePage/create";
+import UpdateEquityRangePage from "../scenes/CompensationSetup/LongIncentivePage/EquityRangePage/update";
 
 import SalaryRangePage from "../scenes/CompensationSetup/SalaryRangePage";
 import CreateSalaryRangePage from "../scenes/CompensationSetup/SalaryRangePage/create";
@@ -78,7 +78,20 @@ import UpdateSalaryRangePage from "../scenes/CompensationSetup/SalaryRangePage/u
 import TargetBonusPage from "../scenes/CompensationSetup/TargetBonusPage";
 import CreateTargetBonusPage from "../scenes/CompensationSetup/TargetBonusPage/create";
 import UpdateTargetBonusPage from "../scenes/CompensationSetup/TargetBonusPage/update";
-// import JobGradePage from "../scenes/JobGradePage";
+
+import SignonsPage from "../scenes/CompensationSetup/SignonsPage";
+import CreateSignonsPage from "../scenes/CompensationSetup/SignonsPage/create";
+import UpdateSignonsPage from "../scenes/CompensationSetup/SignonsPage/update";
+
+import LongIncentivePage from "../scenes/CompensationSetup/LongIncentivePage";
+import CreateLongIncentivePage from "../scenes/CompensationSetup/LongIncentivePage/create";
+import UpdateLongIncentivePage from "../scenes/CompensationSetup/LongIncentivePage/update";
+
+import ShortIncentivePage from "../scenes/CompensationSetup/ShortIncentivePage";
+import CreateShortIncentivePage from "../scenes/CompensationSetup/ShortIncentivePage/create";
+import UpdateShortIncentivePage from "../scenes/CompensationSetup/ShortIncentivePage/update";
+
+import PayrollUploadPage from "../scenes/CompensationSetup/PayrollUploadPage";
 
 
 export interface Props extends InState { }
@@ -153,9 +166,17 @@ class RootRoute extends React.Component<Props, State>{
                         <Route exact path="/allowances/create" render={() => (<PrimaryLayout> <CreateAllowancesPage /> </PrimaryLayout>)} />
                         <Route exact path="/allowances/update" render={() => (<PrimaryLayout> <UpdateAllowancesPage /> </PrimaryLayout>)} />
 
-                        <Route exact path="/equityrange" render={() => (<PrimaryLayout> <EquityRangePage /> </PrimaryLayout>)} />
-                        <Route exact path="/equityrange/create" render={() => (<PrimaryLayout> <CreateEquityRangePage /> </PrimaryLayout>)} />
-                        <Route exact path="/equityrange/update" render={() => (<PrimaryLayout> <UpdateEquityRangePage /> </PrimaryLayout>)} />
+                        <Route exact path="/shortincentive" render={() => (<PrimaryLayout> <ShortIncentivePage /> </PrimaryLayout>)} />
+                        <Route exact path="/shortincentive/create" render={() => (<PrimaryLayout> <CreateShortIncentivePage /> </PrimaryLayout>)} />
+                        <Route exact path="/shortincentive/update" render={() => (<PrimaryLayout> <UpdateShortIncentivePage /> </PrimaryLayout>)} />
+
+                        <Route exact path="/longincentive" render={() => (<PrimaryLayout> <LongIncentivePage /> </PrimaryLayout>)} />
+                        <Route exact path="/longincentive/create" render={() => (<PrimaryLayout> <CreateLongIncentivePage /> </PrimaryLayout>)} />
+                        <Route exact path="/longincentive/update" render={() => (<PrimaryLayout> <UpdateLongIncentivePage /> </PrimaryLayout>)} />
+
+                        <Route exact path="/longincentive/equityrange" render={() => (<PrimaryLayout> <EquityRangePage /> </PrimaryLayout>)} />
+                        <Route exact path="/longincentive/equityrange/create" render={() => (<PrimaryLayout> <CreateEquityRangePage /> </PrimaryLayout>)} />
+                        <Route exact path="/longincentive/equityrange/update" render={() => (<PrimaryLayout> <UpdateEquityRangePage /> </PrimaryLayout>)} />
 
                         <Route exact path="/salaryrange" render={() => (<PrimaryLayout> <SalaryRangePage /> </PrimaryLayout>)} />
                         <Route exact path="/salaryrange/create" render={() => (<PrimaryLayout> <CreateSalaryRangePage /> </PrimaryLayout>)} />
@@ -164,6 +185,12 @@ class RootRoute extends React.Component<Props, State>{
                         <Route exact path="/targetbonus" render={() => (<PrimaryLayout> <TargetBonusPage /> </PrimaryLayout>)} />
                         <Route exact path="/targetbonus/create" render={() => (<PrimaryLayout> <CreateTargetBonusPage /> </PrimaryLayout>)} />
                         <Route exact path="/targetbonus/update" render={() => (<PrimaryLayout> <UpdateTargetBonusPage /> </PrimaryLayout>)} />
+
+                        <Route exact path="/signons" render={() => (<PrimaryLayout> <SignonsPage /> </PrimaryLayout>)} />
+                        <Route exact path="/signons/create" render={() => (<PrimaryLayout> <CreateSignonsPage /> </PrimaryLayout>)} />
+                        <Route exact path="/signons/update" render={() => (<PrimaryLayout> <UpdateSignonsPage /> </PrimaryLayout>)} />
+
+                        <Route exact path="/payrollupload" render={() => (<PrimaryLayout> <PayrollUploadPage /> </PrimaryLayout>)} />
 
                     </Switch>
                 </ConnectedRouter>

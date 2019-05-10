@@ -1,18 +1,18 @@
 import $axios from "../plugin/axios";
-import { JobGrade, CREATEJOBGRADECRED, UPDATEJOBGRADECRED } from "../interface/salaryRangeInterface";
+import { SalaryRange, CREATESALARYRANGECRED, UPDATESALARYRANGECRED } from "../interface/salaryrangeInterface";
 
-export const getJobGradeList = async (token, payload): Promise<JobGrade[]> => {
+export const getSalaryRangeList = async (token, payload): Promise<SalaryRange[]> => {
 
     let data = {
         company_id: payload,
         session_key: token,
     }
-    const response = await $axios.post('/company/getJobGrade', data)
+    const response = await $axios.post('/company/getSalaryRange', data)
     console.log(response.data.data)
     return response.data.data
 }
 
-export const createJobGrade = async (token, payload: CREATEJOBGRADECRED, companyid): Promise<JobGrade[]> => {
+export const createSalaryRange = async (token, payload: CREATESALARYRANGECRED, companyid): Promise<SalaryRange[]> => {
 
     let data = {
         ...payload,
@@ -20,33 +20,33 @@ export const createJobGrade = async (token, payload: CREATEJOBGRADECRED, company
         session_key: token,
     }
 
-    const response = await $axios.post('/company/createJobGrade', data)
+    const response = await $axios.post('/company/createSalaryRange', data)
 
     console.log(response.data.data)
     return response.data.data
 }
 
-export const updateJobGrade = async (token, payload: UPDATEJOBGRADECRED): Promise<JobGrade[]> => {
+export const updateSalaryRange = async (token, payload: UPDATESALARYRANGECRED): Promise<SalaryRange[]> => {
 
     let data = {
         ...payload,
         session_key: token,
     }
 
-    const response = await $axios.post('/company/updateJobGrade', data)
+    const response = await $axios.post('/company/updateSalaryRange', data)
 
     console.log(response.data.data)
     return response.data.data
 }
 
-export const deleteJobGrade = async (token, payload: string) => {
+export const deleteSalaryRange = async (token, payload: string) => {
 
     let data = {
         salaryRange_id: payload,
         session_key: token,
     }
 
-    const response = await $axios.post('/company/deleteJobGrade', data)
+    const response = await $axios.post('/company/deleteSalaryRange', data)
     console.log(response.data.data)
     return response.data.data
 }

@@ -10,6 +10,13 @@ import { selectRoleAction, createRoleAction, updateRoleAction, deleteRoleAction,
 import { showDialogAction, closeDialogAction } from "../actions/deleteDialogAction";
 import { createSectorAction, createIndustryAction, updateSectorAction, updateIndustryAction, selectSectorAction, deleteSectorAction, deleteIndustryAction, getSectorListAction } from "../actions/sectorAction";
 import { selectJobGradeAction, createJobGradeAction, updateJobGradeAction, deleteJobGradeAction, getJobGradeListAction } from "../actions/jobgradeAction";
+import { selectAllowancesAction, createAllowancesAction, updateAllowancesAction, deleteAllowancesAction, getAllowancesListAction } from "../actions/allowanceAction";
+import { selectSalaryRangeAction, createSalaryRangeAction, updateSalaryRangeAction, deleteSalaryRangeAction, getSalaryRangeListAction } from "../actions/salaryRangeAction";
+import { selectTargetBonusAction, createTargetBonusAction, updateTargetBonusAction, deleteTargetBonusAction, getTargetBonusListAction } from "../actions/targetBonusAction";
+import { selectSignonsAction, createSignonsAction, updateSignonsAction, deleteSignonsAction, getSignonsListAction } from "../actions/signonsAction";
+import { selectLongIncentiveAction, createLongIncentiveAction, updateLongIncentiveAction, deleteLongIncentiveAction, getLongIncentiveListAction } from "../actions/longIncentiveAction";
+import { selectShortIncentiveAction, createShortIncentiveAction, updateShortIncentiveAction, deleteShortIncentiveAction, getShortIncentiveListAction } from "../actions/shortIncentiveAction";
+import { selectEquityRangeAction, createEquityRangeAction, updateEquityRangeAction, deleteEquityRangeAction, getEquityRangeListAction } from "../actions/equityRangeAction";
 
 
 
@@ -90,12 +97,6 @@ export function mapDispatchToProps(dispatch): SharedDispatchProps {
         deleteRegion: (payload) => { dispatch(deleteRegionAction.request(payload)) },
         getRegionList: () => { dispatch(getRegionListAction.request()) },
 
-        selectJobGrade: (payload) => { dispatch(selectJobGradeAction(payload)) },
-        createJobGrade: (payload) => { dispatch(createJobGradeAction.request(payload)) },
-        updateJobGrade: (payload) => { dispatch(updateJobGradeAction.request(payload)) },
-        deleteJobGrade: (payload) => { dispatch(deleteJobGradeAction.request(payload)) },
-        getJobGradeList: () => { dispatch(getJobGradeListAction.request()) },
-
         selectRole: (payload) => { dispatch(selectRoleAction(payload)) },
         createRole: (payload) => { dispatch(createRoleAction.request(payload)) },
         updateRole: (payload) => { dispatch(updateRoleAction.request(payload)) },
@@ -105,5 +106,54 @@ export function mapDispatchToProps(dispatch): SharedDispatchProps {
 
         getCompanyByCountry: (payload) => { dispatch(getCompanyByCountryAction.request(payload)) },
         getCompanyByRegion: (payload) => { dispatch(getCompanyByRegionAction.request(payload)) },
+
+        // phrase 2
+        selectJobGrade: (payload) => { dispatch(selectJobGradeAction(payload)) },
+        createJobGrade: (payload) => { dispatch(createJobGradeAction.request(payload)) },
+        updateJobGrade: (payload) => { dispatch(updateJobGradeAction.request(payload)) },
+        deleteJobGrade: (payload) => { dispatch(deleteJobGradeAction.request(payload)) },
+        getJobGradeList: () => { dispatch(getJobGradeListAction.request()) },
+
+        selectAllowances: (payload) => { dispatch(selectAllowancesAction(payload)) },
+        createAllowances: (payload) => { dispatch(createAllowancesAction.request(payload)) },
+        updateAllowances: (payload) => { dispatch(updateAllowancesAction.request(payload)) },
+        deleteAllowances: (payload) => { dispatch(deleteAllowancesAction.request(payload)) },
+        getAllowancesList: () => { dispatch(getAllowancesListAction.request()) },
+
+        selectSalaryRange: (payload) => { dispatch(selectSalaryRangeAction(payload)) },
+        createSalaryRange: (payload) => { dispatch(createSalaryRangeAction.request(payload)) },
+        updateSalaryRange: (payload) => { dispatch(updateSalaryRangeAction.request(payload)) },
+        deleteSalaryRange: (payload) => { dispatch(deleteSalaryRangeAction.request(payload)) },
+        getSalaryRangeList: () => { dispatch(getSalaryRangeListAction.request()) },
+
+        selectTargetBonus: (payload) => { dispatch(selectTargetBonusAction(payload)) },
+        createTargetBonus: (payload) => { dispatch(createTargetBonusAction.request(payload)) },
+        updateTargetBonus: (payload) => { dispatch(updateTargetBonusAction.request(payload)) },
+        deleteTargetBonus: (payload) => { dispatch(deleteTargetBonusAction.request(payload)) },
+        getTargetBonusList: () => { dispatch(getTargetBonusListAction.request()) },
+
+        selectSignons: (payload) => { dispatch(selectSignonsAction(payload)) },
+        createSignons: (payload) => { dispatch(createSignonsAction.request(payload)) },
+        updateSignons: (payload) => { dispatch(updateSignonsAction.request(payload)) },
+        deleteSignons: (payload) => { dispatch(deleteSignonsAction.request(payload)) },
+        getSignonsList: () => { dispatch(getSignonsListAction.request()) },
+
+        selectLongIncentive: (payload) => { dispatch(selectLongIncentiveAction(payload)) },
+        createLongIncentive: (payload) => { dispatch(createLongIncentiveAction.request(payload)) },
+        updateLongIncentive: (payload) => { dispatch(updateLongIncentiveAction.request(payload)) },
+        deleteLongIncentive: (payload) => { dispatch(deleteLongIncentiveAction.request(payload)) },
+        getLongIncentiveList: () => { dispatch(getLongIncentiveListAction.request()) },
+
+        selectShortIncentive: (payload) => { dispatch(selectShortIncentiveAction(payload)) },
+        createShortIncentive: (payload) => { dispatch(createShortIncentiveAction.request(payload)) },
+        updateShortIncentive: (payload) => { dispatch(updateShortIncentiveAction.request(payload)) },
+        deleteShortIncentive: (payload) => { dispatch(deleteShortIncentiveAction.request(payload)) },
+        getShortIncentiveList: () => { dispatch(getShortIncentiveListAction.request()) },
+
+        selectEquityRange: (payload) => { dispatch(selectEquityRangeAction(payload)) },
+        createEquityRange: (payload) => { dispatch(createEquityRangeAction.request(payload)) },
+        updateEquityRange: (payload) => { dispatch(updateEquityRangeAction.request(payload)) },
+        deleteEquityRange: (payload) => { dispatch(deleteEquityRangeAction.request(payload)) },
+        getEquityRangeList: () => { dispatch(getEquityRangeListAction.request()) },
     }
 }

@@ -25,7 +25,6 @@ class Layout extends Component<Props> {
     this.props.getSectorList()
     this.props.getJobFunctionList()
     this.props.getRoleFunctionList()
-    this.props.getJobGradeList()
   }
   render() {
 

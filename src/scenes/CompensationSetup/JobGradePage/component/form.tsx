@@ -27,6 +27,7 @@ import { history } from "../../../../store"
 import { RootState } from "../../../../reducer";
 import { Country } from "../../../../interface/countryInterface";
 import { User } from "../../../../interface/userInterface";
+import { Company } from "../../../../interface/companyInterface";
 
 const styles = (theme: Theme) =>
     createStyles({
@@ -85,7 +86,7 @@ interface FormState {
 interface Props extends InState, WithStyles<typeof styles>, SharedDispatchProps { }
 
 interface InState {
-    countryList: Country[],
+    selectedCompany: Company;
     create: boolean,
     updateData: any,
     onSubmit: any,
@@ -124,6 +125,7 @@ class FormPage extends Component<Props, FormState> {
 
     handleChangeCheck = () => {
         this.setState({ global: !this.state.global } as any);
+        this.setState({ country: '' })
     };
 
     render() {
@@ -144,19 +146,28 @@ class FormPage extends Component<Props, FormState> {
                             />
                         </Grid>
                         <Grid justify={"center"} container item>
-                            <TextField
-                                id="type"
-                                label="type"
-                                className={classes.textField}
-                                value={this.state.type}
-                                onChange={this.handleChange('type')}
-                                margin="normal"
-                            />
+                            <FormControl>
+                                <InputLabel required>Type</InputLabel>
+                                <Select
+                                    id="type"
+                                    className={classes.textField}
+                                    value={this.state.type}
+                                    onChange={this.handleChangeSelect('type')}
+                                    inputProps={{
+                                        name: 'type',
+                                        id: 'type-simple',
+                                    }}>
+                                    <MenuItem value="Technical">Technical</MenuItem>
+                                    <MenuItem value="Non-Technical">Non-Technical</MenuItem>
+                                    <MenuItem value="Executive">Executive</MenuItem>
+                                    <MenuItem value="Non-Executive">Non-Executive</MenuItem>
+                                </Select></FormControl>
                         </Grid>
                         <Grid justify={"center"} container item>
-                            {this.props.countryList.length > 0 && <FormControl>
+                            {this.props.selectedCompany.country.length > 0 && <FormControl>
                                 <InputLabel required>Country</InputLabel>
                                 <Select
+                                    disabled={this.state.global}
                                     id="country"
                                     className={classes.textField}
                                     value={this.state.country}
@@ -165,8 +176,8 @@ class FormPage extends Component<Props, FormState> {
                                         name: 'country',
                                         id: 'country-simple',
                                     }}>
-                                    {this.props.countryList.map((country) =>
-                                        <MenuItem key={country.country_name} value={country.country_name}>{country.country_name}</MenuItem>
+                                    {this.props.selectedCompany.country.map((country) =>
+                                        <MenuItem key={JSON.parse(country).country_name} value={JSON.parse(country).country_name}>{JSON.parse(country).country_name}</MenuItem>
                                     )}
                                 </Select></FormControl>}
                         </Grid>
@@ -202,7 +213,7 @@ class FormPage extends Component<Props, FormState> {
 
 function mapStateToProps(state: RootState) {
     return {
-        countryList: state.countryReducer.countryList,
+        selectedCompany: state.companyReducer.selectedCompany,
     }
 }
 

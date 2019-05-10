@@ -9,76 +9,79 @@ import {
     flatMap,
 } from "rxjs/operators"
 import { of, from } from "rxjs"
-import { JobGradeState, JobGrade } from "../interface/jobgradeInterface";
-import { getJobGradeList, createJobGrade, deleteJobGrade, updateJobGrade } from "../api/jobgradeAPI";
-import { getJobGradeListAction, createJobGradeAction, deleteJobGradeAction, updateJobGradeAction } from "../actions/jobgradeAction";
+import { EquityRangeState, EquityRange } from "../interface/equityRangeInterface";
+import { getEquityRangeList, createEquityRange, deleteEquityRange, updateEquityRange } from "../api/equityRangeAPI";
+import { getEquityRangeListAction, createEquityRangeAction, deleteEquityRangeAction, updateEquityRangeAction } from "../actions/equityRangeAction";
 import { isActionOf } from "typesafe-actions";
 
 
-export function jobgradeReducer(state: JobGradeState = {
-    jobgradeList: [],
-    selectJobGrade: {
+export function equityrangeReducer(state: EquityRangeState = {
+    equityrangeList: [],
+    selectEquityRange: {
+        equity_range_id: '',
+        lti_id: '',
         jobgrade_id: '',
         jobgrade_name: '',
         type: '',
-        global: 0,
+        min: '',
+        mid: '',
+        max: '',
         country: '',
-        salary_range: '',
-        allowance: '',
-        target_bonus: '',
+        global: 0,
+        value_type: 0,
     },
 }, action) {
     switch (action.type) {
         case 'LOG_IN_SUCCESS':
             return {
-                jobgradeList: [],
-                selectJobGrade: {
+                equityrangeList: [],
+                selectEquityRange: {
+                    equity_range_id: '',
+                    lti_id: '',
                     jobgrade_id: '',
-                    jobgrade_name: '',
                     type: '',
-                    global: 0,
+                    min: '',
+                    mid: '',
+                    max: '',
                     country: '',
-                    salary_range: '',
-                    allowance: '',
-                    target_bonus: '',
                 },
             }
         case 'LOG_OUT':
             return {
-                jobgradeList: [],
-                selectJobGrade: {
+                equityrangeList: [],
+                selectEquityRange: {
+                    equity_range_id: '',
+                    lti_id: '',
                     jobgrade_id: '',
-                    jobgrade_name: '',
                     type: '',
-                    global: 0,
+                    min: '',
+                    mid: '',
+                    max: '',
                     country: '',
-                    salary_range: '',
-                    allowance: '',
-                    target_bonus: '',
                 },
             }
-        case 'SELECT_JOBGRADE':
+        case 'SELECT_EQUITYRANGE':
             return {
                 ...state,
-                selectJobGrade: action.payload
+                selectEquityRange: action.payload
             }
-        case 'GET_JOBGRADE_LIST_SUCCESS':
+        case 'GET_EQUITYRANGE_LIST_SUCCESS':
             return {
                 ...state,
-                jobgradeList: action.payload
+                equityrangeList: action.payload
             }
-        case 'DELETE_JOBGRADE_SUCCESS':
-            action.asyncDispatch(getJobGradeListAction.request())
+        case 'DELETE_EQUITYRANGE_SUCCESS':
+            action.asyncDispatch(getEquityRangeListAction.request())
             return {
                 ...state
             }
-        case 'UPDATE_JOBGRADE_SUCCESS':
-            action.asyncDispatch(getJobGradeListAction.request())
+        case 'UPDATE_EQUITYRANGE_SUCCESS':
+            action.asyncDispatch(getEquityRangeListAction.request())
             return {
                 ...state
             }
-        case 'CREATE_JOBGRADE_SUCCESS':
-            action.asyncDispatch(getJobGradeListAction.request())
+        case 'CREATE_EQUITYRANGE_SUCCESS':
+            action.asyncDispatch(getEquityRangeListAction.request())
             return {
                 ...state
             }
@@ -87,46 +90,46 @@ export function jobgradeReducer(state: JobGradeState = {
     }
 }
 
-export const getJobGradeListEpic: Epic<any, any, any, any> = (action$, state$) =>
+export const getEquityRangeListEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
-        filter(isActionOf(getJobGradeListAction.request)),
+        filter(isActionOf(getEquityRangeListAction.request)),
         switchMap((action) =>
-            from(getJobGradeList(state$.value.authenticationReducer.token, state$.value.companyReducer.selectedCompany.company_id)).pipe(
-                map((jobgradeList: JobGrade[]) => getJobGradeListAction.success(jobgradeList)),
-                catchError(error => of(getJobGradeListAction.failure(error.message)))
+            from(getEquityRangeList(state$.value.authenticationReducer.token, state$.value.longIncentiveReducer.selectLongIncentive.longterm_incentive_id)).pipe(
+                map((equityrangeList: EquityRange[]) => getEquityRangeListAction.success(equityrangeList)),
+                catchError(error => of(getEquityRangeListAction.failure(error.message)))
             )
         )
     )
 
-export const createJobGradeEpic: Epic<any, any, any, any> = (action$, state$) =>
+export const createEquityRangeEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
-        filter(isActionOf(createJobGradeAction.request)),
+        filter(isActionOf(createEquityRangeAction.request)),
         switchMap((action) =>
-            from(createJobGrade(state$.value.authenticationReducer.token, action.payload, state$.value.companyReducer.selectedCompany.company_id)).pipe(
-                map(() => createJobGradeAction.success()),
-                catchError(error => of(createJobGradeAction.failure(error.message)))
+            from(createEquityRange(state$.value.authenticationReducer.token, action.payload, state$.value.companyReducer.selectedCompany.company_id)).pipe(
+                map(() => createEquityRangeAction.success()),
+                catchError(error => of(createEquityRangeAction.failure(error.message)))
             )
         )
     )
 
-export const updateJobGradeEpic: Epic<any, any, any, any> = (action$, state$) =>
+export const updateEquityRangeEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
-        filter(isActionOf(updateJobGradeAction.request)),
+        filter(isActionOf(updateEquityRangeAction.request)),
         switchMap((action) =>
-            from(updateJobGrade(state$.value.authenticationReducer.token, action.payload)).pipe(
-                map(() => updateJobGradeAction.success()),
-                catchError(error => of(updateJobGradeAction.failure(error.message)))
+            from(updateEquityRange(state$.value.authenticationReducer.token, action.payload)).pipe(
+                map(() => updateEquityRangeAction.success()),
+                catchError(error => of(updateEquityRangeAction.failure(error.message)))
             )
         )
     )
 
-export const deleteJobGradeEpic: Epic<any, any, any, any> = (action$, state$) =>
+export const deleteEquityRangeEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
-        filter(isActionOf(deleteJobGradeAction.request)),
+        filter(isActionOf(deleteEquityRangeAction.request)),
         switchMap((action) =>
-            from(deleteJobGrade(state$.value.authenticationReducer.token, action.payload)).pipe(
-                map(() => deleteJobGradeAction.success()),
-                catchError(error => of(deleteJobGradeAction.failure(error.message)))
+            from(deleteEquityRange(state$.value.authenticationReducer.token, action.payload)).pipe(
+                map(() => deleteEquityRangeAction.success()),
+                catchError(error => of(deleteEquityRangeAction.failure(error.message)))
             )
         )
     )

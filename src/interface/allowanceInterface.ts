@@ -1,30 +1,32 @@
-export interface JobGrade {
+export interface Allowances {
+    allowances_id: string,
     jobgrade_id: string,
     jobgrade_name: string,
     type: string,
     global: number,
     country: string,
-    salary_range: string,
-    allowance: string,
-    target_bonus: string,
+    value: string,
+    isBonus: string,
+    isOptional: string,
+    value_type: number,
 }
 
 
-export interface JobGradeState {
-    jobgradeList: JobGrade[],
-    selectJobGrade: JobGrade,
+export interface AllowancesState {
+    allowancesList: Allowances[],
+    selectAllowances: Allowances,
 }
 
-export interface CREATEJOBGRADECRED {
-    jobgrade_name: string,
+export interface CREATEALLOWANCESCRED {
+    jobgrade_id: string,
     type: string,
     global: number,
     country: string,
 }
 
-export interface UPDATEJOBGRADECRED {
+export interface UPDATEALLOWANCESCRED {
+    allowances_id: string,
     jobgrade_id: string,
-    jobgrade_name: string,
     type: string,
     global: number,
     country: string,

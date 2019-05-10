@@ -1,31 +1,28 @@
-export interface JobGrade {
+export interface TargetBonus {
+    target_bonus_id: string,
     jobgrade_id: string,
-    jobgrade_name: string,
-    type: string,
     global: number,
     country: string,
-    salary_range: string,
-    allowance: string,
-    target_bonus: string,
+    min: string,
+    mid: string,
+    max: string,
 }
 
 
-export interface JobGradeState {
-    jobgradeList: JobGrade[],
-    selectJobGrade: JobGrade,
+export interface TargetBonusState {
+    targetbonusList: TargetBonus[],
+    selectTargetBonus: TargetBonus,
 }
 
-export interface CREATEJOBGRADECRED {
-    jobgrade_name: string,
-    type: string,
-    global: number,
-    country: string,
+export interface CREATETARGETBONUSCRED {
+    min: string,
+    mid: string,
+    max: string,
 }
 
-export interface UPDATEJOBGRADECRED {
-    jobgrade_id: string,
-    jobgrade_name: string,
-    type: string,
-    global: number,
-    country: string,
+export interface UPDATETARGETBONUSCRED {
+    target_bonus_id: string,
+    min: string,
+    mid: string,
+    max: string,
 }

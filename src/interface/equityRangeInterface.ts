@@ -1,30 +1,33 @@
-export interface JobGrade {
+export interface EquityRange {
+    equity_range_id: string,
+    lti_id: string,
     jobgrade_id: string,
     jobgrade_name: string,
     type: string,
-    global: number,
+    min: string,
+    mid: string,
+    max: string,
     country: string,
-    salary_range: string,
-    allowance: string,
-    target_bonus: string,
+    global: number,
+    value_type: number,
 }
 
 
-export interface JobGradeState {
-    jobgradeList: JobGrade[],
-    selectJobGrade: JobGrade,
+export interface EquityRangeState {
+    equityrangeList: EquityRange[],
+    selectEquityRange: EquityRange,
 }
 
-export interface CREATEJOBGRADECRED {
-    jobgrade_name: string,
+export interface CREATEEQUITYRANGECRED {
+    equityrange_name: string,
     type: string,
     global: number,
     country: string,
 }
 
-export interface UPDATEJOBGRADECRED {
-    jobgrade_id: string,
-    jobgrade_name: string,
+export interface UPDATEEQUITYRANGECRED {
+    equityrange_id: string,
+    equityrange_name: string,
     type: string,
     global: number,
     country: string,

@@ -18,12 +18,13 @@ import { RootState } from "../../../reducer";
 import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../interface/propsInterface";
-import { JobGrade } from "../../../interface/jobgradeInterface";
+import { TargetBonus } from "../../../interface/targetbonusInterface";
 import { Button, IconButton, FormControl, InputLabel, Select, MenuItem, Grid, FormControlLabel, Checkbox } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 import { history } from "../../../store";
 import UpdateIcon from '@material-ui/icons/PlaylistAddCheck';
 import ResetIcon from '@material-ui/icons/BorderColor';
+import ResetPassword from './component/resetPassword';
 import { Company } from "../../../interface/companyInterface";
 import { Country } from "../../../interface/countryInterface";
 import CustomizedTable from './component/table'
@@ -59,16 +60,17 @@ interface State {
 interface InState {
   countryList: Country[],
   selectedCompany: Company,
+  targetbonusList: TargetBonus[],
 }
-class JobGradePage extends React.Component<Props, State> {
+class TargetBonusPage extends React.Component<Props, State> {
 
   state = {
     country: '',
-    global: false,
+    global: true,
   }
 
   componentDidMount() {
-    console.log('JobGradePage MOunt')
+    console.log('TargetBonusPage MOunt')
     if (this.props.selectedCompany.company_id === '') {
       let data = {
         type: 'warning',
@@ -77,12 +79,12 @@ class JobGradePage extends React.Component<Props, State> {
       }
       this.props.showDialog(data)
     }
-    else this.props.getJobGradeList()
+    else this.props.getTargetBonusList()
   }
 
-  handleUpdateButtonClick = (jobgrade) => {
-    this.props.selectJobGrade(jobgrade)
-    history.push('/jobgrade/update')
+  handleUpdateButtonClick = (targetbonus) => {
+    this.props.selectTargetBonus(targetbonus)
+    history.push('/targetbonus/update')
     console.log('clicked')
   }
 
@@ -90,27 +92,43 @@ class JobGradePage extends React.Component<Props, State> {
 
     const payload = {
       type: 'delete',
-      object: 'jobgrade',
+      object: 'targetbonus',
       id: id,
     }
     this.props.showDialog(payload)
   }
 
   handleNewGrade = () => {
-    history.push('/jobgrade/create')
+    history.push('/targetbonus/create')
   }
 
   handleChange = () => {
     this.setState({ global: !this.state.global } as any);
+    console.log(this.getdata())
   };
 
   handleChangeSelect = (statekay: keyof State) => (event: React.ChangeEvent<HTMLSelectElement>) => {
     this.setState({ [statekay]: event.target.value } as any);
   };
 
+  getdata = () => {
+    if (this.state.global) {
+      return this.props.targetbonusList.filter(e => {
+        return e.global === 1
+      })
+    }
+    else if (this.state.country !== '') {
+      return this.props.targetbonusList.filter(e => {
+        return e.country === this.state.country
+      })
+    }
+    else {
+      return []
+    }
+  }
 
   render() {
-    const { classes } = this.props;
+    let data = this.getdata()
 
     return (
       <main>
@@ -129,7 +147,7 @@ class JobGradePage extends React.Component<Props, State> {
             />
           </Grid>
           <Grid item xs={3}>
-            <FormControl style={{ width: '100%' }}>
+            <FormControl style={{ width: '100%' }} disabled={this.state.global}>
               <InputLabel htmlFor="country">Country</InputLabel>
               <Select
                 value={this.state.country}
@@ -139,20 +157,20 @@ class JobGradePage extends React.Component<Props, State> {
                   id: 'country-simple',
                 }}
               >
-                {this.props.countryList.map((country) =>
-                  <MenuItem key={country.country_name} value={country.country_name}>{country.country_name}</MenuItem>
+                {this.props.selectedCompany.country.map((country) =>
+                  <MenuItem key={JSON.parse(country).country_name} value={JSON.parse(country).country_name}>{JSON.parse(country).country_name}</MenuItem>
                 )}
               </Select>
             </FormControl>
           </Grid>
         </Grid>
-        <CustomizedTable />
-      </main>
+        <CustomizedTable targetbonusList={data} />
+      </main >
     );
   }
 }
 
-(JobGradePage as React.ComponentClass<Props>).propTypes = {
+(TargetBonusPage as React.ComponentClass<Props>).propTypes = {
   classes: PropTypes.object.isRequired
 } as any;
 
@@ -160,7 +178,8 @@ function mapStateToProps(state: RootState) {
   return {
     countryList: state.countryReducer.countryList,
     selectedCompany: state.companyReducer.selectedCompany,
+    targetbonusList: state.targetBonusReducer.targetbonusList,
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(JobGradePage));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(TargetBonusPage));

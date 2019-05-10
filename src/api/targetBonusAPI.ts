@@ -1,18 +1,18 @@
 import $axios from "../plugin/axios";
-import { JobGrade, CREATEJOBGRADECRED, UPDATEJOBGRADECRED } from "../interface/jobgradeInterface";
+import { TargetBonus, CREATETARGETBONUSCRED, UPDATETARGETBONUSCRED } from "../interface/targetbonusInterface";
 
-export const getJobGradeList = async (token, payload): Promise<JobGrade[]> => {
+export const getTargetBonusList = async (token, payload): Promise<TargetBonus[]> => {
 
     let data = {
         company_id: payload,
         session_key: token,
     }
-    const response = await $axios.post('/company/getJobGrade', data)
+    const response = await $axios.post('/company/getTargetBonus', data)
     console.log(response.data.data)
     return response.data.data
 }
 
-export const createJobGrade = async (token, payload: CREATEJOBGRADECRED, companyid): Promise<JobGrade[]> => {
+export const createTargetBonus = async (token, payload: CREATETARGETBONUSCRED, companyid): Promise<TargetBonus[]> => {
 
     let data = {
         ...payload,
@@ -20,33 +20,33 @@ export const createJobGrade = async (token, payload: CREATEJOBGRADECRED, company
         session_key: token,
     }
 
-    const response = await $axios.post('/company/createJobGrade', data)
+    const response = await $axios.post('/company/createTargetBonus', data)
 
     console.log(response.data.data)
     return response.data.data
 }
 
-export const updateJobGrade = async (token, payload: UPDATEJOBGRADECRED): Promise<JobGrade[]> => {
+export const updateTargetBonus = async (token, payload: UPDATETARGETBONUSCRED): Promise<TargetBonus[]> => {
 
     let data = {
         ...payload,
         session_key: token,
     }
 
-    const response = await $axios.post('/company/updateJobGrade', data)
+    const response = await $axios.post('/company/updateTargetBonus', data)
 
     console.log(response.data.data)
     return response.data.data
 }
 
-export const deleteJobGrade = async (token, payload: string) => {
+export const deleteTargetBonus = async (token, payload: string) => {
 
     let data = {
-        jobgrade_id: payload,
+        targetbonus_id: payload,
         session_key: token,
     }
 
-    const response = await $axios.post('/company/deleteJobGrade', data)
+    const response = await $axios.post('/company/deleteTargetBonus', data)
     console.log(response.data.data)
     return response.data.data
 }

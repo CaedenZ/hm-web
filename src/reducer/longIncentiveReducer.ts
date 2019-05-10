@@ -9,32 +9,35 @@ import {
     flatMap,
 } from "rxjs/operators"
 import { of, from } from "rxjs"
-import { JobGradeState, JobGrade } from "../interface/jobgradeInterface";
-import { getJobGradeList, createJobGrade, deleteJobGrade, updateJobGrade } from "../api/jobgradeAPI";
-import { getJobGradeListAction, createJobGradeAction, deleteJobGradeAction, updateJobGradeAction } from "../actions/jobgradeAction";
+import { LongIncentiveState, LongIncentive } from "../interface/longincentiveInterface";
+import { getLongIncentiveList, createLongIncentive, deleteLongIncentive, updateLongIncentive } from "../api/longIncentiveAPI";
+import { getLongIncentiveListAction, createLongIncentiveAction, deleteLongIncentiveAction, updateLongIncentiveAction } from "../actions/longIncentiveAction";
 import { isActionOf } from "typesafe-actions";
 
 
-export function jobgradeReducer(state: JobGradeState = {
-    jobgradeList: [],
-    selectJobGrade: {
-        jobgrade_id: '',
-        jobgrade_name: '',
+export function longIncentiveReducer(state: LongIncentiveState = {
+    longincentiveList: [],
+    selectLongIncentive: {
+        longterm_incentive_id: '',
+        value: '',
         type: '',
         global: 0,
         country: '',
-        salary_range: '',
-        allowance: '',
-        target_bonus: '',
+        investing_type: '',
+        investing_breakdown: '',
+        share_symbol: '',
+        share_exchange: '',
+        currency: '',
+        isOptional: '',
     },
 }, action) {
     switch (action.type) {
         case 'LOG_IN_SUCCESS':
             return {
-                jobgradeList: [],
-                selectJobGrade: {
-                    jobgrade_id: '',
-                    jobgrade_name: '',
+                longincentiveList: [],
+                selectLongIncentive: {
+                    longincentive_id: '',
+                    longincentive_name: '',
                     type: '',
                     global: 0,
                     country: '',
@@ -45,10 +48,10 @@ export function jobgradeReducer(state: JobGradeState = {
             }
         case 'LOG_OUT':
             return {
-                jobgradeList: [],
-                selectJobGrade: {
-                    jobgrade_id: '',
-                    jobgrade_name: '',
+                longincentiveList: [],
+                selectLongIncentive: {
+                    longincentive_id: '',
+                    longincentive_name: '',
                     type: '',
                     global: 0,
                     country: '',
@@ -57,28 +60,28 @@ export function jobgradeReducer(state: JobGradeState = {
                     target_bonus: '',
                 },
             }
-        case 'SELECT_JOBGRADE':
+        case 'SELECT_LONGINCENTIVE':
             return {
                 ...state,
-                selectJobGrade: action.payload
+                selectLongIncentive: action.payload
             }
-        case 'GET_JOBGRADE_LIST_SUCCESS':
+        case 'GET_LONGINCENTIVE_LIST_SUCCESS':
             return {
                 ...state,
-                jobgradeList: action.payload
+                longincentiveList: action.payload
             }
-        case 'DELETE_JOBGRADE_SUCCESS':
-            action.asyncDispatch(getJobGradeListAction.request())
+        case 'DELETE_LONGINCENTIVE_SUCCESS':
+            action.asyncDispatch(getLongIncentiveListAction.request())
             return {
                 ...state
             }
-        case 'UPDATE_JOBGRADE_SUCCESS':
-            action.asyncDispatch(getJobGradeListAction.request())
+        case 'UPDATE_LONGINCENTIVE_SUCCESS':
+            action.asyncDispatch(getLongIncentiveListAction.request())
             return {
                 ...state
             }
-        case 'CREATE_JOBGRADE_SUCCESS':
-            action.asyncDispatch(getJobGradeListAction.request())
+        case 'CREATE_LONGINCENTIVE_SUCCESS':
+            action.asyncDispatch(getLongIncentiveListAction.request())
             return {
                 ...state
             }
@@ -87,46 +90,46 @@ export function jobgradeReducer(state: JobGradeState = {
     }
 }
 
-export const getJobGradeListEpic: Epic<any, any, any, any> = (action$, state$) =>
+export const getLongIncentiveListEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
-        filter(isActionOf(getJobGradeListAction.request)),
+        filter(isActionOf(getLongIncentiveListAction.request)),
         switchMap((action) =>
-            from(getJobGradeList(state$.value.authenticationReducer.token, state$.value.companyReducer.selectedCompany.company_id)).pipe(
-                map((jobgradeList: JobGrade[]) => getJobGradeListAction.success(jobgradeList)),
-                catchError(error => of(getJobGradeListAction.failure(error.message)))
+            from(getLongIncentiveList(state$.value.authenticationReducer.token, state$.value.companyReducer.selectedCompany.company_id)).pipe(
+                map((longincentiveList: LongIncentive[]) => getLongIncentiveListAction.success(longincentiveList)),
+                catchError(error => of(getLongIncentiveListAction.failure(error.message)))
             )
         )
     )
 
-export const createJobGradeEpic: Epic<any, any, any, any> = (action$, state$) =>
+export const createLongIncentiveEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
-        filter(isActionOf(createJobGradeAction.request)),
+        filter(isActionOf(createLongIncentiveAction.request)),
         switchMap((action) =>
-            from(createJobGrade(state$.value.authenticationReducer.token, action.payload, state$.value.companyReducer.selectedCompany.company_id)).pipe(
-                map(() => createJobGradeAction.success()),
-                catchError(error => of(createJobGradeAction.failure(error.message)))
+            from(createLongIncentive(state$.value.authenticationReducer.token, action.payload, state$.value.companyReducer.selectedCompany.company_id)).pipe(
+                map(() => createLongIncentiveAction.success()),
+                catchError(error => of(createLongIncentiveAction.failure(error.message)))
             )
         )
     )
 
-export const updateJobGradeEpic: Epic<any, any, any, any> = (action$, state$) =>
+export const updateLongIncentiveEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
-        filter(isActionOf(updateJobGradeAction.request)),
+        filter(isActionOf(updateLongIncentiveAction.request)),
         switchMap((action) =>
-            from(updateJobGrade(state$.value.authenticationReducer.token, action.payload)).pipe(
-                map(() => updateJobGradeAction.success()),
-                catchError(error => of(updateJobGradeAction.failure(error.message)))
+            from(updateLongIncentive(state$.value.authenticationReducer.token, action.payload)).pipe(
+                map(() => updateLongIncentiveAction.success()),
+                catchError(error => of(updateLongIncentiveAction.failure(error.message)))
             )
         )
     )
 
-export const deleteJobGradeEpic: Epic<any, any, any, any> = (action$, state$) =>
+export const deleteLongIncentiveEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
-        filter(isActionOf(deleteJobGradeAction.request)),
+        filter(isActionOf(deleteLongIncentiveAction.request)),
         switchMap((action) =>
-            from(deleteJobGrade(state$.value.authenticationReducer.token, action.payload)).pipe(
-                map(() => deleteJobGradeAction.success()),
-                catchError(error => of(deleteJobGradeAction.failure(error.message)))
+            from(deleteLongIncentive(state$.value.authenticationReducer.token, action.payload)).pipe(
+                map(() => deleteLongIncentiveAction.success()),
+                catchError(error => of(deleteLongIncentiveAction.failure(error.message)))
             )
         )
     )

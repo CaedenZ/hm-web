@@ -22,14 +22,14 @@ const styles = () =>
 export interface Props extends WithStyles<typeof styles>, SharedDispatchProps { }
 
 
-class CreateJobGradePage extends Component<Props> {
+class CreateSalaryRangePage extends Component<Props> {
 
 
 
-  handleCreateJobGrade = (e, data) => {
+  handleCreateSalaryRange = (e, data) => {
     // console.log(this.props.business_titleList)
     e.preventDefault();
-    this.props.createJobGrade(data)
+    this.props.createSalaryRange(data)
     history.goBack()
   }
 
@@ -38,12 +38,12 @@ class CreateJobGradePage extends Component<Props> {
     return (
       <div className={classes.root}>
         <Typography component="h1" variant="h5">
-          New JobGrade
+          New SalaryRange
       </Typography>
-        <FormPage create={true} updateData='' onSubmit={(e, data) => this.handleCreateJobGrade(e, data)} />
+        <FormPage create={true} updateData='' onSubmit={(e, data) => this.handleCreateSalaryRange(e, data)} />
       </div>
     );
   }
 }
 
-export default connect(null, mapDispatchToProps)(withStyles(styles)(CreateJobGradePage));
+export default connect(null, mapDispatchToProps)(withStyles(styles)(CreateSalaryRangePage));

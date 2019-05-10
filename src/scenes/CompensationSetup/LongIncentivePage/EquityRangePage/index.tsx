@@ -14,18 +14,18 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { render } from "react-dom";
 import CustomButton from "./component/CustomButton";
-import { RootState } from "../../../reducer";
-import { mapDispatchToProps } from "../../../helper/dispachProps";
+import { RootState } from "../../../../reducer";
+import { mapDispatchToProps } from "../../../../helper/dispachProps";
 import { connect } from "react-redux";
-import { SharedDispatchProps } from "../../../interface/propsInterface";
-import { JobGrade } from "../../../interface/jobgradeInterface";
+import { SharedDispatchProps } from "../../../../interface/propsInterface";
+import { EquityRange } from "../../../../interface/equityRangeInterface";
 import { Button, IconButton, FormControl, InputLabel, Select, MenuItem, Grid, FormControlLabel, Checkbox } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
-import { history } from "../../../store";
+import { history } from "../../../../store";
 import UpdateIcon from '@material-ui/icons/PlaylistAddCheck';
 import ResetIcon from '@material-ui/icons/BorderColor';
-import { Company } from "../../../interface/companyInterface";
-import { Country } from "../../../interface/countryInterface";
+import { Company } from "../../../../interface/companyInterface";
+import { Country } from "../../../../interface/countryInterface";
 import CustomizedTable from './component/table'
 
 
@@ -59,16 +59,17 @@ interface State {
 interface InState {
   countryList: Country[],
   selectedCompany: Company,
+  equityrangeList: EquityRange[],
 }
-class JobGradePage extends React.Component<Props, State> {
+class EquityRangePage extends React.Component<Props, State> {
 
   state = {
     country: '',
-    global: false,
+    global: true,
   }
 
   componentDidMount() {
-    console.log('JobGradePage MOunt')
+    console.log('EquityRangePage MOunt')
     if (this.props.selectedCompany.company_id === '') {
       let data = {
         type: 'warning',
@@ -77,12 +78,12 @@ class JobGradePage extends React.Component<Props, State> {
       }
       this.props.showDialog(data)
     }
-    else this.props.getJobGradeList()
+    else this.props.getEquityRangeList()
   }
 
-  handleUpdateButtonClick = (jobgrade) => {
-    this.props.selectJobGrade(jobgrade)
-    history.push('/jobgrade/update')
+  handleUpdateButtonClick = (equityrange) => {
+    this.props.selectEquityRange(equityrange)
+    history.push('/longincentive/equityrange/update')
     console.log('clicked')
   }
 
@@ -90,69 +91,28 @@ class JobGradePage extends React.Component<Props, State> {
 
     const payload = {
       type: 'delete',
-      object: 'jobgrade',
+      object: 'equityrange',
       id: id,
     }
     this.props.showDialog(payload)
   }
 
   handleNewGrade = () => {
-    history.push('/jobgrade/create')
+    history.push('/longincentive/equityrange/create')
   }
 
-  handleChange = () => {
-    this.setState({ global: !this.state.global } as any);
-  };
-
-  handleChangeSelect = (statekay: keyof State) => (event: React.ChangeEvent<HTMLSelectElement>) => {
-    this.setState({ [statekay]: event.target.value } as any);
-  };
-
-
   render() {
-    const { classes } = this.props;
 
     return (
       <main>
         <CustomButton onClick={this.handleNewGrade}>Create New Grade</CustomButton>
-        <Grid container>
-          <Grid item xs={3}>
-            <FormControlLabel style={{ height: '100%', width: '100%' }}
-              control={
-                <Checkbox
-                  checked={this.state.global}
-                  onChange={this.handleChange}
-                  color="primary"
-                />
-              }
-              label="Global"
-            />
-          </Grid>
-          <Grid item xs={3}>
-            <FormControl style={{ width: '100%' }}>
-              <InputLabel htmlFor="country">Country</InputLabel>
-              <Select
-                value={this.state.country}
-                onChange={this.handleChangeSelect('country')}
-                inputProps={{
-                  name: 'country',
-                  id: 'country-simple',
-                }}
-              >
-                {this.props.countryList.map((country) =>
-                  <MenuItem key={country.country_name} value={country.country_name}>{country.country_name}</MenuItem>
-                )}
-              </Select>
-            </FormControl>
-          </Grid>
-        </Grid>
-        <CustomizedTable />
-      </main>
+        <CustomizedTable equityrangeList={this.props.equityrangeList} />
+      </main >
     );
   }
 }
 
-(JobGradePage as React.ComponentClass<Props>).propTypes = {
+(EquityRangePage as React.ComponentClass<Props>).propTypes = {
   classes: PropTypes.object.isRequired
 } as any;
 
@@ -160,7 +120,8 @@ function mapStateToProps(state: RootState) {
   return {
     countryList: state.countryReducer.countryList,
     selectedCompany: state.companyReducer.selectedCompany,
+    equityrangeList: state.equityrangeReducer.equityrangeList,
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(JobGradePage));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(EquityRangePage));

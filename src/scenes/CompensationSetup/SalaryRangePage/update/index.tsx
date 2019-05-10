@@ -25,7 +25,7 @@ import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../../interface/propsInterface";
 import { history } from "../../../../store"
 import { RootState } from "../../../../reducer";
-import { JobGrade } from "../../../../interface/jobgradeInterface";
+import { SalaryRange } from "../../../../interface/salaryrangeInterface";
 import { Country } from "../../../../interface/countryInterface";
 import FormPage from "../component/form"
 
@@ -78,23 +78,23 @@ const styles = (theme: Theme) =>
 
 export interface Props extends InState, WithStyles<typeof styles>, SharedDispatchProps { }
 interface InState {
-  jobgrade: JobGrade,
+  salaryrange: SalaryRange,
   countryList: Country[],
 }
 
-class UpdateJobGradePage extends Component<Props> {
+class UpdateSalaryRangePage extends Component<Props> {
 
 
   constructor(props) {
     super(props)
-    this.handleUpdateJobGrade = this.handleUpdateJobGrade.bind(this)
+    this.handleUpdateSalaryRange = this.handleUpdateSalaryRange.bind(this)
   }
 
 
 
-  handleUpdateJobGrade = (e, data) => {
+  handleUpdateSalaryRange = (e, data) => {
     e.preventDefault()
-    this.props.updateJobGrade(data)
+    this.props.updateSalaryRange(data)
     history.goBack()
   }
 
@@ -103,23 +103,23 @@ class UpdateJobGradePage extends Component<Props> {
     return (
       <div className={classes.root}>
         <Typography component="h1" variant="h5">
-          Update JobGrade
+          Update SalaryRange
       </Typography>
-        <FormPage create={false} updateData={this.props.jobgrade} onSubmit={(e, data) => this.handleUpdateJobGrade(e, data)} />
+        <FormPage create={false} updateData={this.props.salaryrange} onSubmit={(e, data) => this.handleUpdateSalaryRange(e, data)} />
       </div>
     );
   }
 }
 
-(UpdateJobGradePage as React.ComponentClass<Props>).propTypes = {
+(UpdateSalaryRangePage as React.ComponentClass<Props>).propTypes = {
   classes: PropTypes.object.isRequired
 } as any;
 
 function mapStateToProps(state: RootState) {
   return {
-    jobgrade: state.jobgradeReducer.selectJobGrade,
+    salaryrange: state.salaryRangeReducer.selectSalaryRange,
     countryList: state.countryReducer.countryList,
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(UpdateJobGradePage));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(UpdateSalaryRangePage));

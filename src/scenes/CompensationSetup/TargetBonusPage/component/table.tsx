@@ -12,15 +12,15 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import { Button, IconButton, FormControl, InputLabel, Select, MenuItem, Grid, FormControlLabel, Checkbox } from "@material-ui/core";
+import { Button, IconButton, FormControl, InputLabel, Select, MenuItem, Grid, FormControlLabel, Checkbox, Menu } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 import { history } from "../../../../store";
 import UpdateIcon from '@material-ui/icons/PlaylistAddCheck';
-import ResetIcon from '@material-ui/icons/BorderColor';
+import ListIcon from '@material-ui/icons/List';
 import { SharedDispatchProps } from "../../../../interface/propsInterface";
 import { Country } from "../../../../interface/countryInterface";
 import { Company } from "../../../../interface/companyInterface";
-import { JobGrade } from "../../../../interface/jobgradeInterface";
+import { TargetBonus } from "../../../../interface/targetbonusInterface";
 import { RootState } from "../../../../reducer";
 import { mapDispatchToProps } from "../../../../helper/dispachProps";
 import { connect } from "react-redux";
@@ -63,17 +63,18 @@ interface State {
 
 interface InState {
     selectedCompany: Company,
-    jobgradeList: JobGrade[],
+    targetbonusList: TargetBonus[],
 }
 class CustomizedTable extends React.Component<Props, State> {
 
     state = {
         country: '',
         global: false,
+        anchorEl: null,
     }
 
     componentDidMount() {
-        console.log('JobGradePage MOunt')
+        console.log('TargetBonusPage MOunt')
         if (this.props.selectedCompany.company_id === '') {
             let data = {
                 type: 'warning',
@@ -82,12 +83,12 @@ class CustomizedTable extends React.Component<Props, State> {
             }
             this.props.showDialog(data)
         }
-        else this.props.getJobGradeList()
+        else this.props.getTargetBonusList()
     }
 
-    handleUpdateButtonClick = (jobgrade) => {
-        this.props.selectJobGrade(jobgrade)
-        history.push('/jobgrade/update')
+    handleUpdateButtonClick = (targetbonus) => {
+        this.props.selectTargetBonus(targetbonus)
+        history.push('/targetbonus/update')
         console.log('clicked')
     }
 
@@ -95,12 +96,24 @@ class CustomizedTable extends React.Component<Props, State> {
 
         const payload = {
             type: 'delete',
-            object: 'jobgrade',
+            object: 'targetbonus',
             id: id,
         }
         this.props.showDialog(payload)
     }
 
+    handleListButtonClick = (event, row) => {
+        this.setState({ anchorEl: event.currentTarget });
+        this.props.selectTargetBonus(row)
+    }
+
+    handleClose = () => {
+        this.setState({ anchorEl: null });
+    };
+
+    handleRedirect = (path) => {
+        history.push('/targetbonus/' + path)
+    }
 
 
     render() {
@@ -111,19 +124,21 @@ class CustomizedTable extends React.Component<Props, State> {
                 <Table className={classes.table}>
                     <TableHead>
                         <TableRow>
+                            {/* <CustomTableCell align="left">JobGrade Name</CustomTableCell> */}
+                            {/* <CustomTableCell align="left">Country</CustomTableCell> */}
                             <CustomTableCell align="left">Grade</CustomTableCell>
                             <CustomTableCell align="left">Type</CustomTableCell>
                             <CustomTableCell align="left">Action</CustomTableCell>
                         </TableRow>
                     </TableHead>
-                    {this.props.jobgradeList.length > 0 && <TableBody>
-                        {this.props.jobgradeList.map((row, index) => (
-                            <TableRow className={classes.row} key={row.jobgrade_id}>
-                                <CustomTableCell component="th" scope="row">{row.jobgrade_name}</CustomTableCell>
-                                <CustomTableCell align="left">{row.type}</CustomTableCell>
+                    {this.props.targetbonusList.length > 0 && <TableBody>
+                        {this.props.targetbonusList.map((row, index) => (
+                            <TableRow className={classes.row} key={row.target_bonus_id}>
+                                <CustomTableCell component="th" scope="row">{row.target_bonus_id}</CustomTableCell>
+                                <CustomTableCell align="left">{row.max}</CustomTableCell>
                                 <CustomTableCell align="left">
                                     <IconButton onClick={() => this.handleUpdateButtonClick(row)}><UpdateIcon /></IconButton>
-                                    <IconButton onClick={() => this.handleDelete(row.jobgrade_id, index)}><DeleteIcon /></IconButton>
+                                    <IconButton onClick={() => this.handleDelete(row.target_bonus_id, index)}><DeleteIcon /></IconButton>
                                 </CustomTableCell>
                             </TableRow>
                         ))}
@@ -141,7 +156,6 @@ class CustomizedTable extends React.Component<Props, State> {
 function mapStateToProps(state: RootState) {
     return {
         selectedCompany: state.companyReducer.selectedCompany,
-        jobgradeList: state.jobgradeReducer.jobgradeList,
     }
 }
 

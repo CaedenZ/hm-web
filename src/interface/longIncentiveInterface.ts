@@ -1,31 +1,42 @@
-export interface JobGrade {
-    jobgrade_id: string,
-    jobgrade_name: string,
+export interface LongIncentive {
+    longterm_incentive_id: string,
+    value: string,
     type: string,
     global: number,
     country: string,
-    salary_range: string,
-    allowance: string,
-    target_bonus: string,
+    investing_type: string,
+    investing_breakdown: string,
+    share_symbol: string,
+    share_exchange: string,
+    currency: string,
+    isOptional: string,
 }
 
 
-export interface JobGradeState {
-    jobgradeList: JobGrade[],
-    selectJobGrade: JobGrade,
+export interface LongIncentiveState {
+    longincentiveList: LongIncentive[],
+    selectLongIncentive: LongIncentive,
 }
 
-export interface CREATEJOBGRADECRED {
-    jobgrade_name: string,
+export interface CREATELONGINCENTIVECRED {
+    value: string,
     type: string,
-    global: number,
-    country: string,
+    investing_type: string,
+    investing_breakdown: string,
+    share_symbol: string,
+    share_exchange: string,
+    currency: string,
+    isOptional: string,
 }
 
-export interface UPDATEJOBGRADECRED {
-    jobgrade_id: string,
-    jobgrade_name: string,
+export interface UPDATELONGINCENTIVECRED {
+    longincentive_id: string,
+    value: string,
     type: string,
-    global: number,
-    country: string,
+    investing_type: string,
+    investing_breakdown: string,
+    share_symbol: string,
+    share_exchange: string,
+    currency: string,
+    isOptional: string,
 }

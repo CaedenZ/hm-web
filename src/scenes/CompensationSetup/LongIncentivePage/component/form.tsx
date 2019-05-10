@@ -27,6 +27,8 @@ import { history } from "../../../../store"
 import { RootState } from "../../../../reducer";
 import { Country } from "../../../../interface/countryInterface";
 import { User } from "../../../../interface/userInterface";
+import { JobGrade } from "../../../../interface/jobgradeInterface";
+import { Company } from "../../../../interface/companyInterface";
 
 const styles = (theme: Theme) =>
     createStyles({
@@ -76,16 +78,23 @@ const styles = (theme: Theme) =>
     });
 
 interface FormState {
-    jobgrade_name: string;
     type: string;
-    global: boolean;
-    jobgrade_id: string;
-    country: string;
+    value: string;
+    isBonus: boolean;
+    isOptional: boolean;
+    year: string;
+    investing_type: string,
+    investing_breakdown: string,
+    share_symbol: string,
+    share_exchange: string,
+    currency: string,
 }
 interface Props extends InState, WithStyles<typeof styles>, SharedDispatchProps { }
 
 interface InState {
     countryList: Country[],
+    jobgradeList: JobGrade[],
+    selectedCompany: Company,
     create: boolean,
     updateData: any,
     onSubmit: any,
@@ -100,11 +109,16 @@ class FormPage extends Component<Props, FormState> {
 
 
     state: FormState = {
-        jobgrade_name: '',
+        year: '',
         type: '',
-        global: false,
-        jobgrade_id: '',
-        country: '',
+        value: '',
+        isBonus: false,
+        isOptional: false,
+        investing_type: '',
+        investing_breakdown: '',
+        share_symbol: '',
+        share_exchange: '',
+        currency: '',
     }
     componentDidMount() {
         if (!this.props.create) {
@@ -122,8 +136,12 @@ class FormPage extends Component<Props, FormState> {
         this.setState({ [statekay]: event.target.value } as unknown as Pick<FormState, keyof FormState>);
     };
 
-    handleChangeCheck = () => {
-        this.setState({ global: !this.state.global } as any);
+    handleChangeCheckisBonus = () => {
+        this.setState({ isBonus: !this.state.isBonus } as any);
+    };
+
+    handleChangeCheckisOptional = () => {
+        this.setState({ isOptional: !this.state.isOptional } as any);
     };
 
     render() {
@@ -135,11 +153,11 @@ class FormPage extends Component<Props, FormState> {
                     <Grid justify="center" container>
                         <Grid justify={"center"} container item>
                             <TextField
-                                id="jobgrade_name"
-                                label="jobgrade_name"
+                                id="year"
+                                label="year"
                                 className={classes.textField}
-                                value={this.state.jobgrade_name}
-                                onChange={this.handleChange('jobgrade_name')}
+                                value={this.state.year}
+                                onChange={this.handleChange('year')}
                                 margin="normal"
                             />
                         </Grid>
@@ -154,32 +172,75 @@ class FormPage extends Component<Props, FormState> {
                             />
                         </Grid>
                         <Grid justify={"center"} container item>
-                            {this.props.countryList.length > 0 && <FormControl>
-                                <InputLabel required>Country</InputLabel>
-                                <Select
-                                    id="country"
-                                    className={classes.textField}
-                                    value={this.state.country}
-                                    onChange={this.handleChangeSelect('country')}
-                                    inputProps={{
-                                        name: 'country',
-                                        id: 'country-simple',
-                                    }}>
-                                    {this.props.countryList.map((country) =>
-                                        <MenuItem key={country.country_name} value={country.country_name}>{country.country_name}</MenuItem>
-                                    )}
-                                </Select></FormControl>}
+                            <TextField
+                                id="value"
+                                label="value"
+                                className={classes.textField}
+                                value={this.state.value}
+                                onChange={this.handleChange('value')}
+                                margin="normal"
+                            />
+                        </Grid>
+                        <Grid justify={"center"} container item>
+                            <TextField
+                                id="investing_type"
+                                label="investing_type"
+                                className={classes.textField}
+                                value={this.state.investing_type}
+                                onChange={this.handleChange('investing_type')}
+                                margin="normal"
+                            />
+                        </Grid>
+                        <Grid justify={"center"} container item>
+                            <TextField
+                                id="investing_breakdown"
+                                label="investing_breakdown"
+                                className={classes.textField}
+                                value={this.state.investing_breakdown}
+                                onChange={this.handleChange('investing_breakdown')}
+                                margin="normal"
+                            />
+                        </Grid>
+                        <Grid justify={"center"} container item>
+                            <TextField
+                                id="share_symbol"
+                                label="share_symbol"
+                                className={classes.textField}
+                                value={this.state.share_symbol}
+                                onChange={this.handleChange('share_symbol')}
+                                margin="normal"
+                            />
+                        </Grid>
+                        <Grid justify={"center"} container item>
+                            <TextField
+                                id="share_exchange"
+                                label="share_exchange"
+                                className={classes.textField}
+                                value={this.state.share_exchange}
+                                onChange={this.handleChange('share_exchange')}
+                                margin="normal"
+                            />
+                        </Grid>
+                        <Grid justify={"center"} container item>
+                            <TextField
+                                id="currency"
+                                label="currency"
+                                className={classes.textField}
+                                value={this.state.currency}
+                                onChange={this.handleChange('currency')}
+                                margin="normal"
+                            />
                         </Grid>
                         <Grid justify={"center"} container item>
                             <FormControlLabel
                                 control={
                                     <Checkbox
-                                        checked={this.state.global}
-                                        onChange={this.handleChangeCheck}
+                                        checked={this.state.isOptional}
+                                        onChange={this.handleChangeCheckisOptional}
                                         color="primary"
                                     />
                                 }
-                                label="Global"
+                                label="isOptional"
                             />
                         </Grid>
                     </Grid>
@@ -202,7 +263,9 @@ class FormPage extends Component<Props, FormState> {
 
 function mapStateToProps(state: RootState) {
     return {
+        selectedCompany: state.companyReducer.selectedCompany,
         countryList: state.countryReducer.countryList,
+        jobgradeList: state.jobgradeReducer.jobgradeList,
     }
 }
 

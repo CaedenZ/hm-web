@@ -25,7 +25,7 @@ import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../../interface/propsInterface";
 import { history } from "../../../../store"
 import { RootState } from "../../../../reducer";
-import { JobGrade } from "../../../../interface/jobgradeInterface";
+import { Signons } from "../../../../interface/signonsInterface";
 import { Country } from "../../../../interface/countryInterface";
 import FormPage from "../component/form"
 
@@ -78,23 +78,23 @@ const styles = (theme: Theme) =>
 
 export interface Props extends InState, WithStyles<typeof styles>, SharedDispatchProps { }
 interface InState {
-  jobgrade: JobGrade,
+  signons: Signons,
   countryList: Country[],
 }
 
-class UpdateJobGradePage extends Component<Props> {
+class UpdateSignonsPage extends Component<Props> {
 
 
   constructor(props) {
     super(props)
-    this.handleUpdateJobGrade = this.handleUpdateJobGrade.bind(this)
+    this.handleUpdateSignons = this.handleUpdateSignons.bind(this)
   }
 
 
 
-  handleUpdateJobGrade = (e, data) => {
+  handleUpdateSignons = (e, data) => {
     e.preventDefault()
-    this.props.updateJobGrade(data)
+    this.props.updateSignons(data)
     history.goBack()
   }
 
@@ -103,23 +103,23 @@ class UpdateJobGradePage extends Component<Props> {
     return (
       <div className={classes.root}>
         <Typography component="h1" variant="h5">
-          Update JobGrade
+          Update Signons
       </Typography>
-        <FormPage create={false} updateData={this.props.jobgrade} onSubmit={(e, data) => this.handleUpdateJobGrade(e, data)} />
+        <FormPage create={false} updateData={this.props.signons} onSubmit={(e, data) => this.handleUpdateSignons(e, data)} />
       </div>
     );
   }
 }
 
-(UpdateJobGradePage as React.ComponentClass<Props>).propTypes = {
+(UpdateSignonsPage as React.ComponentClass<Props>).propTypes = {
   classes: PropTypes.object.isRequired
 } as any;
 
 function mapStateToProps(state: RootState) {
   return {
-    jobgrade: state.jobgradeReducer.selectJobGrade,
+    signons: state.signonsReducer.selectSignons,
     countryList: state.countryReducer.countryList,
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(UpdateJobGradePage));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(UpdateSignonsPage));

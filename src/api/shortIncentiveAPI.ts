@@ -1,18 +1,18 @@
 import $axios from "../plugin/axios";
-import { JobGrade, CREATEJOBGRADECRED, UPDATEJOBGRADECRED } from "../interface/jobgradeInterface";
+import { ShortIncentive, CREATESHORTINCENTIVECRED, UPDATESHORTINCENTIVECRED } from "../interface/shortincentiveInterface";
 
-export const getJobGradeList = async (token, payload): Promise<JobGrade[]> => {
+export const getShortIncentiveList = async (token, payload): Promise<ShortIncentive[]> => {
 
     let data = {
         company_id: payload,
         session_key: token,
     }
-    const response = await $axios.post('/company/getJobGrade', data)
+    const response = await $axios.post('/company/getShortIncentive', data)
     console.log(response.data.data)
     return response.data.data
 }
 
-export const createJobGrade = async (token, payload: CREATEJOBGRADECRED, companyid): Promise<JobGrade[]> => {
+export const createShortIncentive = async (token, payload: CREATESHORTINCENTIVECRED, companyid): Promise<ShortIncentive[]> => {
 
     let data = {
         ...payload,
@@ -20,33 +20,33 @@ export const createJobGrade = async (token, payload: CREATEJOBGRADECRED, company
         session_key: token,
     }
 
-    const response = await $axios.post('/company/createJobGrade', data)
+    const response = await $axios.post('/company/createShortIncentive', data)
 
     console.log(response.data.data)
     return response.data.data
 }
 
-export const updateJobGrade = async (token, payload: UPDATEJOBGRADECRED): Promise<JobGrade[]> => {
+export const updateShortIncentive = async (token, payload: UPDATESHORTINCENTIVECRED): Promise<ShortIncentive[]> => {
 
     let data = {
         ...payload,
         session_key: token,
     }
 
-    const response = await $axios.post('/company/updateJobGrade', data)
+    const response = await $axios.post('/company/updateShortIncentive', data)
 
     console.log(response.data.data)
     return response.data.data
 }
 
-export const deleteJobGrade = async (token, payload: string) => {
+export const deleteShortIncentive = async (token, payload: string) => {
 
     let data = {
-        jobgrade_id: payload,
+        shortincentive_id: payload,
         session_key: token,
     }
 
-    const response = await $axios.post('/company/deleteJobGrade', data)
+    const response = await $axios.post('/company/deleteShortIncentive', data)
     console.log(response.data.data)
     return response.data.data
 }

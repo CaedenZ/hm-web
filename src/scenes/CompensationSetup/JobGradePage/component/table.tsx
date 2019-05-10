@@ -135,20 +135,8 @@ class CustomizedTable extends React.Component<Props, State> {
                                 <CustomTableCell component="th" scope="row">{row.jobgrade_name}</CustomTableCell>
                                 <CustomTableCell align="left">{row.type}</CustomTableCell>
                                 <CustomTableCell align="left">
-                                    <IconButton onClick={(e) => this.handleListButtonClick(e, row)}><ListIcon /></IconButton>
                                     <IconButton onClick={() => this.handleUpdateButtonClick(row)}><UpdateIcon /></IconButton>
                                     <IconButton onClick={() => this.handleDelete(row.jobgrade_id, index)}><DeleteIcon /></IconButton>
-                                    <Menu
-                                        id="simple-menu"
-                                        anchorEl={this.state.anchorEl}
-                                        open={Boolean(this.state.anchorEl)}
-                                        onClose={this.handleClose}
-                                    >
-                                        <MenuItem onClick={() => this.handleRedirect('allowances')}>Allowances</MenuItem>
-                                        <MenuItem onClick={() => this.handleRedirect('equityrange')}>EquityRange</MenuItem>
-                                        <MenuItem onClick={() => this.handleRedirect('salaryrange')}>SalaryRange</MenuItem>
-                                        <MenuItem onClick={() => this.handleRedirect('targetbonus')}>TargetBonus</MenuItem>
-                                    </Menu>
                                 </CustomTableCell>
                             </TableRow>
                         ))}

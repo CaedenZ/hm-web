@@ -1,30 +1,31 @@
-export interface JobGrade {
+export interface ShortIncentive {
+    shortterm_incentive_id: string,
     jobgrade_id: string,
     jobgrade_name: string,
     type: string,
     global: number,
     country: string,
-    salary_range: string,
-    allowance: string,
-    target_bonus: string,
+    value: string,
+    isOptional: number,
+    value_type: number,
 }
 
 
-export interface JobGradeState {
-    jobgradeList: JobGrade[],
-    selectJobGrade: JobGrade,
+export interface ShortIncentiveState {
+    shortincentiveList: ShortIncentive[],
+    selectShortIncentive: ShortIncentive,
 }
 
-export interface CREATEJOBGRADECRED {
-    jobgrade_name: string,
+export interface CREATESHORTINCENTIVECRED {
+    shortincentive_name: string,
     type: string,
     global: number,
     country: string,
 }
 
-export interface UPDATEJOBGRADECRED {
-    jobgrade_id: string,
-    jobgrade_name: string,
+export interface UPDATESHORTINCENTIVECRED {
+    shortincentive_id: string,
+    shortincentive_name: string,
     type: string,
     global: number,
     country: string,
