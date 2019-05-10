@@ -42,14 +42,6 @@ const styles = (theme: any) => ({
     justifyContent: "center",
     padding: `${theme.spacing.unit * 3}px`
   }
-  // avatar: {
-  //   margin: theme.spacing.unit,
-  //   backgroundColor: theme.palette.secondary.main
-  // },
-  // form: {
-  //   width: "100%", // Fix IE 11 issue.
-  //   marginTop: theme.spacing.unit
-  // }
 });
 
 export interface Props
@@ -87,13 +79,11 @@ class SignIn extends Component<Props, State> {
 
   handleChange(event) {
     this.dynSetState(event.target.id, event.target.value);
-    // console.dir(event.target)
   }
 
   handleLogin = event => {
     event.preventDefault();
     this.props.login(this.state);
-    // console.log('s')
   };
 
   render() {
