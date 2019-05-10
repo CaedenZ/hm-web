@@ -31,7 +31,6 @@ const drawerWidth = "15vw";
 
 const styles = (theme: Theme) =>
   createStyles({
-    root: {},
     appBar: {
       width: `calc(100% - ${drawerWidth})`,
       marginLeft: drawerWidth,
@@ -40,16 +39,6 @@ const styles = (theme: Theme) =>
     },
     grow: {
       flexGrow: 1
-    },
-    menuButton: {
-      marginLeft: -12,
-      marginRight: 20
-    },
-    title: {
-      display: "none",
-      [theme.breakpoints.up("sm")]: {
-        display: "block"
-      }
     },
     search: {
       position: "relative",
@@ -191,7 +180,7 @@ class PrimarySearchAppBar extends React.Component<Props, State> {
     );
 
     return (
-      <div className={classes.root}>
+      <div>
         <AppBar position="fixed" className={classes.appBar}>
           <Toolbar style={{ padding: 0 }}>
             <CompanySelect />
