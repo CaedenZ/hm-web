@@ -22,7 +22,11 @@ import { mapDispatchToProps } from "../../../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../../interface/propsInterface";
 import { RootState } from "../../../../reducer";
-import { Unit, Company, UPDATEUNITCRED } from "../../../../interface/companyInterface";
+import {
+  Unit,
+  Company,
+  UPDATEUNITCRED
+} from "../../../../interface/companyInterface";
 import { history } from "../../../../store";
 import { Country } from "../../../../interface/countryInterface";
 import { Region } from "../../../../interface/regionInterface";
@@ -32,32 +36,32 @@ const styles = (theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1
-    },
+    }
   });
 
-export interface Props extends WithStyles<typeof styles>, SharedDispatchProps, InState { }
+export interface Props
+  extends WithStyles<typeof styles>,
+    SharedDispatchProps,
+    InState {}
 
 interface InState {
   parentCompany: Company;
   selectedUnit: Unit;
   countryList: Country[];
-  regionList: Region[]
+  regionList: Region[];
 }
 
 class UpdateUnitPage extends Component<Props> {
-
-
   constructor(props) {
-    super(props)
-    this.handleUpdateUnit = this.handleUpdateUnit.bind(this)
+    super(props);
+    this.handleUpdateUnit = this.handleUpdateUnit.bind(this);
   }
-
 
   handleUpdateUnit = (e, data) => {
-    e.preventDefault()
-    this.props.updateSubUnit(data)
-    history.goBack()
-  }
+    e.preventDefault();
+    this.props.updateSubUnit(data);
+    history.goBack();
+  };
 
   render() {
     const { classes } = this.props;
@@ -66,8 +70,12 @@ class UpdateUnitPage extends Component<Props> {
       <div className={classes.root}>
         <Typography component="h1" variant="h5">
           Update Division
-      </Typography>
-        <FormPage create={false} updateData={this.props.selectedUnit} onSubmit={(e, data) => this.handleUpdateUnit(e, data)} />
+        </Typography>
+        <FormPage
+          create={false}
+          updateData={this.props.selectedUnit}
+          onSubmit={(e, data) => this.handleUpdateUnit(e, data)}
+        />
       </div>
     );
   }
@@ -82,8 +90,11 @@ function mapStateToProps(state: RootState) {
     parentCompany: state.companyReducer.selectedCompany,
     selectedUnit: state.companyReducer.selectUpdateUnit,
     regionList: state.regionReducer.regionList,
-    countryList: state.countryReducer.countryList,
-  }
+    countryList: state.countryReducer.countryList
+  };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(UpdateUnitPage));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(UpdateUnitPage));
