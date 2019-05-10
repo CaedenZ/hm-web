@@ -313,7 +313,9 @@ class CreateCompanyPage extends Component<Props, FormState> {
                 <Grid container item xs={6}>
                   {this.props.paremeterList.countryList.length > 0 && (
                     <FormControl>
-                      <InputLabel style={{ marginLeft: "20px" }} required>Country</InputLabel>
+                      <InputLabel style={{ marginLeft: "20px" }} required>
+                        Country
+                      </InputLabel>
                       <Select
                         id="country"
                         multiple
@@ -340,7 +342,9 @@ class CreateCompanyPage extends Component<Props, FormState> {
                 <Grid container item xs={6}>
                   {this.props.paremeterList.distintCurrencyList.length > 0 && (
                     <FormControl>
-                      <InputLabel style={{ marginLeft: "20px" }} required>Base Currency</InputLabel>
+                      <InputLabel style={{ marginLeft: "20px" }} required>
+                        Base Currency
+                      </InputLabel>
                       <Select
                         id="base_currency_id"
                         className={classes.textField}
@@ -367,7 +371,9 @@ class CreateCompanyPage extends Component<Props, FormState> {
                 <Grid container item xs={6}>
                   {this.props.sectorList.length > 0 && (
                     <FormControl>
-                      <InputLabel style={{ marginLeft: "20px" }} required>Sector</InputLabel>
+                      <InputLabel style={{ marginLeft: "20px" }} required>
+                        Sector
+                      </InputLabel>
                       <Select
                         id="sector"
                         className={classes.textField}
@@ -394,7 +400,9 @@ class CreateCompanyPage extends Component<Props, FormState> {
                   <Grid container item xs={6}>
                     {JSON.parse(this.state.sector).industry.length > 0 && (
                       <FormControl>
-                        <InputLabel style={{ marginLeft: "20px" }} required>Industry</InputLabel>
+                        <InputLabel style={{ marginLeft: "20px" }} required>
+                          Industry
+                        </InputLabel>
                         <Select
                           id="industry"
                           className={classes.textField}
