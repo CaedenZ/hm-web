@@ -5,32 +5,29 @@ import {
   Theme,
   createStyles,
   WithStyles,
-  withStyles,
-  TextField,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem
+  withStyles
 } from "@material-ui/core";
 import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../interface/propsInterface";
 import { RootState } from "../../../reducer";
-import { Unit, Company, UPDATEUNITCRED } from "../../../interface/companyInterface";
+import { Unit, Company } from "../../../interface/companyInterface";
 import { history } from "../../../store";
 import { Country } from "../../../interface/countryInterface";
 import { Region } from "../../../interface/regionInterface";
 import FormPage from "../component/form";
 
-const styles = (theme: Theme) =>
+const styles = () =>
   createStyles({
     root: {
       flexGrow: 1
-    },
+    }
   });
 
-
-export interface Props extends WithStyles<typeof styles>, SharedDispatchProps, InState { }
+export interface Props
+  extends WithStyles<typeof styles>,
+    SharedDispatchProps,
+    InState {}
 
 interface InState {
   selectedUnit: Unit;
@@ -40,33 +37,31 @@ interface InState {
 }
 
 class UpdateMainUnitPage extends Component<Props> {
-
-
   constructor(props) {
-    super(props)
-    this.handleUpdateUnit = this.handleUpdateUnit.bind(this)
+    super(props);
+    this.handleUpdateUnit = this.handleUpdateUnit.bind(this);
   }
-
-
-
 
   handleUpdateUnit = (e, data) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    this.props.updateUnit(data)
-    history.goBack()
-  }
+    this.props.updateUnit(data);
+    history.goBack();
+  };
 
   render() {
     const { classes } = this.props;
-
 
     return (
       <div className={classes.root}>
         <Typography component="h1" variant="h5">
           Update Division
-      </Typography>
-        <FormPage create={false} updateData={this.props.selectedUnit} onSubmit={(e, data) => this.handleUpdateUnit(e, data)} />
+        </Typography>
+        <FormPage
+          create={false}
+          updateData={this.props.selectedUnit}
+          onSubmit={(e, data) => this.handleUpdateUnit(e, data)}
+        />
       </div>
     );
   }
@@ -82,7 +77,10 @@ function mapStateToProps(state: RootState) {
     regionList: state.regionReducer.regionList,
     countryList: state.countryReducer.countryList,
     parentCompany: state.companyReducer.selectedCompany
-  }
+  };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(UpdateMainUnitPage));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(UpdateMainUnitPage));
