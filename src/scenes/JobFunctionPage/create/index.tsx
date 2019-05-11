@@ -85,7 +85,7 @@ class CreateJobFunctionPage extends Component<Props, CreateJobFunctionState> {
               <Grid item justify="center" container xs>
                 <TextField
                   id="job_name"
-                  label="job_name"
+                  label="Job Name"
                   className={classes.textField}
                   value={this.state.job_name}
                   onChange={this.handleChange("job_name")}
@@ -96,7 +96,7 @@ class CreateJobFunctionPage extends Component<Props, CreateJobFunctionState> {
               <Grid item justify="center" container xs>
                 <TextField
                   id="description"
-                  label="description"
+                  label="Description"
                   className={classes.textField}
                   value={this.state.description}
                   onChange={this.handleChange("description")}
