@@ -6,29 +6,25 @@ import {
   withStyles,
   WithStyles
 } from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
-import { render } from "react-dom";
 import CustomButton from "./component/CustomButton";
 import { RootState } from "../../../reducer";
 import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../interface/propsInterface";
 import { TargetBonus } from "../../../interface/targetBonusInterface";
-import { Button, IconButton, FormControl, InputLabel, Select, MenuItem, Grid, FormControlLabel, Checkbox } from "@material-ui/core";
-import DeleteIcon from '@material-ui/icons/Delete';
+import {
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Grid,
+  FormControlLabel,
+  Checkbox
+} from "@material-ui/core";
 import { history } from "../../../store";
-import UpdateIcon from '@material-ui/icons/PlaylistAddCheck';
-import ResetIcon from '@material-ui/icons/BorderColor';
-import ResetPassword from './component/resetPassword';
 import { Company } from "../../../interface/companyInterface";
 import { Country } from "../../../interface/countryInterface";
-import CustomizedTable from './component/table'
-
+import CustomizedTable from "./component/table";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -47,95 +43,98 @@ const styles = (theme: Theme) =>
     },
     logo: {
       height: "20px"
-    },
+    }
   });
 
-export interface Props extends WithStyles<typeof styles>, SharedDispatchProps, InState { }
+export interface Props
+  extends WithStyles<typeof styles>,
+    SharedDispatchProps,
+    InState {}
 
 interface State {
-  country: string,
-  global: boolean,
+  country: string;
+  global: boolean;
 }
 
 interface InState {
-  countryList: Country[],
-  selectedCompany: Company,
-  targetbonusList: TargetBonus[],
+  countryList: Country[];
+  selectedCompany: Company;
+  targetbonusList: TargetBonus[];
 }
 class TargetBonusPage extends React.Component<Props, State> {
-
   state = {
-    country: '',
-    global: true,
-  }
+    country: "",
+    global: true
+  };
 
   componentDidMount() {
-    console.log('TargetBonusPage MOunt')
-    if (this.props.selectedCompany.company_id === '') {
+    console.log("TargetBonusPage MOunt");
+    if (this.props.selectedCompany.company_id === "") {
       let data = {
-        type: 'warning',
-        object: 'Please Select a Company first',
-        id: '1'
-      }
-      this.props.showDialog(data)
-    }
-    else this.props.getTargetBonusList()
+        type: "warning",
+        object: "Please Select a Company first",
+        id: "1"
+      };
+      this.props.showDialog(data);
+    } else this.props.getTargetBonusList();
   }
 
-  handleUpdateButtonClick = (targetbonus) => {
-    this.props.selectTargetBonus(targetbonus)
-    history.push('/targetbonus/update')
-    console.log('clicked')
-  }
+  handleUpdateButtonClick = targetbonus => {
+    this.props.selectTargetBonus(targetbonus);
+    history.push("/targetbonus/update");
+    console.log("clicked");
+  };
 
-  handleDelete = (id, index) => {
-
+  handleDelete = id => {
     const payload = {
-      type: 'delete',
-      object: 'targetbonus',
-      id: id,
-    }
-    this.props.showDialog(payload)
-  }
+      type: "delete",
+      object: "targetbonus",
+      id: id
+    };
+    this.props.showDialog(payload);
+  };
 
   handleNewGrade = () => {
-    history.push('/targetbonus/create')
-  }
+    history.push("/targetbonus/create");
+  };
 
   handleChange = () => {
     this.setState({ global: !this.state.global } as any);
-    console.log(this.getdata())
+    console.log(this.getdata());
   };
 
-  handleChangeSelect = (statekay: keyof State) => (event: React.ChangeEvent<HTMLSelectElement>) => {
+  handleChangeSelect = (statekay: keyof State) => (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     this.setState({ [statekay]: event.target.value } as any);
   };
 
   getdata = () => {
     if (this.state.global) {
       return this.props.targetbonusList.filter(e => {
-        return e.global === 1
-      })
-    }
-    else if (this.state.country !== '') {
+        return e.global === 1;
+      });
+    } else if (this.state.country !== "") {
       return this.props.targetbonusList.filter(e => {
-        return e.country === this.state.country
-      })
+        return e.country === this.state.country;
+      });
+    } else {
+      return [];
     }
-    else {
-      return []
-    }
-  }
+  };
 
   render() {
-    let data = this.getdata()
+    let data = this.getdata();
 
     return (
       <main>
-        <CustomButton onClick={this.handleNewGrade}>Create New Grade</CustomButton>
+        <CustomButton onClick={this.handleNewGrade}>
+          Create New Grade
+        </CustomButton>
         <Grid container>
           <Grid item xs={3}>
-            <FormControlLabel style={{ height: '100%', width: '100%' }}
+            <FormControlLabel
+              style={{ height: "100%", width: "100%" }}
               control={
                 <Checkbox
                   checked={this.state.global}
@@ -147,25 +146,30 @@ class TargetBonusPage extends React.Component<Props, State> {
             />
           </Grid>
           <Grid item xs={3}>
-            <FormControl style={{ width: '100%' }} disabled={this.state.global}>
+            <FormControl style={{ width: "100%" }} disabled={this.state.global}>
               <InputLabel htmlFor="country">Country</InputLabel>
               <Select
                 value={this.state.country}
-                onChange={this.handleChangeSelect('country')}
+                onChange={this.handleChangeSelect("country")}
                 inputProps={{
-                  name: 'country',
-                  id: 'country-simple',
+                  name: "country",
+                  id: "country-simple"
                 }}
               >
-                {this.props.selectedCompany.country.map((country) =>
-                  <MenuItem key={JSON.parse(country).country_name} value={JSON.parse(country).country_name}>{JSON.parse(country).country_name}</MenuItem>
-                )}
+                {this.props.selectedCompany.country.map(country => (
+                  <MenuItem
+                    key={JSON.parse(country).country_name}
+                    value={JSON.parse(country).country_name}
+                  >
+                    {JSON.parse(country).country_name}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </Grid>
         </Grid>
         <CustomizedTable targetbonusList={data} />
-      </main >
+      </main>
     );
   }
 }
@@ -178,8 +182,11 @@ function mapStateToProps(state: RootState) {
   return {
     countryList: state.countryReducer.countryList,
     selectedCompany: state.companyReducer.selectedCompany,
-    targetbonusList: state.targetBonusReducer.targetbonusList,
-  }
+    targetbonusList: state.targetBonusReducer.targetbonusList
+  };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(TargetBonusPage));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(TargetBonusPage));
