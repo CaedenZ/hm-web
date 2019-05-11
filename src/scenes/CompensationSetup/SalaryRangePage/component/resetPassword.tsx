@@ -1,25 +1,18 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
-import { connect } from 'react-redux';
-import { SharedDispatchProps } from '../../../../interface/propsInterface';
-import { mapDispatchToProps } from '../../../../helper/dispachProps';
-import { Dialog, DialogTitle, DialogContent, DialogContentText, TextField, DialogActions } from '@material-ui/core';
+import React, { Component } from "react";
+import Button from "@material-ui/core/Button";
+import { connect } from "react-redux";
+import { SharedDispatchProps } from "../../../../interface/propsInterface";
+import { mapDispatchToProps } from "../../../../helper/dispachProps";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  TextField,
+  DialogActions
+} from "@material-ui/core";
 
-
-
-export interface Props extends SharedDispatchProps, InState { }
+export interface Props extends SharedDispatchProps, InState {}
 
 interface InState {
   open: boolean;
@@ -29,14 +22,12 @@ export interface State {
   password: string;
 }
 
-
 class ResetPassword extends Component<Props, State> {
-
   constructor(props) {
     super(props);
     this.state = {
-      password: '',
-    }
+      password: ""
+    };
 
     this.handleReset = this.handleReset.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -46,7 +37,7 @@ class ResetPassword extends Component<Props, State> {
   dynSetState(key: keyof State, value: string) {
     this.setState({
       [key]: value
-    } as Pick<State, keyof State>)
+    } as Pick<State, keyof State>);
   }
 
   handleChange(event) {
@@ -54,12 +45,12 @@ class ResetPassword extends Component<Props, State> {
     // console.dir(event.target)
   }
 
-  handleReset = (event) => {
+  handleReset = event => {
     event.preventDefault();
-    this.props.updatePassword(this.state.password)
-    console.log(this.state)
-    this.props.handleClose()
-  }
+    this.props.updatePassword(this.state.password);
+    console.log(this.state);
+    this.props.handleClose();
+  };
   render() {
     return (
       <Dialog
@@ -69,9 +60,7 @@ class ResetPassword extends Component<Props, State> {
       >
         <DialogTitle id="form-dialog-title">ResetPassword</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            New Password
-            </DialogContentText>
+          <DialogContentText>New Password</DialogContentText>
           <TextField
             autoFocus
             id="password"
@@ -85,10 +74,10 @@ class ResetPassword extends Component<Props, State> {
         <DialogActions>
           <Button onClick={this.props.handleClose} color="primary">
             Cancel
-            </Button>
+          </Button>
           <Button onClick={this.handleReset} color="primary">
             Confirm
-            </Button>
+          </Button>
         </DialogActions>
       </Dialog>
       // <main className={classes.main}>
@@ -122,5 +111,7 @@ class ResetPassword extends Component<Props, State> {
   }
 }
 
-
-export default connect(null, mapDispatchToProps)(ResetPassword);
+export default connect(
+  null,
+  mapDispatchToProps
+)(ResetPassword);
