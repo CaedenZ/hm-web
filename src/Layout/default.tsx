@@ -55,12 +55,6 @@ class Layout extends Component<Props> {
       );
     };
 
-    // const Home = props => (
-    //   <RouterLink to="/" style={{ display: "inline-block" }}>
-    //     <p>Home</p>
-    //   </RouterLink>
-    // );
-
     if (this.props.token === "") {
       return <Redirect to="/login" />;
     } else {

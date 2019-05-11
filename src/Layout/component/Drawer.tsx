@@ -359,7 +359,7 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
             <ListItemText primary="Company Setup" />
           </ListItem>
           <Collapse in={this.state.expended1} timeout="auto" unmountOnExit>
-            <List className={classes.navlist}>
+            <List disablePadding className={classes.navlist}>
               {companyfunction().map(item => (
                 <Link
                   key={item.title}
