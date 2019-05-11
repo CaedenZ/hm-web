@@ -24,6 +24,8 @@ import { history } from "../../store";
 import { mapDispatchToProps } from "../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../interface/propsInterface";
+import { Profile } from "../../interface/authInterface";
+import { Avatar, Typography } from "@material-ui/core";
 
 const drawerWidth = "15vw";
 
@@ -88,20 +90,38 @@ const styles = (theme: Theme) =>
       [theme.breakpoints.up("md")]: {
         display: "none"
       }
+    },
+    avatar: {
+      margin: 10
     }
   });
 
-export interface Props extends SharedDispatchProps, WithStyles<typeof styles> {}
+export interface Props
+  extends SharedDispatchProps,
+    InState,
+    WithStyles<typeof styles> {}
 
 interface State {
   anchorEl: null | HTMLElement;
   mobileMoreAnchorEl: null | HTMLElement;
+  email: string;
+  image: string;
+}
+
+interface InState {
+  profile: Profile;
 }
 
 class PrimarySearchAppBar extends React.Component<Props, State> {
+  constructor(props) {
+    super(props);
+  }
+
   state: State = {
     anchorEl: null,
-    mobileMoreAnchorEl: null
+    mobileMoreAnchorEl: null,
+    email: "",
+    image: ""
   };
 
   handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -196,23 +216,20 @@ class PrimarySearchAppBar extends React.Component<Props, State> {
             </div>
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
-              {/* <IconButton color="inherit">
-                <Badge badgeContent={4} color="secondary">
-                  <MailIcon />
-                </Badge>
-              </IconButton>
-              <IconButton color="inherit">
-                <Badge badgeContent={17} color="secondary">
-                  <NotificationsIcon />
-                </Badge>
-              </IconButton> */}
               <IconButton
                 aria-owns={isMenuOpen ? "material-appbar" : undefined}
                 aria-haspopup="true"
                 onClick={this.handleProfileMenuOpen}
                 color="inherit"
               >
-                <AccountCircle />
+                <Avatar
+                  alt="Profile Image"
+                  src={this.props.profile.image}
+                  className={classes.avatar}
+                />
+                <Typography variant="subtitle1" style={{ color: "white" }}>
+                  {this.props.profile.email}
+                </Typography>
               </IconButton>
             </div>
             <div className={classes.sectionMobile}>
@@ -237,7 +254,13 @@ class PrimarySearchAppBar extends React.Component<Props, State> {
   classes: PropTypes.object.isRequired
 } as any;
 
+function mapStateToProps(state) {
+  return {
+    profile: state.authenticationReducer.profile
+  };
+}
+
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(withStyles(styles)(PrimarySearchAppBar));

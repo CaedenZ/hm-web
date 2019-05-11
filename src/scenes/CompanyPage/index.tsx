@@ -71,9 +71,6 @@ class CustomizedTable extends React.Component<Props, State> {
     a: { company_name: string },
     b: { company_name: string }
   ) {
-    console.log(a.company_name);
-    console.log(b.company_name);
-    console.log(a.company_name.localeCompare(b.company_name));
     return a.company_name.localeCompare(b.company_name);
   }
 
