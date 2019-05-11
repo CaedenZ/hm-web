@@ -9,17 +9,11 @@ import {
   Grid,
   Paper,
   TextField,
-  Divider,
-  FormControl,
-  Checkbox,
-  FormControlLabel,
-  Button
+  Divider
 } from "@material-ui/core";
-import Avatar from 'react-avatar-edit'
-import logo from 'assets/images/companylogo2.png';
+import logo from "assets/images/companylogo2.png";
 import theme from "../../assets/theme";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
 import { Profile } from "../../interface/authInterface";
 
 const styles = (theme: Theme) =>
@@ -32,7 +26,7 @@ const styles = (theme: Theme) =>
     },
     textField: {
       width: 200,
-      margin: 20,
+      margin: 20
     },
     // formControl: {
     //   margin: theme.spacing.unit * 3,
@@ -43,8 +37,7 @@ const styles = (theme: Theme) =>
       color: theme.palette.text.secondary,
       flexDirection: "column"
     },
-    preview: {
-    },
+    preview: {},
     divAvatar: {
       margin: theme.spacing.unit * 3,
       alignSelf: "baseline",
@@ -64,80 +57,92 @@ const styles = (theme: Theme) =>
       justifyContent: "center"
     }
   });
-export interface Props extends InState, WithStyles<typeof styles> { }
+export interface Props extends InState, WithStyles<typeof styles> {}
 
 export interface State {
-  email: string,
-  firstname: string,
-  lastname: string,
-  alias: string,
-  employee_id: string,
-  image: string,
-  jobfunction: string,
-  country: string,
-  address: string,
-  postal_code: string,
-  status: string,
-  remarks: string,
-  info: any
+  email: string;
+  firstname: string;
+  lastname: string;
+  alias: string;
+  employee_id: string;
+  image: string;
+  jobfunction: string;
+  country: string;
+  address: string;
+  postal_code: string;
+  status: string;
+  remarks: string;
+  info: any;
 }
 
 interface InState {
-  profile: Profile,
+  profile: Profile;
 }
 class UserProfilePage extends Component<Props, State> {
-
-
   constructor(props) {
-    super(props)
+    super(props);
   }
-
 
   state: State = {
-    email: '',
-    firstname: '',
-    lastname: '',
-    alias: '',
-    employee_id: '',
-    image: '',
-    jobfunction: '',
-    country: '',
-    address: '',
-    postal_code: '',
-    status: '',
-    remarks: '',
-    info: ''
-  }
-
-  componentDidMount() {
-    this.setState(this.props.profile)
-  }
-
-  handleChange = (statekay: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ [statekay]: event.target.value } as Pick<State, keyof State>);
+    email: "",
+    firstname: "",
+    lastname: "",
+    alias: "",
+    employee_id: "",
+    image: "",
+    jobfunction: "",
+    country: "",
+    address: "",
+    postal_code: "",
+    status: "",
+    remarks: "",
+    info: ""
   };
 
+  componentDidMount() {
+    this.setState(this.props.profile);
+  }
+
+  handleChange = (statekay: keyof State) => (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    this.setState({ [statekay]: event.target.value } as Pick<
+      State,
+      keyof State
+    >);
+  };
 
   render() {
     const { classes } = this.props;
-    const that = this;
     return (
       <div className={classes.root}>
         <Typography component="h1" variant="h5">
           Profile
-      </Typography>
+        </Typography>
         <Paper>
           <Grid container className={classes.grid} spacing={16}>
             <Grid item justify="center" xs container>
               <Grid container direction="column" spacing={16} xs>
-                <div style={{ height: 'inherit', justifyContent: 'center' }}>
-                  <div style={{ height: theme.spacing.unit * 10, margin: 20, justifyContent: 'center' }}>
-                    <img style={{ height: 'inherit' }} src={this.state.image} onError={(e: any) => { e.target.onerror = null; e.target.src = logo }} alt="Preview" />
+                <div style={{ height: "inherit", justifyContent: "center" }}>
+                  <div
+                    style={{
+                      height: theme.spacing.unit * 10,
+                      margin: 20,
+                      justifyContent: "center"
+                    }}
+                  >
+                    <img
+                      style={{ height: "inherit" }}
+                      src={this.state.image}
+                      onError={(e: any) => {
+                        e.target.onerror = null;
+                        e.target.src = logo;
+                      }}
+                      alt="Preview"
+                    />
                     <Typography>Profile Picture</Typography>
                   </div>
                 </div>
-
-
               </Grid>
             </Grid>
             <Grid item justify="center" xs container>
@@ -148,7 +153,7 @@ class UserProfilePage extends Component<Props, State> {
                   label="Email"
                   className={classes.textField}
                   value={this.state.email}
-                  onChange={this.handleChange('email')}
+                  onChange={this.handleChange("email")}
                   margin="normal"
                 />
                 <TextField
@@ -157,7 +162,7 @@ class UserProfilePage extends Component<Props, State> {
                   label="Firstname"
                   className={classes.textField}
                   value={this.state.firstname}
-                  onChange={this.handleChange('firstname')}
+                  onChange={this.handleChange("firstname")}
                   margin="normal"
                 />
                 <TextField
@@ -166,7 +171,7 @@ class UserProfilePage extends Component<Props, State> {
                   label="Lastname"
                   className={classes.textField}
                   value={this.state.lastname}
-                  onChange={this.handleChange('lastname')}
+                  onChange={this.handleChange("lastname")}
                   margin="normal"
                 />
               </div>
@@ -179,7 +184,7 @@ class UserProfilePage extends Component<Props, State> {
                   label="Country"
                   className={classes.textField}
                   value={this.state.country}
-                  onChange={this.handleChange('country')}
+                  onChange={this.handleChange("country")}
                   margin="normal"
                 />
                 <TextField
@@ -188,7 +193,7 @@ class UserProfilePage extends Component<Props, State> {
                   label="Address"
                   className={classes.textField}
                   value={this.state.address}
-                  onChange={this.handleChange('address')}
+                  onChange={this.handleChange("address")}
                   margin="normal"
                 />
                 <TextField
@@ -197,22 +202,22 @@ class UserProfilePage extends Component<Props, State> {
                   label="Postal Code"
                   className={classes.textField}
                   value={this.state.postal_code}
-                  onChange={this.handleChange('postal_code')}
+                  onChange={this.handleChange("postal_code")}
                   margin="normal"
                 />
               </div>
             </Grid>
-
           </Grid>
           <Typography style={{ margin: 20 }} component="h1" variant="h5">
             Role
-      </Typography>
+          </Typography>
           <Divider />
-          {this.state.info !== '' && <Grid container className={classes.grid} spacing={16}>
-            <Divider />
-          </Grid>}
+          {this.state.info !== "" && (
+            <Grid container className={classes.grid} spacing={16}>
+              <Divider />
+            </Grid>
+          )}
           <Divider />
-
         </Paper>
       </div>
     );
@@ -226,7 +231,10 @@ class UserProfilePage extends Component<Props, State> {
 function mapStateToProps(state) {
   return {
     profile: state.authenticationReducer.profile
-  }
+  };
 }
 
-export default connect(mapStateToProps, null)(withStyles(styles)(UserProfilePage));
+export default connect(
+  mapStateToProps,
+  null
+)(withStyles(styles)(UserProfilePage));
