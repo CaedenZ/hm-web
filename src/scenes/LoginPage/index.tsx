@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import FormControl from "@material-ui/core/FormControl";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import Paper from "@material-ui/core/Paper";
 import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles";
 import { Redirect } from "react-router-dom";
@@ -25,7 +23,7 @@ const styles = (theme: any) => ({
     marginLeft: theme.spacing.unit * 3,
     marginRight: theme.spacing.unit * 3,
     [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
-      width: "40vh"
+      width: "20vw"
     }
   },
   paper: {
@@ -33,6 +31,9 @@ const styles = (theme: any) => ({
     alignItems: "center",
     justifyContent: "center",
     padding: `${theme.spacing.unit * 3}px`
+  },
+  loginSpacing: {
+    margin: "1rem 0"
   }
 });
 
@@ -86,7 +87,7 @@ class SignIn extends Component<Props, State> {
           <main className={classes.main}>
             <CssBaseline />
             <Paper className={classes.paper}>
-              <form onSubmit={this.handleLogin}>
+              {/* <form onSubmit={this.handleLogin}>
                 <FormControl margin="normal" required fullWidth>
                   <InputLabel htmlFor="email">Email Address</InputLabel>
                   <Input
@@ -110,14 +111,11 @@ class SignIn extends Component<Props, State> {
                     onChange={this.handleChange}
                   />
                 </FormControl>
-                {/* <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              /> */}
+                <FormControlLabel
+                  control={<Checkbox value="remember" color="primary" />}
+                  label="Remember me"
+                />
                 <Divider />
-                {/* <div style={{ marginTop: 20 }}>
-                <Link to="/forgetpassword">Forget password</Link>
-              </div> */}
                 <Button
                   fullWidth
                   variant="contained"
@@ -126,7 +124,54 @@ class SignIn extends Component<Props, State> {
                 >
                   Sign in
                 </Button>
-              </form>
+
+                <div style={{ marginTop: 20 }}>
+                  <Link to="/forgetpassword">Forget password</Link>
+                </div>
+              </form> */}
+              <ValidatorForm
+                ref="form"
+                onSubmit={this.handleLogin}
+                debounceTime={500}
+              >
+                <TextValidator
+                  fullWidth
+                  label="Email"
+                  onChange={this.handleChange}
+                  id="email"
+                  name="email"
+                  autoComplete="email"
+                  value={this.state.email}
+                  validators={["required", "isEmail"]}
+                  errorMessages={[
+                    "this field is required",
+                    "email is not valid"
+                  ]}
+                  className={classes.loginSpacing}
+                />
+                <TextValidator
+                  fullWidth
+                  label="Password"
+                  onChange={this.handleChange}
+                  type="password"
+                  id="password"
+                  name="password"
+                  autoComplete="current-password"
+                  value={this.state.password}
+                  validators={["required"]}
+                  errorMessages={["this field is required"]}
+                  className={classes.loginSpacing}
+                />
+                <Divider className={classes.loginSpacing} />
+                <Button
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  type="submit"
+                >
+                  Sign in
+                </Button>
+              </ValidatorForm>
             </Paper>
           </main>
         </div>
