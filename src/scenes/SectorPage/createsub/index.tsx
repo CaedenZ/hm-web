@@ -87,7 +87,7 @@ class CreateIndustryPage extends Component<Props, CreateIndustryState> {
                 <div style={{ margin: 20 }}>
                   <TextField
                     id="name"
-                    label="name"
+                    label="Industry"
                     className={classes.textField}
                     value={this.state.name}
                     onChange={this.handleChange("name")}

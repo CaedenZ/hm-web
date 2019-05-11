@@ -74,7 +74,7 @@ class CreateSectorPage extends Component<Props, CreateSectorState> {
               <Grid item justify="center" container xs>
                 <TextField
                   id="name"
-                  label="name"
+                  label="Sector"
                   className={classes.textField}
                   value={this.state.name}
                   onChange={this.handleChange("name")}

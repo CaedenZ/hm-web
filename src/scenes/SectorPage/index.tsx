@@ -132,9 +132,9 @@ class CustomizedTable extends React.Component<Props, any> {
             </colgroup>
             <TableHead>
               <TableRow>
-                <CustomTableCell align="right">sector</CustomTableCell>
-                <CustomTableCell align="right">Action</CustomTableCell>
-                <CustomTableCell align="right">Child</CustomTableCell>
+                <CustomTableCell align="left">Sector</CustomTableCell>
+                <CustomTableCell align="left">Industry</CustomTableCell>
+                <CustomTableCell align="center">Delete</CustomTableCell>
               </TableRow>
             </TableHead>
             {this.props.sectorList.length > 0 && (
@@ -144,7 +144,7 @@ class CustomizedTable extends React.Component<Props, any> {
                     <CustomTableCell component="th" scope="row">
                       {row.name}
                     </CustomTableCell>
-                    <CustomTableCell align="right">
+                    <CustomTableCell align="left">
                       <IconButton
                         className={classnames(classes.expand, {
                           [classes.expandOpen]: this.state[index]
@@ -158,7 +158,7 @@ class CustomizedTable extends React.Component<Props, any> {
                     </CustomTableCell>
 
                     {!this.state[index] ? (
-                      <CustomTableCell align="right">
+                      <CustomTableCell align="center">
                         <IconButton
                           onClick={() => this.handleDeleteSector(row.sector_id)}
                         >
