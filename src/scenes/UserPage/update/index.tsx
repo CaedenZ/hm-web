@@ -5,29 +5,16 @@ import {
   Theme,
   createStyles,
   WithStyles,
-  withStyles,
-  Grid,
-  Paper,
-  TextField,
-  Divider,
-  FormControl,
-  Checkbox,
-  FormControlLabel,
-  Button,
-  InputLabel,
-  Select,
-  MenuItem
+  withStyles
 } from "@material-ui/core";
-import CustomButton from "../component/CustomButton";
-import Avatar from 'react-avatar-edit'
 import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../interface/propsInterface";
-import { history } from "../../../store"
+import { history } from "../../../store";
 import { RootState } from "../../../reducer";
 import { User } from "../../../interface/userInterface";
 import { Country } from "../../../interface/countryInterface";
-import FormPage from "../component/form"
+import FormPage from "../component/form";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -39,7 +26,7 @@ const styles = (theme: Theme) =>
     },
     textField: {
       width: 200,
-      margin: 20,
+      margin: 20
     },
     // formControl: {
     //   margin: theme.spacing.unit * 3,
@@ -50,8 +37,7 @@ const styles = (theme: Theme) =>
       color: theme.palette.text.secondary,
       flexDirection: "column"
     },
-    preview: {
-    },
+    preview: {},
     divAvatar: {
       margin: theme.spacing.unit * 3,
       alignSelf: "baseline",
@@ -72,8 +58,8 @@ const styles = (theme: Theme) =>
     },
     formControl: {
       margin: theme.spacing.unit,
-      minWidth: 120,
-    },
+      minWidth: 120
+    }
   });
 
 export interface UpdateUserState {
@@ -91,75 +77,88 @@ export interface UpdateUserState {
   alias: string;
   employee_id: string;
 }
-export interface Props extends InState, WithStyles<typeof styles>, SharedDispatchProps { }
+export interface Props
+  extends InState,
+    WithStyles<typeof styles>,
+    SharedDispatchProps {}
 interface InState {
-  user: User,
-  countryList: Country[],
+  user: User;
+  countryList: Country[];
 }
 
 class UpdateUserPage extends Component<Props, UpdateUserState> {
-
-
   constructor(props) {
-    super(props)
-    this.onCrop = this.onCrop.bind(this)
-    this.onClose = this.onClose.bind(this)
-    this.handleUpdateUser = this.handleUpdateUser.bind(this)
+    super(props);
+    this.onCrop = this.onCrop.bind(this);
+    this.onClose = this.onClose.bind(this);
+    this.handleUpdateUser = this.handleUpdateUser.bind(this);
   }
-
 
   state: UpdateUserState = {
-    image: '',
-    email: '',
-    firstname: '',
-    lastname: '',
-    employee_id: '',
-    alias: '',
-    country: '',
-    address: '',
-    postal_code: '',
-    remarks: '',
-    status: '',
-    business_title: '',
-    contact: '',
-  }
+    image: "",
+    email: "",
+    firstname: "",
+    lastname: "",
+    employee_id: "",
+    alias: "",
+    country: "",
+    address: "",
+    postal_code: "",
+    remarks: "",
+    status: "",
+    business_title: "",
+    contact: ""
+  };
 
   componentDidMount() {
-    this.setState(this.props.user)
+    this.setState(this.props.user);
   }
 
   onClose() {
-    this.setState({ image: '' })
+    this.setState({ image: "" });
   }
 
   onCrop(image) {
-    this.setState({ image })
-    console.log(this.state)
+    this.setState({ image });
+    console.log(this.state);
   }
 
-  handleChange = (statekay: keyof UpdateUserState) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ [statekay]: event.target.value } as Pick<UpdateUserState, keyof UpdateUserState>);
+  handleChange = (statekay: keyof UpdateUserState) => (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    this.setState({ [statekay]: event.target.value } as Pick<
+      UpdateUserState,
+      keyof UpdateUserState
+    >);
   };
 
-  handleChangeSelect = (statekay: keyof UpdateUserState) => (event: React.ChangeEvent<HTMLSelectElement>) => {
-    this.setState({ [statekay]: event.target.value } as Pick<UpdateUserState, keyof UpdateUserState>);
+  handleChangeSelect = (statekay: keyof UpdateUserState) => (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    this.setState({ [statekay]: event.target.value } as Pick<
+      UpdateUserState,
+      keyof UpdateUserState
+    >);
   };
 
   handleUpdateUser = (e, data) => {
-    e.preventDefault()
-    this.props.updateUser(data)
-    history.goBack()
-  }
+    e.preventDefault();
+    this.props.updateUser(data);
+    history.goBack();
+  };
 
   render() {
     const { classes } = this.props;
-    const that = this;
     return (
       <div className={classes.root}>
         <Typography component="h1" variant="h5">
           Update User
-      </Typography>
-        <FormPage create={false} updateData={this.props.user} onSubmit={(e, data) => this.handleUpdateUser(e, data)} />
+        </Typography>
+        <FormPage
+          create={false}
+          updateData={this.props.user}
+          onSubmit={(e, data) => this.handleUpdateUser(e, data)}
+        />
       </div>
     );
   }
@@ -172,8 +171,11 @@ class UpdateUserPage extends Component<Props, UpdateUserState> {
 function mapStateToProps(state: RootState) {
   return {
     user: state.userReducer.user,
-    countryList: state.countryReducer.countryList,
-  }
+    countryList: state.countryReducer.countryList
+  };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(UpdateUserPage));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(UpdateUserPage));

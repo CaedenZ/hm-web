@@ -2,67 +2,51 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import {
   Typography,
-  Theme,
   createStyles,
   WithStyles,
-  withStyles,
-  Grid,
-  Paper,
-  TextField,
-  Divider,
-  FormControl,
-  Checkbox,
-  FormControlLabel,
-  Button,
-  InputLabel,
-  Select,
-  MenuItem
+  withStyles
 } from "@material-ui/core";
 import { mapDispatchToProps } from "../../../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../../interface/propsInterface";
 import { RootState } from "../../../../reducer";
-import { Unit, Company, CREATEUNITCRED } from "../../../../interface/companyInterface";
+import { Unit, Company } from "../../../../interface/companyInterface";
 import { history } from "../../../../store";
 import { Country } from "../../../../interface/countryInterface";
 import { Region } from "../../../../interface/regionInterface";
 import FormPage from "../../component/form";
 
-const styles = (theme: Theme) =>
+const styles = () =>
   createStyles({
     root: {
       flexGrow: 1
-    },
+    }
   });
 
-interface Props extends WithStyles<typeof styles>, SharedDispatchProps, InState { }
+interface Props
+  extends WithStyles<typeof styles>,
+    SharedDispatchProps,
+    InState {}
 
 interface InState {
   parentUnit: Unit;
   parentCompany: Company;
   countryList: Country[];
-  regionList: Region[]
+  regionList: Region[];
 }
 
 class CreateUnitPage extends Component<Props> {
-
-
   constructor(props) {
-    super(props)
-    this.handleCreateUnit = this.handleCreateUnit.bind(this)
+    super(props);
+    this.handleCreateUnit = this.handleCreateUnit.bind(this);
   }
-
-
-
 
   handleCreateUnit = (e, data) => {
-    e.preventDefault()
+    e.preventDefault();
 
-
-    this.props.createSubUnit(data)
-    history.goBack()
-  }
-
+    this.props.createSubUnit(data);
+    history.goBack();
+  };
 
   render() {
     const { classes } = this.props;
@@ -71,10 +55,16 @@ class CreateUnitPage extends Component<Props> {
       <div className={classes.root}>
         <Typography component="h1" variant="h5">
           New Division
-      </Typography>
-        <FormPage create={true} updateData={
-          { parent_unit: this.props.parentUnit.unit_id, main_unit: this.props.parentUnit.main_unit, company_id: this.props.parentCompany.company_id }
-        } onSubmit={(e, data) => this.handleCreateUnit(e, data)} />
+        </Typography>
+        <FormPage
+          create={true}
+          updateData={{
+            parent_unit: this.props.parentUnit.unit_id,
+            main_unit: this.props.parentUnit.main_unit,
+            company_id: this.props.parentCompany.company_id
+          }}
+          onSubmit={(e, data) => this.handleCreateUnit(e, data)}
+        />
       </div>
     );
   }
@@ -87,8 +77,11 @@ class CreateUnitPage extends Component<Props> {
 function mapStateToProps(state: RootState) {
   return {
     parentUnit: state.companyReducer.selectedUnit,
-    parentCompany: state.companyReducer.selectedCompany,
-  }
+    parentCompany: state.companyReducer.selectedCompany
+  };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CreateUnitPage));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(CreateUnitPage));

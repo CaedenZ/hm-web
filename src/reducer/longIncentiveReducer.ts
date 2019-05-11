@@ -9,7 +9,7 @@ import {
     flatMap,
 } from "rxjs/operators"
 import { of, from } from "rxjs"
-import { LongIncentiveState, LongIncentive } from "../interface/longincentiveInterface";
+import { LongIncentiveState, LongIncentive } from "../interface/longIncentiveInterface";
 import { getLongIncentiveList, createLongIncentive, deleteLongIncentive, updateLongIncentive } from "../api/longIncentiveAPI";
 import { getLongIncentiveListAction, createLongIncentiveAction, deleteLongIncentiveAction, updateLongIncentiveAction } from "../actions/longIncentiveAction";
 import { isActionOf } from "typesafe-actions";

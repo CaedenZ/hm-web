@@ -1,5 +1,5 @@
 import $axios from "../plugin/axios";
-import { TargetBonus, CREATETARGETBONUSCRED, UPDATETARGETBONUSCRED } from "../interface/targetbonusInterface";
+import { TargetBonus, CREATETARGETBONUSCRED, UPDATETARGETBONUSCRED } from "../interface/targetBonusInterface";
 
 export const getTargetBonusList = async (token, payload): Promise<TargetBonus[]> => {
 

@@ -1,5 +1,5 @@
 import $axios from "../plugin/axios";
-import { LongIncentive, CREATELONGINCENTIVECRED, UPDATELONGINCENTIVECRED } from "../interface/longincentiveInterface";
+import { LongIncentive, CREATELONGINCENTIVECRED, UPDATELONGINCENTIVECRED } from "../interface/longIncentiveInterface";
 
 export const getLongIncentiveList = async (token, payload): Promise<LongIncentive[]> => {
 

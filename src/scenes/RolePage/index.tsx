@@ -12,18 +12,16 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import { render } from "react-dom";
 import CustomButton from "./component/CustomButton";
 import { RootState } from "../../reducer";
 import { mapDispatchToProps } from "../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../interface/propsInterface";
-import { User } from "../../interface/userInterface";
-import { Button, IconButton } from "@material-ui/core";
-import DeleteIcon from '@material-ui/icons/Delete';
+import { IconButton } from "@material-ui/core";
+import DeleteIcon from "@material-ui/icons/Delete";
 import { Role } from "../../interface/roleInterface";
 import { history } from "../../store";
-import UpdateIcon from '@material-ui/icons/PlaylistAddCheck';
+import UpdateIcon from "@material-ui/icons/PlaylistAddCheck";
 import { Company } from "../../interface/companyInterface";
 
 const CustomTableCell = withStyles(theme => ({
@@ -54,55 +52,44 @@ const styles = (theme: Theme) =>
   });
 
 let id = 0;
-function createData(
-  name: any,
-  calories: any,
-  fat: any,
-  carbs: any,
-  protein: any
-) {
-  id += 1;
-  return { id, name, calories, fat, carbs, protein };
-}
 
+export interface Props
+  extends WithStyles<typeof styles>,
+    SharedDispatchProps,
+    InState {}
 
-export interface Props extends WithStyles<typeof styles>, SharedDispatchProps, InState { }
-
-interface State { }
+interface State {}
 
 interface InState {
-  selectedCompany: Company,
-  roleList: Role[]
+  selectedCompany: Company;
+  roleList: Role[];
 }
 class RolePage extends React.Component<Props, State> {
-
-
   componentDidMount() {
-    console.log('Role Page Mounted')
-    if (this.props.selectedCompany.company_id === '') {
+    console.log("Role Page Mounted");
+    if (this.props.selectedCompany.company_id === "") {
       let data = {
-        type: 'warning',
-        object: 'Please Select a Company first',
-        id: '1'
-      }
-      this.props.showDialog(data)
-    }
-    else this.props.getRoleList()
+        type: "warning",
+        object: "Please Select a Company first",
+        id: "1"
+      };
+      this.props.showDialog(data);
+    } else this.props.getRoleList();
   }
 
-  handleUpdateButtonClick = (role) => {
-    this.props.selectRole(role)
-    history.push('/role/update')
-  }
+  handleUpdateButtonClick = role => {
+    this.props.selectRole(role);
+    history.push("/role/update");
+  };
 
-  handleDelete = (id) => {
+  handleDelete = id => {
     const payload = {
-      type: 'delete',
-      object: 'role',
-      id: id,
-    }
-    this.props.showDialog(payload)
-  }
+      type: "delete",
+      object: "role",
+      id: id
+    };
+    this.props.showDialog(payload);
+  };
 
   render() {
     const { classes } = this.props;
@@ -119,18 +106,32 @@ class RolePage extends React.Component<Props, State> {
                 <CustomTableCell align="right">Action</CustomTableCell>
               </TableRow>
             </TableHead>
-            {this.props.roleList.length > 0 && <TableBody>
-              {this.props.roleList.map(row => (
-                <TableRow className={classes.row} key={row.role_id}>
-                  <CustomTableCell component="th" scope="row">{row.role_name}</CustomTableCell>
-                  <CustomTableCell align="right">{row.role_description}</CustomTableCell>
-                  <CustomTableCell align="right">
-                    <IconButton onClick={() => this.handleUpdateButtonClick(row)}><UpdateIcon /></IconButton>
-                    <IconButton onClick={() => this.handleDelete(row.role_id)}><DeleteIcon /></IconButton>
-                  </CustomTableCell>
-                </TableRow>
-              ))}
-            </TableBody>}
+            {this.props.roleList.length > 0 && (
+              <TableBody>
+                {this.props.roleList.map(row => (
+                  <TableRow className={classes.row} key={row.role_id}>
+                    <CustomTableCell component="th" scope="row">
+                      {row.role_name}
+                    </CustomTableCell>
+                    <CustomTableCell align="right">
+                      {row.role_description}
+                    </CustomTableCell>
+                    <CustomTableCell align="right">
+                      <IconButton
+                        onClick={() => this.handleUpdateButtonClick(row)}
+                      >
+                        <UpdateIcon />
+                      </IconButton>
+                      <IconButton
+                        onClick={() => this.handleDelete(row.role_id)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </CustomTableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            )}
           </Table>
         </Paper>
       </main>
@@ -146,7 +147,10 @@ function mapStateToProps(state: RootState) {
   return {
     selectedCompany: state.companyReducer.selectedCompany,
     roleList: state.roleReducer.roleList
-  }
+  };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(RolePage));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(RolePage));

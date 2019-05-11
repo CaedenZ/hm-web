@@ -8,10 +8,7 @@ import {
 } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
 import List from "@material-ui/core/List";
-import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -35,38 +32,30 @@ import SalaryRangeIcon from "@material-ui/icons/CompareArrows";
 import MenuIcon from "@material-ui/icons/Menu";
 import PrimarySearchAppBar from "./AppBar";
 import { Link } from "react-router-dom";
-import logo from 'assets/images/3CGradient Full.png';
+import logo from "assets/images/3CGradient Full.png";
 import { mapDispatchToProps } from "../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../interface/propsInterface";
 import { Company } from "../../interface/companyInterface";
 import { Collapse } from "@material-ui/core";
-import packageJson from '../../../package.json';
+import packageJson from "../../../package.json";
 
-const drawerWidth = 240;
+const drawerWidth = "15vw";
 
 const styles = (theme: Theme) =>
   createStyles({
     root: {
-      display: "flex",
+      display: "flex"
     },
     logo: {
       height: "100%",
       padding: "20px"
     },
     menubar: {
-      background: "linear-gradient(#F0F0F0 0%, #FFFFFF 30%)",
+      background: "linear-gradient(#F0F0F0 0%, #FFFFFF 30%)"
     },
-    menudivider: {
-
-    },
-    navlist: {
-
-    },
-    appBar: {
-      width: `calc(100% - ${drawerWidth}px)`,
-      marginLeft: drawerWidth
-    },
+    menudivider: {},
+    navlist: {},
     drawer: {
       width: drawerWidth,
       flexShrink: 0
@@ -85,15 +74,18 @@ const styles = (theme: Theme) =>
     }
   });
 
-export interface Props extends InState, SharedDispatchProps, WithStyles<typeof styles> { }
+export interface Props
+  extends InState,
+    SharedDispatchProps,
+    WithStyles<typeof styles> {}
 
 interface InState {
-  companyList: Company[]
+  companyList: Company[];
 }
 interface State {
-  expended1: boolean,
-  expended2: boolean,
-  expended3: boolean,
+  expended1: boolean;
+  expended2: boolean;
+  expended3: boolean;
 }
 
 class PermanentDrawerLeft extends React.Component<Props, State> {
@@ -105,12 +97,12 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
   state: State = {
     expended1: false,
     expended2: false,
-    expended3: false,
-  }
+    expended3: false
+  };
 
   handleLogout = () => {
-    this.props.logout()
-  }
+    this.props.logout();
+  };
 
   handleExpandClick1 = () => {
     this.setState(state => ({
@@ -124,7 +116,7 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
       ...state,
       expended2: !state.expended2
     }));
-    console.log(this.state)
+    console.log(this.state);
   };
 
   handleExpandClick3 = () => {
@@ -132,9 +124,8 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
       ...state,
       expended3: !state.expended3
     }));
-    console.log(this.state)
+    console.log(this.state);
   };
-
 
   render() {
     const { classes } = this.props;
@@ -142,7 +133,7 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
       {
         title: "Dashboard",
         path: "/"
-      },
+      }
     ];
 
     const companyfunction = (): any => {
@@ -150,7 +141,7 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
         {
           title: "Division",
           path: "/unit",
-          icon: <UnitIcon />,
+          icon: <UnitIcon />
         },
         // {
         //   title: "Division",
@@ -160,30 +151,30 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
         {
           title: "Entity",
           path: "/entity",
-          icon: <CompanyIcon />,
+          icon: <CompanyIcon />
         },
         {
           title: "Region",
           path: "/region",
-          icon: <RegionIcon />,
+          icon: <RegionIcon />
         },
         {
           title: "User",
           path: "/user",
-          icon: <UserIcon />,
+          icon: <UserIcon />
         },
         {
           title: "Role",
           path: "/role",
-          icon: <RoleIcon />,
-        },
+          icon: <RoleIcon />
+        }
       ];
 
       let user = [
         {
           title: "Division",
           path: "/unit",
-          icon: <UnitIcon />,
+          icon: <UnitIcon />
         },
         // {
         //   title: "Division",
@@ -193,134 +184,136 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
         {
           title: "Entity",
           path: "/entity",
-          icon: <CompanyIcon />,
+          icon: <CompanyIcon />
         },
         {
           title: "Region",
           path: "/region",
-          icon: <RegionIcon />,
+          icon: <RegionIcon />
         },
         {
           title: "User",
           path: "/user",
-          icon: <UserIcon />,
+          icon: <UserIcon />
         },
         {
           title: "Role",
           path: "/role",
-          icon: <RoleIcon />,
+          icon: <RoleIcon />
         },
         {
           title: "Company",
           path: "/company/updateself",
-          icon: <CompanyIcon />,
-        },
+          icon: <CompanyIcon />
+        }
       ];
       if (this.props.companyList.length > 1) {
-        return adm
-      }
-      else if (this.props.companyList.length === 1) {
-        if (this.props.companyList[0].company_id === '5ZwOXIkeKuPhpFriTsmD') { return adm }
-        else return user
-      }
-      else return user
-    }
+        return adm;
+      } else if (this.props.companyList.length === 1) {
+        if (this.props.companyList[0].company_id === "5ZwOXIkeKuPhpFriTsmD") {
+          return adm;
+        } else return user;
+      } else return user;
+    };
 
     const configurationfunctin = (): any => {
-      let adm = <ListItem className={classes.menubar} button onClick={this.handleExpandClick2}>
-        <ListItemIcon>
-          <MenuIcon />
-        </ListItemIcon>
-        <ListItemText primary="Configuration" />
-      </ListItem>
+      let adm = (
+        <ListItem
+          className={classes.menubar}
+          button
+          onClick={this.handleExpandClick2}
+        >
+          <ListItemIcon>
+            <MenuIcon />
+          </ListItemIcon>
+          <ListItemText primary="Configuration" />
+        </ListItem>
+      );
 
       if (this.props.companyList.length > 1) {
-        return adm
-      }
-      else if (this.props.companyList.length === 1) {
-        if (this.props.companyList[0].company_id === '5ZwOXIkeKuPhpFriTsmD') { return adm }
-        else return null
-      }
-      else return null
-    }
+        return adm;
+      } else if (this.props.companyList.length === 1) {
+        if (this.props.companyList[0].company_id === "5ZwOXIkeKuPhpFriTsmD") {
+          return adm;
+        } else return null;
+      } else return null;
+    };
     const adminfunction = (): any => {
-
       let adm = [
         {
           title: "Setting",
           path: "/setting",
-          icon: <SettingIcon />,
+          icon: <SettingIcon />
         },
         {
           title: "Job Function",
           path: "/jobfunction",
-          icon: <JobFunctionIcon />,
+          icon: <JobFunctionIcon />
         },
         {
           title: "Sector",
           path: "/sector",
-          icon: <SectorIcon />,
+          icon: <SectorIcon />
         },
         {
           title: "Customer",
           path: "/company",
-          icon: <CompanyIcon />,
-        },
-      ]
-      return adm
-    }
+          icon: <CompanyIcon />
+        }
+      ];
+      return adm;
+    };
 
     const jobgradefunction = (): any => {
-
       let adm = [
         {
           title: "Job Grade",
           path: "/jobgrade",
-          icon: <JobGradeIcon />,
+          icon: <JobGradeIcon />
         },
         {
           title: "Salary Range",
           path: "/salaryrange",
-          icon: <SalaryRangeIcon />,
+          icon: <SalaryRangeIcon />
         },
         {
           title: "Allowances",
           path: "/allowances",
-          icon: <AllowanceIcon />,
+          icon: <AllowanceIcon />
         },
         {
           title: "Target Bonus",
           path: "/targetbonus",
-          icon: <TargetBonusIcon />,
+          icon: <TargetBonusIcon />
         },
         {
           title: "Signons",
           path: "/signons",
-          icon: <TargetBonusIcon />,
+          icon: <TargetBonusIcon />
         },
         {
           title: "Short Term Incentive",
           path: "/shortincentive",
-          icon: <ShortIncentiveIcon />,
+          icon: <ShortIncentiveIcon />
         },
         {
           title: "Long Term Incentive",
           path: "/longincentive",
-          icon: <LongIncentiveIcon />,
+          icon: <LongIncentiveIcon />
         },
         {
           title: "Payroll Upload",
           path: "/payrollupload",
-          icon: <JobGradeIcon />,
+          icon: <JobGradeIcon />
         },
         {
           title: "Market Data Upload",
           path: "/jobgrade",
-          icon: <JobGradeIcon />,
-        },
-      ]
-      return adm
-    }
+          icon: <JobGradeIcon />
+        }
+      ];
+      return adm;
+    };
 
     return (
       <div className={classes.root}>
@@ -340,8 +333,12 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
           <Divider className={classes.menudivider} />
           <List className={classes.menubar}>
             {itemlist1.map((item, index) => (
-              <Link key={item.title} to={item.path} style={{ textDecoration: "none" }}>
-                <ListItem button >
+              <Link
+                key={item.title}
+                to={item.path}
+                style={{ textDecoration: "none" }}
+              >
+                <ListItem button>
                   <ListItemIcon>
                     {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
                   </ListItemIcon>
@@ -351,7 +348,11 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
             ))}
           </List>
           <Divider />
-          <ListItem className={classes.menubar} button onClick={this.handleExpandClick1}>
+          <ListItem
+            className={classes.menubar}
+            button
+            onClick={this.handleExpandClick1}
+          >
             <ListItemIcon>
               <MenuIcon />
             </ListItemIcon>
@@ -359,9 +360,13 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
           </ListItem>
           <Collapse in={this.state.expended1} timeout="auto" unmountOnExit>
             <List className={classes.navlist}>
-              {companyfunction().map((item, index) => (
-                <Link key={item.title} to={item.path} style={{ textDecoration: "none" }}>
-                  <ListItem button >
+              {companyfunction().map(item => (
+                <Link
+                  key={item.title}
+                  to={item.path}
+                  style={{ textDecoration: "none" }}
+                >
+                  <ListItem button>
                     <ListItemIcon style={{ marginLeft: "20px" }}>
                       {item.icon}
                     </ListItemIcon>
@@ -375,9 +380,13 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
           {configurationfunctin()}
           <Collapse in={this.state.expended2} timeout="auto" unmountOnExit>
             <List className={classes.navlist}>
-              {adminfunction().map((item, index) => (
-                <Link key={item.title} to={item.path} style={{ textDecoration: "none" }}>
-                  <ListItem button >
+              {adminfunction().map(item => (
+                <Link
+                  key={item.title}
+                  to={item.path}
+                  style={{ textDecoration: "none" }}
+                >
+                  <ListItem button>
                     <ListItemIcon style={{ marginLeft: "20px" }}>
                       {item.icon}
                     </ListItemIcon>
@@ -387,7 +396,11 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
               ))}
             </List>
           </Collapse>
-          <ListItem className={classes.menubar} button onClick={this.handleExpandClick3}>
+          <ListItem
+            className={classes.menubar}
+            button
+            onClick={this.handleExpandClick3}
+          >
             <ListItemIcon>
               <MenuIcon />
             </ListItemIcon>
@@ -395,9 +408,13 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
           </ListItem>
           <Collapse in={this.state.expended3} timeout="auto" unmountOnExit>
             <List className={classes.navlist}>
-              {jobgradefunction().map((item, index) => (
-                <Link key={item.title} to={item.path} style={{ textDecoration: "none" }}>
-                  <ListItem button >
+              {jobgradefunction().map(item => (
+                <Link
+                  key={item.title}
+                  to={item.path}
+                  style={{ textDecoration: "none" }}
+                >
+                  <ListItem button>
                     <ListItemIcon style={{ marginLeft: "20px" }}>
                       {item.icon}
                     </ListItemIcon>
@@ -429,9 +446,11 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
 
 function mapStateToProps(state: any) {
   return {
-    companyList: state.companyReducer.companyList,
-  }
+    companyList: state.companyReducer.companyList
+  };
 }
 
-
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(PermanentDrawerLeft));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(PermanentDrawerLeft));

@@ -1,42 +1,43 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles, WithStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Snackbar from '@material-ui/core/Snackbar';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-import { RootState } from '../../reducer';
-import { mapDispatchToProps } from '../../helper/dispachProps';
-import { connect } from 'react-redux';
-import { SharedDispatchProps } from '../../interface/propsInterface';
+import React from "react";
+import { withStyles, WithStyles } from "@material-ui/core/styles";
+import Snackbar from "@material-ui/core/Snackbar";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
+import { RootState } from "../../reducer";
+import { mapDispatchToProps } from "../../helper/dispachProps";
+import { connect } from "react-redux";
+import { SharedDispatchProps } from "../../interface/propsInterface";
 
 const styles = theme => ({
   close: {
-    padding: theme.spacing.unit / 2,
-  },
+    padding: theme.spacing.unit / 2
+  }
 });
 
-export interface Props extends InState, SharedDispatchProps, WithStyles<typeof styles>, InState { }
+export interface Props
+  extends InState,
+    SharedDispatchProps,
+    WithStyles<typeof styles>,
+    InState {}
 
-interface State { }
+interface State {}
 
 interface InState {
-  open: boolean,
-  message: string,
+  open: boolean;
+  message: string;
 }
 class CustomSnackBar extends React.Component<Props, State> {
-
   state = {
     open: false,
-    message: "",
-  }
+    message: ""
+  };
   componentDidMount() {
-    console.log("SnackBar Loaded")
-    this.setState({ open: this.props.open, message: this.props.message })
+    console.log("SnackBar Loaded");
+    this.setState({ open: this.props.open, message: this.props.message });
   }
-  handleClose = (event, reason) => {
-    console.log("close")
-    this.props.closeSnackBar()
+  handleClose = () => {
+    console.log("close");
+    this.props.closeSnackBar();
   };
 
   render() {
@@ -44,14 +45,14 @@ class CustomSnackBar extends React.Component<Props, State> {
     return (
       <Snackbar
         anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
+          vertical: "bottom",
+          horizontal: "left"
         }}
         open={this.props.open}
         autoHideDuration={6000}
         onClose={this.handleClose}
         ContentProps={{
-          'aria-describedby': 'message-id',
+          "aria-describedby": "message-id"
         }}
         message={<span id="message-id">{this.props.message}</span>}
         action={
@@ -66,17 +67,18 @@ class CustomSnackBar extends React.Component<Props, State> {
           </IconButton>
         }
       />
-    )
-
+    );
   }
 }
 
 function mapStateToProps(state: RootState) {
   return {
     open: state.snackBarReducer.open,
-    message: state.snackBarReducer.message,
-  }
+    message: state.snackBarReducer.message
+  };
 }
 
-
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CustomSnackBar));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(CustomSnackBar));

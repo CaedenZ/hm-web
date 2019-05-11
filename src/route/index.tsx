@@ -1,15 +1,13 @@
 import React from "react";
-import { SharedDispatchProps } from "../interface/propsInterface";
 
 import { connect } from "react-redux";
-import { Switch, Route, BrowserRouter } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import { ConnectedRouter } from "connected-react-router";
-import { history } from '../store'
+import { history } from "../store";
 import { mapDispatchToProps } from "../helper/dispachProps";
 
-import HomeLayout from "../Layout/default";
 import PrimaryLayout from "../Layout/PrimaryLayout";
-import SecondaryLayout from "../Layout/SecondaryLayout"
+import SecondaryLayout from "../Layout/SecondaryLayout";
 
 import LoginPage from "../scenes/LoginPage";
 import ForgetPasswordPage from "../scenes/ForgetPasswordPage";
@@ -29,14 +27,14 @@ import UpdateCompanyPage from "../scenes/CompanyPage/update";
 import UpdateSelfCompanyPage from "../scenes/CompanyPage/updateself";
 
 import UnitPage from "../scenes/UnitPage";
-import CreateUnitPage from "../scenes/UnitPage/create"
-import UpdateUnitPage from "../scenes/UnitPage/update"
-import SubUnitPage from "../scenes/UnitPage/subUnit"
-import CreateSubUnitPage from "../scenes/UnitPage/subUnit/create"
-import UpdateSubUnitPage from "../scenes/UnitPage/subUnit/update"
-import ChildUnitPage from "../scenes/UnitPage/subUnit/childUnit"
-import CreateChildUnitPage from "../scenes/UnitPage/subUnit/childUnit/create"
-import UpdateChildUnitPage from "../scenes/UnitPage/subUnit/childUnit/update"
+import CreateUnitPage from "../scenes/UnitPage/create";
+import UpdateUnitPage from "../scenes/UnitPage/update";
+import SubUnitPage from "../scenes/UnitPage/subUnit";
+import CreateSubUnitPage from "../scenes/UnitPage/subUnit/create";
+import UpdateSubUnitPage from "../scenes/UnitPage/subUnit/update";
+import ChildUnitPage from "../scenes/UnitPage/subUnit/childUnit";
+import CreateChildUnitPage from "../scenes/UnitPage/subUnit/childUnit/create";
+import UpdateChildUnitPage from "../scenes/UnitPage/subUnit/childUnit/update";
 
 import RolePage from "../scenes/RolePage";
 import CreateRolePage from "../scenes/RolePage/create";
@@ -93,121 +91,670 @@ import UpdateShortIncentivePage from "../scenes/CompensationSetup/ShortIncentive
 
 import PayrollUploadPage from "../scenes/CompensationSetup/PayrollUploadPage";
 
+export interface Props extends InState {}
 
-export interface Props extends InState { }
-
-interface State { }
+interface State {}
 
 interface InState {
-    init: boolean
+  init: boolean;
 }
 
-class RootRoute extends React.Component<Props, State>{
-    render() {
-        if (this.props.init) {
-            return (
-                <ConnectedRouter history={history}>
-                    <Switch>
-                        {/* <Route exact path="/" component={Home} /> */}
-                        {/* both /roster and /roster/:number begin with /roster */}
-                        <Route exact path="/login" render={() => (<SecondaryLayout> <LoginPage /> </SecondaryLayout>)} />
-                        <Route exact path="/forgetpassword" component={ForgetPasswordPage} />
-                        <Route exact path="/resetpassword" component={ResetPasswordPage} />
-                        {/* <Route exact path="/" component={PrimaryLayout} /> */}
-                        <Route exact path="/" render={() => (<PrimaryLayout> <HomePage /> </PrimaryLayout>)} />
-                        <Route exact path="/profile" render={() => (<PrimaryLayout><ProfilePage /></PrimaryLayout>)} />
-                        <Route exact path="/setting" render={() => (<PrimaryLayout><SettingPage /></PrimaryLayout>)} />
+class RootRoute extends React.Component<Props, State> {
+  render() {
+    if (this.props.init) {
+      return (
+        <ConnectedRouter history={history}>
+          <Switch>
+            {/* <Route exact path="/" component={Home} /> */}
+            {/* both /roster and /roster/:number begin with /roster */}
+            <Route
+              exact
+              path="/login"
+              render={() => (
+                <SecondaryLayout>
+                  {" "}
+                  <LoginPage />{" "}
+                </SecondaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/forgetpassword"
+              component={ForgetPasswordPage}
+            />
+            <Route exact path="/resetpassword" component={ResetPasswordPage} />
+            {/* <Route exact path="/" component={PrimaryLayout} /> */}
+            <Route
+              exact
+              path="/"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <HomePage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/profile"
+              render={() => (
+                <PrimaryLayout>
+                  <ProfilePage />
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/setting"
+              render={() => (
+                <PrimaryLayout>
+                  <SettingPage />
+                </PrimaryLayout>
+              )}
+            />
 
-                        <Route exact path="/user" render={() => (<PrimaryLayout> <UserPage /> </PrimaryLayout>)} />
-                        <Route exact path="/user/create" render={() => (<PrimaryLayout> <CreateUserPage /> </PrimaryLayout>)} />
-                        <Route exact path="/user/update" render={() => (<PrimaryLayout> <UpdateUserPage /> </PrimaryLayout>)} />
+            <Route
+              exact
+              path="/user"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <UserPage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/user/create"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <CreateUserPage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/user/update"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <UpdateUserPage />{" "}
+                </PrimaryLayout>
+              )}
+            />
 
-                        <Route exact path="/company" render={() => (<PrimaryLayout> <CompanyPage /> </PrimaryLayout>)} />
-                        <Route exact path="/company/create" render={() => (<PrimaryLayout> <CreateCompanyPage /> </PrimaryLayout>)} />
-                        <Route exact path="/company/update" render={() => (<PrimaryLayout> <UpdateCompanyPage /> </PrimaryLayout>)} />
-                        <Route exact path="/company/updateself" render={() => (<PrimaryLayout> <UpdateSelfCompanyPage /> </PrimaryLayout>)} />
+            <Route
+              exact
+              path="/company"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <CompanyPage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/company/create"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <CreateCompanyPage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/company/update"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <UpdateCompanyPage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/company/updateself"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <UpdateSelfCompanyPage />{" "}
+                </PrimaryLayout>
+              )}
+            />
 
-                        <Route exact path="/entity" render={() => (<PrimaryLayout> <SubCompanyPage /> </PrimaryLayout>)} />
-                        <Route exact path="/entity/create" render={() => (<PrimaryLayout> <CreateSubCompanyPage /> </PrimaryLayout>)} />
-                        <Route exact path="/entity/update" render={() => (<PrimaryLayout> <UpdateSubCompanyPage /> </PrimaryLayout>)} />
+            <Route
+              exact
+              path="/entity"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <SubCompanyPage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/entity/create"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <CreateSubCompanyPage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/entity/update"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <UpdateSubCompanyPage />{" "}
+                </PrimaryLayout>
+              )}
+            />
 
-                        <Route exact path="/division" render={() => (<PrimaryLayout> <UnitPage /> </PrimaryLayout>)} />
-                        <Route exact path="/unit" render={() => (<PrimaryLayout> <DivisionPage /> </PrimaryLayout>)} />
-                        <Route exact path="/unit/create" render={() => (<PrimaryLayout> <CreateUnitPage /> </PrimaryLayout>)} />
-                        <Route exact path="/unit/update" render={() => (<PrimaryLayout> <UpdateUnitPage /> </PrimaryLayout>)} />
-                        <Route exact path="/unit/subunit" render={() => (<PrimaryLayout> <SubUnitPage /> </PrimaryLayout>)} />
-                        <Route exact path="/unit/subunit/create" render={() => (<PrimaryLayout> <CreateSubUnitPage /> </PrimaryLayout>)} />
-                        <Route exact path="/unit/subunit/update" render={() => (<PrimaryLayout> <UpdateSubUnitPage /> </PrimaryLayout>)} />
-                        <Route exact path="/unit/subunit/childunit" render={() => (<PrimaryLayout> <ChildUnitPage /> </PrimaryLayout>)} />
-                        <Route exact path="/unit/subunit/childunit/create" render={() => (<PrimaryLayout> <CreateChildUnitPage /> </PrimaryLayout>)} />
-                        <Route exact path="/unit/subunit/childunit/update" render={() => (<PrimaryLayout> <UpdateChildUnitPage /> </PrimaryLayout>)} />
+            <Route
+              exact
+              path="/division"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <UnitPage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/unit"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <DivisionPage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/unit/create"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <CreateUnitPage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/unit/update"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <UpdateUnitPage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/unit/subunit"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <SubUnitPage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/unit/subunit/create"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <CreateSubUnitPage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/unit/subunit/update"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <UpdateSubUnitPage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/unit/subunit/childunit"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <ChildUnitPage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/unit/subunit/childunit/create"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <CreateChildUnitPage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/unit/subunit/childunit/update"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <UpdateChildUnitPage />{" "}
+                </PrimaryLayout>
+              )}
+            />
 
-                        <Route exact path="/role" render={() => (<PrimaryLayout> <RolePage /> </PrimaryLayout>)} />
-                        <Route exact path="/role/create" render={() => (<PrimaryLayout> <CreateRolePage /> </PrimaryLayout>)} />
-                        <Route exact path="/role/update" render={() => (<PrimaryLayout> <UpdateRolePage /> </PrimaryLayout>)} />
+            <Route
+              exact
+              path="/role"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <RolePage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/role/create"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <CreateRolePage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/role/update"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <UpdateRolePage />{" "}
+                </PrimaryLayout>
+              )}
+            />
 
-                        <Route exact path="/jobfunction" render={() => (<PrimaryLayout> <JobFunctionPage /> </PrimaryLayout>)} />
-                        <Route exact path="/jobfunction/create" render={() => (<PrimaryLayout> <CreateJobFunctionPage /> </PrimaryLayout>)} />
-                        <Route exact path="/jobfunction/createsub" render={() => (<PrimaryLayout> <CreateSubJobFunctionPage /> </PrimaryLayout>)} />
+            <Route
+              exact
+              path="/jobfunction"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <JobFunctionPage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/jobfunction/create"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <CreateJobFunctionPage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/jobfunction/createsub"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <CreateSubJobFunctionPage />{" "}
+                </PrimaryLayout>
+              )}
+            />
 
-                        <Route exact path="/sector" render={() => (<PrimaryLayout> <SectorPage /> </PrimaryLayout>)} />
-                        <Route exact path="/sector/create" render={() => (<PrimaryLayout> <CreateSectorPage /> </PrimaryLayout>)} />
-                        <Route exact path="/sector/createindustry" render={() => (<PrimaryLayout> <CreateIndustryPage /> </PrimaryLayout>)} />
+            <Route
+              exact
+              path="/sector"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <SectorPage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/sector/create"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <CreateSectorPage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/sector/createindustry"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <CreateIndustryPage />{" "}
+                </PrimaryLayout>
+              )}
+            />
 
-                        <Route exact path="/region" render={() => (<PrimaryLayout> <RegionPage /> </PrimaryLayout>)} />
-                        <Route exact path="/region/create" render={() => (<PrimaryLayout> <CreateRegionPage /> </PrimaryLayout>)} />
-                        <Route exact path="/region/update" render={() => (<PrimaryLayout> <UpdateRegionPage /> </PrimaryLayout>)} />
+            <Route
+              exact
+              path="/region"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <RegionPage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/region/create"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <CreateRegionPage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/region/update"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <UpdateRegionPage />{" "}
+                </PrimaryLayout>
+              )}
+            />
 
-                        <Route exact path="/jobgrade" render={() => (<PrimaryLayout> <JobGradePage /> </PrimaryLayout>)} />
-                        <Route exact path="/jobgrade/create" render={() => (<PrimaryLayout> <CreateJobGradePage /> </PrimaryLayout>)} />
-                        <Route exact path="/jobgrade/update" render={() => (<PrimaryLayout> <UpdateJobGradePage /> </PrimaryLayout>)} />
+            <Route
+              exact
+              path="/jobgrade"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <JobGradePage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/jobgrade/create"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <CreateJobGradePage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/jobgrade/update"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <UpdateJobGradePage />{" "}
+                </PrimaryLayout>
+              )}
+            />
 
-                        <Route exact path="/allowances" render={() => (<PrimaryLayout> <AllowancesPage /> </PrimaryLayout>)} />
-                        <Route exact path="/allowances/create" render={() => (<PrimaryLayout> <CreateAllowancesPage /> </PrimaryLayout>)} />
-                        <Route exact path="/allowances/update" render={() => (<PrimaryLayout> <UpdateAllowancesPage /> </PrimaryLayout>)} />
+            <Route
+              exact
+              path="/allowances"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <AllowancesPage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/allowances/create"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <CreateAllowancesPage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/allowances/update"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <UpdateAllowancesPage />{" "}
+                </PrimaryLayout>
+              )}
+            />
 
-                        <Route exact path="/shortincentive" render={() => (<PrimaryLayout> <ShortIncentivePage /> </PrimaryLayout>)} />
-                        <Route exact path="/shortincentive/create" render={() => (<PrimaryLayout> <CreateShortIncentivePage /> </PrimaryLayout>)} />
-                        <Route exact path="/shortincentive/update" render={() => (<PrimaryLayout> <UpdateShortIncentivePage /> </PrimaryLayout>)} />
+            <Route
+              exact
+              path="/shortincentive"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <ShortIncentivePage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/shortincentive/create"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <CreateShortIncentivePage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/shortincentive/update"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <UpdateShortIncentivePage />{" "}
+                </PrimaryLayout>
+              )}
+            />
 
-                        <Route exact path="/longincentive" render={() => (<PrimaryLayout> <LongIncentivePage /> </PrimaryLayout>)} />
-                        <Route exact path="/longincentive/create" render={() => (<PrimaryLayout> <CreateLongIncentivePage /> </PrimaryLayout>)} />
-                        <Route exact path="/longincentive/update" render={() => (<PrimaryLayout> <UpdateLongIncentivePage /> </PrimaryLayout>)} />
+            <Route
+              exact
+              path="/longincentive"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <LongIncentivePage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/longincentive/create"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <CreateLongIncentivePage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/longincentive/update"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <UpdateLongIncentivePage />{" "}
+                </PrimaryLayout>
+              )}
+            />
 
-                        <Route exact path="/longincentive/equityrange" render={() => (<PrimaryLayout> <EquityRangePage /> </PrimaryLayout>)} />
-                        <Route exact path="/longincentive/equityrange/create" render={() => (<PrimaryLayout> <CreateEquityRangePage /> </PrimaryLayout>)} />
-                        <Route exact path="/longincentive/equityrange/update" render={() => (<PrimaryLayout> <UpdateEquityRangePage /> </PrimaryLayout>)} />
+            <Route
+              exact
+              path="/longincentive/equityrange"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <EquityRangePage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/longincentive/equityrange/create"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <CreateEquityRangePage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/longincentive/equityrange/update"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <UpdateEquityRangePage />{" "}
+                </PrimaryLayout>
+              )}
+            />
 
-                        <Route exact path="/salaryrange" render={() => (<PrimaryLayout> <SalaryRangePage /> </PrimaryLayout>)} />
-                        <Route exact path="/salaryrange/create" render={() => (<PrimaryLayout> <CreateSalaryRangePage /> </PrimaryLayout>)} />
-                        <Route exact path="/salaryrange/update" render={() => (<PrimaryLayout> <UpdateSalaryRangePage /> </PrimaryLayout>)} />
+            <Route
+              exact
+              path="/salaryrange"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <SalaryRangePage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/salaryrange/create"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <CreateSalaryRangePage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/salaryrange/update"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <UpdateSalaryRangePage />{" "}
+                </PrimaryLayout>
+              )}
+            />
 
-                        <Route exact path="/targetbonus" render={() => (<PrimaryLayout> <TargetBonusPage /> </PrimaryLayout>)} />
-                        <Route exact path="/targetbonus/create" render={() => (<PrimaryLayout> <CreateTargetBonusPage /> </PrimaryLayout>)} />
-                        <Route exact path="/targetbonus/update" render={() => (<PrimaryLayout> <UpdateTargetBonusPage /> </PrimaryLayout>)} />
+            <Route
+              exact
+              path="/targetbonus"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <TargetBonusPage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/targetbonus/create"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <CreateTargetBonusPage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/targetbonus/update"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <UpdateTargetBonusPage />{" "}
+                </PrimaryLayout>
+              )}
+            />
 
-                        <Route exact path="/signons" render={() => (<PrimaryLayout> <SignonsPage /> </PrimaryLayout>)} />
-                        <Route exact path="/signons/create" render={() => (<PrimaryLayout> <CreateSignonsPage /> </PrimaryLayout>)} />
-                        <Route exact path="/signons/update" render={() => (<PrimaryLayout> <UpdateSignonsPage /> </PrimaryLayout>)} />
+            <Route
+              exact
+              path="/signons"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <SignonsPage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/signons/create"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <CreateSignonsPage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/signons/update"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <UpdateSignonsPage />{" "}
+                </PrimaryLayout>
+              )}
+            />
 
-                        <Route exact path="/payrollupload" render={() => (<PrimaryLayout> <PayrollUploadPage /> </PrimaryLayout>)} />
-
-                    </Switch>
-                </ConnectedRouter>
-            )
-        }
-        else {
-            return (
-                <div />
-            )
-        }
+            <Route
+              exact
+              path="/payrollupload"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <PayrollUploadPage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+          </Switch>
+        </ConnectedRouter>
+      );
+    } else {
+      return <div />;
     }
+  }
 }
 
 function mapStateToProps(state: any) {
-    return {
-        init: state.initReducer.init
-    }
+  return {
+    init: state.initReducer.init
+  };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(RootRoute)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(RootRoute);

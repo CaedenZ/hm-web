@@ -5,29 +5,16 @@ import {
   Theme,
   createStyles,
   WithStyles,
-  withStyles,
-  Grid,
-  Paper,
-  TextField,
-  Divider,
-  FormControl,
-  Checkbox,
-  FormControlLabel,
-  Button,
-  InputLabel,
-  Select,
-  MenuItem
+  withStyles
 } from "@material-ui/core";
-import CustomButton from "../component/CustomButton";
-import Avatar from 'react-avatar-edit'
 import { mapDispatchToProps } from "../../../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../../interface/propsInterface";
-import { history } from "../../../../store"
+import { history } from "../../../../store";
 import { RootState } from "../../../../reducer";
-import { SalaryRange } from "../../../../interface/salaryrangeInterface";
+import { SalaryRange } from "../../../../interface/salaryRangeInterface";
 import { Country } from "../../../../interface/countryInterface";
-import FormPage from "../component/form"
+import FormPage from "../component/form";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -39,7 +26,7 @@ const styles = (theme: Theme) =>
     },
     textField: {
       width: 200,
-      margin: 20,
+      margin: 20
     },
     // formControl: {
     //   margin: theme.spacing.unit * 3,
@@ -50,8 +37,7 @@ const styles = (theme: Theme) =>
       color: theme.palette.text.secondary,
       flexDirection: "column"
     },
-    preview: {
-    },
+    preview: {},
     divAvatar: {
       margin: theme.spacing.unit * 3,
       alignSelf: "baseline",
@@ -72,31 +58,30 @@ const styles = (theme: Theme) =>
     },
     formControl: {
       margin: theme.spacing.unit,
-      minWidth: 120,
-    },
+      minWidth: 120
+    }
   });
 
-export interface Props extends InState, WithStyles<typeof styles>, SharedDispatchProps { }
+export interface Props
+  extends InState,
+    WithStyles<typeof styles>,
+    SharedDispatchProps {}
 interface InState {
-  salaryrange: SalaryRange,
-  countryList: Country[],
+  salaryrange: SalaryRange;
+  countryList: Country[];
 }
 
 class UpdateSalaryRangePage extends Component<Props> {
-
-
   constructor(props) {
-    super(props)
-    this.handleUpdateSalaryRange = this.handleUpdateSalaryRange.bind(this)
+    super(props);
+    this.handleUpdateSalaryRange = this.handleUpdateSalaryRange.bind(this);
   }
-
-
 
   handleUpdateSalaryRange = (e, data) => {
-    e.preventDefault()
-    this.props.updateSalaryRange(data)
-    history.goBack()
-  }
+    e.preventDefault();
+    this.props.updateSalaryRange(data);
+    history.goBack();
+  };
 
   render() {
     const { classes } = this.props;
@@ -104,8 +89,12 @@ class UpdateSalaryRangePage extends Component<Props> {
       <div className={classes.root}>
         <Typography component="h1" variant="h5">
           Update SalaryRange
-      </Typography>
-        <FormPage create={false} updateData={this.props.salaryrange} onSubmit={(e, data) => this.handleUpdateSalaryRange(e, data)} />
+        </Typography>
+        <FormPage
+          create={false}
+          updateData={this.props.salaryrange}
+          onSubmit={(e, data) => this.handleUpdateSalaryRange(e, data)}
+        />
       </div>
     );
   }
@@ -118,8 +107,11 @@ class UpdateSalaryRangePage extends Component<Props> {
 function mapStateToProps(state: RootState) {
   return {
     salaryrange: state.salaryRangeReducer.selectSalaryRange,
-    countryList: state.countryReducer.countryList,
-  }
+    countryList: state.countryReducer.countryList
+  };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(UpdateSalaryRangePage));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(UpdateSalaryRangePage));

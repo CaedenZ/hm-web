@@ -1,5 +1,5 @@
 import $axios from "../plugin/axios";
-import { ShortIncentive, CREATESHORTINCENTIVECRED, UPDATESHORTINCENTIVECRED } from "../interface/shortincentiveInterface";
+import { ShortIncentive, CREATESHORTINCENTIVECRED, UPDATESHORTINCENTIVECRED } from "../interface/shortIncentiveInterface";
 
 export const getShortIncentiveList = async (token, payload): Promise<ShortIncentive[]> => {
 

@@ -6,29 +6,16 @@ import {
   withStyles,
   WithStyles
 } from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
-import { render } from "react-dom";
 import CustomButton from "./component/CustomButton";
 import { RootState } from "../../../reducer";
 import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../interface/propsInterface";
 import { Signons } from "../../../interface/signonsInterface";
-import { Button, IconButton, FormControl, InputLabel, Select, MenuItem, Grid, FormControlLabel, Checkbox } from "@material-ui/core";
-import DeleteIcon from '@material-ui/icons/Delete';
 import { history } from "../../../store";
-import UpdateIcon from '@material-ui/icons/PlaylistAddCheck';
-import ResetIcon from '@material-ui/icons/BorderColor';
-import ResetPassword from './component/resetPassword';
 import { Company } from "../../../interface/companyInterface";
 import { Country } from "../../../interface/countryInterface";
-import CustomizedTable from './component/table'
-
+import CustomizedTable from "./component/table";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -47,70 +34,69 @@ const styles = (theme: Theme) =>
     },
     logo: {
       height: "20px"
-    },
+    }
   });
 
-export interface Props extends WithStyles<typeof styles>, SharedDispatchProps, InState { }
+export interface Props
+  extends WithStyles<typeof styles>,
+    SharedDispatchProps,
+    InState {}
 
 interface State {
-  country: string,
-  global: boolean,
+  country: string;
+  global: boolean;
 }
 
 interface InState {
-  countryList: Country[],
-  selectedCompany: Company,
-  signonsList: Signons[],
+  countryList: Country[];
+  selectedCompany: Company;
+  signonsList: Signons[];
 }
 class SignonsPage extends React.Component<Props, State> {
-
   state = {
-    country: '',
-    global: true,
-  }
+    country: "",
+    global: true
+  };
 
   componentDidMount() {
-    console.log('SignonsPage MOunt')
-    if (this.props.selectedCompany.company_id === '') {
+    console.log("SignonsPage MOunt");
+    if (this.props.selectedCompany.company_id === "") {
       let data = {
-        type: 'warning',
-        object: 'Please Select a Company first',
-        id: '1'
-      }
-      this.props.showDialog(data)
-    }
-    else this.props.getSignonsList()
+        type: "warning",
+        object: "Please Select a Company first",
+        id: "1"
+      };
+      this.props.showDialog(data);
+    } else this.props.getSignonsList();
   }
 
-  handleUpdateButtonClick = (signons) => {
-    this.props.selectSignons(signons)
-    history.push('/signons/update')
-    console.log('clicked')
-  }
+  handleUpdateButtonClick = signons => {
+    this.props.selectSignons(signons);
+    history.push("/signons/update");
+    console.log("clicked");
+  };
 
-  handleDelete = (id, index) => {
-
+  handleDelete = id => {
     const payload = {
-      type: 'delete',
-      object: 'signons',
-      id: id,
-    }
-    this.props.showDialog(payload)
-  }
+      type: "delete",
+      object: "signons",
+      id: id
+    };
+    this.props.showDialog(payload);
+  };
 
   handleNewGrade = () => {
-    history.push('/signons/create')
-  }
-
-
+    history.push("/signons/create");
+  };
 
   render() {
-
     return (
       <main>
-        <CustomButton onClick={this.handleNewGrade}>Create New Sign Ons</CustomButton>
+        <CustomButton onClick={this.handleNewGrade}>
+          Create New Sign Ons
+        </CustomButton>
         <CustomizedTable signonsList={this.props.signonsList} />
-      </main >
+      </main>
     );
   }
 }
@@ -123,8 +109,11 @@ function mapStateToProps(state: RootState) {
   return {
     countryList: state.countryReducer.countryList,
     selectedCompany: state.companyReducer.selectedCompany,
-    signonsList: state.signonsReducer.signonsList,
-  }
+    signonsList: state.signonsReducer.signonsList
+  };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(SignonsPage));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(SignonsPage));

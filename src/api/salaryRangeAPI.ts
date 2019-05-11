@@ -1,5 +1,5 @@
 import $axios from "../plugin/axios";
-import { SalaryRange, CREATESALARYRANGECRED, UPDATESALARYRANGECRED } from "../interface/salaryrangeInterface";
+import { SalaryRange, CREATESALARYRANGECRED, UPDATESALARYRANGECRED } from "../interface/salaryRangeInterface";
 
 export const getSalaryRangeList = async (token, payload): Promise<SalaryRange[]> => {
 

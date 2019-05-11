@@ -13,17 +13,15 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import CustomButton from "./component/CustomButton";
-import { RootState } from "../../reducer";
 import { mapDispatchToProps } from "../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../interface/propsInterface";
 import { JobFunction } from "../../interface/jobfunctionInterface";
-import { Collapse, Button, IconButton } from "@material-ui/core";
-import { Link } from "react-router-dom";
-import DeleteIcon from '@material-ui/icons/Delete';
-import AddIcon from '@material-ui/icons/Add';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import classnames from 'classnames';
+import { Collapse, IconButton } from "@material-ui/core";
+import DeleteIcon from "@material-ui/icons/Delete";
+import AddIcon from "@material-ui/icons/Add";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import classnames from "classnames";
 import { history } from "../../store";
 
 const CustomTableCell = withStyles(theme => ({
@@ -52,82 +50,71 @@ const styles = (theme: Theme) =>
       }
     },
     expand: {
-      transform: 'rotate(0deg)',
-      marginLeft: 'auto',
-      transition: theme.transitions.create('transform', {
-        duration: theme.transitions.duration.shortest,
-      }),
+      transform: "rotate(0deg)",
+      marginLeft: "auto",
+      transition: theme.transitions.create("transform", {
+        duration: theme.transitions.duration.shortest
+      })
     },
     expandOpen: {
-      transform: 'rotate(180deg)',
-    },
+      transform: "rotate(180deg)"
+    }
   });
 
 let id = 0;
-function createData(
-  name: any,
-  calories: any,
-  fat: any,
-  carbs: any,
-  protein: any
-) {
-  id += 1;
-  return { id, name, calories, fat, carbs, protein };
-}
 
-
-export interface Props extends WithStyles<typeof styles>, SharedDispatchProps, InState { }
-
-interface State {
-}
+export interface Props
+  extends WithStyles<typeof styles>,
+    SharedDispatchProps,
+    InState {}
 
 interface InState {
-  jobFunctionList: JobFunction[]
+  jobFunctionList: JobFunction[];
 }
 class CustomizedTable extends React.Component<Props, any> {
   constructor(props) {
-    super(props)
-    this.handleClick = this.handleClick.bind(this)
-    this.handleNewJobFunctionClick = this.handleNewJobFunctionClick.bind(this)
-    this.handleDeleteJF = this.handleDeleteJF.bind(this)
-    this.handleDeleteSJF = this.handleDeleteSJF.bind(this)
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+    this.handleNewJobFunctionClick = this.handleNewJobFunctionClick.bind(this);
+    this.handleDeleteJF = this.handleDeleteJF.bind(this);
+    this.handleDeleteSJF = this.handleDeleteSJF.bind(this);
   }
 
   state = {
     1: false
-  }
+  };
 
   componentDidMount() {
-    console.log('JobFunctionPage Mount')
+    console.log("JobFunctionPage Mount");
   }
 
   handleNewJobFunctionClick = (jobFunction: JobFunction) => {
-    this.props.selectJobFunction(jobFunction)
-    history.push('/jobfunction/createsub')
-  }
+    this.props.selectJobFunction(jobFunction);
+    history.push("/jobfunction/createsub");
+  };
 
-  handleDeleteJF = (id) => {
+  handleDeleteJF = id => {
     const payload = {
-      type: 'delete',
-      object: 'jobfunction',
-      id: id,
-    }
-    this.props.showDialog(payload)
-  }
+      type: "delete",
+      object: "jobfunction",
+      id: id
+    };
+    this.props.showDialog(payload);
+  };
 
-  handleDeleteSJF = (id) => {
+  handleDeleteSJF = id => {
     const payload = {
-      type: 'delete',
-      object: 'subjobfunction',
-      id: id,
-    }
-    this.props.showDialog(payload)
-  }
+      type: "delete",
+      object: "subjobfunction",
+      id: id
+    };
+    this.props.showDialog(payload);
+  };
 
   handleClick = (index: any) => {
     this.setState(state => ({ [index]: !state[index] }));
-    console.log(this.state)
-  }
+    console.log(this.state);
+  };
 
   render() {
     const { classes } = this.props;
@@ -138,10 +125,10 @@ class CustomizedTable extends React.Component<Props, any> {
         <Paper className={classes.root}>
           <Table className={classes.table}>
             <colgroup>
-              <col style={{ width: '20%' }} />
-              <col style={{ width: '10%' }} />
-              <col style={{ width: '30%' }} />
-              <col style={{ width: '40%' }} />
+              <col style={{ width: "20%" }} />
+              <col style={{ width: "10%" }} />
+              <col style={{ width: "30%" }} />
+              <col style={{ width: "40%" }} />
             </colgroup>
             <TableHead>
               <TableRow>
@@ -150,51 +137,85 @@ class CustomizedTable extends React.Component<Props, any> {
                 <CustomTableCell align="right">Child</CustomTableCell>
               </TableRow>
             </TableHead>
-            {this.props.jobFunctionList.length > 0 && <TableBody>
-              {this.props.jobFunctionList.map((row, index) => ([
-                <TableRow className={classes.row} key={row.jobfunction_id}>
-                  <CustomTableCell component="th" scope="row">{row.job_name}</CustomTableCell>
-                  <CustomTableCell align="right">
-                    <IconButton
-                      className={classnames(classes.expand, {
-                        [classes.expandOpen]: this.state[index],
-                      })}
-                      onClick={() => this.handleClick(index)}
-                      aria-expanded={this.state[index]}
-                      aria-label="Show more"
-                    >
-                      <ExpandMoreIcon />
-                    </IconButton>
-                  </CustomTableCell>
-
-                  {!this.state[index] ? <CustomTableCell align="right">
-                    <IconButton onClick={() => this.handleDeleteJF(row.jobfunction_id)}><DeleteIcon /></IconButton> </CustomTableCell> :
-                    <CustomTableCell align="right">
-                      <Collapse key={row.job_name} in={this.state[index]} timeout="auto" unmountOnExit={true}>
-                        {row.sjobfunction.length > 0 && <TableBody>
-                          {row.sjobfunction.map(row => (
-                            <TableRow className={classes.row} key={row.sjobfunction_id}>
-                              <CustomTableCell align="right">{row.subjob_name}</CustomTableCell>
-                              <CustomTableCell align="right">
-                                <IconButton onClick={() => this.handleDeleteSJF(row.sjobfunction_id)}><DeleteIcon /></IconButton>
-                              </CustomTableCell>
-                            </TableRow>
-                          ))}
-
-                        </TableBody>
-                        }
-                        {/* <Button color="primary" variant="contained" onClick={() => this.handleNewJobFunctionClick(row)} >New SubJobFunction</Button> */}
-                        <IconButton onClick={() => this.handleNewJobFunctionClick(row)}><AddIcon /></IconButton>
-                      </Collapse>
+            {this.props.jobFunctionList.length > 0 && (
+              <TableBody>
+                {this.props.jobFunctionList.map((row, index) => [
+                  <TableRow className={classes.row} key={row.jobfunction_id}>
+                    <CustomTableCell component="th" scope="row">
+                      {row.job_name}
                     </CustomTableCell>
-                  }
-                </TableRow>,
-              ]
-              ))}
-            </TableBody>}
+                    <CustomTableCell align="right">
+                      <IconButton
+                        className={classnames(classes.expand, {
+                          [classes.expandOpen]: this.state[index]
+                        })}
+                        onClick={() => this.handleClick(index)}
+                        aria-expanded={this.state[index]}
+                        aria-label="Show more"
+                      >
+                        <ExpandMoreIcon />
+                      </IconButton>
+                    </CustomTableCell>
+
+                    {!this.state[index] ? (
+                      <CustomTableCell align="right">
+                        <IconButton
+                          onClick={() =>
+                            this.handleDeleteJF(row.jobfunction_id)
+                          }
+                        >
+                          <DeleteIcon />
+                        </IconButton>{" "}
+                      </CustomTableCell>
+                    ) : (
+                      <CustomTableCell align="right">
+                        <Collapse
+                          key={row.job_name}
+                          in={this.state[index]}
+                          timeout="auto"
+                          unmountOnExit={true}
+                        >
+                          {row.sjobfunction.length > 0 && (
+                            <TableBody>
+                              {row.sjobfunction.map(row => (
+                                <TableRow
+                                  className={classes.row}
+                                  key={row.sjobfunction_id}
+                                >
+                                  <CustomTableCell align="right">
+                                    {row.subjob_name}
+                                  </CustomTableCell>
+                                  <CustomTableCell align="right">
+                                    <IconButton
+                                      onClick={() =>
+                                        this.handleDeleteSJF(
+                                          row.sjobfunction_id
+                                        )
+                                      }
+                                    >
+                                      <DeleteIcon />
+                                    </IconButton>
+                                  </CustomTableCell>
+                                </TableRow>
+                              ))}
+                            </TableBody>
+                          )}
+                          {/* <Button color="primary" variant="contained" onClick={() => this.handleNewJobFunctionClick(row)} >New SubJobFunction</Button> */}
+                          <IconButton
+                            onClick={() => this.handleNewJobFunctionClick(row)}
+                          >
+                            <AddIcon />
+                          </IconButton>
+                        </Collapse>
+                      </CustomTableCell>
+                    )}
+                  </TableRow>
+                ])}
+              </TableBody>
+            )}
           </Table>
         </Paper>
-      </main >
+      </main>
     );
   }
 }
@@ -206,7 +227,10 @@ class CustomizedTable extends React.Component<Props, any> {
 function mapStateToProps(state: any) {
   return {
     jobFunctionList: state.jobFunctionReducer.jobFunctionList
-  }
+  };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CustomizedTable));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(CustomizedTable));
