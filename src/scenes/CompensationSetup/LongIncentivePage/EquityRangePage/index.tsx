@@ -6,24 +6,13 @@ import {
   withStyles,
   WithStyles
 } from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
-import { render } from "react-dom";
 import CustomButton from "./component/CustomButton";
 import { RootState } from "../../../../reducer";
 import { mapDispatchToProps } from "../../../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../../interface/propsInterface";
 import { EquityRange } from "../../../../interface/equityRangeInterface";
-import { Button, IconButton, FormControl, InputLabel, Select, MenuItem, Grid, FormControlLabel, Checkbox } from "@material-ui/core";
-import DeleteIcon from '@material-ui/icons/Delete';
 import { history } from "../../../../store";
-import UpdateIcon from '@material-ui/icons/PlaylistAddCheck';
-import ResetIcon from '@material-ui/icons/BorderColor';
 import { Company } from "../../../../interface/companyInterface";
 import { Country } from "../../../../interface/countryInterface";
 import CustomizedTable from './component/table'
@@ -87,7 +76,7 @@ class EquityRangePage extends React.Component<Props, State> {
     console.log('clicked')
   }
 
-  handleDelete = (id, index) => {
+  handleDelete = (id) => {
 
     const payload = {
       type: 'delete',
