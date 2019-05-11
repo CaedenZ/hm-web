@@ -377,10 +377,19 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
             </List>
           </Collapse>
           <Divider />
-          {configurationfunctin()}
-          <Collapse in={this.state.expended2} timeout="auto" unmountOnExit>
+          <ListItem
+            className={classes.menubar}
+            button
+            onClick={this.handleExpandClick3}
+          >
+            <ListItemIcon>
+              <MenuIcon />
+            </ListItemIcon>
+            <ListItemText primary="Compensation Setup" />
+          </ListItem>
+          <Collapse in={this.state.expended3} timeout="auto" unmountOnExit>
             <List className={classes.navlist}>
-              {adminfunction().map(item => (
+              {jobgradefunction().map(item => (
                 <Link
                   key={item.title}
                   to={item.path}
@@ -396,19 +405,11 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
               ))}
             </List>
           </Collapse>
-          <ListItem
-            className={classes.menubar}
-            button
-            onClick={this.handleExpandClick3}
-          >
-            <ListItemIcon>
-              <MenuIcon />
-            </ListItemIcon>
-            <ListItemText primary="Compensation Setup" />
-          </ListItem>
-          <Collapse in={this.state.expended3} timeout="auto" unmountOnExit>
+          <Divider />
+          {configurationfunctin()}
+          <Collapse in={this.state.expended2} timeout="auto" unmountOnExit>
             <List className={classes.navlist}>
-              {jobgradefunction().map(item => (
+              {adminfunction().map(item => (
                 <Link
                   key={item.title}
                   to={item.path}
