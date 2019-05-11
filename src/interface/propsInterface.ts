@@ -10,11 +10,11 @@ import { CREATEROLE, UPDATEROLE, Role } from "./roleInterface";
 import { CREATESECTORCRED, CREATEINDUSTRYCRED, Sector, UPDATESECTORCRED, UPDATEINDUSTRYCRED } from "./sectorInterface";
 import { JobGrade, CREATEJOBGRADECRED, UPDATEJOBGRADECRED } from "./jobgradeInterface";
 import { Allowances, CREATEALLOWANCESCRED, UPDATEALLOWANCESCRED } from "./allowanceInterface";
-import { SalaryRange, CREATESALARYRANGECRED, UPDATESALARYRANGECRED } from "./salaryrangeInterface";
-import { TargetBonus, CREATETARGETBONUSCRED, UPDATETARGETBONUSCRED } from "./targetbonusInterface";
+import { SalaryRange, CREATESALARYRANGECRED, UPDATESALARYRANGECRED } from "./salaryRangeInterface";
+import { TargetBonus, CREATETARGETBONUSCRED, UPDATETARGETBONUSCRED } from "./targetBonusInterface";
 import { Signons, CREATESIGNONSCRED, UPDATESIGNONSCRED } from "./signonsInterface";
-import { LongIncentive, CREATELONGINCENTIVECRED, UPDATELONGINCENTIVECRED } from "./longincentiveInterface";
-import { ShortIncentive, CREATESHORTINCENTIVECRED, UPDATESHORTINCENTIVECRED } from "./shortincentiveInterface";
+import { LongIncentive, CREATELONGINCENTIVECRED, UPDATELONGINCENTIVECRED } from "./longIncentiveInterface";
+import { ShortIncentive, CREATESHORTINCENTIVECRED, UPDATESHORTINCENTIVECRED } from "./shortIncentiveInterface";
 import { EquityRange, CREATEEQUITYRANGECRED, UPDATEEQUITYRANGECRED } from "./equityRangeInterface";
 
 export interface SharedDispatchProps {

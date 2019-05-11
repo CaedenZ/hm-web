@@ -9,7 +9,7 @@ import {
     flatMap,
 } from "rxjs/operators"
 import { of, from } from "rxjs"
-import { TargetBonusState, TargetBonus } from "../interface/targetbonusInterface";
+import { TargetBonusState, TargetBonus } from "../interface/targetBonusInterface";
 import { getTargetBonusList, createTargetBonus, deleteTargetBonus, updateTargetBonus } from "../api/targetBonusAPI";
 import { getTargetBonusListAction, createTargetBonusAction, deleteTargetBonusAction, updateTargetBonusAction } from "../actions/targetBonusAction";
 import { isActionOf } from "typesafe-actions";

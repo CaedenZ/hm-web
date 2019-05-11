@@ -25,7 +25,7 @@ import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../../interface/propsInterface";
 import { history } from "../../../../store"
 import { RootState } from "../../../../reducer";
-import { TargetBonus } from "../../../../interface/targetbonusInterface";
+import { TargetBonus } from "../../../../interface/targetBonusInterface";
 import { Country } from "../../../../interface/countryInterface";
 import FormPage from "../component/form"
 

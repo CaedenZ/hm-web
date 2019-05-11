@@ -9,7 +9,7 @@ import {
     flatMap,
 } from "rxjs/operators"
 import { of, from } from "rxjs"
-import { SalaryRangeState, SalaryRange } from "../interface/salaryrangeInterface";
+import { SalaryRangeState, SalaryRange } from "../interface/salaryRangeInterface";
 import { getSalaryRangeList, createSalaryRange, deleteSalaryRange, updateSalaryRange } from "../api/salaryRangeAPI";
 import { getSalaryRangeListAction, createSalaryRangeAction, deleteSalaryRangeAction, updateSalaryRangeAction } from "../actions/salaryRangeAction";
 import { isActionOf } from "typesafe-actions";

@@ -1,5 +1,5 @@
 import { createAsyncAction, createAction } from "typesafe-actions";
-import { ShortIncentive, CREATESHORTINCENTIVECRED, UPDATESHORTINCENTIVECRED } from "../interface/shortincentiveInterface";
+import { ShortIncentive, CREATESHORTINCENTIVECRED, UPDATESHORTINCENTIVECRED } from "../interface/shortIncentiveInterface";
 
 const SELECT_SHORTINCENTIVE = "SELECT_SHORTINCENTIVE"
 export const selectShortIncentiveAction = createAction(SELECT_SHORTINCENTIVE,

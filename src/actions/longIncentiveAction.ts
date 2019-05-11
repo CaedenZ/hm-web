@@ -1,5 +1,5 @@
 import { createAsyncAction, createAction } from "typesafe-actions";
-import { LongIncentive, CREATELONGINCENTIVECRED, UPDATELONGINCENTIVECRED } from "../interface/longincentiveInterface";
+import { LongIncentive, CREATELONGINCENTIVECRED, UPDATELONGINCENTIVECRED } from "../interface/longIncentiveInterface";
 
 const SELECT_LONGINCENTIVE = "SELECT_LONGINCENTIVE"
 export const selectLongIncentiveAction = createAction(SELECT_LONGINCENTIVE,

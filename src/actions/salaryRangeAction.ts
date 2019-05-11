@@ -1,5 +1,5 @@
 import { createAsyncAction, createAction } from "typesafe-actions";
-import { SalaryRange, CREATESALARYRANGECRED, UPDATESALARYRANGECRED } from "../interface/salaryrangeInterface";
+import { SalaryRange, CREATESALARYRANGECRED, UPDATESALARYRANGECRED } from "../interface/salaryRangeInterface";
 
 const SELECT_SALARYRANGE = "SELECT_SALARYRANGE"
 export const selectSalaryRangeAction = createAction(SELECT_SALARYRANGE,

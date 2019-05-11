@@ -25,7 +25,7 @@ import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../../interface/propsInterface";
 import { history } from "../../../../store"
 import { RootState } from "../../../../reducer";
-import { SalaryRange } from "../../../../interface/salaryrangeInterface";
+import { SalaryRange } from "../../../../interface/salaryRangeInterface";
 import { Country } from "../../../../interface/countryInterface";
 import FormPage from "../component/form"
 

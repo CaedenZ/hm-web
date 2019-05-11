@@ -21,7 +21,7 @@ import ListIcon from '@material-ui/icons/List';
 import { SharedDispatchProps } from "../../../../interface/propsInterface";
 import { Country } from "../../../../interface/countryInterface";
 import { Company } from "../../../../interface/companyInterface";
-import { LongIncentive } from "../../../../interface/longincentiveInterface";
+import { LongIncentive } from "../../../../interface/longIncentiveInterface";
 import { RootState } from "../../../../reducer";
 import { mapDispatchToProps } from "../../../../helper/dispachProps";
 import { connect } from "react-redux";

@@ -1,5 +1,5 @@
 import { createAsyncAction, createAction } from "typesafe-actions";
-import { TargetBonus, CREATETARGETBONUSCRED, UPDATETARGETBONUSCRED } from "../interface/targetbonusInterface";
+import { TargetBonus, CREATETARGETBONUSCRED, UPDATETARGETBONUSCRED } from "../interface/targetBonusInterface";
 
 const SELECT_TARGETBONUS = "SELECT_TARGETBONUS"
 export const selectTargetBonusAction = createAction(SELECT_TARGETBONUS,

@@ -20,7 +20,7 @@ import ListIcon from '@material-ui/icons/List';
 import { SharedDispatchProps } from "../../../../interface/propsInterface";
 import { Country } from "../../../../interface/countryInterface";
 import { Company } from "../../../../interface/companyInterface";
-import { SalaryRange } from "../../../../interface/salaryrangeInterface";
+import { SalaryRange } from "../../../../interface/salaryRangeInterface";
 import { RootState } from "../../../../reducer";
 import { mapDispatchToProps } from "../../../../helper/dispachProps";
 import { connect } from "react-redux";
