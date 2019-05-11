@@ -67,6 +67,16 @@ class CustomizedTable extends React.Component<Props, State> {
     console.log("CompangPage Mount");
   }
 
+  sortCompanyListcompare(
+    a: { company_name: string },
+    b: { company_name: string }
+  ) {
+    console.log(a.company_name);
+    console.log(b.company_name);
+    console.log(a.company_name.localeCompare(b.company_name));
+    return a.company_name.localeCompare(b.company_name);
+  }
+
   handleUpdateButtonClick = company => {
     console.log(company);
     this.props.selectUpdateCompany(company);
@@ -105,42 +115,44 @@ class CustomizedTable extends React.Component<Props, State> {
             </TableHead>
             {this.props.companyList.length > 0 && (
               <TableBody>
-                {this.props.companyList.map(row => (
-                  <TableRow className={classes.row} key={row.company_id}>
-                    <CustomTableCell component="th" scope="row">
-                      {row.company_name}
-                    </CustomTableCell>
-                    <CustomTableCell align="left">
-                      {row.contact_person}
-                    </CustomTableCell>
-                    <CustomTableCell align="left">
-                      {row.contact_number}
-                    </CustomTableCell>
-                    <CustomTableCell align="left">
-                      {row.contact_email}
-                    </CustomTableCell>
-                    <CustomTableCell align="left">
-                      <IconButton
-                        onClick={() => this.handleViewButtonClick(row)}
-                      >
-                        <ViewIcon />
-                      </IconButton>
-                      <IconButton
-                        onClick={() => this.handleUpdateButtonClick(row)}
-                      >
-                        <UpdateIcon />
-                      </IconButton>
-                      {/* <Button color="primary" variant="contained" onClick={() => this.handleUpdateButtonClick(row)}>view</Button> */}
-                      {row.company_id !== "5ZwOXIkeKuPhpFriTsmD" && (
+                {this.props.companyList
+                  .sort(this.sortCompanyListcompare)
+                  .map(row => (
+                    <TableRow className={classes.row} key={row.company_id}>
+                      <CustomTableCell component="th" scope="row">
+                        {row.company_name}
+                      </CustomTableCell>
+                      <CustomTableCell align="left">
+                        {row.contact_person}
+                      </CustomTableCell>
+                      <CustomTableCell align="left">
+                        {row.contact_number}
+                      </CustomTableCell>
+                      <CustomTableCell align="left">
+                        {row.contact_email}
+                      </CustomTableCell>
+                      <CustomTableCell align="left">
                         <IconButton
-                          onClick={() => this.handleDelete(row.company_id)}
+                          onClick={() => this.handleViewButtonClick(row)}
                         >
-                          <DeleteIcon />
+                          <ViewIcon />
                         </IconButton>
-                      )}
-                    </CustomTableCell>
-                  </TableRow>
-                ))}
+                        <IconButton
+                          onClick={() => this.handleUpdateButtonClick(row)}
+                        >
+                          <UpdateIcon />
+                        </IconButton>
+                        {/* <Button color="primary" variant="contained" onClick={() => this.handleUpdateButtonClick(row)}>view</Button> */}
+                        {row.company_id !== "5ZwOXIkeKuPhpFriTsmD" && (
+                          <IconButton
+                            onClick={() => this.handleDelete(row.company_id)}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        )}
+                      </CustomTableCell>
+                    </TableRow>
+                  ))}
               </TableBody>
             )}
           </Table>
