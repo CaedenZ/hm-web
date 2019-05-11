@@ -97,10 +97,10 @@ class CustomizedTable extends React.Component<Props, State> {
             <TableHead>
               <TableRow>
                 <CustomTableCell>Company Name</CustomTableCell>
-                <CustomTableCell align="right">Contact Person</CustomTableCell>
-                <CustomTableCell align="right">Contact Number</CustomTableCell>
-                <CustomTableCell align="right">Contact Emai</CustomTableCell>
-                <CustomTableCell align="right">Action</CustomTableCell>
+                <CustomTableCell align="left">Contact Person</CustomTableCell>
+                <CustomTableCell align="left">Contact Number</CustomTableCell>
+                <CustomTableCell align="left">Contact Email</CustomTableCell>
+                <CustomTableCell align="left">Action</CustomTableCell>
               </TableRow>
             </TableHead>
             {this.props.companyList.length > 0 && (
@@ -110,16 +110,16 @@ class CustomizedTable extends React.Component<Props, State> {
                     <CustomTableCell component="th" scope="row">
                       {row.company_name}
                     </CustomTableCell>
-                    <CustomTableCell align="right">
+                    <CustomTableCell align="left">
                       {row.contact_person}
                     </CustomTableCell>
-                    <CustomTableCell align="right">
+                    <CustomTableCell align="left">
                       {row.contact_number}
                     </CustomTableCell>
-                    <CustomTableCell align="right">
+                    <CustomTableCell align="left">
                       {row.contact_email}
                     </CustomTableCell>
-                    <CustomTableCell align="right">
+                    <CustomTableCell align="left">
                       <IconButton
                         onClick={() => this.handleViewButtonClick(row)}
                       >
