@@ -8486,6 +8486,11 @@ promise-inflight@^1.0.1:
   resolved "https://registry.yarnpkg.com/promise-inflight/-/promise-inflight-1.0.1.tgz#98472870bf228132fcbdd868129bad12c3c029e3"
   integrity sha1-mEcocL8igTL8vdhoEputEsPAKeM=
 
+promise-polyfill@8.1.0:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/promise-polyfill/-/promise-polyfill-8.1.0.tgz#30059da54d1358ce905ac581f287e184aedf995d"
+  integrity sha512-OzSf6gcCUQ01byV4BgwyUCswlaQQ6gzXc23aLQWhicvfX9kfsUiUhgt3CCQej8jDnl8/PhGF31JdHX2/MzF3WA==
+
 promise@8.0.2:
   version "8.0.2"
   resolved "https://registry.yarnpkg.com/promise/-/promise-8.0.2.tgz#9dcd0672192c589477d56891271bdc27547ae9f0"
@@ -8769,6 +8774,14 @@ react-event-listener@^0.6.2:
     prop-types "^15.6.0"
     warning "^4.0.1"
 
+react-form-validator-core@0.6.3:
+  version "0.6.3"
+  resolved "https://registry.yarnpkg.com/react-form-validator-core/-/react-form-validator-core-0.6.3.tgz#9d75496ecec245e4baf7c40dbb3deefed1f88994"
+  integrity sha512-77gbQ1CrA9N0EJmOCKnm/aW1DYhRSZ9YSce4Y9/UymDWZU8pR3jLVWaOS6wVVg2fpK8GiZN4YoBRxfpY0p8maA==
+  dependencies:
+    promise-polyfill "8.1.0"
+    react-lifecycles-compat "^3.0.2"
+
 react-is@^16.5.2, react-is@^16.6.3, react-is@^16.7.0:
   version "16.8.3"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.8.3.tgz#4ad8b029c2a718fc0cfc746c8d4e1b7221e5387d"
@@ -8785,6 +8798,13 @@ react-is@^16.8.2:
 react-lifecycles-compat@^3.0.2, react-lifecycles-compat@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
+
+react-material-ui-form-validator@^2.0.8:
+  version "2.0.8"
+  resolved "https://registry.yarnpkg.com/react-material-ui-form-validator/-/react-material-ui-form-validator-2.0.8.tgz#01d81b5a49d94af6f5a6e64b45eb9fc857d52ae1"
+  integrity sha512-U+HuORWdA7GmFgNbHOc2HrEQ3OLLZYQO+DENPX6X843VR0rOyojQrNh00ePuFIRSnpv6ZGNz5ob5ShBUYnchPQ==
+  dependencies:
+    react-form-validator-core "0.6.3"
 
 react-native-gesture-handler@~1.0.14:
   version "1.0.16"
