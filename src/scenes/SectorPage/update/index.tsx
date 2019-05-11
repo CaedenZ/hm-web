@@ -10,20 +10,14 @@ import {
   Paper,
   TextField,
   Divider,
-  FormControl,
-  Checkbox,
-  FormControlLabel,
   Button
 } from "@material-ui/core";
-import CustomButton from "../component/CustomButton";
-import Avatar from "react-avatar-edit";
 import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../interface/propsInterface";
-import { RootState } from "../../../reducer";
 import { history } from "../../../store";
 
-const styles = (theme: Theme) =>
+const styles = () =>
   createStyles({
     root: {
       flexGrow: 1
