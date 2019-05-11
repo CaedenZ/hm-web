@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import {
   Typography,
-  Theme,
   createStyles,
   WithStyles,
   withStyles,

@@ -5,28 +5,15 @@ import {
   Theme,
   createStyles,
   WithStyles,
-  withStyles,
-  Grid,
-  Paper,
-  TextField,
-  Divider,
-  FormControl,
-  Checkbox,
-  FormControlLabel,
-  Button,
-  InputLabel,
-  Select,
-  MenuItem
+  withStyles
 } from "@material-ui/core";
-import CustomButton from "../component/CustomButton";
-import Avatar from 'react-avatar-edit'
 import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../interface/propsInterface";
-import { Company, UPDATECOMPANYCRED } from "../../../interface/companyInterface";
-import { Country, CountryState } from "../../../interface/countryInterface";
+import { Company } from "../../../interface/companyInterface";
+import { CountryState } from "../../../interface/countryInterface";
 import { history } from "../../../store";
-import FormPage from "../component/form"
+import FormPage from "../component/form";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -38,7 +25,7 @@ const styles = (theme: Theme) =>
     },
     textField: {
       width: 200,
-      margin: 20,
+      margin: 20
     },
     // formControl: {
     //   margin: theme.spacing.unit * 3,
@@ -49,8 +36,7 @@ const styles = (theme: Theme) =>
       color: theme.palette.text.secondary,
       flexDirection: "column"
     },
-    preview: {
-    },
+    preview: {},
     divAvatar: {
       margin: theme.spacing.unit * 3,
       alignSelf: "baseline",
@@ -91,45 +77,45 @@ export interface UpdateCompanyState {
   parentcompany_id: string;
   webpage_url: string;
 }
-export interface Props extends InState, WithStyles<typeof styles>, SharedDispatchProps { }
+export interface Props
+  extends InState,
+    WithStyles<typeof styles>,
+    SharedDispatchProps {}
 
 interface InState {
   updatingCompany: Company;
   paremeterList: CountryState;
 }
 class UpdateCompanyPage extends Component<Props, UpdateCompanyState> {
-
-
   constructor(props) {
-    super(props)
-    this.onCrop = this.onCrop.bind(this)
-    this.onClose = this.onClose.bind(this)
-    this.onMainCrop = this.onMainCrop.bind(this)
-    this.onMainClose = this.onMainClose.bind(this)
-    this.handleUpdateCompany = this.handleUpdateCompany.bind(this)
+    super(props);
+    this.onCrop = this.onCrop.bind(this);
+    this.onClose = this.onClose.bind(this);
+    this.onMainCrop = this.onMainCrop.bind(this);
+    this.onMainClose = this.onMainClose.bind(this);
+    this.handleUpdateCompany = this.handleUpdateCompany.bind(this);
   }
-
 
   state: UpdateCompanyState = {
-    company_id: '',
+    company_id: "",
     sector: [],
-    location: '',
-    company_name: '',
+    location: "",
+    company_name: "",
     industry: [],
     country: [],
-    address: '',
-    postal_code: '',
-    logo_small: '',
-    contact_person: '',
-    contact_number: '',
-    contact_email: '',
-    hq_name: '',
-    financialyr_dt: '',
-    base_currency_id: '',
-    logo_main: '',
-    parentcompany_id: '',
-    webpage_url: '',
-  }
+    address: "",
+    postal_code: "",
+    logo_small: "",
+    contact_person: "",
+    contact_number: "",
+    contact_email: "",
+    hq_name: "",
+    financialyr_dt: "",
+    base_currency_id: "",
+    logo_main: "",
+    parentcompany_id: "",
+    webpage_url: ""
+  };
 
   // componentDidMount() {
   //   const s: UpdateCompanyState = {
@@ -152,33 +138,43 @@ class UpdateCompanyPage extends Component<Props, UpdateCompanyState> {
   //   this.setState(s)
   // }
   onClose() {
-    this.setState({ logo_small: '' })
+    this.setState({ logo_small: "" });
   }
 
   onCrop(image) {
-    this.setState({ logo_small: image })
-    console.log(this.state)
+    this.setState({ logo_small: image });
+    console.log(this.state);
   }
 
   onMainClose() {
-    this.setState({ logo_main: '' })
+    this.setState({ logo_main: "" });
   }
 
   onMainCrop(logoMain) {
-    this.setState({ logo_main: logoMain })
-    console.log(this.state)
+    this.setState({ logo_main: logoMain });
+    console.log(this.state);
   }
 
-  handleChange = (statekay: keyof UpdateCompanyState) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ [statekay]: event.target.value } as unknown as Pick<UpdateCompanyState, keyof UpdateCompanyState>);
+  handleChange = (statekay: keyof UpdateCompanyState) => (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    this.setState(({ [statekay]: event.target.value } as unknown) as Pick<
+      UpdateCompanyState,
+      keyof UpdateCompanyState
+    >);
   };
 
-  handleChangeSelect = (statekay: keyof UpdateCompanyState) => (event: React.ChangeEvent<HTMLSelectElement>) => {
-    this.setState({ [statekay]: event.target.value } as unknown as Pick<UpdateCompanyState, keyof UpdateCompanyState>);
+  handleChangeSelect = (statekay: keyof UpdateCompanyState) => (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    this.setState(({ [statekay]: event.target.value } as unknown) as Pick<
+      UpdateCompanyState,
+      keyof UpdateCompanyState
+    >);
   };
 
   handleUpdateCompany = (e, data) => {
-    e.preventDefault()
+    e.preventDefault();
     // const a: UPDATECOMPANYCRED = {
     //   ...this.state,
     //   country: [],
@@ -198,9 +194,9 @@ class UpdateCompanyPage extends Component<Props, UpdateCompanyState> {
     //   a.industry.push({ name: element })
     // });
 
-    this.props.updateCompany(data)
-    history.goBack()
-  }
+    this.props.updateCompany(data);
+    history.goBack();
+  };
 
   render() {
     const { classes } = this.props;
@@ -208,8 +204,12 @@ class UpdateCompanyPage extends Component<Props, UpdateCompanyState> {
       <div className={classes.root}>
         <Typography component="h1" variant="h5">
           New Company
-      </Typography>
-        <FormPage create={false} updateData={this.props.updatingCompany} onSubmit={(e, data) => this.handleUpdateCompany(e, data)} />
+        </Typography>
+        <FormPage
+          create={false}
+          updateData={this.props.updatingCompany}
+          onSubmit={(e, data) => this.handleUpdateCompany(e, data)}
+        />
       </div>
     );
   }
@@ -223,7 +223,10 @@ function mapStateToProps(state: any) {
   return {
     updatingCompany: state.companyReducer.companyList[0],
     paremeterList: state.countryReducer
-  }
+  };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(UpdateCompanyPage));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(UpdateCompanyPage));
