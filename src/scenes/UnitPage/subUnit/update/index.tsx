@@ -5,34 +5,19 @@ import {
   Theme,
   createStyles,
   WithStyles,
-  withStyles,
-  Grid,
-  Paper,
-  TextField,
-  Divider,
-  FormControl,
-  Checkbox,
-  FormControlLabel,
-  Button,
-  InputLabel,
-  Select,
-  MenuItem
+  withStyles
 } from "@material-ui/core";
 import { mapDispatchToProps } from "../../../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../../interface/propsInterface";
 import { RootState } from "../../../../reducer";
-import {
-  Unit,
-  Company,
-  UPDATEUNITCRED
-} from "../../../../interface/companyInterface";
+import { Unit, Company } from "../../../../interface/companyInterface";
 import { history } from "../../../../store";
 import { Country } from "../../../../interface/countryInterface";
 import { Region } from "../../../../interface/regionInterface";
 import FormPage from "../../component/form";
 
-const styles = (theme: Theme) =>
+const styles = () =>
   createStyles({
     root: {
       flexGrow: 1

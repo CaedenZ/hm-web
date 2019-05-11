@@ -12,19 +12,17 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import { render } from "react-dom";
 import CustomButton from "./component/CustomButton";
 import { SharedDispatchProps } from "../../interface/propsInterface";
 import { Company, Unit } from "../../interface/companyInterface";
 import { RootState } from "../../reducer";
 import { mapDispatchToProps } from "../../helper/dispachProps";
 import { connect } from "react-redux";
-import { Button, IconButton, Menu, MenuItem } from "@material-ui/core";
-import { Redirect } from "react-router-dom";
-import DeleteIcon from '@material-ui/icons/Delete';
+import { IconButton, Menu, MenuItem } from "@material-ui/core";
+import DeleteIcon from "@material-ui/icons/Delete";
 import { history } from "../../store";
-import UpdateIcon from '@material-ui/icons/PlaylistAddCheck';
-import ViewIcon from '@material-ui/icons/ZoomIn';
+import UpdateIcon from "@material-ui/icons/PlaylistAddCheck";
+import ViewIcon from "@material-ui/icons/ZoomIn";
 import CompanyIcon from "@material-ui/icons/Business";
 
 const CustomTableCell = withStyles(theme => ({
@@ -54,72 +52,73 @@ const styles = (theme: Theme) =>
     }
   });
 
-export interface Props extends WithStyles<typeof styles>, SharedDispatchProps, InState { }
+export interface Props
+  extends WithStyles<typeof styles>,
+    SharedDispatchProps,
+    InState {}
 
 interface State {
-  anchorEl: any,
+  anchorEl: any;
 }
 
 interface InState {
-  unitList: Unit[],
-  entityList: Company[]
+  unitList: Unit[];
+  entityList: Company[];
 }
 
 class UnitPage extends React.Component<Props, State> {
-
   state = {
-    anchorEl: null,
+    anchorEl: null
   };
 
   constructor(props) {
-    super(props)
-    this.handleViewButtonClick = this.handleViewButtonClick.bind(this)
-    this.handleUpdateButtonClick = this.handleUpdateButtonClick.bind(this)
-    this.handleDelete = this.handleDelete.bind(this)
+    super(props);
+    this.handleViewButtonClick = this.handleViewButtonClick.bind(this);
+    this.handleUpdateButtonClick = this.handleUpdateButtonClick.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
-
 
   componentDidMount() {
-    console.log('Unit Page Mount')
-    this.props.getUnitList()
+    console.log("Unit Page Mount");
+    this.props.getUnitList();
   }
 
-  handleViewButtonClick = (unit) => {
-    this.props.selectUnit(unit)
-    history.push('/unit/subunit')
-  }
+  handleViewButtonClick = unit => {
+    this.props.selectUnit(unit);
+    history.push("/unit/subunit");
+  };
 
-  handleUpdateButtonClick = (unit) => {
-    console.log('clicked')
-    this.props.selectUpdateUnit(unit)
-    history.push('/unit/update')
-  }
+  handleUpdateButtonClick = unit => {
+    console.log("clicked");
+    this.props.selectUpdateUnit(unit);
+    history.push("/unit/update");
+  };
 
   handleEntity = (row, event) => {
     switch (row.unit_type) {
-      case 'country':
-        const a = JSON.parse(row.unit_data)
-        console.log(a.country_name)
-        this.props.getCompanyByCountry(a.country_name)
-        break
-      case 'region':
-        const b = JSON.parse(row.unit_data)
-        console.log(b.region_id)
-        this.props.getCompanyByRegion(b.region_id)
-        break
+      case "country":
+        const a = JSON.parse(row.unit_data);
+        console.log(a.country_name);
+        this.props.getCompanyByCountry(a.country_name);
+        break;
+      case "region":
+        const b = JSON.parse(row.unit_data);
+        console.log(b.region_id);
+        this.props.getCompanyByRegion(b.region_id);
+        break;
     }
     this.setState({ anchorEl: event.currentTarget });
-  }
+  };
 
-  handleDelete = (id) => {
+  handleDelete = id => {
     const payload = {
-      type: 'delete',
-      object: 'unit',
-      id: id,
-    }
-    this.props.showDialog(payload)
+      type: "delete",
+      object: "unit",
+      id: id
+    };
+    this.props.showDialog(payload);
     // this.props.deleteUnit(id)
-  }
+  };
 
   handleClose = () => {
     this.setState({ anchorEl: null });
@@ -140,34 +139,65 @@ class UnitPage extends React.Component<Props, State> {
                 <CustomTableCell align="right">Action</CustomTableCell>
               </TableRow>
             </TableHead>
-            {this.props.unitList.length > 0 && <TableBody>
-              {this.props.unitList.map(row => (
-                <TableRow className={classes.row} key={row.unit_id}>
-                  <CustomTableCell component="th" scope="row">
-                    {row.unit_name}
-                  </CustomTableCell>
-                  <CustomTableCell align="right">{row.unit_type}
-                  {row.unit_type !== 'Division' &&
-                    <IconButton onClick={(e) => this.handleEntity(row, e)}><CompanyIcon /></IconButton>}
-                    <Menu
-                      id="simple-menu"
-                      anchorEl={anchorEl}
-                      open={Boolean(anchorEl)}
-                      onClose={this.handleClose}
-                    >
-                      {this.props.entityList.length > 0 ? this.props.entityList.map(e => {
-                        return (<MenuItem key={e.company_id} onClick={this.handleClose}>{e.company_name}</MenuItem>)
-                      }) : <MenuItem onClick={this.handleClose}>No exist entity</MenuItem>}
-                    </Menu>
-                  </CustomTableCell>
-                  <CustomTableCell align="right">
-                    <IconButton onClick={() => this.handleViewButtonClick(row)}><ViewIcon /></IconButton>
-                    <IconButton onClick={() => this.handleUpdateButtonClick(row)}><UpdateIcon /></IconButton>
-                    <IconButton onClick={() => this.handleDelete(row.unit_id)}><DeleteIcon /></IconButton>
-                  </CustomTableCell>
-                </TableRow>
-              ))}
-            </TableBody>}
+            {this.props.unitList.length > 0 && (
+              <TableBody>
+                {this.props.unitList.map(row => (
+                  <TableRow className={classes.row} key={row.unit_id}>
+                    <CustomTableCell component="th" scope="row">
+                      {row.unit_name}
+                    </CustomTableCell>
+                    <CustomTableCell align="right">
+                      {row.unit_type}
+                      {row.unit_type !== "Division" && (
+                        <IconButton onClick={e => this.handleEntity(row, e)}>
+                          <CompanyIcon />
+                        </IconButton>
+                      )}
+                      <Menu
+                        id="simple-menu"
+                        anchorEl={anchorEl}
+                        open={Boolean(anchorEl)}
+                        onClose={this.handleClose}
+                      >
+                        {this.props.entityList.length > 0 ? (
+                          this.props.entityList.map(e => {
+                            return (
+                              <MenuItem
+                                key={e.company_id}
+                                onClick={this.handleClose}
+                              >
+                                {e.company_name}
+                              </MenuItem>
+                            );
+                          })
+                        ) : (
+                          <MenuItem onClick={this.handleClose}>
+                            No exist entity
+                          </MenuItem>
+                        )}
+                      </Menu>
+                    </CustomTableCell>
+                    <CustomTableCell align="right">
+                      <IconButton
+                        onClick={() => this.handleViewButtonClick(row)}
+                      >
+                        <ViewIcon />
+                      </IconButton>
+                      <IconButton
+                        onClick={() => this.handleUpdateButtonClick(row)}
+                      >
+                        <UpdateIcon />
+                      </IconButton>
+                      <IconButton
+                        onClick={() => this.handleDelete(row.unit_id)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </CustomTableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            )}
           </Table>
         </Paper>
       </main>
@@ -182,8 +212,11 @@ class UnitPage extends React.Component<Props, State> {
 function mapStateToProps(state: RootState) {
   return {
     unitList: state.companyReducer.unitList,
-    entityList: state.companyReducer.unitEntity,
-  }
+    entityList: state.companyReducer.unitEntity
+  };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(UnitPage));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(UnitPage));
