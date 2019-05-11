@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import {
   createStyles,
-  Theme,
   withStyles,
   WithStyles
 } from "@material-ui/core/styles";

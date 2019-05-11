@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PermanentDrawerLeft from "./component/Drawer";
-import { RootState } from "../reducer";
 import { connect } from "react-redux";
 import { Redirect, Link as RouterLink } from "react-router-dom";
 import { mapDispatchToProps } from "../helper/dispachProps";
@@ -11,7 +10,6 @@ import Typography from "@material-ui/core/Typography";
 import CustomSnackBar from "./component/snackBar";
 import CustomDialog from "./component/deleteDialog";
 import ErrorBoundary from "./component/error";
-import { Button, Link } from "@material-ui/core";
 import { history } from "../store";
 
 export interface Props extends SharedDispatchProps {
@@ -54,7 +52,6 @@ class Layout extends Component<Props> {
       //   );
       // }
       const pathnames = history.location.pathname.split("/").filter(x => x);
-      const breadcrumbList: any = [];
 
       return (
         <Breadcrumbs

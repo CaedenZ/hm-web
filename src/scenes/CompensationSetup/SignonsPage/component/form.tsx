@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import {
   Typography,
-  Theme,
   createStyles,
   WithStyles,
   withStyles,
