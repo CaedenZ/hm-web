@@ -114,8 +114,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/login"
               render={() => (
                 <SecondaryLayout>
-                  {" "}
-                  <LoginPage />{" "}
+                  <LoginPage />
                 </SecondaryLayout>
               )}
             />
@@ -131,8 +130,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <HomePage />{" "}
+                  <HomePage />
                 </PrimaryLayout>
               )}
             />
@@ -160,8 +158,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/user"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <UserPage />{" "}
+                  <UserPage />
                 </PrimaryLayout>
               )}
             />
@@ -170,8 +167,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/user/create"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <CreateUserPage />{" "}
+                  <CreateUserPage />
                 </PrimaryLayout>
               )}
             />
@@ -180,8 +176,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/user/update"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <UpdateUserPage />{" "}
+                  <UpdateUserPage />
                 </PrimaryLayout>
               )}
             />
@@ -191,8 +186,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/company"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <CompanyPage />{" "}
+                  <CompanyPage />
                 </PrimaryLayout>
               )}
             />
@@ -201,8 +195,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/company/create"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <CreateCompanyPage />{" "}
+                  <CreateCompanyPage />
                 </PrimaryLayout>
               )}
             />
@@ -211,8 +204,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/company/update"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <UpdateCompanyPage />{" "}
+                  <UpdateCompanyPage />
                 </PrimaryLayout>
               )}
             />
@@ -221,8 +213,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/company/updateself"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <UpdateSelfCompanyPage />{" "}
+                  <UpdateSelfCompanyPage />
                 </PrimaryLayout>
               )}
             />
@@ -232,8 +223,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/entity"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <SubCompanyPage />{" "}
+                  <SubCompanyPage />
                 </PrimaryLayout>
               )}
             />
@@ -242,8 +232,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/entity/create"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <CreateSubCompanyPage />{" "}
+                  <CreateSubCompanyPage />
                 </PrimaryLayout>
               )}
             />
@@ -252,8 +241,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/entity/update"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <UpdateSubCompanyPage />{" "}
+                  <UpdateSubCompanyPage />
                 </PrimaryLayout>
               )}
             />
@@ -263,8 +251,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/division"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <UnitPage />{" "}
+                  <UnitPage />
                 </PrimaryLayout>
               )}
             />
@@ -273,8 +260,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/unit"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <DivisionPage />{" "}
+                  <DivisionPage />
                 </PrimaryLayout>
               )}
             />
@@ -283,8 +269,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/unit/create"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <CreateUnitPage />{" "}
+                  <CreateUnitPage />
                 </PrimaryLayout>
               )}
             />
@@ -293,8 +278,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/unit/update"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <UpdateUnitPage />{" "}
+                  <UpdateUnitPage />
                 </PrimaryLayout>
               )}
             />
@@ -303,8 +287,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/unit/subunit"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <SubUnitPage />{" "}
+                  <SubUnitPage />
                 </PrimaryLayout>
               )}
             />
@@ -313,8 +296,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/unit/subunit/create"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <CreateSubUnitPage />{" "}
+                  <CreateSubUnitPage />
                 </PrimaryLayout>
               )}
             />
@@ -323,8 +305,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/unit/subunit/update"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <UpdateSubUnitPage />{" "}
+                  <UpdateSubUnitPage />
                 </PrimaryLayout>
               )}
             />
@@ -333,8 +314,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/unit/subunit/childunit"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <ChildUnitPage />{" "}
+                  <ChildUnitPage />
                 </PrimaryLayout>
               )}
             />
@@ -343,8 +323,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/unit/subunit/childunit/create"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <CreateChildUnitPage />{" "}
+                  <CreateChildUnitPage />
                 </PrimaryLayout>
               )}
             />
@@ -353,8 +332,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/unit/subunit/childunit/update"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <UpdateChildUnitPage />{" "}
+                  <UpdateChildUnitPage />
                 </PrimaryLayout>
               )}
             />
@@ -364,8 +342,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/role"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <RolePage />{" "}
+                  <RolePage />
                 </PrimaryLayout>
               )}
             />
@@ -374,8 +351,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/role/create"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <CreateRolePage />{" "}
+                  <CreateRolePage />
                 </PrimaryLayout>
               )}
             />
@@ -384,8 +360,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/role/update"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <UpdateRolePage />{" "}
+                  <UpdateRolePage />
                 </PrimaryLayout>
               )}
             />
@@ -395,8 +370,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/jobfunction"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <JobFunctionPage />{" "}
+                  <JobFunctionPage />
                 </PrimaryLayout>
               )}
             />
@@ -405,8 +379,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/jobfunction/create"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <CreateJobFunctionPage />{" "}
+                  <CreateJobFunctionPage />
                 </PrimaryLayout>
               )}
             />
@@ -415,8 +388,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/jobfunction/createsub"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <CreateSubJobFunctionPage />{" "}
+                  <CreateSubJobFunctionPage />
                 </PrimaryLayout>
               )}
             />
@@ -426,8 +398,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/sector"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <SectorPage />{" "}
+                  <SectorPage />
                 </PrimaryLayout>
               )}
             />
@@ -436,8 +407,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/sector/create"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <CreateSectorPage />{" "}
+                  <CreateSectorPage />
                 </PrimaryLayout>
               )}
             />
@@ -446,8 +416,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/sector/createindustry"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <CreateIndustryPage />{" "}
+                  <CreateIndustryPage />
                 </PrimaryLayout>
               )}
             />
@@ -457,8 +426,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/region"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <RegionPage />{" "}
+                  <RegionPage />
                 </PrimaryLayout>
               )}
             />
@@ -467,8 +435,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/region/create"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <CreateRegionPage />{" "}
+                  <CreateRegionPage />
                 </PrimaryLayout>
               )}
             />
@@ -477,8 +444,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/region/update"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <UpdateRegionPage />{" "}
+                  <UpdateRegionPage />
                 </PrimaryLayout>
               )}
             />
@@ -488,8 +454,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/jobgrade"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <JobGradePage />{" "}
+                  <JobGradePage />
                 </PrimaryLayout>
               )}
             />
@@ -498,8 +463,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/jobgrade/create"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <CreateJobGradePage />{" "}
+                  <CreateJobGradePage />
                 </PrimaryLayout>
               )}
             />
@@ -508,8 +472,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/jobgrade/update"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <UpdateJobGradePage />{" "}
+                  <UpdateJobGradePage />
                 </PrimaryLayout>
               )}
             />
@@ -519,8 +482,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/allowances"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <AllowancesPage />{" "}
+                  <AllowancesPage />
                 </PrimaryLayout>
               )}
             />
@@ -529,8 +491,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/allowances/create"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <CreateAllowancesPage />{" "}
+                  <CreateAllowancesPage />
                 </PrimaryLayout>
               )}
             />
@@ -539,8 +500,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/allowances/update"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <UpdateAllowancesPage />{" "}
+                  <UpdateAllowancesPage />
                 </PrimaryLayout>
               )}
             />
@@ -550,8 +510,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/shortincentive"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <ShortIncentivePage />{" "}
+                  <ShortIncentivePage />
                 </PrimaryLayout>
               )}
             />
@@ -560,8 +519,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/shortincentive/create"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <CreateShortIncentivePage />{" "}
+                  <CreateShortIncentivePage />
                 </PrimaryLayout>
               )}
             />
@@ -570,8 +528,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/shortincentive/update"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <UpdateShortIncentivePage />{" "}
+                  <UpdateShortIncentivePage />
                 </PrimaryLayout>
               )}
             />
@@ -581,8 +538,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/longincentive"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <LongIncentivePage />{" "}
+                  <LongIncentivePage />
                 </PrimaryLayout>
               )}
             />
@@ -591,8 +547,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/longincentive/create"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <CreateLongIncentivePage />{" "}
+                  <CreateLongIncentivePage />
                 </PrimaryLayout>
               )}
             />
@@ -601,8 +556,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/longincentive/update"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <UpdateLongIncentivePage />{" "}
+                  <UpdateLongIncentivePage />
                 </PrimaryLayout>
               )}
             />
@@ -612,8 +566,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/longincentive/equityrange"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <EquityRangePage />{" "}
+                  <EquityRangePage />
                 </PrimaryLayout>
               )}
             />
@@ -622,8 +575,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/longincentive/equityrange/create"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <CreateEquityRangePage />{" "}
+                  <CreateEquityRangePage />
                 </PrimaryLayout>
               )}
             />
@@ -632,8 +584,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/longincentive/equityrange/update"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <UpdateEquityRangePage />{" "}
+                  <UpdateEquityRangePage />
                 </PrimaryLayout>
               )}
             />
@@ -643,8 +594,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/salaryrange"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <SalaryRangePage />{" "}
+                  <SalaryRangePage />
                 </PrimaryLayout>
               )}
             />
@@ -653,8 +603,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/salaryrange/create"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <CreateSalaryRangePage />{" "}
+                  <CreateSalaryRangePage />
                 </PrimaryLayout>
               )}
             />
@@ -663,8 +612,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/salaryrange/update"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <UpdateSalaryRangePage />{" "}
+                  <UpdateSalaryRangePage />
                 </PrimaryLayout>
               )}
             />
@@ -674,8 +622,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/targetbonus"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <TargetBonusPage />{" "}
+                  <TargetBonusPage />
                 </PrimaryLayout>
               )}
             />
@@ -684,8 +631,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/targetbonus/create"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <CreateTargetBonusPage />{" "}
+                  <CreateTargetBonusPage />
                 </PrimaryLayout>
               )}
             />
@@ -694,8 +640,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/targetbonus/update"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <UpdateTargetBonusPage />{" "}
+                  <UpdateTargetBonusPage />
                 </PrimaryLayout>
               )}
             />
@@ -705,8 +650,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/signons"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <SignonsPage />{" "}
+                  <SignonsPage />
                 </PrimaryLayout>
               )}
             />
@@ -715,8 +659,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/signons/create"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <CreateSignonsPage />{" "}
+                  <CreateSignonsPage />
                 </PrimaryLayout>
               )}
             />
@@ -725,8 +668,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/signons/update"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <UpdateSignonsPage />{" "}
+                  <UpdateSignonsPage />
                 </PrimaryLayout>
               )}
             />
@@ -736,8 +678,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/payrollupload"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <PayrollUploadPage />{" "}
+                  <PayrollUploadPage />
                 </PrimaryLayout>
               )}
             />

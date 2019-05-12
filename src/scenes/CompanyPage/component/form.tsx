@@ -171,7 +171,7 @@ class CreateCompanyPage extends Component<Props, FormState> {
           <Grid justify="center" spacing={16} container>
             <Grid item xs={3}>
               <Typography variant="h6">Main Logo</Typography>
-              <div style={{ margin: 20, justifyContent: "center" }}>
+              <div style={{ margin: "1rem 1rem", marginTop: 0 }}>
                 <Avatar
                   width={200}
                   height={150}
@@ -221,7 +221,7 @@ class CreateCompanyPage extends Component<Props, FormState> {
           <Grid justify="center" container>
             <Grid item xs={3}>
               <Typography variant="h6">Company Icon</Typography>
-              <div style={{ margin: 20, justifyContent: "center" }}>
+              <div style={{ margin: "1rem 1rem", marginTop: 0 }}>
                 <Avatar
                   width={200}
                   height={150}

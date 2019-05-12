@@ -28,44 +28,9 @@ const styles = (theme: Theme) =>
     root: {
       flexGrow: 1
     },
-    grid: {
-      margin: 20
-    },
     textField: {
       width: "20rem",
       margin: "1rem"
-    },
-    // formControl: {
-    //   margin: theme.spacing.unit * 3,
-    // },
-    paper: {
-      padding: theme.spacing.unit * 2,
-      textAlign: "center",
-      color: theme.palette.text.secondary,
-      flexDirection: "column"
-    },
-    preview: {},
-    divAvatar: {
-      margin: theme.spacing.unit * 3,
-      alignSelf: "baseline",
-      flex: 1,
-      alignItems: "center",
-      justifyContent: "center"
-    },
-    bigAvatar: {
-      width: "auto",
-      height: "auto"
-    },
-    profilebutton: {
-      alignContent: "center",
-      alignSelf: "center",
-      flex: 1,
-      alignItems: "center",
-      justifyContent: "center"
-    },
-    formControl: {
-      margin: theme.spacing.unit,
-      minWidth: 120
     }
   });
 
@@ -173,7 +138,7 @@ class CreateMainUnitPage extends Component<Props, CreateUnitState> {
           );
         case "region":
           return (
-            <FormControl className={classes.formControl}>
+            <FormControl className={classes.textField}>
               <InputLabel>Unit Data</InputLabel>
               <Select
                 value={this.state.unit_data}
@@ -189,7 +154,7 @@ class CreateMainUnitPage extends Component<Props, CreateUnitState> {
           );
         case "country":
           return (
-            <FormControl className={classes.formControl}>
+            <FormControl className={classes.textField}>
               <InputLabel>Unit Data</InputLabel>
               <Select
                 value={this.state.unit_data}
@@ -219,7 +184,7 @@ class CreateMainUnitPage extends Component<Props, CreateUnitState> {
           onSubmit={e => this.props.onSubmit(e, this.state)}
           style={{ padding: "2rem" }}
         >
-          <Grid container className={classes.grid} spacing={16}>
+          <Grid container spacing={16}>
             <Grid
               item
               direction="column"
@@ -247,8 +212,8 @@ class CreateMainUnitPage extends Component<Props, CreateUnitState> {
                   }}
                 >
                   <MenuItem value={"Division"}>Division</MenuItem>
-                  <MenuItem value={"region"}>region</MenuItem>
-                  <MenuItem value={"country"}>country</MenuItem>
+                  <MenuItem value={"region"}>Region</MenuItem>
+                  <MenuItem value={"country"}>Country</MenuItem>
                 </Select>
               </FormControl>
               {unitData()}

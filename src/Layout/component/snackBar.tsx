@@ -46,7 +46,7 @@ class CustomSnackBar extends React.Component<Props, State> {
       <Snackbar
         anchorOrigin={{
           vertical: "bottom",
-          horizontal: "left"
+          horizontal: "right"
         }}
         open={this.props.open}
         autoHideDuration={6000}
@@ -61,7 +61,7 @@ class CustomSnackBar extends React.Component<Props, State> {
             aria-label="Close"
             color="inherit"
             className={classes.close}
-            onClick={() => this.handleClose}
+            onClick={this.handleClose}
           >
             <CloseIcon />
           </IconButton>

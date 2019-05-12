@@ -9,10 +9,11 @@ import {
   Grid,
   Paper,
   TextField,
-  Divider
+  Divider,
+  Button
 } from "@material-ui/core";
+import Avatar from "react-avatar-edit";
 import logo from "assets/images/companylogo2.png";
-import theme from "../../assets/theme";
 import { connect } from "react-redux";
 import { Profile } from "../../interface/authInterface";
 
@@ -21,40 +22,9 @@ const styles = (theme: Theme) =>
     root: {
       flexGrow: 1
     },
-    grid: {
-      margin: 20
-    },
     textField: {
-      width: 200,
-      margin: 20
-    },
-    // formControl: {
-    //   margin: theme.spacing.unit * 3,
-    // },
-    paper: {
-      padding: theme.spacing.unit * 2,
-      textAlign: "center",
-      color: theme.palette.text.secondary,
-      flexDirection: "column"
-    },
-    preview: {},
-    divAvatar: {
-      margin: theme.spacing.unit * 3,
-      alignSelf: "baseline",
-      flex: 1,
-      alignItems: "center",
-      justifyContent: "center"
-    },
-    bigAvatar: {
-      width: "auto",
-      height: "auto"
-    },
-    profilebutton: {
-      alignContent: "center",
-      alignSelf: "center",
-      flex: 1,
-      alignItems: "center",
-      justifyContent: "center"
+      width: "20rem",
+      margin: "1rem"
     }
   });
 export interface Props extends InState, WithStyles<typeof styles> {}
@@ -73,6 +43,8 @@ export interface State {
   status: string;
   remarks: string;
   info: any;
+  isChangingProfilePic: boolean;
+  newProfilePic: string;
 }
 
 interface InState {
@@ -81,6 +53,9 @@ interface InState {
 class UserProfilePage extends Component<Props, State> {
   constructor(props) {
     super(props);
+    this.onCrop = this.onCrop.bind(this);
+    this.onClose = this.onClose.bind(this);
+    this.changeProfilePic = this.changeProfilePic.bind(this);
   }
 
   state: State = {
@@ -96,7 +71,9 @@ class UserProfilePage extends Component<Props, State> {
     postal_code: "",
     status: "",
     remarks: "",
-    info: ""
+    info: "",
+    isChangingProfilePic: false,
+    newProfilePic: ""
   };
 
   componentDidMount() {
@@ -106,11 +83,26 @@ class UserProfilePage extends Component<Props, State> {
   handleChange = (statekay: keyof State) => (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    this.setState({ [statekay]: event.target.value } as Pick<
+    this.setState(({ [statekay]: event.target.value } as unknown) as Pick<
       State,
       keyof State
     >);
   };
+
+  changeProfilePic() {
+    this.setState({ isChangingProfilePic: !this.state.isChangingProfilePic });
+  }
+
+  onClose() {
+    this.setState({
+      newProfilePic: "",
+      isChangingProfilePic: !this.state.isChangingProfilePic
+    });
+  }
+
+  onCrop(image) {
+    this.setState({ newProfilePic: image });
+  }
 
   render() {
     const { classes } = this.props;
@@ -119,20 +111,25 @@ class UserProfilePage extends Component<Props, State> {
         <Typography component="h1" variant="h5">
           Profile
         </Typography>
-        <Paper>
-          <Grid container className={classes.grid} spacing={16}>
-            <Grid item justify="center" xs container>
-              <Grid container direction="column" spacing={16} xs>
-                <div style={{ height: "inherit", justifyContent: "center" }}>
-                  <div
-                    style={{
-                      height: theme.spacing.unit * 10,
-                      margin: 20,
-                      justifyContent: "center"
-                    }}
-                  >
+        <Paper style={{ marginTop: "2rem" }}>
+          <div style={{ padding: "2rem" }}>
+            <Grid container spacing={16}>
+              <Grid item justify="center" xs container>
+                <Grid
+                  item
+                  container
+                  justify="center"
+                  alignContent="center"
+                  direction="column"
+                  spacing={16}
+                  xs
+                >
+                  {!this.state.isChangingProfilePic && (
                     <img
-                      style={{ height: "inherit" }}
+                      style={{
+                        height: "10vh",
+                        margin: "2rem"
+                      }}
                       src={this.state.image}
                       onError={(e: any) => {
                         e.target.onerror = null;
@@ -140,84 +137,102 @@ class UserProfilePage extends Component<Props, State> {
                       }}
                       alt="Preview"
                     />
-                    <Typography>Profile Picture</Typography>
-                  </div>
+                  )}
+                  {this.state.isChangingProfilePic && (
+                    <div style={{ height: "10vh", margin: "2rem" }}>
+                      <Avatar
+                        width={200}
+                        height={150}
+                        onCrop={this.onCrop}
+                        onClose={this.onClose}
+                      />
+                    </div>
+                  )}
+                  {/* <Typography align="center">Change Profile Picture</Typography> */}
+                  <Button
+                    disabled={this.state.isChangingProfilePic}
+                    variant="contained"
+                    color="primary"
+                    onClick={() => this.changeProfilePic()}
+                  >
+                    Change Profile Picture
+                  </Button>
+                </Grid>
+              </Grid>
+              <Grid item justify="center" xs container>
+                <div style={{ margin: 20 }}>
+                  <TextField
+                    disabled
+                    id="email"
+                    label="Email"
+                    className={classes.textField}
+                    value={this.state.email}
+                    onChange={this.handleChange("email")}
+                    margin="normal"
+                  />
+                  <TextField
+                    disabled
+                    id="firstname"
+                    label="Firstname"
+                    className={classes.textField}
+                    value={this.state.firstname}
+                    onChange={this.handleChange("firstname")}
+                    margin="normal"
+                  />
+                  <TextField
+                    disabled
+                    id="lastname"
+                    label="Lastname"
+                    className={classes.textField}
+                    value={this.state.lastname}
+                    onChange={this.handleChange("lastname")}
+                    margin="normal"
+                  />
+                </div>
+              </Grid>
+              <Grid item justify="center" container xs>
+                <div style={{ margin: 20 }}>
+                  <TextField
+                    disabled
+                    id="country"
+                    label="Country"
+                    className={classes.textField}
+                    value={this.state.country}
+                    onChange={this.handleChange("country")}
+                    margin="normal"
+                  />
+                  <TextField
+                    disabled
+                    id="address"
+                    label="Address"
+                    className={classes.textField}
+                    value={this.state.address}
+                    onChange={this.handleChange("address")}
+                    margin="normal"
+                  />
+                  <TextField
+                    disabled
+                    id="postal_code"
+                    label="Postal Code"
+                    className={classes.textField}
+                    value={this.state.postal_code}
+                    onChange={this.handleChange("postal_code")}
+                    margin="normal"
+                  />
                 </div>
               </Grid>
             </Grid>
-            <Grid item justify="center" xs container>
-              <div style={{ margin: 20 }}>
-                <TextField
-                  disabled
-                  id="email"
-                  label="Email"
-                  className={classes.textField}
-                  value={this.state.email}
-                  onChange={this.handleChange("email")}
-                  margin="normal"
-                />
-                <TextField
-                  disabled
-                  id="firstname"
-                  label="Firstname"
-                  className={classes.textField}
-                  value={this.state.firstname}
-                  onChange={this.handleChange("firstname")}
-                  margin="normal"
-                />
-                <TextField
-                  disabled
-                  id="lastname"
-                  label="Lastname"
-                  className={classes.textField}
-                  value={this.state.lastname}
-                  onChange={this.handleChange("lastname")}
-                  margin="normal"
-                />
-              </div>
-            </Grid>
-            <Grid item justify="center" container xs>
-              <div style={{ margin: 20 }}>
-                <TextField
-                  disabled
-                  id="country"
-                  label="Country"
-                  className={classes.textField}
-                  value={this.state.country}
-                  onChange={this.handleChange("country")}
-                  margin="normal"
-                />
-                <TextField
-                  disabled
-                  id="address"
-                  label="Address"
-                  className={classes.textField}
-                  value={this.state.address}
-                  onChange={this.handleChange("address")}
-                  margin="normal"
-                />
-                <TextField
-                  disabled
-                  id="postal_code"
-                  label="Postal Code"
-                  className={classes.textField}
-                  value={this.state.postal_code}
-                  onChange={this.handleChange("postal_code")}
-                  margin="normal"
-                />
-              </div>
-            </Grid>
-          </Grid>
-          <Typography style={{ margin: 20 }} component="h1" variant="h5">
-            Role
-          </Typography>
-          <Divider />
-          {this.state.info !== "" && (
-            <Grid container className={classes.grid} spacing={16}>
-              <Divider />
-            </Grid>
-          )}
-          <Divider />
+            <Typography style={{ margin: 20 }} component="h1" variant="h5">
+              Role
+            </Typography>
+            <Divider />
+            {this.state.info !== "" && (
+              <Grid container spacing={16}>
+                <Divider />
+              </Grid>
+            )}
+            <Divider />
+          </div>
         </Paper>
       </div>
     );

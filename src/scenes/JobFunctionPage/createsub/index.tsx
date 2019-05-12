@@ -99,7 +99,7 @@ class CreateSubJobFunctionPage extends Component<
               <Grid item justify="center" container xs>
                 <TextField
                   id="subjob_name"
-                  label="subjob_name"
+                  label="Sub Job Name"
                   className={classes.textField}
                   value={this.state.subjob_name}
                   onChange={this.handleChange("subjob_name")}

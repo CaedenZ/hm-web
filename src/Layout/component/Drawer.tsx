@@ -367,8 +367,37 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
             <ListItemText primary="Company Setup" />
           </ListItem>
           <Collapse in={this.state.expended1} timeout="auto" unmountOnExit>
-            <List className={classes.navlist}>
+            <List disablePadding className={classes.navlist}>
               {companyfunction().map(item => (
+                <Link
+                  key={item.title}
+                  to={item.path}
+                  style={{ textDecoration: "none" }}
+                >
+                  <ListItem button>
+                    <ListItemIcon style={{ marginLeft: "20px" }}>
+                      {item.icon}
+                    </ListItemIcon>
+                    <ListItemText primary={item.title} />
+                  </ListItem>
+                </Link>
+              ))}
+            </List>
+          </Collapse>
+          <Divider />
+          <ListItem
+            className={classes.menubar}
+            button
+            onClick={this.handleExpandClick3}
+          >
+            <ListItemIcon>
+              <MenuIcon />
+            </ListItemIcon>
+            <ListItemText primary="Compensation Setup" />
+          </ListItem>
+          <Collapse in={this.state.expended3} timeout="auto" unmountOnExit>
+            <List className={classes.navlist}>
+              {jobgradefunction().map(item => (
                 <Link
                   key={item.title}
                   to={item.path}
@@ -389,34 +418,6 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
           <Collapse in={this.state.expended2} timeout="auto" unmountOnExit>
             <List className={classes.navlist}>
               {adminfunction().map(item => (
-                <Link
-                  key={item.title}
-                  to={item.path}
-                  style={{ textDecoration: "none" }}
-                >
-                  <ListItem button>
-                    <ListItemIcon style={{ marginLeft: "20px" }}>
-                      {item.icon}
-                    </ListItemIcon>
-                    <ListItemText primary={item.title} />
-                  </ListItem>
-                </Link>
-              ))}
-            </List>
-          </Collapse>
-          <ListItem
-            className={classes.menubar}
-            button
-            onClick={this.handleExpandClick3}
-          >
-            <ListItemIcon>
-              <MenuIcon />
-            </ListItemIcon>
-            <ListItemText primary="Compensation Setup" />
-          </ListItem>
-          <Collapse in={this.state.expended3} timeout="auto" unmountOnExit>
-            <List className={classes.navlist}>
-              {jobgradefunction().map(item => (
                 <Link
                   key={item.title}
                   to={item.path}

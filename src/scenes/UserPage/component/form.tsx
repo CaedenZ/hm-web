@@ -13,8 +13,10 @@ import {
   Button,
   MenuItem,
   InputLabel,
-  Select
+  Select,
+  NativeSelect
 } from "@material-ui/core";
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import Avatar from "react-avatar-edit";
 import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
@@ -30,7 +32,13 @@ const styles = (theme: Theme) =>
     },
     formControl: {
       margin: theme.spacing.unit,
-      minWidth: 120
+      minWidth: 120,
+      maxWidth: "5vw"
+    },
+    selectEmpty: {
+      width: "20rem",
+      margin: "1rem",
+      marginTop: theme.spacing.unit * 2
     }
   });
 
@@ -122,7 +130,9 @@ class FormPage extends Component<Props, FormState> {
     const { classes } = this.props;
     return (
       <Paper style={{ marginTop: "2rem" }}>
-        <form
+        <ValidatorForm
+          ref="form"
+          debounceTime={500}
           onSubmit={e => this.props.onSubmit(e, this.state)}
           style={{ padding: "2rem" }}
         >
@@ -131,7 +141,7 @@ class FormPage extends Component<Props, FormState> {
           </Typography>
           <Grid justify="center" container>
             <Grid item xs={3}>
-              <div style={{ justifyContent: "center" }}>
+              <div style={{ margin: "1rem" }}>
                 <Typography variant="h6">Profile Picture</Typography>
                 <Avatar
                   width={200}
@@ -144,7 +154,7 @@ class FormPage extends Component<Props, FormState> {
             <Grid container item xs>
               <Grid container>
                 <Grid container item xs={6}>
-                  <TextField
+                  {/* <TextField
                     required
                     type="email"
                     id="email"
@@ -152,6 +162,22 @@ class FormPage extends Component<Props, FormState> {
                     className={classes.textField}
                     value={this.state.email}
                     onChange={this.handleChange("email")}
+                    margin="normal"
+                  /> */}
+                  <TextValidator
+                    fullWidth
+                    className={classes.textField}
+                    label="Email"
+                    onChange={this.handleChange("email")}
+                    id="email"
+                    name="email"
+                    autoComplete="email"
+                    value={this.state.email}
+                    validators={["required", "isEmail"]}
+                    errorMessages={[
+                      "this field is required",
+                      "email is not valid"
+                    ]}
                     margin="normal"
                   />
                 </Grid>
@@ -175,7 +201,7 @@ class FormPage extends Component<Props, FormState> {
                   <TextField
                     required
                     id="firstname"
-                    label="Firstname"
+                    label="First Name"
                     className={classes.textField}
                     value={this.state.firstname}
                     onChange={this.handleChange("firstname")}
@@ -185,7 +211,7 @@ class FormPage extends Component<Props, FormState> {
                 <Grid container item xs>
                   <TextField
                     id="lastname"
-                    label="Lastname"
+                    label="Last Name"
                     className={classes.textField}
                     value={this.state.lastname}
                     onChange={this.handleChange("lastname")}
@@ -197,28 +223,26 @@ class FormPage extends Component<Props, FormState> {
           </Grid>
           <Grid justify="center" container>
             <Grid item direction="column" xs={3} container>
-              <div style={{ margin: 20, justifyContent: "center" }}>
-                <FormControl className={classes.formControl}>
-                  <InputLabel required>status</InputLabel>
-                  <Select
-                    value={this.state.status}
-                    onChange={this.handleChangeSelect("status")}
-                    inputProps={{
-                      name: "status",
-                      id: "status"
-                    }}
-                  >
-                    <MenuItem value={"Active"}>Active</MenuItem>
-                    <MenuItem value={"Inactive"}>Inactive</MenuItem>
-                  </Select>
-                </FormControl>
-              </div>
+              <FormControl className={classes.formControl}>
+                <InputLabel required>status</InputLabel>
+                <Select
+                  value={this.state.status}
+                  onChange={this.handleChangeSelect("status")}
+                  inputProps={{
+                    name: "status",
+                    id: "status"
+                  }}
+                >
+                  <MenuItem value={"Active"}>Active</MenuItem>
+                  <MenuItem value={"Inactive"}>Inactive</MenuItem>
+                </Select>
+              </FormControl>
             </Grid>
             <Grid container item xs>
               <Grid container item xs={6}>
                 <TextField
                   id="alias"
-                  label="alias"
+                  label="Alias"
                   className={classes.textField}
                   value={this.state.alias}
                   onChange={this.handleChange("alias")}
@@ -228,7 +252,7 @@ class FormPage extends Component<Props, FormState> {
               <Grid container item xs={6}>
                 <TextField
                   id="employee_id"
-                  label="employee_id"
+                  label="Employee ID"
                   className={classes.textField}
                   value={this.state.employee_id}
                   onChange={this.handleChange("employee_id")}
@@ -260,12 +284,28 @@ class FormPage extends Component<Props, FormState> {
                   />
                 </Grid>
                 <Grid container item xs={6}>
-                  <TextField
+                  {/* <TextField
                     id="postal_code"
                     label="Postal Code"
                     className={classes.textField}
                     value={this.state.postal_code}
                     onChange={this.handleChange("postal_code")}
+                    margin="normal"
+                  /> */}
+                  <TextValidator
+                    fullWidth
+                    className={classes.textField}
+                    label="Postal Code"
+                    onChange={this.handleChange("postal_code")}
+                    id="postal_code"
+                    name="postal_code"
+                    autoComplete="postal-code"
+                    value={this.state.postal_code}
+                    validators={["required", "isNumber"]}
+                    errorMessages={[
+                      "this field is required",
+                      "postal code is not valid"
+                    ]}
                     margin="normal"
                   />
                 </Grid>
@@ -273,13 +313,10 @@ class FormPage extends Component<Props, FormState> {
               <Grid container>
                 <Grid item xs={6}>
                   {this.props.countryList.length > 0 && (
-                    <FormControl>
-                      <InputLabel style={{ marginLeft: "20px" }} required>
-                        Country
-                      </InputLabel>
-                      <Select
+                    <FormControl className={classes.textField}>
+                      <InputLabel required>Country</InputLabel>
+                      <NativeSelect
                         id="country"
-                        className={classes.textField}
                         value={this.state.country}
                         onChange={this.handleChangeSelect("country")}
                         inputProps={{
@@ -287,20 +324,18 @@ class FormPage extends Component<Props, FormState> {
                           id: "country-simple"
                         }}
                       >
+                        <option value="" />
                         {this.props.countryList.map(country => (
-                          <MenuItem
-                            key={country.country_name}
-                            value={country.country_name}
-                          >
+                          <option value={country.country_name}>
                             {country.country_name}
-                          </MenuItem>
+                          </option>
                         ))}
-                      </Select>
+                      </NativeSelect>
                     </FormControl>
                   )}
                 </Grid>
                 <Grid item xs>
-                  <TextField
+                  {/* <TextField
                     required
                     id="contact"
                     label="contact"
@@ -308,13 +343,29 @@ class FormPage extends Component<Props, FormState> {
                     value={this.state.contact}
                     onChange={this.handleChange("contact")}
                     margin="normal"
+                  /> */}
+                  <TextValidator
+                    fullWidth
+                    className={classes.textField}
+                    label="Contact"
+                    onChange={this.handleChange("contact")}
+                    id="contact"
+                    name="contact"
+                    autoComplete="tel"
+                    value={this.state.contact}
+                    validators={["required", "isNumber"]}
+                    errorMessages={[
+                      "this field is required",
+                      "contact is not valid"
+                    ]}
+                    margin="normal"
                   />
                 </Grid>
               </Grid>
               <Grid container item xs={6}>
                 <TextField
                   id="business_title"
-                  label="business_title"
+                  label="Business Title"
                   className={classes.textField}
                   value={this.state.business_title}
                   onChange={this.handleChange("business_title")}
@@ -324,7 +375,7 @@ class FormPage extends Component<Props, FormState> {
               <Grid container item xs={6}>
                 <TextField
                   id="remarks"
-                  label="remarks"
+                  label="Remarks"
                   className={classes.textField}
                   value={this.state.remarks}
                   onChange={this.handleChange("remarks")}
@@ -368,7 +419,7 @@ class FormPage extends Component<Props, FormState> {
               Submit
             </Button>
           </div>
-        </form>
+        </ValidatorForm>
       </Paper>
     );
   }

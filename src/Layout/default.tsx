@@ -28,30 +28,6 @@ class Layout extends Component<Props> {
   }
   render() {
     const breadcrumb = () => {
-      // const url = history.location.pathname.split("/");
-      // const breadcrumbList: any = [];
-      // let link = "/";
-      // for (let index = 1; index < url.length; index++) {
-      //   const element = url[index];
-      //   if (element === "") {
-      //     break;
-      //   }
-      //   link += element + "/";
-      //   breadcrumbList.push(
-      //     <p key={element + ">"} style={{ display: "inline-block" }}>
-      //       >
-      //     </p>
-      //   );
-      //   breadcrumbList.push(
-      //     <RouterLink
-      //       key={element}
-      //       to={link}
-      //       style={{ display: "inline-block" }}
-      //     >
-      //       <p>{element}</p>
-      //     </RouterLink>
-      //   );
-      // }
       const pathnames = history.location.pathname.split("/").filter(x => x);
 
       return (
@@ -65,7 +41,7 @@ class Layout extends Component<Props> {
           {pathnames.map((value, index) => {
             const last = index === pathnames.length - 1;
             const to = `/${pathnames.slice(0, index + 1).join("/")}`;
-            const displayTo = to.substring(1);
+            const displayTo = to.split("/")[to.split("/").length - 1];
             return last ? (
               <Typography color="textPrimary" key={to}>
                 {displayTo}
@@ -79,12 +55,6 @@ class Layout extends Component<Props> {
         </Breadcrumbs>
       );
     };
-
-    // const Home = props => (
-    //   <RouterLink to="/" style={{ display: "inline-block" }}>
-    //     <p>Home</p>
-    //   </RouterLink>
-    // );
 
     if (this.props.token === "") {
       return <Redirect to="/login" />;
