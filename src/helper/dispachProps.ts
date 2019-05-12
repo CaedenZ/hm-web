@@ -17,6 +17,7 @@ import { selectSignonsAction, createSignonsAction, updateSignonsAction, deleteSi
 import { selectLongIncentiveAction, createLongIncentiveAction, updateLongIncentiveAction, deleteLongIncentiveAction, getLongIncentiveListAction } from "../actions/longIncentiveAction";
 import { selectShortIncentiveAction, createShortIncentiveAction, updateShortIncentiveAction, deleteShortIncentiveAction, getShortIncentiveListAction } from "../actions/shortIncentiveAction";
 import { selectEquityRangeAction, createEquityRangeAction, updateEquityRangeAction, deleteEquityRangeAction, getEquityRangeListAction } from "../actions/equityRangeAction";
+import { getJobChartListAction, updateCellAction } from "../actions/jobchartAction";
 
 
 
@@ -155,5 +156,8 @@ export function mapDispatchToProps(dispatch): SharedDispatchProps {
         updateEquityRange: (payload) => { dispatch(updateEquityRangeAction.request(payload)) },
         deleteEquityRange: (payload) => { dispatch(deleteEquityRangeAction.request(payload)) },
         getEquityRangeList: () => { dispatch(getEquityRangeListAction.request()) },
+
+        getJobChartList: () => { dispatch(getJobChartListAction.request()) },
+        updateCell: (payload) => { dispatch(updateCellAction.request(payload)) },
     }
 }

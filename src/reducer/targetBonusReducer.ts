@@ -20,11 +20,13 @@ export function targetBonusReducer(state: TargetBonusState = {
     selectTargetBonus: {
         target_bonus_id: '',
         jobgrade_id: '',
-        global: 0,
+        jobgrade_global: 0,
+        jobgrade_name: '',
         country: '',
         min: '',
         mid: '',
         max: '',
+        isGlobal: 0,
     },
 }, action) {
     switch (action.type) {

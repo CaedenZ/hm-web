@@ -22,7 +22,7 @@ export function allowancesReducer(state: AllowancesState = {
         jobgrade_id: '',
         jobgrade_name: '',
         type: '',
-        global: 0,
+        jobgrade_global: 0,
         country: '',
         value: '',
         isBonus: '',

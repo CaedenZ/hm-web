@@ -103,7 +103,7 @@ class AllowancesPage extends React.Component<Props, State> {
   getdata = () => {
     if (this.state.global) {
       return this.props.allowancesList.filter(e => {
-        return e.global === 1
+        return e.jobgrade_global === 1
       })
     }
     else if (this.state.country !== '') {

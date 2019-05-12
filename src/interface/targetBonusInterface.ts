@@ -1,7 +1,9 @@
 export interface TargetBonus {
     target_bonus_id: string,
     jobgrade_id: string,
-    global: number,
+    jobgrade_name: string,
+    jobgrade_global: number,
+    isGlobal: number,
     country: string,
     min: string,
     mid: string,

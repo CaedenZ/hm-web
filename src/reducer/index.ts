@@ -30,6 +30,7 @@ import { longIncentiveReducer, createLongIncentiveEpic, getLongIncentiveListEpic
 import { shortIncentiveReducer, createShortIncentiveEpic, getShortIncentiveListEpic, updateShortIncentiveEpic, deleteShortIncentiveEpic } from "./shortIncentiveReducer";
 import { salaryRangeReducer, createSalaryRangeEpic, getSalaryRangeListEpic, updateSalaryRangeEpic, deleteSalaryRangeEpic } from "./salaryRangeReducer";
 import { equityrangeReducer, createEquityRangeEpic, getEquityRangeListEpic, updateEquityRangeEpic, deleteEquityRangeEpic } from "./equityRangeReducer";
+import { jobchartReducer, getJobChartListEpic, updateCellEpic } from "./jobchartReducer";
 
 
 export const history = createBrowserHistory()
@@ -54,6 +55,7 @@ export const rootReducer = combineReducers({
     signonsReducer,
     targetBonusReducer,
     equityrangeReducer,
+    jobchartReducer,
     router: connectRouter(history),
     //   userDetail,
     //   currentReport,
@@ -172,6 +174,9 @@ export const rootEpic = combineEpics(
     getEquityRangeListEpic,
     updateEquityRangeEpic,
     deleteEquityRangeEpic,
+
+    getJobChartListEpic,
+    updateCellEpic,
 )
 
 // export type DetailState = DetailState

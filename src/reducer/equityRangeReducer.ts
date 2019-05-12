@@ -27,7 +27,7 @@ export function equityrangeReducer(state: EquityRangeState = {
         mid: '',
         max: '',
         country: '',
-        global: 0,
+        jobgrade_global: 0,
         value_type: 0,
     },
 }, action) {

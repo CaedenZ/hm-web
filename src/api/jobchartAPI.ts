@@ -1,51 +1,27 @@
 import $axios from "../plugin/axios";
+import { JobChart, UPDATECELL } from "../interface/jobchartInterface";
 
-export const login = async (payload) => {
+export const getJobChartList = async (token, payload): Promise<JobChart[]> => {
 
-    console.log(payload)
-    const response = await $axios.post('/user/login', payload)
-    return response.data.data
-}
-
-export const createUser = async (payload) => {
-
-    console.log(payload)
-    $axios.post('/user/createUser', payload)
-        .then(function (response) {
-            console.log(response);
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
-    return 'asd'
-}
-
-export const forgetPassword = async (payload) => {
-
-    console.log(payload)
-    const response = await $axios.post('/user/forgetPassword', payload)
-    return response.data.data
-}
-
-export const updatePassword = async (token, email, payload) => {
-
-
-    const data = {
+    let data = {
+        company_id: payload,
         session_key: token,
-        email: email,
-        password: payload,
     }
-    console.log(data)
-    const response = await $axios.post('/user/updatePassword', data)
+    const response = await $axios.post('/company/getJobCorrelationChart', data)
+    console.log(response.data.data)
     return response.data.data
 }
 
-export const getUserProfile = async (token, payload) => {
-    const data = {
+export const updateCell = async (token, payload: UPDATECELL): Promise<JobChart[]> => {
+
+    let data = {
+        ...payload,
         session_key: token,
-        email: payload,
     }
-    console.log(payload)
-    const response = await $axios.post('/user/profile', data)
+
+    const response = await $axios.post('/company/updateJCChart', data)
+
+    console.log(response.data.data)
     return response.data.data
 }
+

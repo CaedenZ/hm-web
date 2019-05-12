@@ -3,12 +3,12 @@ export interface EquityRange {
     lti_id: string,
     jobgrade_id: string,
     jobgrade_name: string,
+    jobgrade_global:number,
     type: string,
     min: string,
     mid: string,
     max: string,
     country: string,
-    global: number,
     value_type: number,
 }
 

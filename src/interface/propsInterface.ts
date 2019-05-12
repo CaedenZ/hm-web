@@ -16,6 +16,7 @@ import { Signons, CREATESIGNONSCRED, UPDATESIGNONSCRED } from "./signonsInterfac
 import { LongIncentive, CREATELONGINCENTIVECRED, UPDATELONGINCENTIVECRED } from "./longIncentiveInterface";
 import { ShortIncentive, CREATESHORTINCENTIVECRED, UPDATESHORTINCENTIVECRED } from "./shortIncentiveInterface";
 import { EquityRange, CREATEEQUITYRANGECRED, UPDATEEQUITYRANGECRED } from "./equityRangeInterface";
+import { UPDATECELL } from "./jobchartInterface";
 
 export interface SharedDispatchProps {
     showSnackBar: () => void,
@@ -152,4 +153,7 @@ export interface SharedDispatchProps {
     createEquityRange: (cred: CREATEEQUITYRANGECRED) => void,
     updateEquityRange: (cred: UPDATEEQUITYRANGECRED) => void,
     deleteEquityRange: (cred: string) => void,
+
+    getJobChartList: () => void,
+    updateCell: (cred: UPDATECELL) => void,
 }

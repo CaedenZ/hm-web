@@ -91,9 +91,11 @@ import UpdateShortIncentivePage from "../scenes/CompensationSetup/ShortIncentive
 
 import PayrollUploadPage from "../scenes/CompensationSetup/PayrollUploadPage";
 
-export interface Props extends InState {}
+import JobChartPage from "../scenes/ConfigurationPage/JobChartPage"
 
-interface State {}
+export interface Props extends InState { }
+
+interface State { }
 
 interface InState {
   init: boolean;
@@ -736,6 +738,17 @@ class RootRoute extends React.Component<Props, State> {
                 <PrimaryLayout>
                   {" "}
                   <PayrollUploadPage />{" "}
+                </PrimaryLayout>
+              )}
+            />
+
+            <Route
+              exact
+              path="/jobchart"
+              render={() => (
+                <PrimaryLayout>
+                  {" "}
+                  <JobChartPage />{" "}
                 </PrimaryLayout>
               )}
             />

@@ -76,8 +76,8 @@ const styles = (theme: Theme) =>
 
 export interface Props
   extends InState,
-    SharedDispatchProps,
-    WithStyles<typeof styles> {}
+  SharedDispatchProps,
+  WithStyles<typeof styles> { }
 
 interface InState {
   companyList: Company[];
@@ -106,22 +106,25 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
 
   handleExpandClick1 = () => {
     this.setState(state => ({
-      ...state,
-      expended1: !state.expended1
+      expended1: !state.expended1,
+      expended2: false,
+      expended3: false,
     }));
   };
 
   handleExpandClick2 = () => {
     this.setState(state => ({
-      ...state,
-      expended2: !state.expended2
+      expended1: false,
+      expended2: !state.expended2,
+      expended3: false,
     }));
     console.log(this.state);
   };
 
   handleExpandClick3 = () => {
     this.setState(state => ({
-      ...state,
+      expended1: false,
+      expended2: false,
       expended3: !state.expended3
     }));
     console.log(this.state);
@@ -259,7 +262,12 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
           title: "Customer",
           path: "/company",
           icon: <CompanyIcon />
-        }
+        },
+        {
+          title: "Job Chart",
+          path: "/jobchart",
+          icon: <CompanyIcon />
+        },
       ];
       return adm;
     };

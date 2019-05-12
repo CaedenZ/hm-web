@@ -24,6 +24,7 @@ class Layout extends Component<Props> {
     this.props.getSectorList();
     this.props.getJobFunctionList();
     this.props.getRoleFunctionList();
+    this.props.getJobChartList();
   }
   render() {
     const breadcrumb = () => {
@@ -70,10 +71,10 @@ class Layout extends Component<Props> {
                 {displayTo}
               </Typography>
             ) : (
-              <RouterLink key={to} to={to}>
-                <p>{displayTo}</p>
-              </RouterLink>
-            );
+                <RouterLink key={to} to={to}>
+                  <p>{displayTo}</p>
+                </RouterLink>
+              );
           })}
         </Breadcrumbs>
       );

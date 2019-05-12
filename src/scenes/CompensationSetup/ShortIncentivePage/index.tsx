@@ -48,8 +48,8 @@ const styles = (theme: Theme) =>
 
 export interface Props
   extends WithStyles<typeof styles>,
-    SharedDispatchProps,
-    InState {}
+  SharedDispatchProps,
+  InState { }
 
 interface State {
   country: string;
@@ -112,7 +112,7 @@ class ShortIncentivePage extends React.Component<Props, State> {
   getdata = () => {
     if (this.state.global) {
       return this.props.shortincentiveList.filter(e => {
-        return e.global === 1;
+        return e.jobgrade_global === 1;
       });
     } else if (this.state.country !== "") {
       return this.props.shortincentiveList.filter(e => {
