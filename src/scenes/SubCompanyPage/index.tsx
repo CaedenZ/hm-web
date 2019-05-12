@@ -12,17 +12,15 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import { render } from "react-dom";
 import CustomButton from "./component/CustomButton";
 import { SharedDispatchProps } from "../../interface/propsInterface";
 import { Company, Entity } from "../../interface/companyInterface";
-import { RootState } from "../../reducer";
 import { mapDispatchToProps } from "../../helper/dispachProps";
 import { connect } from "react-redux";
-import { Button, IconButton } from "@material-ui/core";
-import DeleteIcon from '@material-ui/icons/Delete';
+import { IconButton } from "@material-ui/core";
+import DeleteIcon from "@material-ui/icons/Delete";
 import { history } from "../../store";
-import UpdateIcon from '@material-ui/icons/PlaylistAddCheck';
+import UpdateIcon from "@material-ui/icons/PlaylistAddCheck";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -51,50 +49,49 @@ const styles = (theme: Theme) =>
     }
   });
 
-export interface Props extends WithStyles<typeof styles>, SharedDispatchProps, InState { }
+export interface Props
+  extends WithStyles<typeof styles>,
+    SharedDispatchProps,
+    InState {}
 
-interface State { }
+interface State {}
 
 interface InState {
-  selectedCompany: Company,
-  companyList: Entity[]
+  selectedCompany: Company;
+  companyList: Entity[];
 }
 
 class CustomizedTable extends React.Component<Props, State> {
-
-
   componentDidMount() {
-    console.log('clicked')
-    if (this.props.selectedCompany.company_id === '') {
+    console.log("clicked");
+    if (this.props.selectedCompany.company_id === "") {
       let data = {
-        type: 'warning',
-        object: 'Please Select a Company first',
-        id: '1'
-      }
-      this.props.showDialog(data)
-    }
-    else this.props.getChildCompanyList()
+        type: "warning",
+        object: "Please Select a Company first",
+        id: "1"
+      };
+      this.props.showDialog(data);
+    } else this.props.getChildCompanyList();
   }
 
-  handleUpdateButtonClick = (company) => {
-    this.props.selectUpdateEntity(company)
-    history.push('/entity/update')
-  }
+  handleUpdateButtonClick = company => {
+    this.props.selectUpdateEntity(company);
+    history.push("/entity/update");
+  };
 
-  handleViewButtonClick = (company) => {
-    this.props.selectCompany(company)
-  }
+  handleViewButtonClick = company => {
+    this.props.selectCompany(company);
+  };
 
-  handleDelete = (id) => {
+  handleDelete = id => {
     const payload = {
-      type: 'delete',
-      object: 'subcompany',
-      id: id,
-    }
-    this.props.showDialog(payload)
+      type: "delete",
+      object: "subcompany",
+      id: id
+    };
+    this.props.showDialog(payload);
     // this.props.deleteSubCompany(id)
-  }
-
+  };
 
   render() {
     const { classes } = this.props;
@@ -114,24 +111,42 @@ class CustomizedTable extends React.Component<Props, State> {
                 <CustomTableCell align="right">Action</CustomTableCell>
               </TableRow>
             </TableHead>
-            {this.props.companyList.length > 0 && <TableBody>
-              {this.props.companyList.map(row => (
-                <TableRow className={classes.row} key={row.company_id}>
-                  <CustomTableCell component="th" scope="row">
-                    {row.company_name}
-                  </CustomTableCell>
-                  <CustomTableCell align="right">{row.contact_person}</CustomTableCell>
-                  <CustomTableCell align="right">{row.contact_number}</CustomTableCell>
-                  <CustomTableCell align="right">{row.contact_email}</CustomTableCell>
-                  <CustomTableCell align="right">{JSON.parse(row.country).country_name}</CustomTableCell>
-                  <CustomTableCell align="right">
-                    {/* <IconButton onClick={() => this.handleViewButtonClick(row)}><ViewIcon /></IconButton> */}
-                    <IconButton onClick={() => this.handleUpdateButtonClick(row)}><UpdateIcon /></IconButton>
-                    <IconButton onClick={() => this.handleDelete(row.company_id)}><DeleteIcon /></IconButton>
-                  </CustomTableCell>
-                </TableRow>
-              ))}
-            </TableBody>}
+            {this.props.companyList.length > 0 && (
+              <TableBody>
+                {this.props.companyList.map(row => (
+                  <TableRow className={classes.row} key={row.company_id}>
+                    <CustomTableCell component="th" scope="row">
+                      {row.company_name}
+                    </CustomTableCell>
+                    <CustomTableCell align="right">
+                      {row.contact_person}
+                    </CustomTableCell>
+                    <CustomTableCell align="right">
+                      {row.contact_number}
+                    </CustomTableCell>
+                    <CustomTableCell align="right">
+                      {row.contact_email}
+                    </CustomTableCell>
+                    <CustomTableCell align="right">
+                      {JSON.parse(row.country).country_name}
+                    </CustomTableCell>
+                    <CustomTableCell align="right">
+                      {/* <IconButton onClick={() => this.handleViewButtonClick(row)}><ViewIcon /></IconButton> */}
+                      <IconButton
+                        onClick={() => this.handleUpdateButtonClick(row)}
+                      >
+                        <UpdateIcon />
+                      </IconButton>
+                      <IconButton
+                        onClick={() => this.handleDelete(row.company_id)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </CustomTableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            )}
           </Table>
         </Paper>
       </main>
@@ -147,7 +162,10 @@ function mapStateToProps(state: any) {
   return {
     selectedCompany: state.companyReducer.selectedCompany,
     companyList: state.companyReducer.childCompanyList
-  }
+  };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CustomizedTable));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(CustomizedTable));

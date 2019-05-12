@@ -12,18 +12,16 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import { render } from "react-dom";
 import CustomButton from "./component/CustomButton";
 import { SharedDispatchProps } from "../../interface/propsInterface";
 import { Company } from "../../interface/companyInterface";
-import { RootState } from "../../reducer";
 import { mapDispatchToProps } from "../../helper/dispachProps";
 import { connect } from "react-redux";
-import { Button, IconButton } from "@material-ui/core";
-import DeleteIcon from '@material-ui/icons/Delete';
+import { IconButton } from "@material-ui/core";
+import DeleteIcon from "@material-ui/icons/Delete";
 import { history } from "../../store";
-import UpdateIcon from '@material-ui/icons/PlaylistAddCheck';
-import ViewIcon from '@material-ui/icons/ZoomIn';
+import UpdateIcon from "@material-ui/icons/PlaylistAddCheck";
+import ViewIcon from "@material-ui/icons/ZoomIn";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -52,40 +50,48 @@ const styles = (theme: Theme) =>
     }
   });
 
-export interface Props extends WithStyles<typeof styles>, SharedDispatchProps, InState { }
+export interface Props
+  extends WithStyles<typeof styles>,
+    SharedDispatchProps,
+    InState {}
 
-interface State { }
+interface State {}
 
 interface InState {
-  companyList: Company[]
+  companyList: Company[];
 }
 
 class CustomizedTable extends React.Component<Props, State> {
-
-
   componentDidMount() {
-    this.props.getCompanyList()
-    console.log('CompangPage Mount')
+    this.props.getCompanyList();
+    console.log("CompangPage Mount");
   }
 
-  handleUpdateButtonClick = (company) => {
-    console.log(company)
-    this.props.selectUpdateCompany(company)
-    history.push('/company/update')
+  sortCompanyListcompare(
+    a: { company_name: string },
+    b: { company_name: string }
+  ) {
+    return a.company_name.localeCompare(b.company_name);
   }
 
-  handleDelete = (id) => {
+  handleUpdateButtonClick = company => {
+    console.log(company);
+    this.props.selectUpdateCompany(company);
+    history.push("/company/update");
+  };
+
+  handleDelete = id => {
     const payload = {
-      type: 'delete',
-      object: 'company',
-      id: id,
-    }
-    this.props.showDialog(payload)
-  }
+      type: "delete",
+      object: "company",
+      id: id
+    };
+    this.props.showDialog(payload);
+  };
 
-  handleViewButtonClick = (company) => {
-    this.props.selectCompany(company)
-  }
+  handleViewButtonClick = company => {
+    this.props.selectCompany(company);
+  };
 
   render() {
     const { classes } = this.props;
@@ -98,30 +104,54 @@ class CustomizedTable extends React.Component<Props, State> {
             <TableHead>
               <TableRow>
                 <CustomTableCell>Company Name</CustomTableCell>
-                <CustomTableCell align="right">Contact Person</CustomTableCell>
-                <CustomTableCell align="right">Contact Number</CustomTableCell>
-                <CustomTableCell align="right">Contact Emai</CustomTableCell>
-                <CustomTableCell align="right">Action</CustomTableCell>
+                <CustomTableCell align="left">Contact Person</CustomTableCell>
+                <CustomTableCell align="left">Contact Number</CustomTableCell>
+                <CustomTableCell align="left">Contact Email</CustomTableCell>
+                <CustomTableCell align="left">Action</CustomTableCell>
               </TableRow>
             </TableHead>
-            {this.props.companyList.length > 0 && <TableBody>
-              {this.props.companyList.map(row => (
-                <TableRow className={classes.row} key={row.company_id}>
-                  <CustomTableCell component="th" scope="row">
-                    {row.company_name}
-                  </CustomTableCell>
-                  <CustomTableCell align="right">{row.contact_person}</CustomTableCell>
-                  <CustomTableCell align="right">{row.contact_number}</CustomTableCell>
-                  <CustomTableCell align="right">{row.contact_email}</CustomTableCell>
-                  <CustomTableCell align="right">
-                    <IconButton onClick={() => this.handleViewButtonClick(row)}><ViewIcon /></IconButton>
-                    <IconButton onClick={() => this.handleUpdateButtonClick(row)}><UpdateIcon /></IconButton>
-                    {/* <Button color="primary" variant="contained" onClick={() => this.handleUpdateButtonClick(row)}>view</Button> */}
-                    {row.company_id !== '5ZwOXIkeKuPhpFriTsmD' && <IconButton onClick={() => this.handleDelete(row.company_id)}><DeleteIcon /></IconButton>}
-                  </CustomTableCell>
-                </TableRow>
-              ))}
-            </TableBody>}
+            {this.props.companyList.length > 0 && (
+              <TableBody>
+                {this.props.companyList
+                  .sort(this.sortCompanyListcompare)
+                  .map(row => (
+                    <TableRow className={classes.row} key={row.company_id}>
+                      <CustomTableCell component="th" scope="row">
+                        {row.company_name}
+                      </CustomTableCell>
+                      <CustomTableCell align="left">
+                        {row.contact_person}
+                      </CustomTableCell>
+                      <CustomTableCell align="left">
+                        {row.contact_number}
+                      </CustomTableCell>
+                      <CustomTableCell align="left">
+                        {row.contact_email}
+                      </CustomTableCell>
+                      <CustomTableCell align="left">
+                        <IconButton
+                          onClick={() => this.handleViewButtonClick(row)}
+                        >
+                          <ViewIcon />
+                        </IconButton>
+                        <IconButton
+                          onClick={() => this.handleUpdateButtonClick(row)}
+                        >
+                          <UpdateIcon />
+                        </IconButton>
+                        {/* <Button color="primary" variant="contained" onClick={() => this.handleUpdateButtonClick(row)}>view</Button> */}
+                        {row.company_id !== "5ZwOXIkeKuPhpFriTsmD" && (
+                          <IconButton
+                            onClick={() => this.handleDelete(row.company_id)}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        )}
+                      </CustomTableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            )}
           </Table>
         </Paper>
       </main>
@@ -136,7 +166,10 @@ class CustomizedTable extends React.Component<Props, State> {
 function mapStateToProps(state: any) {
   return {
     companyList: state.companyReducer.companyList
-  }
+  };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CustomizedTable));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(CustomizedTable));

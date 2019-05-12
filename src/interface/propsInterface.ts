@@ -8,6 +8,15 @@ import { User, CREATEUSERCRED } from "./userInterface";
 import { Region, CREATEREGIONCRED, UPDATEREGIONCRED } from "./regionInterface";
 import { CREATEROLE, UPDATEROLE, Role } from "./roleInterface";
 import { CREATESECTORCRED, CREATEINDUSTRYCRED, Sector, UPDATESECTORCRED, UPDATEINDUSTRYCRED } from "./sectorInterface";
+import { JobGrade, CREATEJOBGRADECRED, UPDATEJOBGRADECRED } from "./jobgradeInterface";
+import { Allowances, CREATEALLOWANCESCRED, UPDATEALLOWANCESCRED } from "./allowanceInterface";
+import { SalaryRange, CREATESALARYRANGECRED, UPDATESALARYRANGECRED } from "./salaryRangeInterface";
+import { TargetBonus, CREATETARGETBONUSCRED, UPDATETARGETBONUSCRED } from "./targetBonusInterface";
+import { Signons, CREATESIGNONSCRED, UPDATESIGNONSCRED } from "./signonsInterface";
+import { LongIncentive, CREATELONGINCENTIVECRED, UPDATELONGINCENTIVECRED } from "./longIncentiveInterface";
+import { ShortIncentive, CREATESHORTINCENTIVECRED, UPDATESHORTINCENTIVECRED } from "./shortIncentiveInterface";
+import { EquityRange, CREATEEQUITYRANGECRED, UPDATEEQUITYRANGECRED } from "./equityRangeInterface";
+import { UPDATECELL } from "./jobchartInterface";
 
 export interface SharedDispatchProps {
     showSnackBar: () => void,
@@ -95,4 +104,56 @@ export interface SharedDispatchProps {
 
     getCompanyByCountry: (id: string) => void,
     getCompanyByRegion: (id: string) => void,
+
+    // phrase 2
+    getJobGradeList: () => void,
+    selectJobGrade: (jg: JobGrade) => void,
+    createJobGrade: (cred: CREATEJOBGRADECRED) => void,
+    updateJobGrade: (cred: UPDATEJOBGRADECRED) => void,
+    deleteJobGrade: (cred: string) => void,
+
+    getAllowancesList: () => void,
+    selectAllowances: (jg: Allowances) => void,
+    createAllowances: (cred: CREATEALLOWANCESCRED) => void,
+    updateAllowances: (cred: UPDATEALLOWANCESCRED) => void,
+    deleteAllowances: (cred: string) => void,
+
+    getSalaryRangeList: () => void,
+    selectSalaryRange: (jg: SalaryRange) => void,
+    createSalaryRange: (cred: CREATESALARYRANGECRED) => void,
+    updateSalaryRange: (cred: UPDATESALARYRANGECRED) => void,
+    deleteSalaryRange: (cred: string) => void,
+
+    getTargetBonusList: () => void,
+    selectTargetBonus: (jg: TargetBonus) => void,
+    createTargetBonus: (cred: CREATETARGETBONUSCRED) => void,
+    updateTargetBonus: (cred: UPDATETARGETBONUSCRED) => void,
+    deleteTargetBonus: (cred: string) => void,
+
+    getSignonsList: () => void,
+    selectSignons: (jg: Signons) => void,
+    createSignons: (cred: CREATESIGNONSCRED) => void,
+    updateSignons: (cred: UPDATESIGNONSCRED) => void,
+    deleteSignons: (cred: string) => void,
+
+    getLongIncentiveList: () => void,
+    selectLongIncentive: (jg: LongIncentive) => void,
+    createLongIncentive: (cred: CREATELONGINCENTIVECRED) => void,
+    updateLongIncentive: (cred: UPDATELONGINCENTIVECRED) => void,
+    deleteLongIncentive: (cred: string) => void,
+
+    getShortIncentiveList: () => void,
+    selectShortIncentive: (jg: ShortIncentive) => void,
+    createShortIncentive: (cred: CREATESHORTINCENTIVECRED) => void,
+    updateShortIncentive: (cred: UPDATESHORTINCENTIVECRED) => void,
+    deleteShortIncentive: (cred: string) => void,
+
+    getEquityRangeList: () => void,
+    selectEquityRange: (jg: EquityRange) => void,
+    createEquityRange: (cred: CREATEEQUITYRANGECRED) => void,
+    updateEquityRange: (cred: UPDATEEQUITYRANGECRED) => void,
+    deleteEquityRange: (cred: string) => void,
+
+    getJobChartList: () => void,
+    updateCell: (cred: UPDATECELL) => void,
 }

@@ -1,56 +1,46 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
-import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import FormControl from "@material-ui/core/FormControl";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
 import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { Divider } from "@material-ui/core";
 import { connect } from "react-redux";
-import { loginAction } from "../../actions/authenticationAction";
 import { mapDispatchToProps } from "../../helper/dispachProps";
 import { SharedDispatchProps } from "../../interface/propsInterface";
-import { RootState } from "../../reducer";
 
 const styles = (theme: any) => ({
+  centerLogin: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100vh"
+  },
   main: {
     width: "auto",
     display: "block", // Fix IE 11 issue.
     marginLeft: theme.spacing.unit * 3,
     marginRight: theme.spacing.unit * 3,
     [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
-      width: 400,
-      marginLeft: "auto",
-      marginRight: "auto"
+      width: "20vw"
     }
   },
   paper: {
-    marginTop: theme.spacing.unit * 8,
     display: "flex",
-    // flexDirection: 'column',
     alignItems: "center",
-    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme
-      .spacing.unit * 3}px`
+    justifyContent: "center",
+    padding: `${theme.spacing.unit * 3}px`
   },
-  avatar: {
-    margin: theme.spacing.unit,
-    backgroundColor: theme.palette.secondary.main
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing.unit
-  },
+  loginSpacing: {
+    margin: "1rem 0"
+  }
 });
 
-export interface Props extends SharedDispatchProps, InState, WithStyles<typeof styles> { }
+export interface Props
+  extends SharedDispatchProps,
+    InState,
+    WithStyles<typeof styles> {}
 
 interface InState {
   usertoken: string;
@@ -61,15 +51,14 @@ export interface State {
   app_key: string;
 }
 
-
 class SignIn extends Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
-      password: '',
-      app_key: 'p9Eg6HN7FFXjA9WTNZ5n'
-    }
+      email: "",
+      password: "",
+      app_key: "p9Eg6HN7FFXjA9WTNZ5n"
+    };
 
     this.handleChange = this.handleChange.bind(this);
     this.dynSetState = this.dynSetState.bind(this);
@@ -78,59 +67,117 @@ class SignIn extends Component<Props, State> {
   dynSetState(key: keyof State, value: string) {
     this.setState({
       [key]: value
-    } as Pick<State, keyof State>)
+    } as Pick<State, keyof State>);
   }
 
   handleChange(event) {
     this.dynSetState(event.target.id, event.target.value);
-    // console.dir(event.target)
   }
 
-  handleLogin = (event) => {
+  handleLogin = event => {
     event.preventDefault();
-    this.props.login(this.state)
-    // console.log('s')
-  }
+    this.props.login(this.state);
+  };
 
   render() {
     const { classes } = this.props;
     if (this.props.usertoken === "") {
       return (
-        <main className={classes.main}>
-          <CssBaseline />
-          <Paper className={classes.paper}>
-            <form onSubmit={this.handleLogin}>
-              <FormControl margin="normal" required fullWidth>
-                <InputLabel htmlFor="email">Email Address</InputLabel>
-                <Input type="email" id="email" name="email" autoComplete="email" autoFocus value={this.state.email} onChange={this.handleChange} />
-              </FormControl>
-              <FormControl margin="normal" required fullWidth>
-                <InputLabel htmlFor="password">Password</InputLabel>
-                <Input
-                  name="password"
+        <div className={classes.centerLogin}>
+          <main className={classes.main}>
+            <CssBaseline />
+            <Paper className={classes.paper}>
+              {/* <form onSubmit={this.handleLogin}>
+                <FormControl margin="normal" required fullWidth>
+                  <InputLabel htmlFor="email">Email Address</InputLabel>
+                  <Input
+                    type="email"
+                    id="email"
+                    name="email"
+                    autoComplete="email"
+                    autoFocus
+                    value={this.state.email}
+                    onChange={this.handleChange}
+                  />
+                </FormControl>
+                <FormControl margin="normal" required fullWidth>
+                  <InputLabel htmlFor="password">Password</InputLabel>
+                  <Input
+                    name="password"
+                    type="password"
+                    id="password"
+                    autoComplete="current-password"
+                    value={this.state.password}
+                    onChange={this.handleChange}
+                  />
+                </FormControl>
+                <FormControlLabel
+                  control={<Checkbox value="remember" color="primary" />}
+                  label="Remember me"
+                />
+                <Divider />
+                <Button
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  type="submit"
+                >
+                  Sign in
+                </Button>
+
+                <div style={{ marginTop: 20 }}>
+                  <Link to="/forgetpassword">Forget password</Link>
+                </div>
+              </form> */}
+              <ValidatorForm
+                ref="form"
+                onSubmit={this.handleLogin}
+                debounceTime={500}
+              >
+                <TextValidator
+                  fullWidth
+                  label="Email"
+                  onChange={this.handleChange}
+                  id="email"
+                  name="email"
+                  autoComplete="email"
+                  value={this.state.email}
+                  validators={["required", "isEmail"]}
+                  errorMessages={[
+                    "this field is required",
+                    "email is not valid"
+                  ]}
+                  className={classes.loginSpacing}
+                />
+                <TextValidator
+                  fullWidth
+                  label="Password"
+                  onChange={this.handleChange}
                   type="password"
                   id="password"
+                  name="password"
                   autoComplete="current-password"
                   value={this.state.password}
-                  onChange={this.handleChange}
+                  validators={["required"]}
+                  errorMessages={["this field is required"]}
+                  className={classes.loginSpacing}
                 />
-              </FormControl>
-              {/* <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              /> */}
-              <Divider />
-              {/* <div style={{ marginTop: 20 }}>
-                <Link to="/forgetpassword">Forget password</Link>
-              </div> */}
-              <Button fullWidth variant="contained" color="primary" type="submit">Sign in</Button>
-            </form>
-          </Paper>
-        </main>
+                <Divider className={classes.loginSpacing} />
+                <Button
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  type="submit"
+                >
+                  Sign in
+                </Button>
+              </ValidatorForm>
+            </Paper>
+          </main>
+        </div>
       );
-    }
-    else {
-      return (<Redirect to="/" />)
+    } else {
+      return <Redirect to="/" />;
     }
   }
 }
@@ -138,7 +185,10 @@ class SignIn extends Component<Props, State> {
 function mapStateToProps(state: any) {
   return {
     usertoken: state.authenticationReducer.token
-  }
+  };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(SignIn));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(SignIn));

@@ -16,12 +16,15 @@ import {
   Button
 } from "@material-ui/core";
 import CustomButton from "../component/CustomButton";
-import Avatar from 'react-avatar-edit'
+import Avatar from "react-avatar-edit";
 import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../interface/propsInterface";
 import { RootState } from "../../../reducer";
-import { SubJobFunction, JobFunction } from "../../../interface/jobfunctionInterface";
+import {
+  SubJobFunction,
+  JobFunction
+} from "../../../interface/jobfunctionInterface";
 import { history } from "../../../store";
 
 const styles = (theme: Theme) =>
@@ -29,41 +32,9 @@ const styles = (theme: Theme) =>
     root: {
       flexGrow: 1
     },
-    grid: {
-      margin: 20
-    },
     textField: {
-      width: 200,
-      margin: 20,
-    },
-    // formControl: {
-    //   margin: theme.spacing.unit * 3,
-    // },
-    paper: {
-      padding: theme.spacing.unit * 2,
-      textAlign: "center",
-      color: theme.palette.text.secondary,
-      flexDirection: "column"
-    },
-    preview: {
-    },
-    divAvatar: {
-      margin: theme.spacing.unit * 3,
-      alignSelf: "baseline",
-      flex: 1,
-      alignItems: "center",
-      justifyContent: "center"
-    },
-    bigAvatar: {
-      width: "auto",
-      height: "auto"
-    },
-    profilebutton: {
-      alignContent: "center",
-      alignSelf: "center",
-      flex: 1,
-      alignItems: "center",
-      justifyContent: "center"
+      width: "20rem",
+      margin: "1rem"
     }
   });
 
@@ -72,39 +43,49 @@ export interface CreateSubJobFunctionState {
   description: string;
   jobfunction_id: string;
 }
-export interface Props extends WithStyles<typeof styles>, SharedDispatchProps, InState { }
+export interface Props
+  extends WithStyles<typeof styles>,
+    SharedDispatchProps,
+    InState {}
 
 interface InState {
   parentJobFunction: string;
 }
-class CreateSubJobFunctionPage extends Component<Props, CreateSubJobFunctionState> {
-
-
+class CreateSubJobFunctionPage extends Component<
+  Props,
+  CreateSubJobFunctionState
+> {
   constructor(props) {
-    super(props)
-    this.handleCreateSubJobFunction = this.handleCreateSubJobFunction.bind(this)
+    super(props);
+    this.handleCreateSubJobFunction = this.handleCreateSubJobFunction.bind(
+      this
+    );
   }
-
 
   state: CreateSubJobFunctionState = {
     subjob_name: "",
     description: "",
-    jobfunction_id: "",
-  }
-
-  handleChange = (statekay: keyof CreateSubJobFunctionState) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ [statekay]: event.target.value } as Pick<CreateSubJobFunctionState, keyof CreateSubJobFunctionState>);
+    jobfunction_id: ""
   };
 
-  handleCreateSubJobFunction = (e) => {
-    e.preventDefault()
-    this.props.createSubJobFunction(this.state)
-    history.goBack()
-  }
+  handleChange = (statekay: keyof CreateSubJobFunctionState) => (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    this.setState({ [statekay]: event.target.value } as Pick<
+      CreateSubJobFunctionState,
+      keyof CreateSubJobFunctionState
+    >);
+  };
+
+  handleCreateSubJobFunction = e => {
+    e.preventDefault();
+    this.props.createSubJobFunction(this.state);
+    history.goBack();
+  };
 
   componentDidMount = () => {
-    this.setState({ jobfunction_id: this.props.parentJobFunction })
-  }
+    this.setState({ jobfunction_id: this.props.parentJobFunction });
+  };
 
   render() {
     const { classes } = this.props;
@@ -112,48 +93,84 @@ class CreateSubJobFunctionPage extends Component<Props, CreateSubJobFunctionStat
       <div className={classes.root}>
         <Typography component="h1" variant="h5">
           New SubJobFunction
-      </Typography>
-        <Paper>
-          <form onSubmit={this.handleCreateSubJobFunction}>
-            <Grid container className={classes.grid} spacing={16}>
+        </Typography>
+        <Paper style={{ marginTop: "2rem" }}>
+          <form
+            onSubmit={this.handleCreateSubJobFunction}
+            style={{ padding: "2rem" }}
+          >
+            <Grid
+              container
+              direction="column"
+              justify="center"
+              alignItems="center"
+              spacing={16}
+            >
               <Grid item justify="center" container xs>
-                <div style={{ margin: 20 }}>
-                  <TextField
-                    id="subjob_name"
-                    label="subjob_name"
-                    className={classes.textField}
-                    value={this.state.subjob_name}
-                    onChange={this.handleChange('subjob_name')}
-                    margin="normal"
-                  />
-                  <TextField
-                    id="description"
-                    label="description"
-                    className={classes.textField}
-                    value={this.state.description}
-                    onChange={this.handleChange('description')}
-                    margin="normal"
-                  />
-                  <TextField
-                    disabled
-                    id="jobfunction_id"
-                    label="jobfunction_id"
-                    className={classes.textField}
-                    value={this.state.jobfunction_id}
-                    onChange={this.handleChange('jobfunction_id')}
-                    margin="normal"
-                  />
-                </div>
+                <TextField
+                  id="subjob_name"
+                  label="subjob_name"
+                  className={classes.textField}
+                  value={this.state.subjob_name}
+                  onChange={this.handleChange("subjob_name")}
+                  margin="normal"
+                />
+                <TextField
+                  id="description"
+                  label="description"
+                  className={classes.textField}
+                  value={this.state.description}
+                  onChange={this.handleChange("description")}
+                  margin="normal"
+                />
+                <TextField
+                  disabled
+                  id="jobfunction_id"
+                  label="jobfunction_id"
+                  className={classes.textField}
+                  value={this.state.jobfunction_id}
+                  onChange={this.handleChange("jobfunction_id")}
+                  margin="normal"
+                />
+              </Grid>
+              <Grid item justify="center" container xs>
+                <TextField
+                  id="description"
+                  label="description"
+                  className={classes.textField}
+                  value={this.state.description}
+                  onChange={this.handleChange("description")}
+                  margin="normal"
+                />
+              </Grid>
+              <Grid item justify="center" container xs>
+                <TextField
+                  disabled
+                  id="jobfunction_id"
+                  label="jobfunction_id"
+                  className={classes.textField}
+                  value={this.state.jobfunction_id}
+                  onChange={this.handleChange("jobfunction_id")}
+                  margin="normal"
+                />
               </Grid>
             </Grid>
             <Divider />
             <Divider />
-            <div style={{
-              width: '100%', flex: 1,
-              flexDirection: 'row',
-              justifyContent: 'center', alignItems: 'flex-end'
-            }}>
-              <Button variant="contained" color="primary" type="submit">Submit</Button>
+            <div
+              style={{
+                display: "flex",
+                paddingTop: "1rem"
+              }}
+            >
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                style={{ marginLeft: "auto" }}
+              >
+                Submit
+              </Button>
             </div>
           </form>
         </Paper>
@@ -168,9 +185,11 @@ class CreateSubJobFunctionPage extends Component<Props, CreateSubJobFunctionStat
 
 function mapStateToProps(state: any) {
   return {
-    parentJobFunction: state.jobFunctionReducer.selectedJobFunction,
-  }
+    parentJobFunction: state.jobFunctionReducer.selectedJobFunction
+  };
 }
 
-
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CreateSubJobFunctionPage));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(CreateSubJobFunctionPage));

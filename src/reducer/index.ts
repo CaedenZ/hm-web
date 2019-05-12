@@ -22,6 +22,15 @@ import { snackBarReducer } from "./snackBarReducer";
 import { getRoleListEpic, getRoleFunctionListEpic, updateRoleEpic, createRoleEpic, deleteRoleEpic, roleReducer } from "./roleReducer";
 import { dialogReducer } from "./dialogReducer";
 import { getSectorListEpic, createSectorEpic, createIndustryEpic, updateSectorEpic, updateIndustryEpic, deleteSectorEpic, deleteIndustryEpic, sectorReducer } from "./sectorReducer";
+import { jobgradeReducer, createJobGradeEpic, getJobGradeListEpic, updateJobGradeEpic, deleteJobGradeEpic } from "./jobgradeReducer";
+import { allowancesReducer, createAllowancesEpic, getAllowancesListEpic, updateAllowancesEpic, deleteAllowancesEpic } from "./allowanceReducer";
+import { signonsReducer, createSignonsEpic, getSignonsListEpic, updateSignonsEpic, deleteSignonsEpic } from "./signonsReducer";
+import { targetBonusReducer, createTargetBonusEpic, getTargetBonusListEpic, updateTargetBonusEpic, deleteTargetBonusEpic } from "./targetBonusReducer";
+import { longIncentiveReducer, createLongIncentiveEpic, getLongIncentiveListEpic, updateLongIncentiveEpic, deleteLongIncentiveEpic } from "./longIncentiveReducer";
+import { shortIncentiveReducer, createShortIncentiveEpic, getShortIncentiveListEpic, updateShortIncentiveEpic, deleteShortIncentiveEpic } from "./shortIncentiveReducer";
+import { salaryRangeReducer, createSalaryRangeEpic, getSalaryRangeListEpic, updateSalaryRangeEpic, deleteSalaryRangeEpic } from "./salaryRangeReducer";
+import { equityrangeReducer, createEquityRangeEpic, getEquityRangeListEpic, updateEquityRangeEpic, deleteEquityRangeEpic } from "./equityRangeReducer";
+import { jobchartReducer, getJobChartListEpic, updateCellEpic } from "./jobchartReducer";
 
 
 export const history = createBrowserHistory()
@@ -38,6 +47,15 @@ export const rootReducer = combineReducers({
     dialogReducer,
     roleReducer,
     sectorReducer,
+    jobgradeReducer,
+    allowancesReducer,
+    longIncentiveReducer,
+    shortIncentiveReducer,
+    salaryRangeReducer,
+    signonsReducer,
+    targetBonusReducer,
+    equityrangeReducer,
+    jobchartReducer,
     router: connectRouter(history),
     //   userDetail,
     //   currentReport,
@@ -62,6 +80,8 @@ export const rootEpic = combineEpics(
     getRegionListEpic,
     updateRegionEpic,
     deleteRegionEpic,
+
+
 
     getRoleListEpic,
     getRoleFunctionListEpic,
@@ -113,10 +133,50 @@ export const rootEpic = combineEpics(
 
     getCompanyByCountryEpic,
     getCompanyByRegionEpic,
-    //   generateReportEpic,
-    //   sendEmailEpic,
-    //   completeReportEpic,
-    //   checkExpireDateEpics
+
+    // phrase 2
+    createJobGradeEpic,
+    getJobGradeListEpic,
+    updateJobGradeEpic,
+    deleteJobGradeEpic,
+
+    createSalaryRangeEpic,
+    getSalaryRangeListEpic,
+    updateSalaryRangeEpic,
+    deleteSalaryRangeEpic,
+
+    createAllowancesEpic,
+    getAllowancesListEpic,
+    updateAllowancesEpic,
+    deleteAllowancesEpic,
+
+    createTargetBonusEpic,
+    getTargetBonusListEpic,
+    updateTargetBonusEpic,
+    deleteTargetBonusEpic,
+
+    createLongIncentiveEpic,
+    getLongIncentiveListEpic,
+    updateLongIncentiveEpic,
+    deleteLongIncentiveEpic,
+
+    createShortIncentiveEpic,
+    getShortIncentiveListEpic,
+    updateShortIncentiveEpic,
+    deleteShortIncentiveEpic,
+
+    createSignonsEpic,
+    getSignonsListEpic,
+    updateSignonsEpic,
+    deleteSignonsEpic,
+
+    createEquityRangeEpic,
+    getEquityRangeListEpic,
+    updateEquityRangeEpic,
+    deleteEquityRangeEpic,
+
+    getJobChartListEpic,
+    updateCellEpic,
 )
 
 // export type DetailState = DetailState

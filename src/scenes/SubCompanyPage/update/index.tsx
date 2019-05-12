@@ -2,40 +2,29 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import {
   Typography,
-  Theme,
   createStyles,
   WithStyles,
-  withStyles,
-  Grid,
-  Paper,
-  TextField,
-  Divider,
-  FormControl,
-  Checkbox,
-  FormControlLabel,
-  Button,
-  InputLabel,
-  Select,
-  MenuItem
+  withStyles
 } from "@material-ui/core";
-import CustomButton from "../component/CustomButton";
-import Avatar from 'react-avatar-edit'
 import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../interface/propsInterface";
-import { Company, UPDATECOMPANYCRED, UPDATEENTITYCRED, Entity } from "../../../interface/companyInterface";
-import { Country, CountryState } from "../../../interface/countryInterface";
+import { Company, Entity } from "../../../interface/companyInterface";
+import { CountryState } from "../../../interface/countryInterface";
 import { history } from "../../../store";
-import FormPage from "../component/form"
+import FormPage from "../component/form";
 
-const styles = (theme: Theme) =>
+const styles = () =>
   createStyles({
     root: {
       flexGrow: 1
-    },
+    }
   });
 
-export interface Props extends InState, WithStyles<typeof styles>, SharedDispatchProps { }
+export interface Props
+  extends InState,
+    WithStyles<typeof styles>,
+    SharedDispatchProps {}
 
 interface InState {
   updatingEntity: Entity;
@@ -43,21 +32,17 @@ interface InState {
   selectedCompany: Company;
 }
 class UpdateCompanyPage extends Component<Props> {
-
-
   constructor(props) {
-    super(props)
-    this.handleUpdateCompany = this.handleUpdateCompany.bind(this)
+    super(props);
+    this.handleUpdateCompany = this.handleUpdateCompany.bind(this);
   }
-
-
 
   handleUpdateCompany = (e, data) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    this.props.updateEntity(data)
-    history.goBack()
-  }
+    this.props.updateEntity(data);
+    history.goBack();
+  };
 
   render() {
     const { classes } = this.props;
@@ -65,9 +50,13 @@ class UpdateCompanyPage extends Component<Props> {
       <div className={classes.root}>
         <Typography component="h1" variant="h5">
           Update Entity
-      </Typography>
-        <FormPage create={false} updateData={this.props.updatingEntity} onSubmit={(e, data) => this.handleUpdateCompany(e, data)} />
-      </div >
+        </Typography>
+        <FormPage
+          create={false}
+          updateData={this.props.updatingEntity}
+          onSubmit={(e, data) => this.handleUpdateCompany(e, data)}
+        />
+      </div>
     );
   }
 }
@@ -81,7 +70,10 @@ function mapStateToProps(state: any) {
     updatingEntity: state.companyReducer.selectedUpdateEntity,
     paremeterList: state.countryReducer,
     selectedCompany: state.companyReducer.selectedCompany
-  }
+  };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(UpdateCompanyPage));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(UpdateCompanyPage));

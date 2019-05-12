@@ -22,41 +22,9 @@ const styles = (theme: Theme) =>
     root: {
       flexGrow: 1
     },
-    grid: {
-      margin: 20
-    },
     textField: {
-      width: 200,
-      margin: 20,
-    },
-    // formControl: {
-    //   margin: theme.spacing.unit * 3,
-    // },
-    paper: {
-      padding: theme.spacing.unit * 2,
-      textAlign: "center",
-      color: theme.palette.text.secondary,
-      flexDirection: "column"
-    },
-    preview: {
-    },
-    divAvatar: {
-      margin: theme.spacing.unit * 3,
-      alignSelf: "baseline",
-      flex: 1,
-      alignItems: "center",
-      justifyContent: "center"
-    },
-    bigAvatar: {
-      width: "auto",
-      height: "auto"
-    },
-    profilebutton: {
-      alignContent: "center",
-      alignSelf: "center",
-      flex: 1,
-      alignItems: "center",
-      justifyContent: "center"
+      width: "20rem",
+      margin: "1rem"
     }
   });
 
@@ -64,38 +32,43 @@ export interface CreateIndustryState {
   name: string;
   sector_id: string;
 }
-export interface Props extends WithStyles<typeof styles>, SharedDispatchProps, InState { }
+export interface Props
+  extends WithStyles<typeof styles>,
+    SharedDispatchProps,
+    InState {}
 
 interface InState {
   parentSector: string;
 }
 class CreateIndustryPage extends Component<Props, CreateIndustryState> {
-
-
   constructor(props) {
-    super(props)
-    this.handleCreateIndustry = this.handleCreateIndustry.bind(this)
+    super(props);
+    this.handleCreateIndustry = this.handleCreateIndustry.bind(this);
   }
-
 
   state: CreateIndustryState = {
     name: "",
-    sector_id: "",
-  }
-
-  handleChange = (statekay: keyof CreateIndustryState) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ [statekay]: event.target.value } as Pick<CreateIndustryState, keyof CreateIndustryState>);
+    sector_id: ""
   };
 
-  handleCreateIndustry = (e) => {
-    e.preventDefault()
-    this.props.createIndustry(this.state)
-    history.goBack()
-  }
+  handleChange = (statekay: keyof CreateIndustryState) => (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    this.setState({ [statekay]: event.target.value } as Pick<
+      CreateIndustryState,
+      keyof CreateIndustryState
+    >);
+  };
+
+  handleCreateIndustry = e => {
+    e.preventDefault();
+    this.props.createIndustry(this.state);
+    history.goBack();
+  };
 
   componentDidMount = () => {
-    this.setState({ sector_id: this.props.parentSector })
-  }
+    this.setState({ sector_id: this.props.parentSector });
+  };
 
   render() {
     const { classes } = this.props;
@@ -103,18 +76,21 @@ class CreateIndustryPage extends Component<Props, CreateIndustryState> {
       <div className={classes.root}>
         <Typography component="h1" variant="h5">
           New Industry
-      </Typography>
-        <Paper>
-          <form onSubmit={this.handleCreateIndustry}>
-            <Grid container className={classes.grid} spacing={16}>
+        </Typography>
+        <Paper style={{ marginTop: "2rem" }}>
+          <form
+            onSubmit={this.handleCreateIndustry}
+            style={{ padding: "2rem" }}
+          >
+            <Grid container spacing={16}>
               <Grid item justify="center" container xs>
                 <div style={{ margin: 20 }}>
                   <TextField
                     id="name"
-                    label="name"
+                    label="Industry"
                     className={classes.textField}
                     value={this.state.name}
-                    onChange={this.handleChange('name')}
+                    onChange={this.handleChange("name")}
                     margin="normal"
                   />
                 </div>
@@ -122,12 +98,20 @@ class CreateIndustryPage extends Component<Props, CreateIndustryState> {
             </Grid>
             <Divider />
             <Divider />
-            <div style={{
-              width: '100%', flex: 1,
-              flexDirection: 'row',
-              justifyContent: 'center', alignItems: 'flex-end'
-            }}>
-              <Button variant="contained" color="primary" type="submit">Submit</Button>
+            <div
+              style={{
+                display: "flex",
+                paddingTop: "1rem"
+              }}
+            >
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                style={{ marginLeft: "auto" }}
+              >
+                Submit
+              </Button>
             </div>
           </form>
         </Paper>
@@ -142,9 +126,11 @@ class CreateIndustryPage extends Component<Props, CreateIndustryState> {
 
 function mapStateToProps(state: any) {
   return {
-    parentSector: state.sectorReducer.selectedSector,
-  }
+    parentSector: state.sectorReducer.selectedSector
+  };
 }
 
-
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CreateIndustryPage));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(CreateIndustryPage));

@@ -16,6 +16,12 @@ import { isActionOf } from "typesafe-actions";
 import { getRegionListAction } from "../actions/regionAction";
 import { getUserListAction } from "../actions/userAction";
 import { getRoleListAction } from "../actions/roleAction";
+import { getJobGradeListAction } from "../actions/jobgradeAction";
+import { getSalaryRangeListAction } from "../actions/salaryRangeAction";
+import { getAllowancesListAction } from "../actions/allowanceAction";
+import { getLongIncentiveListAction } from "../actions/longIncentiveAction";
+import { getShortIncentiveListAction } from "../actions/shortIncentiveAction";
+import { getSignonsListAction } from "../actions/signonsAction";
 
 
 export function companyReducer(state: CompanyState = {
@@ -120,6 +126,12 @@ export function companyReducer(state: CompanyState = {
             action.asyncDispatch(getUnitListAction.request())
             action.asyncDispatch(getRoleListAction.request())
             action.asyncDispatch(getUserListAction.request())
+            action.asyncDispatch(getJobGradeListAction.request())
+            action.asyncDispatch(getSalaryRangeListAction.request())
+            action.asyncDispatch(getAllowancesListAction.request())
+            action.asyncDispatch(getLongIncentiveListAction.request())
+            action.asyncDispatch(getShortIncentiveListAction.request())
+            action.asyncDispatch(getSignonsListAction.request())
             return {
                 ...state,
                 selectedCompany: action.payload
@@ -150,7 +162,7 @@ export function companyReducer(state: CompanyState = {
                 selectUpdateUnit: action.payload
             }
         case 'GET_COMPANY_LIST_SUCCESS':
-            if (action.payload.length === 1) {
+            if ((action.payload.length === 1) || (state.selectedCompany.company_id === '')) {
                 action.asyncDispatch(selectCompanyAction(action.payload[0]))
             }
             return {

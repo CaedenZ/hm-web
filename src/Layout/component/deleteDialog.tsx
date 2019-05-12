@@ -1,10 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { withStyles, WithStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import Snackbar from '@material-ui/core/Snackbar';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
 import { RootState } from '../../reducer';
 import { mapDispatchToProps } from '../../helper/dispachProps';
 import { connect } from 'react-redux';
@@ -75,6 +71,9 @@ class AlertDialog extends React.Component<Props, State> {
             case 'jobfunction':
                 this.props.deleteJobFunction(this.props.deleteDialog.id)
                 break
+            case 'jobgrade':
+                this.props.deleteJobGrade(this.props.deleteDialog.id)
+                break
             case 'subjobfunction':
                 this.props.deleteSubJobFunction(this.props.deleteDialog.id)
                 break
@@ -87,6 +86,27 @@ class AlertDialog extends React.Component<Props, State> {
             case 'industry':
                 this.props.deleteIndustry(this.props.deleteDialog.id)
                 break
+            case 'salaryrange':
+                this.props.deleteSalaryRange(this.props.deleteDialog.id)
+                break
+            case 'allowances':
+                this.props.deleteAllowances(this.props.deleteDialog.id)
+                break
+            case 'targetbonus':
+                this.props.deleteTargetBonus(this.props.deleteDialog.id)
+                break
+            case 'equityrange':
+                this.props.deleteEquityRange(this.props.deleteDialog.id)
+                break
+            case 'signons':
+                this.props.deleteSignons(this.props.deleteDialog.id)
+                break
+            case 'shortincentive':
+                this.props.deleteShortIncentive(this.props.deleteDialog.id)
+                break
+            case 'longincentive':
+                this.props.deleteLongIncentive(this.props.deleteDialog.id)
+                break
             default:
                 break
         }
@@ -94,7 +114,6 @@ class AlertDialog extends React.Component<Props, State> {
     };
 
     render() {
-        const { classes } = this.props;
 
 
         switch (this.props.deleteDialog.type) {

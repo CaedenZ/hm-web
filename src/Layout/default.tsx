@@ -1,74 +1,86 @@
 import React, { Component } from "react";
 import PermanentDrawerLeft from "./component/Drawer";
-import { RootState } from "../reducer";
 import { connect } from "react-redux";
 import { Redirect, Link as RouterLink } from "react-router-dom";
 import { mapDispatchToProps } from "../helper/dispachProps";
 import { SharedDispatchProps } from "../interface/propsInterface";
+import Breadcrumbs from "@material-ui/lab/Breadcrumbs";
+import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+import Typography from "@material-ui/core/Typography";
 import CustomSnackBar from "./component/snackBar";
 import CustomDialog from "./component/deleteDialog";
 import ErrorBoundary from "./component/error";
-import { Button, Link } from "@material-ui/core";
 import { history } from "../store";
 
 export interface Props extends SharedDispatchProps {
-  token: string
+  token: string;
 }
 
-
 class Layout extends Component<Props> {
-
   componentDidMount() {
-    console.log(history.location.pathname.split('/'))
-    this.props.getCountryList()
-    this.props.getCurrencyList()
-    this.props.getDistintCurrencyList()
-    this.props.getSectorList()
-    this.props.getJobFunctionList()
-    this.props.getRoleFunctionList()
+    this.props.getCountryList();
+    this.props.getCurrencyList();
+    this.props.getDistintCurrencyList();
+    this.props.getSectorList();
+    this.props.getJobFunctionList();
+    this.props.getRoleFunctionList();
+    this.props.getJobChartList();
   }
   render() {
-
     const breadcrumb = () => {
-      const url = history.location.pathname.split('/')
-      const co: any = []
-      let link = '/'
-      for (let index = 1; index < url.length; index++) {
-        const element = url[index];
-        if (element === '') {
-          break
-        }
-        link += element + '/'
-        co.push(<p key={element + '>'} style={{ display: 'inline-block' }}>></p>)
-        co.push(<RouterLink key={element} to={link} style={{ display: 'inline-block' }}><p>{element}</p></RouterLink>)
-      }
-      return co
-    }
+      const pathnames = history.location.pathname.split("/").filter(x => x);
 
-    const Home = props => <RouterLink to="/" style={{ display: 'inline-block' }}><p>Home</p></RouterLink>
+      return (
+        <Breadcrumbs
+          separator={<NavigateNextIcon fontSize="small" />}
+          arial-label="Breadcrumb"
+        >
+          <RouterLink key="/" to="/">
+            <p>Home</p>
+          </RouterLink>
+          {pathnames.map((value, index) => {
+            const last = index === pathnames.length - 1;
+            const to = `/${pathnames.slice(0, index + 1).join("/")}`;
+            const displayTo = to.split("/")[to.split("/").length - 1];
+            return last ? (
+              <Typography color="textPrimary" key={to}>
+                {displayTo}
+              </Typography>
+            ) : (
+                <RouterLink key={to} to={to}>
+                  <p>{displayTo}</p>
+                </RouterLink>
+              );
+          })}
+        </Breadcrumbs>
+      );
+    };
 
-    if (this.props.token === '') {
-      return (<Redirect to='/login' />)
+    if (this.props.token === "") {
+      return <Redirect to="/login" />;
+    } else {
+      return (
+        <PermanentDrawerLeft>
+          <div style={{ display: "inline-block" }}>
+            {/* <Home /> */}
+            {breadcrumb()}
+          </div>
+          <ErrorBoundary>{this.props.children}</ErrorBoundary>
+          <CustomSnackBar />
+          <CustomDialog />
+        </PermanentDrawerLeft>
+      );
     }
-    else {
-      return <PermanentDrawerLeft>
-        <div style={{ display: 'inline-block' }}>
-          <Home />
-          {breadcrumb()}
-        </div>
-        <ErrorBoundary>{this.props.children}</ErrorBoundary>
-        <CustomSnackBar />
-        <CustomDialog />
-      </PermanentDrawerLeft>
-    }
-
   }
 }
 
 function mapStateToProps(state: any) {
   return {
     token: state.authenticationReducer.token
-  }
+  };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Layout);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Layout);
