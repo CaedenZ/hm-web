@@ -11,10 +11,11 @@ import {
   Divider,
   FormControl,
   Button,
-  Select,
   MenuItem,
-  InputLabel
+  InputLabel,
+  Chip
 } from "@material-ui/core";
+import Select from "react-select";
 import Avatar from "react-avatar-edit";
 import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
@@ -24,12 +25,64 @@ import { CountryState } from "../../../interface/countryInterface";
 import { history } from "../../../store";
 import { CREATECOMPANYCRED } from "../../../interface/companyInterface";
 import { Sector } from "../../../interface/sectorInterface";
+import classNames from "classnames";
+import CancelIcon from "@material-ui/icons/Cancel";
+import theme from "../../../assets/theme";
+import { emphasize } from "@material-ui/core/styles/colorManipulator";
+import components from "../../../function/react-select-components";
 
 const styles = () =>
   createStyles({
     textField: {
       width: "20rem",
       margin: "1rem"
+    },
+    root: {
+      flexGrow: 1,
+      height: 250
+    },
+    input: {
+      display: "flex",
+      padding: 0
+    },
+    valueContainer: {
+      display: "flex",
+      flexWrap: "wrap",
+      flex: 1,
+      alignItems: "center",
+      overflow: "hidden"
+    },
+    chip: {
+      margin: `${theme.spacing.unit / 2}px ${theme.spacing.unit / 4}px`
+    },
+    chipFocused: {
+      backgroundColor: emphasize(
+        theme.palette.type === "light"
+          ? theme.palette.grey[300]
+          : theme.palette.grey[700],
+        0.08
+      )
+    },
+    noOptionsMessage: {
+      padding: `${theme.spacing.unit}px ${theme.spacing.unit * 2}px`
+    },
+    singleValue: {
+      fontSize: 16
+    },
+    placeholder: {
+      position: "absolute",
+      left: 2,
+      fontSize: 16
+    },
+    paper: {
+      position: "absolute",
+      zIndex: 1,
+      marginTop: theme.spacing.unit,
+      left: 0,
+      right: 0
+    },
+    divider: {
+      height: theme.spacing.unit * 2
     }
   });
 
@@ -52,14 +105,19 @@ interface FormState {
   logo_main: string;
   parentcompany_id: string;
   webpage_url: string;
+  displayCountry: string[];
+  display_base_currency_id: object;
+  displaySector: object;
+  displayIndustry: object;
 }
+
 interface Props
   extends WithStyles<typeof styles>,
     SharedDispatchProps,
     InState {}
 
 interface InState {
-  paremeterList: CountryState;
+  parameterList: CountryState;
   sectorList: Sector[];
   onSubmit: any;
   create: boolean;
@@ -74,6 +132,7 @@ class CreateCompanyPage extends Component<Props, FormState> {
     this.onMainCrop = this.onMainCrop.bind(this);
     this.onMainClose = this.onMainClose.bind(this);
     this.handleCreateCompany = this.handleCreateCompany.bind(this);
+    this.handleChangeSelect = this.handleChangeSelect.bind(this);
   }
 
   state: FormState = {
@@ -93,12 +152,48 @@ class CreateCompanyPage extends Component<Props, FormState> {
     base_currency_id: "",
     logo_main: "",
     parentcompany_id: "",
-    webpage_url: ""
+    webpage_url: "",
+    displayCountry: [],
+    display_base_currency_id: {},
+    displaySector: {},
+    displayIndustry: {}
   };
 
   componentDidMount() {
     if (!this.props.create) {
       this.setState(this.props.updateData);
+
+      const tmpCountryList = new Array();
+      for (const country of this.props.updateData.country) {
+        const tmpCountry = JSON.parse(country);
+        tmpCountryList.push({
+          value: tmpCountry.country_name,
+          label: tmpCountry.country_name
+        });
+      }
+      this.setState({ displayCountry: tmpCountryList });
+      this.setState({
+        display_base_currency_id: {
+          value: this.props.updateData.base_currency_id,
+          label: this.props.updateData.base_currency_id
+        }
+      });
+
+      const sectorObject = JSON.parse(this.props.updateData.sector);
+      this.setState({
+        displaySector: {
+          value: JSON.stringify(sectorObject),
+          label: sectorObject.name
+        }
+      });
+
+      const industryObject = JSON.parse(this.props.updateData.industry);
+      this.setState({
+        displayIndustry: {
+          value: JSON.stringify(industryObject),
+          label: industryObject.name
+        }
+      });
     }
   }
 
@@ -133,10 +228,42 @@ class CreateCompanyPage extends Component<Props, FormState> {
     this.setState({ country: event.target.value });
   };
 
-  handleChangeSelect = (statekay: keyof FormState) => (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    this.setState(({ [statekay]: event.target.value } as unknown) as Pick<
+  // handleChangeSelect = (statekay: keyof FormState) => (
+  //   event: React.ChangeEvent<HTMLSelectElement>
+  // ) => {
+  //   this.setState(({ [statekay]: event.target.value } as unknown) as Pick<
+  //     FormState,
+  //     keyof FormState
+  //   >);
+  // };
+  handleChangeSelect = (statekay: keyof FormState) => value => {
+    let tmpListObject: any = null;
+    switch (statekay) {
+      case "country":
+        // tmpObject = { country_name: value };
+        for (const country of value) {
+          const tmpObject = country.value;
+          tmpListObject = [];
+          tmpListObject.push(JSON.stringify(tmpObject));
+        }
+        this.setState({ displayCountry: value });
+        break;
+      case "base_currency_id":
+        tmpListObject = value.value;
+        this.setState({ display_base_currency_id: value });
+        break;
+      case "sector":
+        tmpListObject = value.value;
+        this.setState({ displaySector: value });
+        break;
+      case "industry":
+        tmpListObject = value.value;
+        this.setState({ displayIndustry: value });
+        break;
+      default:
+        break;
+    }
+    this.setState(({ [statekay]: tmpListObject } as unknown) as Pick<
       FormState,
       keyof FormState
     >);
@@ -310,273 +437,107 @@ class CreateCompanyPage extends Component<Props, FormState> {
             <Grid container item xs>
               <Grid container>
                 <Grid container item xs={6}>
-                  {this.props.paremeterList.countryList.length > 0 && (
-                    <FormControl>
-                      <InputLabel style={{ marginLeft: "20px" }} required>
-                        Country
-                      </InputLabel>
-                      <Select
-                        id="country"
-                        multiple
-                        className={classes.textField}
-                        value={this.state.country}
-                        onChange={this.handleChangeSelect("country")}
-                        inputProps={{
-                          name: "country",
-                          id: "country-simple"
-                        }}
-                      >
-                        {this.props.paremeterList.countryList.map(country => (
-                          <MenuItem
-                            key={country.country_name}
-                            value={JSON.stringify(country)}
-                          >
-                            {country.country_name}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
+                  {this.props.parameterList.countryList.length > 0 && (
+                    <Select
+                      className={classes.textField}
+                      classes={classes}
+                      textFieldProps={{
+                        label: "Country",
+                        InputLabelProps: {
+                          shrink: true
+                        }
+                      }}
+                      options={this.props.parameterList.countryList.map(
+                        country => ({
+                          value: country,
+                          label: country.country_name
+                        })
+                      )}
+                      components={components}
+                      value={this.state.displayCountry}
+                      onChange={this.handleChangeSelect("country")}
+                      placeholder="Select multiple countries"
+                      isMulti
+                    />
                   )}
                 </Grid>
                 <Grid container item xs={6}>
-                  {this.props.paremeterList.distintCurrencyList.length > 0 && (
-                    <FormControl>
-                      <InputLabel style={{ marginLeft: "20px" }} required>
-                        Base Currency
-                      </InputLabel>
-                      <Select
-                        id="base_currency_id"
-                        className={classes.textField}
-                        value={this.state.base_currency_id}
-                        onChange={this.handleChangeSelect("base_currency_id")}
-                        inputProps={{
-                          name: "base_currency_id",
-                          id: "base_currency_id-simple"
-                        }}
-                      >
-                        {this.props.paremeterList.distintCurrencyList.map(
-                          currency => (
-                            <MenuItem key={currency.code} value={currency.code}>
-                              {currency.code}
-                            </MenuItem>
-                          )
-                        )}
-                      </Select>
-                    </FormControl>
+                  {this.props.parameterList.distintCurrencyList.length > 0 && (
+                    <Select
+                      className={classes.textField}
+                      classes={classes}
+                      textFieldProps={{
+                        label: "Base Currency",
+                        InputLabelProps: {
+                          shrink: true
+                        }
+                      }}
+                      options={this.props.parameterList.distintCurrencyList.map(
+                        currency => ({
+                          value: currency.code,
+                          label: currency.code
+                        })
+                      )}
+                      components={components}
+                      value={this.state.display_base_currency_id}
+                      onChange={this.handleChangeSelect("base_currency_id")}
+                      placeholder="Base Currency"
+                    />
                   )}
                 </Grid>
               </Grid>
               <Grid container>
                 <Grid container item xs={6}>
                   {this.props.sectorList.length > 0 && (
-                    <FormControl>
-                      <InputLabel style={{ marginLeft: "20px" }} required>
-                        Sector
-                      </InputLabel>
-                      <Select
-                        id="sector"
-                        className={classes.textField}
-                        value={this.state.sector}
-                        onChange={this.handleChangeSelect("sector")}
-                        inputProps={{
-                          name: "sector",
-                          id: "sector-simple"
-                        }}
-                      >
-                        {this.props.sectorList.map(sector => (
-                          <MenuItem
-                            key={sector.name}
-                            value={JSON.stringify(sector)}
-                          >
-                            {sector.name}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
+                    <Select
+                      className={classes.textField}
+                      classes={classes}
+                      textFieldProps={{
+                        label: "Sector",
+                        InputLabelProps: {
+                          shrink: true
+                        }
+                      }}
+                      options={this.props.sectorList.map(sector => ({
+                        value: JSON.stringify(sector),
+                        label: sector.name
+                      }))}
+                      components={components}
+                      value={this.state.displaySector}
+                      onChange={this.handleChangeSelect("sector")}
+                      placeholder="Sector"
+                    />
                   )}
                 </Grid>
                 {this.state.sector !== "" && (
                   <Grid container item xs={6}>
                     {JSON.parse(this.state.sector).industry.length > 0 && (
-                      <FormControl>
-                        <InputLabel style={{ marginLeft: "20px" }} required>
-                          Industry
-                        </InputLabel>
-                        <Select
-                          id="industry"
-                          className={classes.textField}
-                          value={this.state.industry}
-                          onChange={this.handleChangeSelect("industry")}
-                          inputProps={{
-                            name: "industry",
-                            id: "industry-simple"
-                          }}
-                        >
-                          {JSON.parse(this.state.sector).industry.map(
-                            industry => (
-                              <MenuItem
-                                key={industry.name}
-                                value={JSON.stringify(industry)}
-                              >
-                                {industry.name}
-                              </MenuItem>
-                            )
-                          )}
-                        </Select>
-                      </FormControl>
+                      <Select
+                        className={classes.textField}
+                        classes={classes}
+                        textFieldProps={{
+                          label: "Industry",
+                          InputLabelProps: {
+                            shrink: true
+                          }
+                        }}
+                        options={JSON.parse(this.state.sector).industry.map(
+                          industry => ({
+                            value: JSON.stringify(industry),
+                            label: industry.name
+                          })
+                        )}
+                        components={components}
+                        value={this.state.displayIndustry}
+                        onChange={this.handleChangeSelect("industry")}
+                        placeholder="Industry"
+                      />
                     )}
                   </Grid>
                 )}
               </Grid>
             </Grid>
           </Grid>
-          {/* <Grid container className={classes.grid} spacing={16}>
-                                    
-                            <Grid item justify="center" xs container>
-                                <Grid container direction="column" spacing={16}>
-                                    <div style={{ margin: 20, justifyContent: 'center' }}>
-                                        <Avatar
-                                            width={200}
-                                            height={150}
-                                            onCrop={this.onMainCrop}
-                                            onClose={this.onMainClose}
-                                        />
-                                        <Typography variant="h6">Main Logo</Typography>
-                                    </div>
-                                </Grid>
-                                <Grid container direction="column" spacing={16}>
-                                    <div style={{ margin: 20, justifyContent: 'center' }}>
-                                        <Avatar
-                                            width={200}
-                                            height={150}
-                                            onCrop={this.onCrop}
-                                            onClose={this.onClose}
-                                        />
-                                        <Typography variant="h6">Small Logo</Typography>
-                                    </div>
-                                </Grid>
-                            </Grid>
-                            <Grid item justify="center" xs container>
-                                <div style={{ margin: 20 }}>
-                                    
-                                    <TextField
-                                        id="hq_name"
-                                        label="hq_name"
-                                        className={classes.textField}
-                                        value={this.state.hq_name}
-                                        onChange={this.handleChange('hq_name')}
-                                        margin="normal"
-                                    />
-                                </div>
-                            </Grid>
-                            <Grid item justify="center" container xs>
-                                <div style={{ margin: 20 }}>
-                                    
-                                    <TextField
-                                        id="address"
-                                        label="Address"
-                                        className={classes.textField}
-                                        value={this.state.address}
-                                        onChange={this.handleChange('address')}
-                                        margin="normal"
-                                    />
-                                    <TextField
-                                        id="postal_code"
-                                        label="Postal Code"
-                                        className={classes.textField}
-                                        value={this.state.postal_code}
-                                        onChange={this.handleChange('postal_code')}
-                                        margin="normal"
-                                    />
-                                </div>
-                            </Grid>
-                            <Grid item justify="center" container xs>
-                                <div style={{ margin: 20 }}>
-                                    <TextField
-                                        id="contact_email"
-                                        label="contact_email"
-                                        className={classes.textField}
-                                        value={this.state.contact_email}
-                                        onChange={this.handleChange('contact_email')}
-                                        margin="normal"
-                                    />
-                                    <TextField
-                                        id="contact_number"
-                                        label="contact_number"
-                                        className={classes.textField}
-                                        value={this.state.contact_number}
-                                        onChange={this.handleChange('contact_number')}
-                                        margin="normal"
-                                    />
-                                    <TextField
-                                        id="contact_person"
-                                        label="contact_person"
-                                        className={classes.textField}
-                                        value={this.state.contact_person}
-                                        onChange={this.handleChange('contact_person')}
-                                        margin="normal"
-                                    />
-                                </div>
-                            </Grid>
-                            <Grid item justify="center" container xs>
-                                <div style={{ margin: 20 }}>
-                                    <TextField
-                                        id="base_currency_id"
-                                        label="base_currency_id"
-                                        className={classes.textField}
-                                        value={this.state.base_currency_id}
-                                        onChange={this.handleChange('base_currency_id')}
-                                        margin="normal"
-                                    />
-                                    <TextField
-                                        id="financialyr_dt"
-                                        label="financialyr_dt"
-                                        className={classes.textField}
-                                        value={this.state.financialyr_dt}
-                                        onChange={this.handleChange('financialyr_dt')}
-                                        margin="normal"
-                                    />
-                                    <TextField
-                                        id="parentcompany_id"
-                                        label="parentcompany_id"
-                                        className={classes.textField}
-                                        value={this.state.parentcompany_id}
-                                        onChange={this.handleChange('parentcompany_id')}
-                                        margin="normal"
-                                    />
-                                </div>
-                            </Grid>
-                            <Grid item justify="center" container xs>
-                                <div style={{ margin: 20 }}>
-                                    {this.props.paremeterList.industryList.length > 0 && <FormControl>
-                                        <InputLabel>Industry</InputLabel>
-                                        <Select
-                                            id="industry"
-                                            multiple
-                                            className={classes.textField}
-                                            value={this.state.industry}
-                                            onChange={this.handleChangeSelect('industry')}
-                                            inputProps={{
-                                                name: 'industry',
-                                                id: 'industry-simple',
-                                            }}>
-                                            {this.props.paremeterList.industryList.map((industry) =>
-                                                <MenuItem key={industry.name} value={industry.name}>{industry.name}</MenuItem>
-                                            )}
-                                        </Select></FormControl>}
-                                    
-                                    <TextField
-                                        id="webpage_url"
-                                        label="webpage_url"
-                                        className={classes.textField}
-                                        value={this.state.webpage_url}
-                                        onChange={this.handleChange('webpage_url')}
-                                        margin="normal"
-                                    />
-                                </div>
-                            </Grid>
-
-                        </Grid> */}
           <Divider />
           <Divider />
           <div
@@ -606,7 +567,7 @@ class CreateCompanyPage extends Component<Props, FormState> {
 
 function mapStateToProps(state: RootState) {
   return {
-    paremeterList: state.countryReducer,
+    parameterList: state.countryReducer,
     sectorList: state.sectorReducer.sectorList
   };
 }
