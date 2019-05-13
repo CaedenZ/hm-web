@@ -128,6 +128,7 @@ class UserProfilePage extends Component<Props, State> {
                     <img
                       style={{
                         height: "10vh",
+                        width: "10vh",
                         margin: "2rem"
                       }}
                       src={this.state.image}
