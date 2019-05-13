@@ -1,15 +1,24 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { createStyles, withStyles, WithStyles } from "@material-ui/core/styles";
+import {
+  createStyles,
+  Theme,
+  withStyles,
+  WithStyles
+} from "@material-ui/core/styles";
 import { RootState } from "../../../reducer";
 import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../interface/propsInterface";
+import { Signons } from "../../../interface/signonsInterface";
 import { Button, Paper, Grid } from "@material-ui/core";
+import { Company } from "../../../interface/companyInterface";
 
 import $axios from "../../../plugin/axios";
 
-const styles = () => createStyles({});
+import axios from "axios";
+
+const styles = (theme: Theme) => createStyles({});
 
 export interface Props
   extends WithStyles<typeof styles>,
@@ -21,7 +30,7 @@ interface State {}
 interface InState {
   sessionkey: string;
 }
-class PayrollUploadPage extends React.Component<Props, State> {
+class MarketDataUploadPage extends React.Component<Props, State> {
   readFile = async (e: any) => {
     // this.setState({ data: e.target.files[0] });
     console.dir(e.target.files[0]);
@@ -79,7 +88,7 @@ class PayrollUploadPage extends React.Component<Props, State> {
   }
 }
 
-(PayrollUploadPage as React.ComponentClass<Props>).propTypes = {
+(MarketDataUploadPage as React.ComponentClass<Props>).propTypes = {
   classes: PropTypes.object.isRequired
 } as any;
 
@@ -92,4 +101,4 @@ function mapStateToProps(state: RootState) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(PayrollUploadPage));
+)(withStyles(styles)(MarketDataUploadPage));

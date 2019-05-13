@@ -316,7 +316,7 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
         },
         {
           title: "Market Data Upload",
-          path: "/jobgrade",
+          path: "/marketdataupload",
           icon: <JobGradeIcon />
         }
       ];
