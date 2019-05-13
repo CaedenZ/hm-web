@@ -138,7 +138,7 @@ class CustomizedTable extends React.Component<Props, State> {
                 {this.props.userList.map((row, index) => (
                   <TableRow className={classes.row} key={row.email}>
                     <CustomTableCell component="th" scope="row">
-                      <img className={classes.logo} src={row.image} />
+                      <img className={classes.logo} src={row.image} alt="user"/>
                     </CustomTableCell>
                     <CustomTableCell align="left">
                       {row.firstname}

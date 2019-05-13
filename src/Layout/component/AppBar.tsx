@@ -113,10 +113,6 @@ interface InState {
 }
 
 class PrimarySearchAppBar extends React.Component<Props, State> {
-  constructor(props) {
-    super(props);
-  }
-
   state: State = {
     anchorEl: null,
     mobileMoreAnchorEl: null,

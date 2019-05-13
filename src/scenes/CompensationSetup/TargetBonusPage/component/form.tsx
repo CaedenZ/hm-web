@@ -57,10 +57,6 @@ interface InState {
 }
 
 class FormPage extends Component<Props, FormState> {
-  constructor(props) {
-    super(props);
-  }
-
   state: FormState = {
     jobgrade_id: "",
     type: "",

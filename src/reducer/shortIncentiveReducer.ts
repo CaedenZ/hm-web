@@ -1,12 +1,9 @@
-import { Epic, ofType } from "redux-observable";
-import { AuthenticationAction } from "../actions";
+import { Epic } from "redux-observable";
 import {
     switchMap,
     map,
     catchError,
     filter,
-    tap,
-    flatMap,
 } from "rxjs/operators"
 import { of, from } from "rxjs"
 import { ShortIncentiveState, ShortIncentive } from "../interface/shortIncentiveInterface";
@@ -89,7 +86,7 @@ export function shortIncentiveReducer(state: ShortIncentiveState = {
 export const getShortIncentiveListEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
         filter(isActionOf(getShortIncentiveListAction.request)),
-        switchMap((action) =>
+        switchMap(() =>
             from(getShortIncentiveList(state$.value.authenticationReducer.token, state$.value.companyReducer.selectedCompany.company_id)).pipe(
                 map((shortincentiveList: ShortIncentive[]) => getShortIncentiveListAction.success(shortincentiveList)),
                 catchError(error => of(getShortIncentiveListAction.failure(error.message)))

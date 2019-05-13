@@ -1,6 +1,5 @@
 import $axios from "../plugin/axios";
 import { User, CREATEUSERCRED } from "../interface/userInterface";
-import { history } from '../store'
 import { UpdateUserState } from "../scenes/UserPage/update";
 
 export const getUserList = async (token, payload): Promise<User[]> => {

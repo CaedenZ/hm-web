@@ -347,7 +347,7 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
           anchor="left"
         >
           <div className={classes.toolbar}>
-            <img className={classes.logo} src={logo} />
+            <img className={classes.logo} src={logo} alt="logo" />
           </div>
           <Divider className={classes.menudivider} />
           <List className={classes.menubar}>

@@ -5,7 +5,6 @@ import { isActionOf } from "typesafe-actions";
 import { getCountryListAction, getCurrencyListAction, getDistintCurrencyListAction } from "../actions/countryAction";
 import { from, of } from "rxjs";
 import { getCountryList, getCurrencyList, getDistintCurrencyList } from "../api/countryApi";
-import { getSectorListAction } from "../actions/sectorAction";
 
 export function countryReducer(state: CountryState = {
     countryList: [],
@@ -36,7 +35,7 @@ export function countryReducer(state: CountryState = {
 export const getCountryListEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
         filter(isActionOf(getCountryListAction.request)),
-        switchMap((action) =>
+        switchMap(() =>
             from(getCountryList(state$.value.authenticationReducer.token)).pipe(
                 map((CountryList: Country[]) => getCountryListAction.success(CountryList)),
                 catchError(error => of(getCountryListAction.failure(error.message)))
@@ -46,7 +45,7 @@ export const getCountryListEpic: Epic<any, any, any, any> = (action$, state$) =>
 export const getCurrencyListEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
         filter(isActionOf(getCurrencyListAction.request)),
-        switchMap((action) =>
+        switchMap(() =>
             from(getCurrencyList(state$.value.authenticationReducer.token)).pipe(
                 map((CurrencyList: Currency[]) => getCurrencyListAction.success(CurrencyList)),
                 catchError(error => of(getCurrencyListAction.failure(error.message)))
@@ -57,7 +56,7 @@ export const getCurrencyListEpic: Epic<any, any, any, any> = (action$, state$) =
 export const getDistintCurrencyListEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
         filter(isActionOf(getDistintCurrencyListAction.request)),
-        switchMap((action) =>
+        switchMap(() =>
             from(getDistintCurrencyList(state$.value.authenticationReducer.token)).pipe(
                 map((DistintCurrencyList: DistintCurrency[]) => getDistintCurrencyListAction.success(DistintCurrencyList)),
                 catchError(error => of(getDistintCurrencyListAction.failure(error.message)))

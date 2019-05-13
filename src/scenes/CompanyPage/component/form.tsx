@@ -103,7 +103,7 @@ interface FormState {
   logo_main: string;
   parentcompany_id: string;
   webpage_url: string;
-  displayCountry: string[];
+  displayCountry: object[];
   display_base_currency_id: object;
   displaySector: object;
   displayIndustry: object;
@@ -161,7 +161,7 @@ class CreateCompanyPage extends Component<Props, FormState> {
     if (!this.props.create) {
       this.setState(this.props.updateData);
 
-      const tmpCountryList = new Array();
+      const tmpCountryList: object[] = [];
       for (const country of this.props.updateData.country) {
         const tmpCountry = JSON.parse(country);
         tmpCountryList.push({

@@ -9,7 +9,6 @@ import { authenticationReducer, loginEpic, forgetPasswordEpic, getUserProfileEpi
 
 // import { StateType } from "typesafe-actions"
 import { combineEpics } from "redux-observable"
-import { StateType } from "typesafe-actions";
 import { userReducer, getUserListEpic, createUserEpic, deleteUserEpic, updateUserEpic } from "./userReducer";
 import { companyReducer, getCompanyListEpic, getChildCompanyListEpic, createCompanyEpic, getUnitListEpic, getChildUnitListEpic, createUnitEpic, createSubUnitEpic, updateUnitEpic, deleteUnitEpic, updateSubUnitEpic, deleteSubUnitEpic, getSubUnitListEpic, createChildUnitEpic, updateChildUnitEpic, deleteChildUnitEpic, createEntityEpic, updateCompanyEpic, updateEntityEpic, deleteCompanyEpic, deleteEntityEpic, getCompanyByCountryEpic, getCompanyByRegionEpic, getDivisionListEpic } from "./companyReducer";
 import { initReducer } from "./initReducer";

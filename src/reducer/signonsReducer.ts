@@ -1,12 +1,9 @@
-import { Epic, ofType } from "redux-observable";
-import { AuthenticationAction } from "../actions";
+import { Epic } from "redux-observable";
 import {
     switchMap,
     map,
     catchError,
     filter,
-    tap,
-    flatMap,
 } from "rxjs/operators"
 import { of, from } from "rxjs"
 import { SignonsState, Signons } from "../interface/signonsInterface";
@@ -82,7 +79,7 @@ export function signonsReducer(state: SignonsState = {
 export const getSignonsListEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
         filter(isActionOf(getSignonsListAction.request)),
-        switchMap((action) =>
+        switchMap(() =>
             from(getSignonsList(state$.value.authenticationReducer.token, state$.value.companyReducer.selectedCompany.company_id)).pipe(
                 map((signonsList: Signons[]) => getSignonsListAction.success(signonsList)),
                 catchError(error => of(getSignonsListAction.failure(error.message)))

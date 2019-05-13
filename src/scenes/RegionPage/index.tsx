@@ -51,8 +51,6 @@ const styles = (theme: Theme) =>
     }
   });
 
-let id = 0;
-
 export interface Props
   extends WithStyles<typeof styles>,
     SharedDispatchProps,

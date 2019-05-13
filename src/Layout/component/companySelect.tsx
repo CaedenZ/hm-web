@@ -80,6 +80,7 @@ class CompanySelectMenu extends React.Component<Props, State> {
             className={classes.listitem}
           >
             <img
+              alt="company small logo"
               style={{ height: "50px" }}
               src={
                 this.props.companyList[this.state.selectedIndex].logo_small ===
@@ -116,6 +117,7 @@ class CompanySelectMenu extends React.Component<Props, State> {
                 onClick={event => this.handleMenuItemClick(event, index)}
               >
                 <img
+                  alt="company small logo"
                   style={{ height: "100%" }}
                   src={company.logo_small === "" ? logo : company.logo_small}
                 />

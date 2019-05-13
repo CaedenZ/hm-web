@@ -1,16 +1,13 @@
-import { Epic, ofType } from "redux-observable";
-import { AuthenticationAction } from "../actions";
+import { Epic } from "redux-observable";
 import {
     switchMap,
     map,
     catchError,
     filter,
-    tap,
-    flatMap,
 } from "rxjs/operators"
 import { of, from } from "rxjs"
 import { CompanyState, Company, Unit } from "../interface/companyInterface";
-import { getCompanyList, getChildCompanyList, createCompany, getUnitList, createUnit, updateUnit, deleteUnit, createEntity, deleteEntity, deleteCompany, updateEntity, updateCompany, getCompanyByRegion, getCompanyByCountry, getDivisionList } from "../api/companyAPIs";
+import { getCompanyList, getChildCompanyList, createCompany, getUnitList, createUnit, updateUnit, deleteUnit, createEntity, deleteCompany, updateEntity, updateCompany, getCompanyByRegion, getCompanyByCountry, getDivisionList } from "../api/companyAPIs";
 import { getCompanyListAction, getChildCompanyListAction, createCompanyAction, getUnitListAction, getChildUnitListAction, createUnitAction, createSubUnitAction, updateUnitAction, deleteUnitAction, updateSubUnitAction, deleteSubUnitAction, updateChildUnitAction, deleteChildUnitAction, getSubUnitListAction, createChildUnitAction, createEntityAction, deleteEntityAction, deleteCompanyAction, updateCompanyAction, updateEntityAction, selectCompanyAction, getCompanyByCountryAction, getCompanyByRegionAction, getDivisionListAction } from "../actions/companyAction";
 import { isActionOf } from "typesafe-actions";
 import { getRegionListAction } from "../actions/regionAction";
@@ -297,7 +294,7 @@ export function companyReducer(state: CompanyState = {
 export const getCompanyListEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
         filter(isActionOf(getCompanyListAction.request)),
-        switchMap((action) =>
+        switchMap(() =>
             from(getCompanyList(state$.value.authenticationReducer.token)).pipe(
                 map((CompanyList: Company[]) => getCompanyListAction.success(CompanyList)),
                 catchError(error => of(getCompanyListAction.failure(error.message)))
@@ -330,7 +327,7 @@ export const getCompanyByRegionEpic: Epic<any, any, any, any> = (action$, state$
 export const getChildCompanyListEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
         filter(isActionOf(getChildCompanyListAction.request)),
-        switchMap((action) =>
+        switchMap(() =>
             from(getChildCompanyList(state$.value.authenticationReducer.token, state$.value.companyReducer.selectedCompany.company_id)).pipe(
                 map((CompanyList: Company[]) => getChildCompanyListAction.success(CompanyList)),
                 catchError(error => of(getChildCompanyListAction.failure(error.message)))
@@ -404,7 +401,7 @@ export const deleteEntityEpic: Epic<any, any, any, any> = (action$, state$) =>
 export const getDivisionListEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
         filter(isActionOf(getDivisionListAction.request)),
-        switchMap((action) =>
+        switchMap(() =>
             from(getDivisionList(state$.value.authenticationReducer.token, state$.value.companyReducer.selectedCompany.company_id)).pipe(
                 map((UnitList: Unit[]) => getDivisionListAction.success(UnitList)),
                 catchError(error => of(getDivisionListAction.failure(error.message)))
@@ -415,7 +412,7 @@ export const getDivisionListEpic: Epic<any, any, any, any> = (action$, state$) =
 export const getUnitListEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
         filter(isActionOf(getUnitListAction.request)),
-        switchMap((action) =>
+        switchMap(() =>
             from(getUnitList(state$.value.authenticationReducer.token, 0, state$.value.companyReducer.selectedCompany.company_id)).pipe(
                 map((UnitList: Unit[]) => getUnitListAction.success(UnitList)),
                 catchError(error => of(getUnitListAction.failure(error.message)))
@@ -426,7 +423,7 @@ export const getUnitListEpic: Epic<any, any, any, any> = (action$, state$) =>
 export const getSubUnitListEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
         filter(isActionOf(getSubUnitListAction.request)),
-        switchMap((action) =>
+        switchMap(() =>
             from(getUnitList(state$.value.authenticationReducer.token, 1, state$.value.companyReducer.selectedUnit.unit_id)).pipe(
                 map((UnitList: Unit[]) => getSubUnitListAction.success(UnitList)),
                 catchError(error => of(getSubUnitListAction.failure(error.message)))
@@ -437,7 +434,7 @@ export const getSubUnitListEpic: Epic<any, any, any, any> = (action$, state$) =>
 export const getChildUnitListEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
         filter(isActionOf(getChildUnitListAction.request)),
-        switchMap((action) =>
+        switchMap(() =>
             from(getUnitList(state$.value.authenticationReducer.token, 2, state$.value.companyReducer.selectedSubUnit.unit_id)).pipe(
                 map((UnitList: Unit[]) => getChildUnitListAction.success(UnitList)),
                 catchError(error => of(getChildUnitListAction.failure(error.message)))

@@ -12,10 +12,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import { IconButton, Button } from "@material-ui/core";
-import DeleteIcon from "@material-ui/icons/Delete";
-import { history } from "../../../../store";
-import UpdateIcon from "@material-ui/icons/PlaylistAddCheck";
+import { Button } from "@material-ui/core";
 import { SharedDispatchProps } from "../../../../interface/propsInterface";
 import { Company } from "../../../../interface/companyInterface";
 import { JobChart, Cell } from "../../../../interface/jobchartInterface";
@@ -210,7 +207,7 @@ class CustomizedTable extends React.Component<Props, State> {
             <TableHead>
               <TableRow>
                 <CustomTableCell align="left">Rank</CustomTableCell>
-                {this.props.jobchartList.map((row, index) => (
+                {this.props.jobchartList.map((row) => (
                   <CustomTableCell key={row.column_name} align="left">{row.column_name}</CustomTableCell>
                 ))}
                 {this.getCompanyDataHeader()}

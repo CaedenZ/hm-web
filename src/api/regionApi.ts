@@ -1,7 +1,5 @@
 import $axios from "../plugin/axios";
 import { Region, CREATEREGIONCRED, UPDATEREGIONCRED } from "../interface/regionInterface";
-import { CreateRegionState } from "../scenes/RegionPage/create";
-import { UpdateRegionState } from "../scenes/RegionPage/update";
 
 export const getRegionList = async (payload, id): Promise<Region[]> => {
 
