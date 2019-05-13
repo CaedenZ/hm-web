@@ -31,6 +31,7 @@ import { shortIncentiveReducer, createShortIncentiveEpic, getShortIncentiveListE
 import { salaryRangeReducer, createSalaryRangeEpic, getSalaryRangeListEpic, updateSalaryRangeEpic, deleteSalaryRangeEpic } from "./salaryRangeReducer";
 import { equityrangeReducer, createEquityRangeEpic, getEquityRangeListEpic, updateEquityRangeEpic, deleteEquityRangeEpic } from "./equityRangeReducer";
 import { jobchartReducer, getJobChartListEpic, updateCellEpic } from "./jobchartReducer";
+import { locationReducer, createLocationEpic, getLocationListEpic, updateLocationEpic, deleteLocationEpic } from "./locationReducer";
 
 
 export const history = createBrowserHistory()
@@ -43,6 +44,7 @@ export const rootReducer = combineReducers({
     jobFunctionReducer,
     countryReducer,
     regionReducer,
+    locationReducer,
     snackBarReducer,
     dialogReducer,
     roleReducer,
@@ -81,7 +83,10 @@ export const rootEpic = combineEpics(
     updateRegionEpic,
     deleteRegionEpic,
 
-
+    createLocationEpic,
+    getLocationListEpic,
+    updateLocationEpic,
+    deleteLocationEpic,
 
     getRoleListEpic,
     getRoleFunctionListEpic,

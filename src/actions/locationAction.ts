@@ -1,0 +1,44 @@
+import { createAsyncAction, createAction } from "typesafe-actions";
+import { Location, CREATELOCATIONCRED, UPDATELOCATIONCRED } from "../interface/locationInterface";
+
+const SELECT_LOCATION = "SELECT_LOCATION"
+export const selectLocationAction = createAction(SELECT_LOCATION,
+    action => {
+        return (location: Location) => action(location)
+    })
+
+const GET_LOCATION_LIST_REQUEST = "GET_LOCATION_LIST_REQUEST"
+const GET_LOCATION_LIST_SUCCESS = "GET_LOCATION_LIST_SUCCESS"
+const GET_LOCATION_LIST_FAILURE = "GET_LOCATION_LIST_FAILURE"
+export const getLocationListAction = createAsyncAction(
+    GET_LOCATION_LIST_REQUEST,
+    GET_LOCATION_LIST_SUCCESS,
+    GET_LOCATION_LIST_FAILURE
+)<void, Location[], void>()
+
+const CREATE_LOCATION_REQUEST = "CREATE_LOCATION_REQUEST"
+const CREATE_LOCATION_SUCCESS = "CREATE_LOCATION_SUCCESS"
+const CREATE_LOCATION_FAILURE = "CREATE_LOCATION_FAILURE"
+export const createLocationAction = createAsyncAction(
+    CREATE_LOCATION_REQUEST,
+    CREATE_LOCATION_SUCCESS,
+    CREATE_LOCATION_FAILURE
+)<CREATELOCATIONCRED, void, void>()
+
+const UPDATE_LOCATION_REQUEST = "UPDATE_LOCATION_REQUEST"
+const UPDATE_LOCATION_SUCCESS = "UPDATE_LOCATION_SUCCESS"
+const UPDATE_LOCATION_FAILURE = "UPDATE_LOCATION_FAILURE"
+export const updateLocationAction = createAsyncAction(
+    UPDATE_LOCATION_REQUEST,
+    UPDATE_LOCATION_SUCCESS,
+    UPDATE_LOCATION_FAILURE
+)<UPDATELOCATIONCRED, void, void>()
+
+const DELETE_LOCATION_REQUEST = "DELETE_LOCATION_REQUEST"
+const DELETE_LOCATION_SUCCESS = "DELETE_LOCATION_SUCCESS"
+const DELETE_LOCATION_FAILURE = "DELETE_LOCATION_FAILURE"
+export const deleteLocationAction = createAsyncAction(
+    DELETE_LOCATION_REQUEST,
+    DELETE_LOCATION_SUCCESS,
+    DELETE_LOCATION_FAILURE
+)<string, void, void>()
