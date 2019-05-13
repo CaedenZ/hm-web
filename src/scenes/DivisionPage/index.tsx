@@ -30,22 +30,7 @@ import UpdateIcon from "@material-ui/icons/PlaylistAddCheck";
 import CompanyIcon from "@material-ui/icons/Business";
 import AddIcon from "@material-ui/icons/Add";
 
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {
-      width: "100%",
-      marginTop: theme.spacing.unit * 3,
-      overflowX: "auto"
-    },
-    table: {
-      minWidth: 700
-    },
-    row: {
-      "&:nth-of-type(odd)": {
-        backgroundColor: theme.palette.background.default
-      }
-    }
-  });
+const styles = (theme: Theme) => createStyles({});
 
 export interface Props
   extends WithStyles<typeof styles>,
@@ -202,24 +187,19 @@ class UnitPage extends React.Component<Props, State> {
       <main>
         <CustomButton link="/unit/create">New Division</CustomButton>
         {this.props.divisionList.length > 0 && (
-          <Grid container spacing={24}>
+          <Grid style={{ marginTop: "2rem" }} container spacing={24}>
             {this.props.divisionList.map(row => (
-              <Grid key={row.unit_id} item xs={6} spacing={24}>
+              <Grid key={row.unit_id} item xs={6}>
                 <Paper style={{ height: "100%" }}>
                   <Grid container style={{ margin: "auto" }}>
                     <Grid item xs={8} style={{ margin: "auto" }}>
-                      <Typography
-                        variant="h5"
-                        component="p"
-                        style={{ margin: 20, display: "flex" }}
-                      >
+                      <Typography variant="h5" style={{ margin: "1rem" }}>
                         {row.unit_name}
                       </Typography>
                     </Grid>
                     <Grid item xs={4} style={{ margin: "auto" }}>
-                      <Typography component="p">
-                        {row.unit_type}
-                        {type(row)}
+                      <div>
+                        {row.unit_type}:{type(row)}
                         {/* {row.unit_type !== 'Division' && <IconButton onClick={(e) => this.handleEntity(row, e)}><CompanyIcon /></IconButton>} */}
                         <Menu
                           id="simple-menu"
@@ -244,67 +224,77 @@ class UnitPage extends React.Component<Props, State> {
                             </MenuItem>
                           )}
                         </Menu>
-                      </Typography>
+                      </div>
                     </Grid>
                   </Grid>
                   {row.sub_unit.length > 0 && (
-                    <Grid container spacing={8} style={{ padding: 10 }}>
+                    <Grid container spacing={8} style={{ padding: "0.7rem" }}>
                       {row.sub_unit.map(subrow => (
                         <Grid key={subrow.unit_id} item xs={12}>
-                          <Paper style={{ height: "100%" }}>
+                          <Paper style={{ height: "100%" }} elevation={2}>
                             <Grid container style={{ margin: "auto" }}>
                               <Grid item xs={8} style={{ margin: "auto" }}>
                                 <Typography
                                   variant="h6"
-                                  component="p"
-                                  style={{ margin: 10 }}
+                                  style={{ margin: "1rem" }}
                                 >
                                   {subrow.unit_name}
                                 </Typography>
                               </Grid>
                               <Grid item xs={4} style={{ margin: "auto" }}>
-                                <Typography component="p">
+                                <div style={{ marginTop: "1rem" }}>
                                   {subrow.unit_type}
-                                  {/* {subrow.unit_type !== 'Division' && <IconButton onClick={(e) => this.handleEntity(subrow, e)}><CompanyIcon /></IconButton>} */}
                                   {type(subrow)}
-                                </Typography>
+                                  {/* {subrow.unit_type !== 'Division' && <IconButton onClick={(e) => this.handleEntity(subrow, e)}><CompanyIcon /></IconButton>} */}
+                                </div>
                               </Grid>
                             </Grid>
                             <Divider />
                             <Divider />
                             {subrow.sub_sub_unit.length > 0 && (
-                              <List dense={true}>
-                                {subrow.sub_sub_unit.map(childrow => [
-                                  <ListItem key={childrow.unit_id}>
-                                    <ListItemText
-                                      primary={childrow.unit_name}
-                                      secondary={childrow.unit_type}
-                                    />
-                                    {/* {childrow.unit_type !== 'Division' && <IconButton onClick={(e) => this.handleEntity(subrow, e)}><CompanyIcon /></IconButton>} */}
-                                    {type(childrow)}
-                                    <IconButton
-                                      onClick={() =>
-                                        this.handleChildUpdateButtonClick(
-                                          childrow
-                                        )
-                                      }
-                                    >
-                                      <UpdateIcon />
-                                    </IconButton>
-                                    <IconButton
-                                      onClick={() =>
-                                        this.handleChildDelete(childrow.unit_id)
-                                      }
-                                    >
-                                      <DeleteIcon />
-                                    </IconButton>
-                                  </ListItem>,
-                                  <Divider key={childrow.unit_id + "d"} />
-                                ])}
-                              </List>
+                              <Paper
+                                style={{ padding: "1rem", margin: "0.5rem" }}
+                                elevation={4}
+                              >
+                                <List dense={true}>
+                                  {subrow.sub_sub_unit.map(childrow => [
+                                    <ListItem key={childrow.unit_id}>
+                                      <ListItemText
+                                        primary={childrow.unit_name}
+                                        secondary={childrow.unit_type}
+                                      />
+                                      {/* {childrow.unit_type !== 'Division' && <IconButton onClick={(e) => this.handleEntity(subrow, e)}><CompanyIcon /></IconButton>} */}
+                                      {type(childrow)}
+                                      <IconButton
+                                        onClick={() =>
+                                          this.handleChildUpdateButtonClick(
+                                            childrow
+                                          )
+                                        }
+                                      >
+                                        <UpdateIcon />
+                                      </IconButton>
+                                      <IconButton
+                                        onClick={() =>
+                                          this.handleChildDelete(
+                                            childrow.unit_id
+                                          )
+                                        }
+                                      >
+                                        <DeleteIcon />
+                                      </IconButton>
+                                    </ListItem>,
+                                    <Divider key={childrow.unit_id + "d"} />
+                                  ])}
+                                </List>
+                              </Paper>
                             )}
-                            <Grid container>
-                              <Grid xs={8} />
+                            <Grid
+                              direction="row"
+                              justify="flex-end"
+                              alignItems="flex-end"
+                              container
+                            >
                               <Grid item xs={1}>
                                 <IconButton
                                   onClick={() =>
@@ -338,8 +328,7 @@ class UnitPage extends React.Component<Props, State> {
                       ))}
                     </Grid>
                   )}
-                  <Grid container>
-                    <Grid xs={9} />
+                  <Grid justify="flex-end" alignItems="flex-end" container>
                     <Grid item xs={1}>
                       <IconButton
                         onClick={() => this.handleAddButtonClick(row)}
