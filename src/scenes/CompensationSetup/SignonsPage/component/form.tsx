@@ -96,7 +96,7 @@ class FormPage extends Component<Props, FormState> {
           style={{ padding: "2rem" }}
         >
           <Typography component="h1" variant="h6">
-            Grade Infomation
+            Signons Infomation
           </Typography>
           <Grid justify="center" container>
             <Grid justify={"center"} container item>

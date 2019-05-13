@@ -51,6 +51,17 @@ const styles = (theme: Theme) =>
     },
     logo: {
       height: "20px"
+    },
+    hiddenbutton: {
+      background: 'black',
+      color: 'white',
+      padding: '0',
+    },
+    button: {
+      "&:disabled": {
+        color: "black"
+      },
+      color: 'blue'
     }
   });
 
@@ -66,8 +77,10 @@ interface State {
 }
 
 interface InState {
+  removeCompanyData: any,
   selectedCompany: Company;
   jobchartList: JobChart[];
+  companyData: JobChart[];
 }
 class CustomizedTable extends React.Component<Props, State> {
   state = {
@@ -84,15 +97,8 @@ class CustomizedTable extends React.Component<Props, State> {
   };
 
   componentDidMount() {
-    console.log("JobChartPage MOunt");
-    if (this.props.selectedCompany.company_id === "") {
-      let data = {
-        type: "warning",
-        object: "Please Select a Company first",
-        id: "1"
-      };
-      this.props.showDialog(data);
-    } else this.props.getJobChartList();
+    console.log(this.props.companyData)
+    console.log('this.props.companyData')
   }
 
 
@@ -140,6 +146,39 @@ class CustomizedTable extends React.Component<Props, State> {
     this.setState({ updatebox: false });
   };
 
+  getCompanyDataHeader = () => {
+    let rows: any = [];
+    if (this.props.companyData.length > 0) {
+      this.props.companyData.forEach((data, i) => {
+        rows.push(<CustomTableCell align="left">
+          <Button onClick={() => this.props.removeCompanyData(i)} className={this.props.classes.hiddenbutton} style={{ padding: 0 }}>
+            {data.column_name}
+          </Button>
+        </CustomTableCell>)
+      })
+      return rows
+    } else {
+      return
+    }
+  }
+
+  getCompanyDataCell = (index) => {
+    let rows: any = [];
+    if (this.props.companyData.length > 0) {
+      this.props.companyData.forEach(data => {
+        rows.push(<CustomTableCell component="th" scope="row">
+          <Button className={this.props.classes.button} disabled={!this.state.edit} onClick={() => this.handleUpdateButtonClick(data, index)}>
+            {this.getValue(data, index)}
+          </Button>
+        </CustomTableCell>)
+      })
+      return rows
+    } else {
+      return
+    }
+  }
+
+
   render() {
     const { classes } = this.props;
 
@@ -151,11 +190,12 @@ class CustomizedTable extends React.Component<Props, State> {
             <CustomTableCell component="th" scope="row">{i}</CustomTableCell>
             {this.props.jobchartList.map(row => (
               <CustomTableCell component="th" scope="row">
-                <Button disabled={!this.state.edit} onClick={() => this.handleUpdateButtonClick(row, i)}>
+                <Button className={classes.button} disabled={!this.state.edit} onClick={() => this.handleUpdateButtonClick(row, i)}>
                   {this.getValue(row, i)}
                 </Button>
               </CustomTableCell>
             ))}
+            {this.getCompanyDataCell(i)}
           </TableRow>
         );
       }
@@ -173,6 +213,7 @@ class CustomizedTable extends React.Component<Props, State> {
                 {this.props.jobchartList.map((row, index) => (
                   <CustomTableCell key={row.column_name} align="left">{row.column_name}</CustomTableCell>
                 ))}
+                {this.getCompanyDataHeader()}
               </TableRow>
             </TableHead>
             <TableBody>

@@ -19,12 +19,14 @@ import {
   MenuItem,
   Grid,
   FormControlLabel,
-  Checkbox
+  Checkbox,
+  Button
 } from "@material-ui/core";
 import { history } from "../../../store";
 import { Company } from "../../../interface/companyInterface";
 import { Country } from "../../../interface/countryInterface";
 import CustomizedTable from "./component/table";
+import { getJobChartByID } from "../../../api/jobchartAPI";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -52,37 +54,125 @@ export interface Props
   InState { }
 
 interface State {
-  country: string;
-  global: boolean;
+  data: JobChart[],
+  company: string,
+  country: string,
+  global: boolean
 }
 
 interface InState {
-  countryList: Country[];
-  selectedCompany: Company;
+  sessionkey: string,
+  companyList: Company[];
   jobchartList: JobChart[];
 }
 class JobChartPage extends React.Component<Props, State> {
-  state = {
+  state: State = {
+    data: [],
+    company: '',
     country: "",
     global: true
   };
 
   componentDidMount() {
-    console.log("JobChartPage MOunt");
-    if (this.props.selectedCompany.company_id === "") {
-      let data = {
-        type: "warning",
-        object: "Please Select a Company first",
-        id: "1"
-      };
-      this.props.showDialog(data);
-    } else this.props.getJobChartList();
+    this.props.getJobChartList();
+
   }
+
+  handleChange = () => {
+    this.setState({ global: !this.state.global } as any);
+    this.setState({ country: '' } as any);
+  };
+
+  handleChangeSelectCompany = (event) => {
+    this.setState({ company: event.target.value } as any);
+  };
+
+  handleChangeSelectCountry = (event) => {
+    this.setState({ country: event.target.value } as any);
+  };
+
+  handleAdd = () => {
+    getJobChartByID(this.props.sessionkey, JSON.parse(this.state.company).company_id, this.state.country).then(res => {
+      let joined = this.state.data.concat(res);
+      this.setState({ data: joined })
+    })
+  }
+
+  removeCompanyData = (index) => {
+    let array = [...this.state.data]
+    array.splice(index, 1);
+    this.setState({ data: array });
+  }
+
 
   render() {
     return (
       <main>
-        <CustomizedTable jobchartList={this.props.jobchartList} />
+        <Grid container>
+          <Grid item xs={3}>
+            <FormControl style={{ width: "100%" }}>
+              <InputLabel htmlFor="company">company</InputLabel>
+              <Select
+                value={this.state.company}
+                onChange={this.handleChangeSelectCompany}
+                inputProps={{
+                  name: "company",
+                  id: "company-simple"
+                }}
+              >
+                {this.props.companyList.map(company => (
+                  <MenuItem
+                    key={company.company_name}
+                    value={JSON.stringify(company)}
+                  >
+                    {company.company_name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+          {this.state.company !== '' && <Grid item xs={3}>
+            <FormControlLabel
+              style={{ height: "100%", width: "100%" }}
+              control={
+                <Checkbox
+                  checked={this.state.global}
+                  onChange={this.handleChange}
+                  color="primary"
+                />
+              }
+              label="Global"
+            />
+          </Grid>}
+          {this.state.company !== '' &&
+            <Grid item xs={3}>
+              <FormControl style={{ width: "100%" }} disabled={this.state.global}>
+                <InputLabel htmlFor="country">Country</InputLabel>
+                <Select
+                  value={this.state.country}
+                  onChange={this.handleChangeSelectCompany}
+                  inputProps={{
+                    name: "country",
+                    id: "country-simple"
+                  }}
+                >
+                  {JSON.parse(this.state.company).country.map(country => (
+                    <MenuItem
+                      key={JSON.parse(country).country_name}
+                      value={JSON.parse(country).country_name}
+                    >
+                      {JSON.parse(country).country_name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>}
+          {this.state.company !== '' &&
+            <Grid item xs={3}>
+              <CustomButton onClick={this.handleAdd}>Add</CustomButton>
+            </Grid>}
+        </Grid>
+        <CustomizedTable jobchartList={this.props.jobchartList} companyData={this.state.data} removeCompanyData={this.removeCompanyData} />
       </main>
     );
   }
@@ -94,8 +184,8 @@ class JobChartPage extends React.Component<Props, State> {
 
 function mapStateToProps(state: RootState) {
   return {
-    countryList: state.countryReducer.countryList,
-    selectedCompany: state.companyReducer.selectedCompany,
+    sessionkey: state.authenticationReducer.token,
+    companyList: state.companyReducer.companyList,
     jobchartList: state.jobchartReducer.jobchartList
   };
 }

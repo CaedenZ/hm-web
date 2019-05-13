@@ -43,8 +43,8 @@ interface FormState {
 }
 interface Props
   extends InState,
-    WithStyles<typeof styles>,
-    SharedDispatchProps {}
+  WithStyles<typeof styles>,
+  SharedDispatchProps { }
 
 interface InState {
   countryList: Country[];
@@ -111,7 +111,7 @@ class FormPage extends Component<Props, FormState> {
           style={{ padding: "2rem" }}
         >
           <Typography component="h1" variant="h6">
-            Grade Infomation
+            Long Term Incentive Infomation
           </Typography>
           <Grid justify="center" container>
             <Grid justify={"center"} container item>

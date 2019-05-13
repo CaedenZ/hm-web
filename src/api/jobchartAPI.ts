@@ -25,3 +25,22 @@ export const updateCell = async (token, payload: UPDATECELL): Promise<JobChart[]
     return response.data.data
 }
 
+export const getJobChartByID = async (token, companyID, countryName): Promise<JobChart> => {
+
+    let data = {}
+    if (countryName !== '') {
+        data = {
+            company_id: companyID,
+            session_key: token,
+            country_name: countryName
+        }
+    }
+    else {
+        data = {
+            company_id: companyID,
+            session_key: token,
+        }
+    }
+    const response = await $axios.post('/company/getJCCbyID', data)
+    return response.data.data
+}
