@@ -6,7 +6,7 @@ export function snackBarReducer(state: SnackBarState = {
     message: ''
 }, action) {
     switch (action.type) {
-        case 'SHOW_SNACKBAR': return { open: true, message: 'TEST' }
+        case 'SHOW_SNACKBAR': return { open: true, message: 'ERROR' }
         case 'CLOSS_SNACKBAR': return { open: false, message: '' }
 
 
