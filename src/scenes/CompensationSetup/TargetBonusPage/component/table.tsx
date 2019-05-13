@@ -122,18 +122,22 @@ class CustomizedTable extends React.Component<Props, State> {
                 <Table className={classes.table}>
                     <TableHead>
                         <TableRow>
-                            {/* <CustomTableCell align="left">JobGrade Name</CustomTableCell> */}
-                            {/* <CustomTableCell align="left">Country</CustomTableCell> */}
-                            <CustomTableCell align="left">Grade</CustomTableCell>
-                            <CustomTableCell align="left">Type</CustomTableCell>
+                            <CustomTableCell align="left">JobGrade Name</CustomTableCell>
+                            <CustomTableCell align="left">Min</CustomTableCell>
+                            <CustomTableCell align="left">Mid</CustomTableCell>
+                            <CustomTableCell align="left">Max</CustomTableCell>
+                            <CustomTableCell align="left">Country</CustomTableCell>
                             <CustomTableCell align="left">Action</CustomTableCell>
                         </TableRow>
                     </TableHead>
                     {this.props.targetbonusList.length > 0 && <TableBody>
                         {this.props.targetbonusList.map((row, index) => (
                             <TableRow className={classes.row} key={row.target_bonus_id}>
-                                <CustomTableCell component="th" scope="row">{row.target_bonus_id}</CustomTableCell>
+                                <CustomTableCell component="th" scope="row">{row.jobgrade_name}</CustomTableCell>
+                                <CustomTableCell align="left">{row.min}</CustomTableCell>
+                                <CustomTableCell align="left">{row.mid}</CustomTableCell>
                                 <CustomTableCell align="left">{row.max}</CustomTableCell>
+                                <CustomTableCell align="left">{row.country}</CustomTableCell>
                                 <CustomTableCell align="left">
                                     <IconButton onClick={() => this.handleUpdateButtonClick(row)}><UpdateIcon /></IconButton>
                                     <IconButton onClick={() => this.handleDelete(row.target_bonus_id, index)}><DeleteIcon /></IconButton>

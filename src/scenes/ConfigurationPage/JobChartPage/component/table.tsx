@@ -95,11 +95,6 @@ class CustomizedTable extends React.Component<Props, State> {
     } else this.props.getJobChartList();
   }
 
-  // handleUpdateButtonClick = jobchart => {
-  //   this.props.selectJobChart(jobchart);
-  //   history.push("/jobchart/update");
-  //   console.log("clicked");
-  // };
 
   getProfile = (jobchart: JobChart, rank: number) => {
     let profile = jobchart.column_data.find(e => {

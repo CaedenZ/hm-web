@@ -124,6 +124,7 @@ class CustomizedTable extends React.Component<Props, State> {
               <CustomTableCell align="left">Min</CustomTableCell>
               <CustomTableCell align="left">Mid</CustomTableCell>
               <CustomTableCell align="left">Max</CustomTableCell>
+              <CustomTableCell align="left">Country</CustomTableCell>
               <CustomTableCell align="left">Action</CustomTableCell>
             </TableRow>
           </TableHead>
@@ -138,6 +139,7 @@ class CustomizedTable extends React.Component<Props, State> {
                   <CustomTableCell align="left">{row.min}</CustomTableCell>
                   <CustomTableCell align="left">{row.mid}</CustomTableCell>
                   <CustomTableCell align="left">{row.max}</CustomTableCell>
+                  <CustomTableCell align="left">{row.country}</CustomTableCell>
                   <CustomTableCell align="left">
                     <IconButton
                       onClick={() => this.handleUpdateButtonClick(row)}

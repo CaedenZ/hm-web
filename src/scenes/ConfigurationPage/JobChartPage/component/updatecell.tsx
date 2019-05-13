@@ -45,6 +45,11 @@ class UpdateCell extends Component<Props, State> {
     // console.dir(event.target)
   }
 
+  handleSubmit = (value) => {
+    this.props.handleSubmit(value)
+    this.setState({ value: '' })
+  }
+
   render() {
     return (
       <Dialog
@@ -68,7 +73,7 @@ class UpdateCell extends Component<Props, State> {
           <Button onClick={this.props.handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={() => this.props.handleSubmit(this.state.value)} color="primary">
+          <Button onClick={() => this.handleSubmit(this.state.value)} color="primary">
             Confirm
           </Button>
         </DialogActions>
