@@ -9,11 +9,7 @@ import {
   Paper,
   TextField,
   Divider,
-  FormControl,
-  Button,
-  MenuItem,
-  InputLabel,
-  Chip
+  Button
 } from "@material-ui/core";
 import Select from "react-select";
 import Avatar from "react-avatar-edit";
@@ -25,8 +21,6 @@ import { CountryState } from "../../../interface/countryInterface";
 import { history } from "../../../store";
 import { CREATECOMPANYCRED } from "../../../interface/companyInterface";
 import { Sector } from "../../../interface/sectorInterface";
-import classNames from "classnames";
-import CancelIcon from "@material-ui/icons/Cancel";
 import theme from "../../../assets/theme";
 import { emphasize } from "@material-ui/core/styles/colorManipulator";
 import components from "../../../function/react-select-components";
@@ -35,6 +29,10 @@ const styles = () =>
   createStyles({
     textField: {
       width: "20rem",
+      margin: "1rem"
+    },
+    countrySelect: {
+      width: "56rem",
       margin: "1rem"
     },
     root: {
@@ -436,10 +434,11 @@ class CreateCompanyPage extends Component<Props, FormState> {
             <Grid item direction="column" xs={3} container />
             <Grid container item xs>
               <Grid container>
-                <Grid container item xs={6}>
+                <Grid container item xs={12}>
                   {this.props.parameterList.countryList.length > 0 && (
                     <Select
-                      className={classes.textField}
+                      fullWidth
+                      className={classes.countrySelect}
                       classes={classes}
                       textFieldProps={{
                         label: "Country",
@@ -461,6 +460,8 @@ class CreateCompanyPage extends Component<Props, FormState> {
                     />
                   )}
                 </Grid>
+              </Grid>
+              <Grid container>
                 <Grid container item xs={6}>
                   {this.props.parameterList.distintCurrencyList.length > 0 && (
                     <Select
@@ -485,8 +486,6 @@ class CreateCompanyPage extends Component<Props, FormState> {
                     />
                   )}
                 </Grid>
-              </Grid>
-              <Grid container>
                 <Grid container item xs={6}>
                   {this.props.sectorList.length > 0 && (
                     <Select
