@@ -100,7 +100,7 @@ class SalaryRangePage extends React.Component<Props, State> {
 
   handleChange = () => {
     this.setState({ global: !this.state.global } as any);
-    console.log(this.getdata());
+    this.setState({ country: '' } as any);
   };
 
   handleChangeSelect = (statekay: keyof State) => (
@@ -119,7 +119,7 @@ class SalaryRangePage extends React.Component<Props, State> {
         return e.country === this.state.country;
       });
     } else {
-      return [];
+      return this.props.salaryrangeList;
     }
   };
 

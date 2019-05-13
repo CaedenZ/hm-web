@@ -93,6 +93,7 @@ class AllowancesPage extends React.Component<Props, State> {
 
   handleChange = () => {
     this.setState({ global: !this.state.global } as any);
+    this.setState({ country: '' } as any);
     console.log(this.getdata())
   };
 
@@ -112,7 +113,7 @@ class AllowancesPage extends React.Component<Props, State> {
       })
     }
     else {
-      return []
+      return this.props.allowancesList
     }
   }
 
