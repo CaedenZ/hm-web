@@ -4,7 +4,7 @@ import { Location, CREATELOCATIONCRED, UPDATELOCATIONCRED } from "../interface/l
 export const getLocationList = async (payload, id): Promise<Location[]> => {
 
 
-    const response = await $axios.post('/company/getCompanyLocationList', { session_key: payload, company_id: id })
+    const response = await $axios.post('/company/getLocation', { session_key: payload, company_id: id })
     console.log(response.data.data)
     return response.data.data
 }
@@ -17,7 +17,7 @@ export const createLocation = async (token, payload: CREATELOCATIONCRED, company
         company_id: companyId
     }
 
-    const response = await $axios.post('/company/createCompanyLocation', data)
+    const response = await $axios.post('/company/insertLocation', data)
     console.log(response.data.data)
     return response.data.data
 }
@@ -30,7 +30,7 @@ export const updateLocation = async (token, payload: UPDATELOCATIONCRED, company
         company_id: companyId
     }
 
-    const response = await $axios.post('/company/updateCompanyLocation', data)
+    const response = await $axios.post('/company/updateLocation', data)
     console.log(response.data.data)
     return response.data.data
 }
@@ -43,6 +43,6 @@ export const deleteLocation = async (token, payload: string) => {
     }
 
     console.log(data)
-    const response = await $axios.post('/company/deleteCompanyLocation', data)
+    const response = await $axios.post('/company/deleteLocation', data)
     return response.data.data
 }

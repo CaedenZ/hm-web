@@ -87,48 +87,6 @@ class SignIn extends Component<Props, State> {
           <main className={classes.main}>
             <CssBaseline />
             <Paper className={classes.paper}>
-              {/* <form onSubmit={this.handleLogin}>
-                <FormControl margin="normal" required fullWidth>
-                  <InputLabel htmlFor="email">Email Address</InputLabel>
-                  <Input
-                    type="email"
-                    id="email"
-                    name="email"
-                    autoComplete="email"
-                    autoFocus
-                    value={this.state.email}
-                    onChange={this.handleChange}
-                  />
-                </FormControl>
-                <FormControl margin="normal" required fullWidth>
-                  <InputLabel htmlFor="password">Password</InputLabel>
-                  <Input
-                    name="password"
-                    type="password"
-                    id="password"
-                    autoComplete="current-password"
-                    value={this.state.password}
-                    onChange={this.handleChange}
-                  />
-                </FormControl>
-                <FormControlLabel
-                  control={<Checkbox value="remember" color="primary" />}
-                  label="Remember me"
-                />
-                <Divider />
-                <Button
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  type="submit"
-                >
-                  Sign in
-                </Button>
-
-                <div style={{ marginTop: 20 }}>
-                  <Link to="/forgetpassword">Forget password</Link>
-                </div>
-              </form> */}
               <ValidatorForm
                 ref="form"
                 onSubmit={this.handleLogin}

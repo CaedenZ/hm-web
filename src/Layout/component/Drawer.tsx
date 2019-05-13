@@ -30,6 +30,7 @@ import ShortIncentiveIcon from "@material-ui/icons/PlayArrow";
 import LongIncentiveIcon from "@material-ui/icons/FastForward";
 import SalaryRangeIcon from "@material-ui/icons/CompareArrows";
 import MenuIcon from "@material-ui/icons/Menu";
+import LocationOnIcon from "@material-ui/icons/LocationOn";
 import PrimarySearchAppBar from "./AppBar";
 import { Link } from "react-router-dom";
 import logo from "assets/images/3CGradient Full.png";
@@ -76,8 +77,8 @@ const styles = (theme: Theme) =>
 
 export interface Props
   extends InState,
-  SharedDispatchProps,
-  WithStyles<typeof styles> { }
+    SharedDispatchProps,
+    WithStyles<typeof styles> {}
 
 interface InState {
   companyList: Company[];
@@ -108,7 +109,7 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
     this.setState(state => ({
       expended1: !state.expended1,
       expended2: false,
-      expended3: false,
+      expended3: false
     }));
   };
 
@@ -116,7 +117,7 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
     this.setState(state => ({
       expended1: false,
       expended2: !state.expended2,
-      expended3: false,
+      expended3: false
     }));
     console.log(this.state);
   };
@@ -167,6 +168,11 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
           icon: <UserIcon />
         },
         {
+          title: "Location",
+          path: "/location",
+          icon: <LocationOnIcon />
+        },
+        {
           title: "Role",
           path: "/role",
           icon: <RoleIcon />
@@ -198,6 +204,11 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
           title: "User",
           path: "/user",
           icon: <UserIcon />
+        },
+        {
+          title: "Location",
+          path: "/location",
+          icon: <LocationOnIcon />
         },
         {
           title: "Role",
@@ -267,7 +278,7 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
           title: "Job Chart",
           path: "/jobchart",
           icon: <CompanyIcon />
-        },
+        }
       ];
       return adm;
     };
