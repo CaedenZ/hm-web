@@ -138,6 +138,12 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
     }
   };
 
+  handleListItemClick = (index: number) => {
+    this.setState(state => ({
+      selectedIndex: index
+    }));
+  };
+
   render() {
     const { classes } = this.props;
     const itemlist1 = [
@@ -152,7 +158,8 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
         {
           title: "Division",
           path: "/unit",
-          icon: <UnitIcon />
+          icon: <UnitIcon />,
+          index: 1
         },
         // {
         //   title: "Division",
@@ -162,27 +169,32 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
         {
           title: "Entity",
           path: "/entity",
-          icon: <CompanyIcon />
+          icon: <CompanyIcon />,
+          index: 2
         },
         {
           title: "Region",
           path: "/region",
-          icon: <RegionIcon />
+          icon: <RegionIcon />,
+          index: 3
         },
         {
           title: "User",
           path: "/user",
-          icon: <UserIcon />
+          icon: <UserIcon />,
+          index: 4
         },
         {
           title: "Location",
           path: "/location",
-          icon: <LocationOnIcon />
+          icon: <LocationOnIcon />,
+          index: 5
         },
         {
           title: "Role",
           path: "/role",
-          icon: <RoleIcon />
+          icon: <RoleIcon />,
+          index: 6
         }
       ];
 
@@ -190,7 +202,8 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
         {
           title: "Division",
           path: "/unit",
-          icon: <UnitIcon />
+          icon: <UnitIcon />,
+          index: 1
         },
         // {
         //   title: "Division",
@@ -200,32 +213,38 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
         {
           title: "Entity",
           path: "/entity",
-          icon: <CompanyIcon />
+          icon: <CompanyIcon />,
+          index: 2
         },
         {
           title: "Region",
           path: "/region",
-          icon: <RegionIcon />
+          icon: <RegionIcon />,
+          index: 3
         },
         {
           title: "User",
           path: "/user",
-          icon: <UserIcon />
+          icon: <UserIcon />,
+          index: 4
         },
         {
           title: "Location",
           path: "/location",
-          icon: <LocationOnIcon />
+          icon: <LocationOnIcon />,
+          index: 5
         },
         {
           title: "Role",
           path: "/role",
-          icon: <RoleIcon />
+          icon: <RoleIcon />,
+          index: 6
         },
         {
           title: "Company",
           path: "/company/updateself",
-          icon: <CompanyIcon />
+          icon: <CompanyIcon />,
+          index: 7
         }
       ];
       if (this.props.companyList.length > 1) {
@@ -264,28 +283,37 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
       let adm: object[] = [];
       if (isSuperAdmin(this.props.role)) {
         //Only SuperAdmin is allowed to use the Setting
-        adm.push({ title: "Setting", path: "/setting", icon: <SettingIcon /> });
+        adm.push({
+          title: "Setting",
+          path: "/setting",
+          icon: <SettingIcon />,
+          index: 7
+        });
       }
       const remainingList = [
         {
           title: "Job Function",
           path: "/jobfunction",
-          icon: <JobFunctionIcon />
+          icon: <JobFunctionIcon />,
+          index: 8
         },
         {
           title: "Sector",
           path: "/sector",
-          icon: <SectorIcon />
+          icon: <SectorIcon />,
+          index: 9
         },
         {
           title: "Customer",
           path: "/company",
-          icon: <CompanyIcon />
+          icon: <CompanyIcon />,
+          index: 10
         },
         {
           title: "Job Chart",
           path: "/jobchart",
-          icon: <CompanyIcon />
+          icon: <CompanyIcon />,
+          index: 11
         }
       ];
       for (const menuItem of remainingList) {
@@ -299,47 +327,56 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
         {
           title: "Job Grade",
           path: "/jobgrade",
-          icon: <JobGradeIcon />
+          icon: <JobGradeIcon />,
+          index: 12
         },
         {
           title: "Salary Range",
           path: "/salaryrange",
-          icon: <SalaryRangeIcon />
+          icon: <SalaryRangeIcon />,
+          index: 13
         },
         {
           title: "Allowances",
           path: "/allowances",
-          icon: <AllowanceIcon />
+          icon: <AllowanceIcon />,
+          index: 14
         },
         {
           title: "Target Bonus",
           path: "/targetbonus",
-          icon: <TargetBonusIcon />
+          icon: <TargetBonusIcon />,
+          index: 15
         },
         {
           title: "Signons",
           path: "/signons",
-          icon: <TargetBonusIcon />
+          icon: <TargetBonusIcon />,
+          index: 16
         },
         {
           title: "Short Term Incentive",
           path: "/shortincentive",
-          icon: <ShortIncentiveIcon />
+          icon: <ShortIncentiveIcon />,
+          index: 17
         },
         {
           title: "Long Term Incentive",
           path: "/longincentive",
-          icon: <LongIncentiveIcon />
+          icon: <LongIncentiveIcon />,
+          index: 18
         },
         {
           title: "Payroll Upload",
           path: "/payrollupload",
-          icon: <JobGradeIcon />
+          icon: <JobGradeIcon />,
+          index: 19
         },
         {
           title: "Market Data Upload",
           path: "/marketdataupload",
-          icon: <JobGradeIcon />
+          icon: <JobGradeIcon />,
+          index: 20
         }
       ];
       return adm;
@@ -396,7 +433,11 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
                   to={item.path}
                   style={{ textDecoration: "none" }}
                 >
-                  <ListItem button>
+                  <ListItem
+                    button
+                    selected={this.state.selectedIndex === item.index}
+                    onClick={() => this.handleListItemClick(item.index)}
+                  >
                     <ListItemIcon style={{ marginLeft: "20px" }}>
                       {item.icon}
                     </ListItemIcon>
@@ -425,7 +466,11 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
                   to={item.path}
                   style={{ textDecoration: "none" }}
                 >
-                  <ListItem button>
+                  <ListItem
+                    button
+                    selected={this.state.selectedIndex === item.index}
+                    onClick={() => this.handleListItemClick(item.index)}
+                  >
                     <ListItemIcon style={{ marginLeft: "20px" }}>
                       {item.icon}
                     </ListItemIcon>
@@ -445,7 +490,11 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
                   to={item.path}
                   style={{ textDecoration: "none" }}
                 >
-                  <ListItem button>
+                  <ListItem
+                    button
+                    selected={this.state.selectedIndex === item.index}
+                    onClick={() => this.handleListItemClick(item.index)}
+                  >
                     <ListItemIcon style={{ marginLeft: "20px" }}>
                       {item.icon}
                     </ListItemIcon>
