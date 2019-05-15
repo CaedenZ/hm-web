@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import FormControl from "@material-ui/core/FormControl";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles";
@@ -12,35 +10,29 @@ import { mapDispatchToProps } from "../../helper/dispachProps";
 import { SharedDispatchProps } from "../../interface/propsInterface";
 
 const styles = (theme: any) => ({
+  center: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100vh"
+  },
   main: {
     width: "auto",
     display: "block", // Fix IE 11 issue.
     marginLeft: theme.spacing.unit * 3,
     marginRight: theme.spacing.unit * 3,
     [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
-      width: 400,
-      marginLeft: "auto",
-      marginRight: "auto"
+      width: "20vw"
     }
   },
   paper: {
-    marginTop: theme.spacing.unit * 8,
     display: "flex",
-    // flexDirection: 'column',
     alignItems: "center",
-    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme
-      .spacing.unit * 3}px`
+    justifyContent: "center",
+    padding: `${theme.spacing.unit * 3}px`
   },
-  avatar: {
-    margin: theme.spacing.unit,
-    backgroundColor: theme.palette.secondary.main
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing.unit
-  },
-  submit: {
-    marginTop: theme.spacing.unit * 3
+  spacing: {
+    margin: "0.5rem 0"
   }
 });
 
@@ -90,30 +82,40 @@ class ForgetPasswordPage extends Component<Props, State> {
     const { classes } = this.props;
 
     return (
-      <main className={classes.main}>
-        <CssBaseline />
-        <Paper className={classes.paper}>
-          <Typography component="h1" variant="h5">
-            Enter your email
-          </Typography>
-          <form onSubmit={this.handleSubmit} className={classes.form}>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="email">Email Address</InputLabel>
-              <Input
+      <div className={classes.center}>
+        <main className={classes.main}>
+          <CssBaseline />
+          <Paper className={classes.paper}>
+            <Typography component="h1" variant="h5">
+              Enter your email
+            </Typography>
+            <ValidatorForm ref="form" onSubmit={this.handleSubmit}>
+              <TextValidator
+                autoFocus
+                fullWidth
+                label="Email"
+                onChange={this.handleChange}
                 id="email"
                 name="email"
                 autoComplete="email"
-                autoFocus
                 value={this.state.email}
-                onChange={this.handleChange}
+                validators={["required", "isEmail"]}
+                errorMessages={["this field is required", "email is not valid"]}
+                className={classes.spacing}
               />
-            </FormControl>
-            <Button fullWidth variant="contained" color="primary" type="submit">
-              Submit
-            </Button>
-          </form>
-        </Paper>
-      </main>
+              <Button
+                fullWidth
+                variant="contained"
+                color="primary"
+                type="submit"
+                className={classes.spacing}
+              >
+                Submit
+              </Button>
+            </ValidatorForm>
+          </Paper>
+        </main>
+      </div>
     );
   }
 }
