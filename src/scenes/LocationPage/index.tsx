@@ -23,6 +23,7 @@ import { Location } from "../../interface/locationInterface";
 import { history } from "../../store";
 import UpdateIcon from "@material-ui/icons/PlaylistAddCheck";
 import { Company } from "../../interface/companyInterface";
+import { isUserHR, isTCMasterSalesUserMaster } from "../../function/checkRole";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -61,6 +62,7 @@ interface State {}
 interface InState {
   selectedCompany: Company;
   locationList: Location[];
+  role;
 }
 class LocationPage extends React.Component<Props, State> {
   componentDidMount() {
@@ -94,7 +96,9 @@ class LocationPage extends React.Component<Props, State> {
 
     return (
       <main>
-        <CustomButton link="/location/create">New Location</CustomButton>
+        {!isUserHR(this.props.role) && (
+          <CustomButton link="/location/create">New Location</CustomButton>
+        )}
         <Paper className={classes.root}>
           <Table className={classes.table}>
             <TableHead>
@@ -119,17 +123,21 @@ class LocationPage extends React.Component<Props, State> {
                       {row.postal_code}
                     </CustomTableCell>
                     <CustomTableCell align="right">
-                      <IconButton
-                        onClick={() => this.handleUpdateButtonClick(row)}
-                      >
-                        <UpdateIcon />
-                      </IconButton>
+                      {!isUserHR(this.props.role) && (
+                        <IconButton
+                          onClick={() => this.handleUpdateButtonClick(row)}
+                        >
+                          <UpdateIcon />
+                        </IconButton>
+                      )}
                       {/* <Button color="primary" variant="contained" onClick={() => this.handleUpdateButtonClick(row)}>view</Button> */}
-                      <IconButton
-                        onClick={() => this.handleDelete(row.location_id)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
+                      {isTCMasterSalesUserMaster(this.props.role) && (
+                        <IconButton
+                          onClick={() => this.handleDelete(row.location_id)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      )}
                     </CustomTableCell>
                   </TableRow>
                 ))}
@@ -149,7 +157,8 @@ class LocationPage extends React.Component<Props, State> {
 function mapStateToProps(state: RootState) {
   return {
     selectedCompany: state.companyReducer.selectedCompany,
-    locationList: state.locationReducer.locationList
+    locationList: state.locationReducer.locationList,
+    role: state.authenticationReducer.profile.info[0].roles[0].role
   };
 }
 
