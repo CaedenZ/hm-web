@@ -6,6 +6,14 @@ export const isSuperAdmin = (role: string) => {
   }
 };
 
+export const isMaster = (role: string) => {
+  if (role === "TC Master") {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 export const isTechnical = (role: string) => {
   if (role === "TC Technical") {
     return true;
@@ -22,27 +30,26 @@ export const isSales = (role: string) => {
   }
 };
 
-export const isCustomerCAndB = (role: string) => {
-  if (role === "Customer C&B") {
+export const isUserMaster = (role: string) => {
+  if (role === "User Master") {
     return true;
   } else {
     return false;
   }
 };
 
-export const isCustomerHR = (role: string) => {
-  if (role === "Customer HR") {
+export const isUserHR = (role: string) => {
+  if (role === "User HR") {
     return true;
   } else {
     return false;
   }
 };
 
-// AWAITING FINAL ROLE FROM API
-// export const isSuperAdmin = (role: string) => {
-//   if (role === "SuperAdmin") {
-//     return true;
-//   } else {
-//     return false;
-//   }
-// };
+export const isUserPower = (role: string) => {
+  if (role === "User Power") {
+    return true;
+  } else {
+    return false;
+  }
+};
