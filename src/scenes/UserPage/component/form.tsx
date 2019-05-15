@@ -326,7 +326,7 @@ class FormPage extends Component<Props, FormState> {
                       >
                         <option value="" />
                         {this.props.countryList.map(country => (
-                          <option value={country.country_name}>
+                          <option value={country.country_name} key={country.country_name}>
                             {country.country_name}
                           </option>
                         ))}
