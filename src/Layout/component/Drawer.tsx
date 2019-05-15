@@ -40,6 +40,7 @@ import { SharedDispatchProps } from "../../interface/propsInterface";
 import { Company } from "../../interface/companyInterface";
 import { Collapse } from "@material-ui/core";
 import packageJson from "../../../package.json";
+import { isSuperAdmin } from "../../function/checkRole";
 
 const drawerWidth = "15vw";
 
@@ -82,6 +83,7 @@ export interface Props
 
 interface InState {
   companyList: Company[];
+  role: string;
 }
 interface State {
   expended1: boolean;
@@ -253,12 +255,13 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
       } else return null;
     };
     const adminfunction = (): any => {
-      let adm = [
-        {
-          title: "Setting",
-          path: "/setting",
-          icon: <SettingIcon />
-        },
+      //Init the admin list
+      let adm: object[] = [];
+      if (isSuperAdmin(this.props.role)) {
+        //Only SuperAdmin is allowed to use the Setting
+        adm.push({ title: "Setting", path: "/setting", icon: <SettingIcon /> });
+      }
+      const remainingList = [
         {
           title: "Job Function",
           path: "/jobfunction",
@@ -280,6 +283,9 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
           icon: <CompanyIcon />
         }
       ];
+      for (const menuItem of remainingList) {
+        adm.push(menuItem);
+      }
       return adm;
     };
 
@@ -466,7 +472,8 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
 
 function mapStateToProps(state: any) {
   return {
-    companyList: state.companyReducer.companyList
+    companyList: state.companyReducer.companyList,
+    role: state.authenticationReducer.profile.info[0].roles[0].role
   };
 }
 

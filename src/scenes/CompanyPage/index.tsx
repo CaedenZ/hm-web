@@ -22,6 +22,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { history } from "../../store";
 import UpdateIcon from "@material-ui/icons/PlaylistAddCheck";
 import ViewIcon from "@material-ui/icons/ZoomIn";
+import { isTechnical, isSuperAdmin } from "../../function/checkRole";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -59,6 +60,7 @@ interface State {}
 
 interface InState {
   companyList: Company[];
+  role: string;
 }
 
 class CustomizedTable extends React.Component<Props, State> {
@@ -98,7 +100,9 @@ class CustomizedTable extends React.Component<Props, State> {
 
     return (
       <main>
-        <CustomButton link="/company/create">New Company</CustomButton>
+        {!isTechnical(this.props.role) && (
+          <CustomButton link="/company/create">New Company</CustomButton>
+        )}
         <Paper className={classes.root}>
           <Table className={classes.table}>
             <TableHead>
@@ -140,13 +144,14 @@ class CustomizedTable extends React.Component<Props, State> {
                           <UpdateIcon />
                         </IconButton>
                         {/* <Button color="primary" variant="contained" onClick={() => this.handleUpdateButtonClick(row)}>view</Button> */}
-                        {row.company_id !== "5ZwOXIkeKuPhpFriTsmD" && (
-                          <IconButton
-                            onClick={() => this.handleDelete(row.company_id)}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                        )}
+                        {row.company_id !== "5ZwOXIkeKuPhpFriTsmD" &&
+                          isSuperAdmin(this.props.role) && (
+                            <IconButton
+                              onClick={() => this.handleDelete(row.company_id)}
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          )}
                       </CustomTableCell>
                     </TableRow>
                   ))}
@@ -165,7 +170,8 @@ class CustomizedTable extends React.Component<Props, State> {
 
 function mapStateToProps(state: any) {
   return {
-    companyList: state.companyReducer.companyList
+    companyList: state.companyReducer.companyList,
+    role: state.authenticationReducer.profile.info[0].roles[0].role
   };
 }
 
