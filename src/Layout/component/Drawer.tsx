@@ -89,48 +89,53 @@ interface State {
   expended1: boolean;
   expended2: boolean;
   expended3: boolean;
+  selectedIndex: number | null;
 }
 
 class PermanentDrawerLeft extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.handleLogout = this.handleLogout.bind(this);
+    this.handleExpand = this.handleExpand.bind(this);
   }
 
   state: State = {
     expended1: false,
     expended2: false,
-    expended3: false
+    expended3: false,
+    selectedIndex: null
   };
 
   handleLogout = () => {
     this.props.logout();
   };
 
-  handleExpandClick1 = () => {
-    this.setState(state => ({
-      expended1: !state.expended1,
-      expended2: false,
-      expended3: false
-    }));
-  };
-
-  handleExpandClick2 = () => {
-    this.setState(state => ({
-      expended1: false,
-      expended2: !state.expended2,
-      expended3: false
-    }));
-    console.log(this.state);
-  };
-
-  handleExpandClick3 = () => {
-    this.setState(state => ({
-      expended1: false,
-      expended2: false,
-      expended3: !state.expended3
-    }));
-    console.log(this.state);
+  handleExpand = (expansion: number) => {
+    switch (expansion) {
+      case 1:
+        this.setState(state => ({
+          expended1: !state.expended1,
+          expended2: false,
+          expended3: false
+        }));
+        break;
+      case 2:
+        this.setState(state => ({
+          expended1: false,
+          expended2: !state.expended2,
+          expended3: false
+        }));
+        break;
+      case 3:
+        this.setState(state => ({
+          expended1: false,
+          expended2: false,
+          expended3: !state.expended3
+        }));
+        break;
+      default:
+        break;
+    }
   };
 
   render() {
@@ -237,7 +242,7 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
         <ListItem
           className={classes.menubar}
           button
-          onClick={this.handleExpandClick2}
+          onClick={() => this.handleExpand(2)}
         >
           <ListItemIcon>
             <MenuIcon />
@@ -376,7 +381,7 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
           <ListItem
             className={classes.menubar}
             button
-            onClick={this.handleExpandClick1}
+            onClick={() => this.handleExpand(1)}
           >
             <ListItemIcon>
               <MenuIcon />
@@ -405,7 +410,7 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
           <ListItem
             className={classes.menubar}
             button
-            onClick={this.handleExpandClick3}
+            onClick={() => this.handleExpand(3)}
           >
             <ListItemIcon>
               <MenuIcon />
