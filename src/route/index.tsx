@@ -732,8 +732,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/jobchart"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <JobChartPage />{" "}
+                  <JobChartPage />
                 </PrimaryLayout>
               )}
             />
