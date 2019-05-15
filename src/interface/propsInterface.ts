@@ -13,7 +13,6 @@ import {
 import { CreateJobFunctionState } from "../scenes/JobFunctionPage/create";
 import { CreateSubJobFunctionState } from "../scenes/JobFunctionPage/createsub";
 import { JobFunction } from "./jobfunctionInterface";
-import { UpdateUserState } from "../scenes/UserPage/update";
 import { User, CREATEUSERCRED } from "./userInterface";
 import { Region, CREATEREGIONCRED, UPDATEREGIONCRED } from "./regionInterface";
 import { CREATEROLE, UPDATEROLE, Role } from "./roleInterface";
@@ -113,7 +112,7 @@ export interface SharedDispatchProps {
 
   createUser: (cred: CREATEUSERCRED) => void;
   selectUser: (user: User) => void;
-  updateUser: (cred: UpdateUserState) => void;
+  updateUser: (cred: CREATEUSERCRED) => void;
   deleteUser: (id: string) => void;
 
   selectIndex: (index: number) => void;
