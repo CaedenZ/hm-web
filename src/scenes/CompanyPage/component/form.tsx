@@ -159,6 +159,12 @@ class CreateCompanyPage extends Component<Props, FormState> {
 
   componentDidMount() {
     if (!this.props.create) {
+      // const locationInfo = this.props.updateData.location[0];
+      // let tmpUpdateData = this.props.updateData;
+      // tmpUpdateData.address = locationInfo.address;
+      // tmpUpdateData.location = locationInfo.location_name;
+      // tmpUpdateData.postal_code = locationInfo.postal_code;
+
       this.setState(this.props.updateData);
 
       const tmpCountryList: object[] = [];

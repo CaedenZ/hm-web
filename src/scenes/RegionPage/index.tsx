@@ -23,6 +23,7 @@ import { Region } from "../../interface/regionInterface";
 import { history } from "../../store";
 import UpdateIcon from "@material-ui/icons/PlaylistAddCheck";
 import { Company } from "../../interface/companyInterface";
+import { isUserHR, isTCMasterSalesUserMaster } from "../../function/checkRole";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -61,6 +62,7 @@ interface State {}
 interface InState {
   selectedCompany: Company;
   regionList: Region[];
+  role: string;
 }
 class RegionPage extends React.Component<Props, State> {
   componentDidMount() {
@@ -94,13 +96,15 @@ class RegionPage extends React.Component<Props, State> {
 
     return (
       <main>
-        <CustomButton link="/region/create">New Region</CustomButton>
+        {!isUserHR(this.props.role) && (
+          <CustomButton link="/region/create">New Region</CustomButton>
+        )}
         <Paper className={classes.root}>
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
                 <CustomTableCell>Name</CustomTableCell>
-                <CustomTableCell align="right">Countrys</CustomTableCell>
+                <CustomTableCell align="left">Countries</CustomTableCell>
                 <CustomTableCell align="right">Action</CustomTableCell>
               </TableRow>
             </TableHead>
@@ -125,17 +129,21 @@ class RegionPage extends React.Component<Props, State> {
                       <CustomTableCell />
                     )}
                     <CustomTableCell align="right">
-                      <IconButton
-                        onClick={() => this.handleUpdateButtonClick(row)}
-                      >
-                        <UpdateIcon />
-                      </IconButton>
+                      {!isUserHR(this.props.role) && (
+                        <IconButton
+                          onClick={() => this.handleUpdateButtonClick(row)}
+                        >
+                          <UpdateIcon />
+                        </IconButton>
+                      )}
                       {/* <Button color="primary" variant="contained" onClick={() => this.handleUpdateButtonClick(row)}>view</Button> */}
-                      <IconButton
-                        onClick={() => this.handleDelete(row.region_id)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
+                      {isTCMasterSalesUserMaster(this.props.role) && (
+                        <IconButton
+                          onClick={() => this.handleDelete(row.region_id)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      )}
                     </CustomTableCell>
                   </TableRow>
                 ))}
@@ -155,7 +163,8 @@ class RegionPage extends React.Component<Props, State> {
 function mapStateToProps(state: RootState) {
   return {
     selectedCompany: state.companyReducer.selectedCompany,
-    regionList: state.regionReducer.regionList
+    regionList: state.regionReducer.regionList,
+    role: state.authenticationReducer.profile.info[0].roles[0].role
   };
 }
 

@@ -4,7 +4,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import Paper from "@material-ui/core/Paper";
 import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import { Divider } from "@material-ui/core";
 import { connect } from "react-redux";
 import { mapDispatchToProps } from "../../helper/dispachProps";
@@ -33,7 +33,7 @@ const styles = (theme: any) => ({
     padding: `${theme.spacing.unit * 3}px`
   },
   loginSpacing: {
-    margin: "1rem 0"
+    margin: "0.5rem 0"
   }
 });
 
@@ -129,6 +129,11 @@ class SignIn extends Component<Props, State> {
                 >
                   Sign in
                 </Button>
+                <div
+                  style={{ margin: "auto", width: "50%", textAlign: "center", marginTop: "1rem" }}
+                >
+                  <Link to={"/forgetpassword"}>Forget Password</Link>
+                </div>
               </ValidatorForm>
             </Paper>
           </main>

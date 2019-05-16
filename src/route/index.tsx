@@ -127,9 +127,23 @@ class RootRoute extends React.Component<Props, State> {
             <Route
               exact
               path="/forgetpassword"
-              component={ForgetPasswordPage}
+              // component={ForgetPasswordPage}
+              render={() => (
+                <SecondaryLayout>
+                  <ForgetPasswordPage />
+                </SecondaryLayout>
+              )}
             />
-            <Route exact path="/resetpassword" component={ResetPasswordPage} />
+            <Route
+              exact
+              path="/resetpassword"
+              // component={ResetPasswordPage}
+              render={() => (
+                <SecondaryLayout>
+                  <ResetPasswordPage />
+                </SecondaryLayout>
+              )}
+            />
             {/* <Route exact path="/" component={PrimaryLayout} /> */}
             <Route
               exact
@@ -732,8 +746,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/jobchart"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <JobChartPage />{" "}
+                  <JobChartPage />
                 </PrimaryLayout>
               )}
             />
