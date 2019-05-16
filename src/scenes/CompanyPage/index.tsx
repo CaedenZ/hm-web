@@ -17,7 +17,7 @@ import { SharedDispatchProps } from "../../interface/propsInterface";
 import { Company } from "../../interface/companyInterface";
 import { mapDispatchToProps } from "../../helper/dispachProps";
 import { connect } from "react-redux";
-import { IconButton, InputBase } from "@material-ui/core";
+import { IconButton, InputBase, Grid } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { history } from "../../store";
 import UpdateIcon from "@material-ui/icons/PlaylistAddCheck";
@@ -37,7 +37,7 @@ const CustomTableCell = withStyles(theme => ({
   },
   body: {
     fontSize: 14
-  },
+  }
 }))(TableCell);
 
 const styles = (theme: Theme) =>
@@ -58,16 +58,16 @@ const styles = (theme: Theme) =>
     search: {
       position: "relative",
       borderRadius: theme.shape.borderRadius,
-      backgroundColor: fade(theme.palette.common.white, 0.15),
+      color: "#FFF",
+      backgroundColor: fade("#f56000", 0.9),
       "&:hover": {
-        backgroundColor: fade(theme.palette.common.white, 0.25)
+        backgroundColor: fade("#f56000", 1)
       },
       marginRight: theme.spacing.unit * 2,
       marginLeft: 0,
       width: "100%",
       [theme.breakpoints.up("sm")]: {
-        marginLeft: theme.spacing.unit * 3,
-        width: "auto"
+        marginLeft: theme.spacing.unit * 3
       }
     },
     searchIcon: {
@@ -84,7 +84,7 @@ const styles = (theme: Theme) =>
       width: "100%"
     },
     inputInput: {
-      paddingTop: theme.spacing.unit,
+      paddingTop: theme.spacing.unit * 2,
       paddingRight: theme.spacing.unit,
       paddingBottom: theme.spacing.unit,
       paddingLeft: theme.spacing.unit * 10,
@@ -93,13 +93,13 @@ const styles = (theme: Theme) =>
       [theme.breakpoints.up("md")]: {
         width: 200
       }
-    },
+    }
   });
 
 export interface Props
   extends WithStyles<typeof styles>,
-  SharedDispatchProps,
-  InState { }
+    SharedDispatchProps,
+    InState {}
 
 interface State {
   detail: boolean;
@@ -123,12 +123,12 @@ class CustomizedTable extends React.Component<Props, State> {
     locationdata: [],
     userdata: [],
     viewCompany: null,
-    displayarr: [],
+    displayarr: []
   };
   componentDidMount() {
     this.props.getCompanyList();
     console.log("CompangPage Mount");
-    this.setState({displayarr:this.props.companyList})
+    this.setState({ displayarr: this.props.companyList });
   }
 
   sortCompanyListcompare(
@@ -177,39 +177,40 @@ class CustomizedTable extends React.Component<Props, State> {
     this.setState({ detail: false });
   };
 
-  handleChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     let arr = this.props.companyList.filter(e => {
-      if ((e.company_name.toString()
-        .toLowerCase()
-        .indexOf(event.target.value.toLowerCase()) >= 0) || (this.checkcountry(e.country, event.target.value))) {
-        return e
+      if (
+        e.company_name
+          .toString()
+          .toLowerCase()
+          .indexOf(event.target.value.toLowerCase()) >= 0 ||
+        this.checkcountry(e.country, event.target.value)
+      ) {
+        return e;
       }
-    })
+    });
 
-    this.setState({ displayarr: arr })
-    // console.log(arr)
+    this.setState({ displayarr: arr });
   };
 
-  checkcountry(country, search) {
-    if (country === '') {
-      return false
+  checkcountry(countryList, search) {
+    if (countryList === "" || countryList.length === 0) {
+      return false;
     } else {
-      if (country.length === 0) {
-        return false
+      let hasCountry = false;
+      for (const country of countryList) {
+        const charIndex = country
+          .toString()
+          .toLowerCase()
+          .indexOf(search.toLowerCase());
+        if (charIndex >= 0) {
+          hasCountry = true;
+          break;
+        } else {
+          hasCountry = false;
+        }
       }
-      else {
-        let e: any[] = [...country]
-        e.forEach(e => {
-          if (e.toString()
-            .toLowerCase()
-            .indexOf(search.toLowerCase()) >= 0) {
-            return true
-          }
-          else { return false }
-        })
-      }
+      return hasCountry;
     }
   }
 
@@ -218,22 +219,28 @@ class CustomizedTable extends React.Component<Props, State> {
 
     return (
       <main>
-        {!isTechnical(this.props.role) && (
-          <CustomButton link="/company/create">New Company</CustomButton>
-        )}
-        <div className={classes.search}>
-          <div className={classes.searchIcon}>
-            <SearchIcon />
-          </div>
-          <InputBase
-            placeholder="Search…"
-            classes={{
-              root: classes.inputRoot,
-              input: classes.inputInput
-            }}
-            onChange={this.handleChange}
-          />
-        </div>
+        <Grid container>
+          {!isTechnical(this.props.role) && (
+            <Grid container item xs={2}>
+              <CustomButton link="/company/create">New Company</CustomButton>
+            </Grid>
+          )}
+          <Grid container item xs={6}>
+            <div className={classes.search}>
+              <div className={classes.searchIcon}>
+                <SearchIcon />
+              </div>
+              <InputBase
+                placeholder="Search…"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput
+                }}
+                onChange={this.handleChange}
+              />
+            </div>
+          </Grid>
+        </Grid>
         <Paper className={classes.root}>
           <Table className={classes.table}>
             <TableHead>
