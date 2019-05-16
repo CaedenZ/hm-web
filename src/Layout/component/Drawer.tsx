@@ -11,10 +11,10 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
-// import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-// import InboxIcon from "@material-ui/icons/MoveToInbox";
-// import MailIcon from "@material-ui/icons/Mail";
+import InboxIcon from "@material-ui/icons/MoveToInbox";
+import MailIcon from "@material-ui/icons/Mail";
 import UserIcon from "@material-ui/icons/Person";
 import CompanyIcon from "@material-ui/icons/Business";
 import UnitIcon from "@material-ui/icons/Group";
@@ -29,7 +29,7 @@ import AllowanceIcon from "@material-ui/icons/MonetizationOn";
 import ShortIncentiveIcon from "@material-ui/icons/PlayArrow";
 import LongIncentiveIcon from "@material-ui/icons/FastForward";
 import SalaryRangeIcon from "@material-ui/icons/CompareArrows";
-// import MenuIcon from "@material-ui/icons/Menu";
+import MenuIcon from "@material-ui/icons/Menu";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import PrimarySearchAppBar from "./AppBar";
 import { Link } from "react-router-dom";
@@ -263,9 +263,9 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
           button
           onClick={() => this.handleExpand(2)}
         >
-          {/* <ListItemIcon>
+          <ListItemIcon>
             <MenuIcon />
-          </ListItemIcon> */}
+          </ListItemIcon>
           <ListItemText primary="Configuration" />
         </ListItem>
       );
@@ -406,9 +406,9 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
                 style={{ textDecoration: "none" }}
               >
                 <ListItem button>
-                  {/* <ListItemIcon>
+                  <ListItemIcon>
                     {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                  </ListItemIcon> */}
+                  </ListItemIcon>
                   <ListItemText primary={item.title} />
                 </ListItem>
               </Link>
@@ -420,9 +420,9 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
             button
             onClick={() => this.handleExpand(1)}
           >
-            {/* <ListItemIcon>
+            <ListItemIcon>
               <MenuIcon />
-            </ListItemIcon> */}
+            </ListItemIcon>
             <ListItemText primary="Company Setup" />
           </ListItem>
           <Collapse in={this.state.expended1} timeout="auto" unmountOnExit>
@@ -450,9 +450,9 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
             button
             onClick={() => this.handleExpand(3)}
           >
-            {/* <ListItemIcon>
+            <ListItemIcon>
               <MenuIcon />
-            </ListItemIcon> */}
+            </ListItemIcon>
             <ListItemText primary="Compensation Setup" />
           </ListItem>
           <Collapse in={this.state.expended3} timeout="auto" unmountOnExit>
