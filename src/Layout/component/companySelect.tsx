@@ -15,7 +15,7 @@ import { mapDispatchToProps } from "../../helper/dispachProps";
 import { connect } from "react-redux";
 import { Company } from "../../interface/companyInterface";
 import { SharedDispatchProps } from "../../interface/propsInterface";
-import logo from "assets/images/companylogo1.png";
+// import logo from "assets/images/companylogo1.png";
 
 const styles = (theme: Theme) =>
   createStyles({

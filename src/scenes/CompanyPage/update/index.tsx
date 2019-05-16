@@ -9,10 +9,14 @@ import {
 import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../interface/propsInterface";
-import { Company } from "../../../interface/companyInterface";
+import {
+  Company,
+  UPDATECOMPANYCRED
+} from "../../../interface/companyInterface";
 import { CountryState } from "../../../interface/countryInterface";
 import { history } from "../../../store";
 import FormPage from "../component/form";
+import { Industry, Sector } from "../../../interface/sectorInterface";
 
 const styles = () =>
   createStyles({
@@ -158,7 +162,23 @@ class UpdateCompanyPage extends Component<Props, UpdateCompanyState> {
     //   a.industry.push({ name: element })
     // });
 
-    this.props.updateCompany(data);
+    const companyIndustry: Industry = JSON.parse(data.industry);
+    const companySector: Sector = JSON.parse(data.sector);
+    const companyData: UPDATECOMPANYCRED = {
+      company_id: data.company_id,
+      logo_main: data.logo_main,
+      logo_small: data.logo_small,
+      company_name: data.company_name,
+      webpage_url: data.webpage_url,
+      industry: companyIndustry,
+      sector: companySector,
+      country: data.country,
+      base_currency_id: data.base_currency_id,
+      financialyr_dt: data.financialyr_dt,
+      parentcompany_id: data.parentcompany_id
+    };
+
+    this.props.updateCompany(companyData);
     history.goBack();
   };
 

@@ -18,8 +18,6 @@ import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../interface/propsInterface";
 import { RootState } from "../../../reducer";
 import { CountryState } from "../../../interface/countryInterface";
-import { history } from "../../../store";
-import { CREATECOMPANYCRED } from "../../../interface/companyInterface";
 import { Sector } from "../../../interface/sectorInterface";
 import theme from "../../../assets/theme";
 import { emphasize } from "@material-ui/core/styles/colorManipulator";
@@ -87,17 +85,10 @@ const styles = () =>
 interface FormState {
   company_id?: string;
   sector: string;
-  location: string;
   company_name: string;
   industry: string;
   country: string[];
-  address: string;
-  postal_code: string;
   logo_small: string;
-  contact_person: string;
-  contact_number: string;
-  contact_email: string;
-  hq_name: string;
   financialyr_dt: string;
   base_currency_id: string;
   logo_main: string;
@@ -129,23 +120,15 @@ class CreateCompanyPage extends Component<Props, FormState> {
     this.onClose = this.onClose.bind(this);
     this.onMainCrop = this.onMainCrop.bind(this);
     this.onMainClose = this.onMainClose.bind(this);
-    this.handleCreateCompany = this.handleCreateCompany.bind(this);
     this.handleChangeSelect = this.handleChangeSelect.bind(this);
   }
 
   state: FormState = {
     sector: "",
-    location: "",
     company_name: "",
     industry: "",
     country: [],
-    address: "",
-    postal_code: "",
     logo_small: "",
-    contact_person: "",
-    contact_number: "",
-    contact_email: "",
-    hq_name: "",
     financialyr_dt: "",
     base_currency_id: "",
     logo_main: "",
@@ -159,12 +142,6 @@ class CreateCompanyPage extends Component<Props, FormState> {
 
   componentDidMount() {
     if (!this.props.create) {
-      // const locationInfo = this.props.updateData.location[0];
-      // let tmpUpdateData = this.props.updateData;
-      // tmpUpdateData.address = locationInfo.address;
-      // tmpUpdateData.location = locationInfo.location_name;
-      // tmpUpdateData.postal_code = locationInfo.postal_code;
-
       this.setState(this.props.updateData);
 
       const tmpCountryList: object[] = [];
@@ -190,14 +167,15 @@ class CreateCompanyPage extends Component<Props, FormState> {
           label: sectorObject.name
         }
       });
-
-      const industryObject = JSON.parse(this.props.updateData.industry);
-      this.setState({
-        displayIndustry: {
-          value: JSON.stringify(industryObject),
-          label: industryObject.name
-        }
-      });
+      if (this.props.updateData.industry) {
+        const industryObject = JSON.parse(this.props.updateData.industry);
+        this.setState({
+          displayIndustry: {
+            value: JSON.stringify(industryObject),
+            label: industryObject.name
+          }
+        });
+      }
     }
   }
 
@@ -232,24 +210,16 @@ class CreateCompanyPage extends Component<Props, FormState> {
     this.setState({ country: event.target.value });
   };
 
-  // handleChangeSelect = (statekay: keyof FormState) => (
-  //   event: React.ChangeEvent<HTMLSelectElement>
-  // ) => {
-  //   this.setState(({ [statekay]: event.target.value } as unknown) as Pick<
-  //     FormState,
-  //     keyof FormState
-  //   >);
-  // };
   handleChangeSelect = (statekay: keyof FormState) => value => {
     let tmpListObject: any = null;
     switch (statekay) {
       case "country":
-        // tmpObject = { country_name: value };
+        tmpListObject = [];
         for (const country of value) {
           const tmpObject = country.value;
-          tmpListObject = [];
-          tmpListObject.push(JSON.stringify(tmpObject));
+          tmpListObject.push(tmpObject);
         }
+        console.log(tmpListObject);
         this.setState({ displayCountry: value });
         break;
       case "base_currency_id":
@@ -273,24 +243,6 @@ class CreateCompanyPage extends Component<Props, FormState> {
     >);
   };
 
-  handleCreateCompany = e => {
-    e.preventDefault();
-    // console.log(this.props.countryList)
-    const a: CREATECOMPANYCRED = {
-      ...this.state,
-      sector: JSON.parse(this.state.sector),
-      industry: this.state.industry,
-      country: []
-    };
-
-    this.state.country.forEach(element => {
-      a.country.push({ country_name: element });
-    });
-
-    this.props.createCompany(a);
-    history.goBack();
-  };
-
   render() {
     const { classes } = this.props;
     return (
@@ -300,18 +252,31 @@ class CreateCompanyPage extends Component<Props, FormState> {
           style={{ padding: "2rem" }}
         >
           <Grid justify="center" spacing={16} container>
-            <Grid item xs={3}>
-              <Typography variant="h6">Main Logo</Typography>
-              <div style={{ margin: "1rem 1rem", marginTop: 0 }}>
-                <Avatar
-                  width={200}
-                  height={150}
-                  onCrop={this.onMainCrop}
-                  onClose={this.onMainClose}
-                />
-              </div>
+            <Grid item direction="column" xs={3} container>
+              <Grid item xs={6}>
+                <Typography variant="h6">Company Icon</Typography>
+                <div style={{ margin: "1rem 1rem", marginTop: 0 }}>
+                  <Avatar
+                    width={200}
+                    height={150}
+                    onCrop={this.onCrop}
+                    onClose={this.onClose}
+                  />
+                </div>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography variant="h6">Main Logo</Typography>
+                <div style={{ margin: "1rem 1rem", marginTop: 0 }}>
+                  <Avatar
+                    width={200}
+                    height={150}
+                    onCrop={this.onMainCrop}
+                    onClose={this.onMainClose}
+                  />
+                </div>
+              </Grid>
             </Grid>
-            <Grid container item xs>
+            <Grid alignItems="center" container item xs>
               <Grid container>
                 <Grid container item xs={6}>
                   <TextField
@@ -335,103 +300,9 @@ class CreateCompanyPage extends Component<Props, FormState> {
                   />
                 </Grid>
               </Grid>
-              <Grid container>
-                <Grid container item xs>
-                  <TextField
-                    id="location"
-                    label="location"
-                    className={classes.textField}
-                    value={this.state.location}
-                    onChange={this.handleChange("location")}
-                    margin="normal"
-                  />
-                </Grid>
-              </Grid>
             </Grid>
           </Grid>
-          <Grid justify="center" container>
-            <Grid item xs={3}>
-              <Typography variant="h6">Company Icon</Typography>
-              <div style={{ margin: "1rem 1rem", marginTop: 0 }}>
-                <Avatar
-                  width={200}
-                  height={150}
-                  onCrop={this.onCrop}
-                  onClose={this.onClose}
-                />
-              </div>
-            </Grid>
-            <Grid container item xs>
-              <Grid container>
-                <Grid container item xs={6}>
-                  <TextField
-                    multiline
-                    id="address"
-                    label="Registered Address​"
-                    className={classes.textField}
-                    value={this.state.address}
-                    onChange={this.handleChange("address")}
-                    margin="normal"
-                  />
-                </Grid>
-              </Grid>
-              <Grid container>
-                <Grid container item xs>
-                  <TextField
-                    id="postal_code"
-                    label="Postal Code"
-                    className={classes.textField}
-                    value={this.state.postal_code}
-                    onChange={this.handleChange("postal_code")}
-                    margin="normal"
-                  />
-                </Grid>
-              </Grid>
-            </Grid>
-          </Grid>
-          <Divider />
-          <Typography component="h1" variant="h6">
-            Contact Infomation
-          </Typography>
-          <Grid justify="center" container>
-            <Grid item direction="column" xs={3} container />
-            <Grid container item xs>
-              <Grid container>
-                <Grid container item xs={6}>
-                  <TextField
-                    id="contact_person"
-                    label="Contact Person Name​"
-                    className={classes.textField}
-                    value={this.state.contact_person}
-                    onChange={this.handleChange("contact_person")}
-                    margin="normal"
-                  />
-                </Grid>
-                <Grid container item xs={6}>
-                  <TextField
-                    id="contact_number"
-                    label="Contact Person Number​"
-                    className={classes.textField}
-                    value={this.state.contact_number}
-                    onChange={this.handleChange("contact_number")}
-                    margin="normal"
-                  />
-                </Grid>
-              </Grid>
-              <Grid container>
-                <Grid container item xs>
-                  <TextField
-                    id="contact_email"
-                    label="Contact Person Email​"
-                    className={classes.textField}
-                    value={this.state.contact_email}
-                    onChange={this.handleChange("contact_email")}
-                    margin="normal"
-                  />
-                </Grid>
-              </Grid>
-            </Grid>
-          </Grid>
+          <Grid justify="flex-start" container />
           <Divider />
           <Typography component="h1" variant="h6">
             Operational Infomation
@@ -439,34 +310,6 @@ class CreateCompanyPage extends Component<Props, FormState> {
           <Grid justify="center" container>
             <Grid item direction="column" xs={3} container />
             <Grid container item xs>
-              <Grid container>
-                <Grid container item xs={12}>
-                  {this.props.parameterList.countryList.length > 0 && (
-                    <Select
-                      fullWidth
-                      className={classes.countrySelect}
-                      classes={classes}
-                      textFieldProps={{
-                        label: "Country",
-                        InputLabelProps: {
-                          shrink: true
-                        }
-                      }}
-                      options={this.props.parameterList.countryList.map(
-                        country => ({
-                          value: country,
-                          label: country.country_name
-                        })
-                      )}
-                      components={components}
-                      value={this.state.displayCountry}
-                      onChange={this.handleChangeSelect("country")}
-                      placeholder="Select multiple countries"
-                      isMulti
-                    />
-                  )}
-                </Grid>
-              </Grid>
               <Grid container>
                 <Grid container item xs={6}>
                   {this.props.parameterList.distintCurrencyList.length > 0 && (
@@ -541,6 +384,54 @@ class CreateCompanyPage extends Component<Props, FormState> {
                   </Grid>
                 )}
               </Grid>
+              <Grid container>
+                <Grid container item xs={12}>
+                  {this.props.parameterList.countryList.length > 0 && (
+                    <Select
+                      fullWidth
+                      className={classes.countrySelect}
+                      classes={classes}
+                      textFieldProps={{
+                        label: "Country",
+                        InputLabelProps: {
+                          shrink: true
+                        }
+                      }}
+                      options={this.props.parameterList.countryList.map(
+                        country => ({
+                          value: JSON.stringify(country),
+                          label: country.country_name
+                        })
+                      )}
+                      components={components}
+                      value={this.state.displayCountry}
+                      onChange={this.handleChangeSelect("country")}
+                      placeholder="Select multiple countries"
+                      isMulti
+                    />
+                  )}
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Divider />
+          <Typography component="h1" variant="h6">
+            Contact Infomation
+          </Typography>
+          <Grid justify="center" container>
+            <Grid item direction="column" xs={3} container />
+            <Grid container item xs>
+              CONTACT PERSON TABLE SHOULD BE HERE
+            </Grid>
+          </Grid>
+          <Divider />
+          <Typography component="h1" variant="h6">
+            Location Infomation
+          </Typography>
+          <Grid justify="center" container>
+            <Grid item direction="column" xs={3} container />
+            <Grid container item xs>
+              LOCATION TABLE SHOULD BE HERE
             </Grid>
           </Grid>
           <Divider />

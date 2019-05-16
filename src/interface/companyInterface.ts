@@ -20,13 +20,15 @@ export interface Company {
 export interface UPDATECOMPANYCRED {
   company_id: string;
   company_name: string;
-  industry: string;
+  industry: Industry;
   sector: Sector;
   country: Country[];
   logo_small: string;
   base_currency_id: string;
   logo_main: string;
   webpage_url: string;
+  financialyr_dt: string;
+  parentcompany_id: string;
 }
 
 export interface CREATECOMPANYCRED {
@@ -34,10 +36,12 @@ export interface CREATECOMPANYCRED {
   logo_small: string;
   company_name: string;
   webpage_url: string;
-  industry: string;
+  industry: Industry;
   sector: Sector;
   country: Country[];
   base_currency_id: string;
+  financialyr_dt: string;
+  parentcompany_id: string;
 }
 
 export interface CREATEUNITCRED {

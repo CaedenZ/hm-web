@@ -13,6 +13,8 @@ import { SharedDispatchProps } from "../../../interface/propsInterface";
 import { CountryState } from "../../../interface/countryInterface";
 import { history } from "../../../store";
 import FormPage from "../component/form";
+import { CREATECOMPANYCRED } from "../../../interface/companyInterface";
+import { Industry, Sector } from "../../../interface/sectorInterface";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -38,7 +40,22 @@ class CreateCompanyPage extends Component<Props> {
 
   handleCreateCompany = (e, data) => {
     e.preventDefault();
-    this.props.createCompany(data);
+    const companyIndustry: Industry = JSON.parse(data.industry);
+    const companySector: Sector = JSON.parse(data.sector);
+    const companyData: CREATECOMPANYCRED = {
+      logo_main: data.logo_main,
+      logo_small: data.logo_small,
+      company_name: data.company_name,
+      webpage_url: data.webpage_url,
+      industry: companyIndustry,
+      sector: companySector,
+      country: data.country,
+      base_currency_id: data.base_currency_id,
+      financialyr_dt: data.financialyr_dt,
+      parentcompany_id: data.parentcompany_id
+    };
+    console.dir(companyData);
+    this.props.createCompany(companyData);
     history.goBack();
   };
 
