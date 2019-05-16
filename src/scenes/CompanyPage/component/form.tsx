@@ -18,7 +18,7 @@ import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../interface/propsInterface";
 import { RootState } from "../../../reducer";
 import { CountryState } from "../../../interface/countryInterface";
-import { Sector } from "../../../interface/sectorInterface";
+import { Sector, Industry } from "../../../interface/sectorInterface";
 import theme from "../../../assets/theme";
 import { emphasize } from "@material-ui/core/styles/colorManipulator";
 import components from "../../../function/react-select-components";
@@ -84,9 +84,9 @@ const styles = () =>
 
 interface FormState {
   company_id?: string;
-  sector: string;
+  sector: Sector | null;
   company_name: string;
-  industry: string;
+  industry: Industry | null;
   country: string[];
   logo_small: string;
   financialyr_dt: string;
@@ -124,9 +124,9 @@ class CreateCompanyPage extends Component<Props, FormState> {
   }
 
   state: FormState = {
-    sector: "",
+    sector: null,
     company_name: "",
-    industry: "",
+    industry: null,
     country: [],
     logo_small: "",
     financialyr_dt: "",
@@ -160,19 +160,17 @@ class CreateCompanyPage extends Component<Props, FormState> {
         }
       });
 
-      const sectorObject = JSON.parse(this.props.updateData.sector);
       this.setState({
         displaySector: {
-          value: JSON.stringify(sectorObject),
-          label: sectorObject.name
+          value: JSON.stringify(this.props.updateData.sector),
+          label: this.props.updateData.sector.name
         }
       });
       if (this.props.updateData.industry) {
-        const industryObject = JSON.parse(this.props.updateData.industry);
         this.setState({
           displayIndustry: {
-            value: JSON.stringify(industryObject),
-            label: industryObject.name
+            value: JSON.stringify(this.props.updateData.industry),
+            label: this.props.updateData.industry.name
           }
         });
       }
@@ -227,11 +225,11 @@ class CreateCompanyPage extends Component<Props, FormState> {
         this.setState({ display_base_currency_id: value });
         break;
       case "sector":
-        tmpListObject = value.value;
+        tmpListObject = JSON.parse(value.value);
         this.setState({ displaySector: value });
         break;
       case "industry":
-        tmpListObject = value.value;
+        tmpListObject = JSON.parse(value.value);
         this.setState({ displayIndustry: value });
         break;
       default:
@@ -357,9 +355,9 @@ class CreateCompanyPage extends Component<Props, FormState> {
                     />
                   )}
                 </Grid>
-                {this.state.sector !== "" && (
+                {this.state.sector && (
                   <Grid container item xs={6}>
-                    {JSON.parse(this.state.sector).industry.length > 0 && (
+                    {this.state.sector.industry && (
                       <Select
                         className={classes.textField}
                         classes={classes}
@@ -369,12 +367,10 @@ class CreateCompanyPage extends Component<Props, FormState> {
                             shrink: true
                           }
                         }}
-                        options={JSON.parse(this.state.sector).industry.map(
-                          industry => ({
-                            value: JSON.stringify(industry),
-                            label: industry.name
-                          })
-                        )}
+                        options={this.state.sector.industry.map(industry => ({
+                          value: JSON.stringify(industry),
+                          label: industry.name
+                        }))}
                         components={components}
                         value={this.state.displayIndustry}
                         onChange={this.handleChangeSelect("industry")}
