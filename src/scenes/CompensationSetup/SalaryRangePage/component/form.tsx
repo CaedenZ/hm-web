@@ -22,6 +22,7 @@ import { RootState } from "../../../../reducer";
 import { Country } from "../../../../interface/countryInterface";
 import { JobGrade } from "../../../../interface/jobgradeInterface";
 import { Company } from "../../../../interface/companyInterface";
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator"
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -41,8 +42,8 @@ interface FormState {
 }
 interface Props
   extends InState,
-    WithStyles<typeof styles>,
-    SharedDispatchProps {}
+  WithStyles<typeof styles>,
+  SharedDispatchProps { }
 
 interface InState {
   countryList: Country[];
@@ -92,7 +93,9 @@ class FormPage extends Component<Props, FormState> {
     const { classes } = this.props;
     return (
       <Paper style={{ marginTop: "2rem" }}>
-        <form
+        <ValidatorForm
+          // tslint:disable-next-line:jsx-no-string-ref
+          ref="form"
           onSubmit={e => this.props.onSubmit(e, this.state)}
           style={{ padding: "2rem" }}
         >
@@ -111,33 +114,50 @@ class FormPage extends Component<Props, FormState> {
               />
             </Grid>
             <Grid justify={"center"} container item>
-              <TextField
+              <TextValidator
+                required
                 id="min"
+                name="min"
                 label="min"
                 className={classes.textField}
                 value={this.state.min}
                 onChange={this.handleChange("min")}
-                margin="normal"
-              />
+                validators={["required", "isNumber"]}
+                errorMessages={[
+                  "this field is required",
+                  "input is not valid"
+                ]} />
             </Grid>
             <Grid justify={"center"} container item>
-              <TextField
+              <TextValidator
+                required
                 id="mid"
                 label="mid"
                 className={classes.textField}
                 value={this.state.mid}
                 onChange={this.handleChange("mid")}
                 margin="normal"
+                validators={["required", "isNumber"]}
+                errorMessages={[
+                  "this field is required",
+                  "input is not valid"
+                ]}
               />
             </Grid>
             <Grid justify={"center"} container item>
-              <TextField
+              <TextValidator
+                required
                 id="max"
                 label="max"
                 className={classes.textField}
                 value={this.state.max}
                 onChange={this.handleChange("max")}
                 margin="normal"
+                validators={["required", "isNumber"]}
+                errorMessages={[
+                  "this field is required",
+                  "input is not valid"
+                ]}
               />
             </Grid>
             <Grid justify={"center"} container item>
@@ -215,7 +235,7 @@ class FormPage extends Component<Props, FormState> {
               Submit
             </Button>
           </div>
-        </form>
+        </ValidatorForm>
       </Paper>
     );
   }

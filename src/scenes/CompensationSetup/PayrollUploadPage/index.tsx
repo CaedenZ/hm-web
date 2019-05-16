@@ -13,10 +13,10 @@ const styles = () => createStyles({});
 
 export interface Props
   extends WithStyles<typeof styles>,
-    SharedDispatchProps,
-    InState {}
+  SharedDispatchProps,
+  InState { }
 
-interface State {}
+interface State { }
 
 interface InState {
   sessionkey: string;
@@ -40,11 +40,22 @@ class PayrollUploadPage extends React.Component<Props, State> {
     }
     // Continue if no error
     const presignedURL = presignedURLData.data.presigned_url;
+    const key = presignedURLData.data.key
     // Create the formdata to be sent
-    const formData = new FormData();
-    formData.append(fileToBeUploaded.name, fileToBeUploaded);
+
     // Send to S3
-    const retUploadData = await $axios.put(presignedURL, formData);
+    const retUploadData = await $axios.put(presignedURL, fileToBeUploaded, {
+      headers: {
+        'Content-Type': fileToBeUploaded.type,
+        'key': key,
+      }
+    });
+    console.log(retUploadData);
+    if (retUploadData.data.error) {
+      // Error occured
+      this.props.showSnackBar();
+      return;
+    }
     console.log(retUploadData);
   };
 
