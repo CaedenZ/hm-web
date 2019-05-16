@@ -10,12 +10,17 @@ import {
   Paper,
   TextField,
   Divider,
-  Button
+  Button,
+  FormControl,
+  InputLabel,
+  NativeSelect
 } from "@material-ui/core";
 import Avatar from "react-avatar-edit";
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import logo from "assets/images/companylogo2.png";
 import { connect } from "react-redux";
-import { Profile } from "../../interface/authInterface";
+import { Profile, UPDATEPROFILECRED } from "../../interface/authInterface";
+import { Country } from "../../interface/countryInterface";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -36,18 +41,20 @@ export interface State {
   alias: string;
   employee_id: string;
   image: string;
-  jobfunction: string;
+  business_title: string;
   country: string;
   address: string;
   postal_code: string;
   status: string;
   remarks: string;
   info: any;
-  isChangingProfilePic: boolean;
+  isCompanyContact: number;
+  isUpdating: boolean;
   newProfilePic: string;
 }
 
 interface InState {
+  countryList: Country[];
   profile: Profile;
 }
 class UserProfilePage extends Component<Props, State> {
@@ -55,7 +62,7 @@ class UserProfilePage extends Component<Props, State> {
     super(props);
     this.onCrop = this.onCrop.bind(this);
     this.onClose = this.onClose.bind(this);
-    this.changeProfilePic = this.changeProfilePic.bind(this);
+    // this.changeProfilePic = this.changeProfilePic.bind(this);
   }
 
   state: State = {
@@ -65,14 +72,15 @@ class UserProfilePage extends Component<Props, State> {
     alias: "",
     employee_id: "",
     image: "",
-    jobfunction: "",
+    business_title: "",
     country: "",
     address: "",
     postal_code: "",
     status: "",
     remarks: "",
     info: "",
-    isChangingProfilePic: false,
+    isCompanyContact: 0,
+    isUpdating: false,
     newProfilePic: ""
   };
 
@@ -89,20 +97,52 @@ class UserProfilePage extends Component<Props, State> {
     >);
   };
 
-  changeProfilePic() {
-    this.setState({ isChangingProfilePic: !this.state.isChangingProfilePic });
-  }
-
   onClose() {
     this.setState({
-      newProfilePic: "",
-      isChangingProfilePic: !this.state.isChangingProfilePic
+      newProfilePic: ""
     });
   }
 
   onCrop(image) {
-    this.setState({ newProfilePic: image });
+    this.setState({ image: image });
   }
+
+  handleChangeSelect = (statekay: keyof State) => (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    this.setState(({ [statekay]: event.target.value } as unknown) as Pick<
+      State,
+      keyof State
+    >);
+  };
+
+  handleIsUpdating = e => {
+    this.setState({ isUpdating: !this.state.isUpdating });
+  };
+
+  handleUpdate = e => {
+    e.preventDefault();
+    let data = this.state;
+    const profileData: UPDATEPROFILECRED = {
+      company_id: data.info[0].company_id,
+      email: data.email,
+      firstname: data.firstname,
+      lastname: data.lastname,
+      country: data.country,
+      address: data.address,
+      postal_code: data.postal_code,
+      image: data.image,
+      remarks: data.remarks,
+      status: data.status,
+      business_title: data.business_title,
+      alias: data.alias,
+      employee_id: data.employee_id,
+      role_id: data.info[0].roles[0].role_id,
+      isCompanyContact: this.state.isCompanyContact ? 1 : 0
+    };
+    console.log(data);
+    // this.props.profileData(profileData);
+  };
 
   render() {
     const { classes } = this.props;
@@ -112,128 +152,180 @@ class UserProfilePage extends Component<Props, State> {
           Profile
         </Typography>
         <Paper style={{ marginTop: "2rem" }}>
-          <div style={{ padding: "2rem" }}>
-            <Grid container spacing={16}>
-              <Grid item justify="center" xs container>
-                <Grid
-                  item
-                  container
-                  justify="center"
-                  alignContent="center"
-                  direction="column"
-                  spacing={16}
-                  xs
-                >
-                  {!this.state.isChangingProfilePic && (
-                    <img
-                      style={{
-                        height: "10vh",
-                        width: "10vh",
-                        margin: "2rem"
-                      }}
-                      src={this.state.image}
-                      onError={(e: any) => {
-                        e.target.onerror = null;
-                        e.target.src = logo;
-                      }}
-                      alt="Preview"
-                    />
-                  )}
-                  {this.state.isChangingProfilePic && (
-                    <div style={{ height: "10vh", margin: "2rem" }}>
-                      <Avatar
-                        width={200}
-                        height={150}
-                        onCrop={this.onCrop}
-                        onClose={this.onClose}
-                      />
-                    </div>
-                  )}
-                  {/* <Typography align="center">Change Profile Picture</Typography> */}
-                  <Button
-                    disabled={this.state.isChangingProfilePic}
-                    variant="contained"
-                    color="primary"
-                    onClick={() => this.changeProfilePic()}
+          <ValidatorForm ref="form" onSubmit={this.handleUpdate}>
+            <div style={{ padding: "2rem" }}>
+              <Grid container spacing={16}>
+                <Grid item justify="center" xs container>
+                  <Grid
+                    item
+                    container
+                    justify="center"
+                    alignContent="center"
+                    alignItems="center"
+                    direction="column"
+                    spacing={16}
+                    xs
                   >
-                    Change Profile Picture
-                  </Button>
+                    {!this.state.isUpdating && (
+                      <img
+                        style={{
+                          height: "10vh",
+                          width: "10vh",
+                          margin: "2rem"
+                        }}
+                        src={this.state.image}
+                        onError={(e: any) => {
+                          e.target.onerror = null;
+                          e.target.src = logo;
+                        }}
+                        alt="Preview"
+                      />
+                    )}
+                    {this.state.isUpdating && (
+                      <div style={{ height: "10vh", margin: "2rem" }}>
+                        <Avatar
+                          width={200}
+                          height={150}
+                          onCrop={this.onCrop}
+                          onClose={this.onClose}
+                        />
+                      </div>
+                    )}
+                  </Grid>
                 </Grid>
-              </Grid>
-              <Grid item justify="center" xs container>
-                <div style={{ margin: 20 }}>
-                  <TextField
+                <Grid item justify="center" xs container>
+                  <TextValidator
                     disabled
-                    id="email"
                     label="Email"
-                    className={classes.textField}
-                    value={this.state.email}
                     onChange={this.handleChange("email")}
-                    margin="normal"
+                    id="email"
+                    name="email"
+                    autoComplete="email"
+                    value={this.state.email}
+                    validators={["required", "isEmail"]}
+                    errorMessages={[
+                      "this field is required",
+                      "email is not valid"
+                    ]}
+                    className={classes.textField}
                   />
                   <TextField
-                    disabled
+                    disabled={!this.state.isUpdating}
                     id="firstname"
-                    label="Firstname"
+                    label="First Name"
                     className={classes.textField}
                     value={this.state.firstname}
                     onChange={this.handleChange("firstname")}
-                    margin="normal"
                   />
                   <TextField
-                    disabled
+                    disabled={!this.state.isUpdating}
                     id="lastname"
-                    label="Lastname"
+                    label="Last Name"
                     className={classes.textField}
                     value={this.state.lastname}
                     onChange={this.handleChange("lastname")}
-                    margin="normal"
                   />
-                </div>
-              </Grid>
-              <Grid item justify="center" container xs>
-                <div style={{ margin: 20 }}>
+                </Grid>
+                <Grid item justify="center" container xs>
+                  {this.state.info !== "" && (
+                    <TextField
+                      disabled
+                      id="role"
+                      label="Role"
+                      className={classes.textField}
+                      value={this.state.info[0].roles[0].role}
+                    />
+                  )}
+                  {this.props.countryList.length > 0 && (
+                    <FormControl className={classes.textField}>
+                      <InputLabel required>Country</InputLabel>
+                      <NativeSelect
+                        disabled={!this.state.isUpdating}
+                        id="country"
+                        value={this.state.country}
+                        onChange={this.handleChangeSelect("country")}
+                        inputProps={{
+                          name: "country",
+                          id: "country-simple"
+                        }}
+                      >
+                        <option value="" />
+                        {this.props.countryList.map(country => (
+                          <option
+                            value={country.country_name}
+                            key={country.country_name}
+                          >
+                            {country.country_name}
+                          </option>
+                        ))}
+                      </NativeSelect>
+                    </FormControl>
+                  )}
                   <TextField
-                    disabled
-                    id="country"
-                    label="Country"
-                    className={classes.textField}
-                    value={this.state.country}
-                    onChange={this.handleChange("country")}
-                    margin="normal"
-                  />
-                  <TextField
-                    disabled
+                    disabled={!this.state.isUpdating}
                     id="address"
                     label="Address"
                     className={classes.textField}
                     value={this.state.address}
                     onChange={this.handleChange("address")}
-                    margin="normal"
                   />
-                  <TextField
-                    disabled
-                    id="postal_code"
+                  <TextValidator
+                    disabled={!this.state.isUpdating}
                     label="Postal Code"
-                    className={classes.textField}
-                    value={this.state.postal_code}
                     onChange={this.handleChange("postal_code")}
-                    margin="normal"
+                    id="postal_code"
+                    name="postal_code"
+                    autoComplete="postal-code"
+                    value={this.state.postal_code}
+                    validators={["required", "isNumber"]}
+                    errorMessages={[
+                      "this field is required",
+                      "postal code is not valid"
+                    ]}
+                    className={classes.textField}
                   />
-                </div>
+                </Grid>
               </Grid>
-            </Grid>
-            <Typography style={{ margin: 20 }} component="h1" variant="h5">
-              Role
-            </Typography>
-            <Divider />
-            {this.state.info !== "" && (
-              <Grid container spacing={16}>
-                <Divider />
-              </Grid>
-            )}
-            <Divider />
-          </div>
+              <Divider />
+              <div
+                style={{
+                  display: "flex",
+                  paddingTop: "1rem"
+                }}
+              >
+                {this.state.isUpdating ? (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    type="button"
+                    style={{ marginLeft: "auto" }}
+                    onClick={this.handleIsUpdating}
+                  >
+                    Cancel
+                  </Button>
+                ) : (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    type="button"
+                    style={{ marginLeft: "auto" }}
+                    onClick={this.handleIsUpdating}
+                  >
+                    Edit
+                  </Button>
+                )}
+                <Button
+                  disabled={!this.state.isUpdating}
+                  variant="contained"
+                  color="primary"
+                  type="submit"
+                  style={{ marginLeft: "1rem" }}
+                >
+                  Submit
+                </Button>
+              </div>
+            </div>
+          </ValidatorForm>
         </Paper>
       </div>
     );
@@ -246,7 +338,8 @@ class UserProfilePage extends Component<Props, State> {
 
 function mapStateToProps(state) {
   return {
-    profile: state.authenticationReducer.profile
+    profile: state.authenticationReducer.profile,
+    countryList: state.countryReducer.countryList
   };
 }
 
