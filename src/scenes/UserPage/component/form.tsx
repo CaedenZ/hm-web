@@ -43,6 +43,9 @@ const styles = (theme: Theme) =>
       width: "20rem",
       margin: "1rem",
       marginTop: theme.spacing.unit * 2
+    },
+    viewing: {
+      margin: "4rem"
     }
   });
 
@@ -75,6 +78,7 @@ interface InState {
   locationList: Location[];
   roleList: Role[];
   create: boolean;
+  view: boolean;
   updateData: any;
   onSubmit: any;
 }
@@ -179,7 +183,11 @@ class FormPage extends Component<Props, FormState> {
   render() {
     const { classes } = this.props;
     return (
-      <Paper style={{ marginTop: "2rem" }}>
+      <Paper
+        style={{ marginTop: "2rem" }}
+        tabIndex={-1}
+        className={this.props.view ? classes.viewing : undefined}
+      >
         <ValidatorForm
           ref="form"
           debounceTime={500}
@@ -205,6 +213,7 @@ class FormPage extends Component<Props, FormState> {
               <Grid container>
                 <Grid container item xs={6}>
                   <TextValidator
+                    disabled={this.props.view}
                     fullWidth
                     className={classes.textField}
                     label="Email"
@@ -224,6 +233,7 @@ class FormPage extends Component<Props, FormState> {
                 {this.props.create && (
                   <Grid container item xs={6}>
                     <TextField
+                      disabled={this.props.view}
                       required
                       id="standard-password-input"
                       label="Password"
@@ -239,6 +249,7 @@ class FormPage extends Component<Props, FormState> {
               <Grid container>
                 <Grid container item xs>
                   <TextField
+                    disabled={this.props.view}
                     required
                     id="firstname"
                     label="First Name"
@@ -250,6 +261,7 @@ class FormPage extends Component<Props, FormState> {
                 </Grid>
                 <Grid container item xs>
                   <TextField
+                    disabled={this.props.view}
                     id="lastname"
                     label="Last Name"
                     className={classes.textField}
@@ -266,6 +278,7 @@ class FormPage extends Component<Props, FormState> {
               <FormControl className={classes.formControl}>
                 <InputLabel required>status</InputLabel>
                 <Select
+                  disabled={this.props.view}
                   value={this.state.status}
                   onChange={this.handleChangeSelect("status")}
                   inputProps={{
@@ -281,6 +294,7 @@ class FormPage extends Component<Props, FormState> {
             <Grid container item xs>
               <Grid container item xs={6}>
                 <TextField
+                  disabled={this.props.view}
                   id="alias"
                   label="Alias"
                   className={classes.textField}
@@ -291,6 +305,7 @@ class FormPage extends Component<Props, FormState> {
               </Grid>
               <Grid container item xs={6}>
                 <TextField
+                  disabled={this.props.view}
                   id="employee_id"
                   label="Employee ID"
                   className={classes.textField}
@@ -317,6 +332,7 @@ class FormPage extends Component<Props, FormState> {
                     <FormControl className={classes.textField}>
                       <InputLabel>Location</InputLabel>
                       <NativeSelect
+                        disabled={this.props.view}
                         id="location"
                         value={this.state.locationID}
                         onChange={this.handleLocationChangeSelect()}
@@ -343,6 +359,7 @@ class FormPage extends Component<Props, FormState> {
                     <FormControl className={classes.textField}>
                       <InputLabel>Role</InputLabel>
                       <NativeSelect
+                        disabled={this.props.view}
                         id="role"
                         value={this.state.role_id}
                         onChange={this.handleRoleChangeSelect()}
@@ -363,6 +380,7 @@ class FormPage extends Component<Props, FormState> {
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
+                    disabled={this.props.view}
                     id="address"
                     multiline
                     label="Address"
@@ -374,6 +392,7 @@ class FormPage extends Component<Props, FormState> {
                 </Grid>
                 <Grid container item xs={6}>
                   <TextValidator
+                    disabled={this.props.view}
                     fullWidth
                     className={classes.textField}
                     label="Postal Code"
@@ -395,6 +414,7 @@ class FormPage extends Component<Props, FormState> {
                     <FormControl className={classes.textField}>
                       <InputLabel required>Country</InputLabel>
                       <NativeSelect
+                        disabled={this.props.view}
                         id="country"
                         value={this.state.country}
                         onChange={this.handleChangeSelect("country")}
@@ -418,6 +438,7 @@ class FormPage extends Component<Props, FormState> {
                 </Grid>
                 <Grid item xs={6}>
                   <TextValidator
+                    disabled={this.props.view}
                     fullWidth
                     className={classes.textField}
                     label="Contact"
@@ -437,6 +458,7 @@ class FormPage extends Component<Props, FormState> {
               </Grid>
               <Grid item xs={6}>
                 <TextField
+                  disabled={this.props.view}
                   id="business_title"
                   label="Business Title"
                   className={classes.textField}
@@ -447,6 +469,7 @@ class FormPage extends Component<Props, FormState> {
               </Grid>
               <Grid item xs={6}>
                 <TextField
+                  disabled={this.props.view}
                   id="remarks"
                   label="Remarks"
                   className={classes.textField}
@@ -459,6 +482,7 @@ class FormPage extends Component<Props, FormState> {
                 <FormControlLabel
                   control={
                     <Checkbox
+                      disabled={this.props.view}
                       checked={this.state.isCompanyContact}
                       onChange={this.handleChangeCheckisCompanyContact}
                       color="primary"
@@ -480,6 +504,7 @@ class FormPage extends Component<Props, FormState> {
             }}
           >
             <Button
+              disabled={this.props.view}
               variant="contained"
               color="primary"
               type="submit"

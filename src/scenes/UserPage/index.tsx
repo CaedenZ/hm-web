@@ -18,14 +18,16 @@ import { mapDispatchToProps } from "../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../interface/propsInterface";
 import { User } from "../../interface/userInterface";
-import { IconButton } from "@material-ui/core";
+import { IconButton, Dialog, DialogContent } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { history } from "../../store";
 import UpdateIcon from "@material-ui/icons/PlaylistAddCheck";
 import ResetIcon from "@material-ui/icons/BorderColor";
+import DetailIcon from "@material-ui/icons/Face";
 import ResetPassword from "./component/resetPassword";
 import { Company } from "../../interface/companyInterface";
 import { isUserHR, isTCMasterSalesUserMaster } from "../../function/checkRole";
+import FormPage from "./component/form";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -54,6 +56,9 @@ const styles = (theme: Theme) =>
     },
     logo: {
       height: "20px"
+    },
+    dialogMaxWidth: {
+      maxWidth: "100%"
     }
   });
 
@@ -64,6 +69,8 @@ export interface Props
 
 interface State {
   resetPassword: boolean;
+  isModalOpen: boolean;
+  viewUser: any;
 }
 
 interface InState {
@@ -74,7 +81,9 @@ interface InState {
 }
 class CustomizedTable extends React.Component<Props, State> {
   state = {
-    resetPassword: false
+    resetPassword: false,
+    isModalOpen: false,
+    viewUser: null
   };
 
   componentDidMount() {
@@ -89,16 +98,26 @@ class CustomizedTable extends React.Component<Props, State> {
     } else this.props.getUserList();
   }
 
+  handleViewButtonClick = user => {
+    this.setState({ viewUser: user, isModalOpen: true });
+    this.forceUpdate();
+    console.log(this.state);
+  };
+
+  handleModalClose = () => {
+    this.setState({ isModalOpen: false });
+  };
+
+  handleViewUser = (e, data) => {};
+
   handleUpdateButtonClick = user => {
     this.props.selectUser(user);
     history.push("/user/update");
-    console.log("clicked");
   };
 
   handleResetPassword = user => {
     this.props.selectUser(user);
     this.setState({ resetPassword: true });
-    console.log("clicked");
   };
 
   handleClose = () => {
@@ -157,6 +176,11 @@ class CustomizedTable extends React.Component<Props, State> {
                     <CustomTableCell align="left">{row.email}</CustomTableCell>
                     <CustomTableCell align="left">{row.status}</CustomTableCell>
                     <CustomTableCell align="left">
+                      <IconButton
+                        onClick={() => this.handleViewButtonClick(row)}
+                      >
+                        <DetailIcon />
+                      </IconButton>
                       {!isUserHR(this.props.role) && (
                         <IconButton
                           onClick={() => this.handleUpdateButtonClick(row)}
@@ -186,6 +210,20 @@ class CustomizedTable extends React.Component<Props, State> {
           open={this.state.resetPassword}
           handleClose={this.handleClose}
         />
+        <Dialog
+          open={this.state.isModalOpen}
+          onClose={this.handleModalClose}
+          maxWidth={false}
+        >
+          <DialogContent>
+            <FormPage
+              view={true}
+              create={false}
+              updateData={this.state.viewUser}
+              onSubmit={(e, data) => this.handleViewUser(e, data)}
+            />
+          </DialogContent>
+        </Dialog>
       </main>
     );
   }
