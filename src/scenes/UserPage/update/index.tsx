@@ -12,7 +12,7 @@ import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../interface/propsInterface";
 import { history } from "../../../store";
 import { RootState } from "../../../reducer";
-import { User } from "../../../interface/userInterface";
+import { User, UPDATEUSERCRED } from "../../../interface/userInterface";
 import { Country } from "../../../interface/countryInterface";
 import FormPage from "../component/form";
 
@@ -22,7 +22,7 @@ const styles = (theme: Theme) =>
       flexGrow: 1
     }
   });
-  
+
 export interface Props
   extends InState,
     WithStyles<typeof styles>,
@@ -40,7 +40,26 @@ class UpdateUserPage extends Component<Props> {
 
   handleUpdateUser = (e, data) => {
     e.preventDefault();
-    this.props.updateUser(data);
+    data.isCompanyContact = data.isCompanyContact ? 1 : 0;
+    const userData: UPDATEUSERCRED = {
+      email: data.email,
+      password: data.password,
+      firstname: data.firstname,
+      lastname: data.lastname,
+      country: data.country,
+      address: data.address,
+      postal_code: data.postal_code,
+      image: data.image,
+      remarks: data.remarks,
+      status: data.status,
+      business_title: data.business_title,
+      contact: data.contact,
+      alias: data.alias,
+      employee_id: data.employee_id,
+      role_id: data.role_id,
+      isCompanyContact: data.isCompanyContact
+    };
+    this.props.updateUser(userData);
     history.goBack();
   };
 

@@ -22,7 +22,7 @@ export interface User {
   status: string;
   remarks: string;
   role_id: string;
-  isCompanyContact: boolean;
+  isCompanyContact: number;
 }
 
 export interface CREATEUSERCRED {
@@ -41,7 +41,26 @@ export interface CREATEUSERCRED {
   alias: string;
   employee_id: string;
   role_id: string;
-  isCompanyContact: boolean;
+  isCompanyContact: number;
+}
+
+export interface UPDATEUSERCRED {
+  email: string;
+  password: string;
+  firstname: string;
+  lastname: string;
+  country: string;
+  address: string;
+  postal_code: string;
+  image: string;
+  remarks: string;
+  status: string;
+  business_title: string;
+  contact: string;
+  alias: string;
+  employee_id: string;
+  role_id: string;
+  isCompanyContact: number;
 }
 
 export interface UserState {
