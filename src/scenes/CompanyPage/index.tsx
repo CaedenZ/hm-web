@@ -22,7 +22,11 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { history } from "../../store";
 import UpdateIcon from "@material-ui/icons/PlaylistAddCheck";
 import ViewIcon from "@material-ui/icons/ZoomIn";
+import DetailIcon from "@material-ui/icons/Face";
 import { isTechnical, isSuperAdmin } from "../../function/checkRole";
+import Detail from "./component/Detail";
+import { User } from "../../interface/userInterface";
+import $axios from "../../plugin/axios";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -53,17 +57,30 @@ const styles = (theme: Theme) =>
 
 export interface Props
   extends WithStyles<typeof styles>,
-    SharedDispatchProps,
-    InState {}
+  SharedDispatchProps,
+  InState { }
 
-interface State {}
+interface State {
+  detail: boolean;
+  companyid: string;
+  locationdata: Location[];
+  userdata: User[];
+}
 
 interface InState {
   companyList: Company[];
   role: string;
+  sessionkey: string;
 }
 
 class CustomizedTable extends React.Component<Props, State> {
+
+  state = {
+    detail: false,
+    companyid: '',
+    locationdata: [],
+    userdata: [],
+  }
   componentDidMount() {
     this.props.getCompanyList();
     console.log("CompangPage Mount");
@@ -95,6 +112,24 @@ class CustomizedTable extends React.Component<Props, State> {
     this.props.selectCompany(company);
   };
 
+  handleDetailButtonClick = async company => {
+    // this.props.selectUser(company);
+
+    let ldata = { session_key: this.props.sessionkey, company_id: company }
+    const lresponse = await $axios.post('/company/getLocation', ldata)
+    this.setState({ locationdata: lresponse.data.data })
+
+    let udata = { session_key: this.props.sessionkey, company_id: company }
+    const uresponse = await $axios.post('/user/', udata)
+    this.setState({ userdata: uresponse.data.data })
+
+    this.setState({ detail: true });
+  };
+
+  handleClose = () => {
+    this.setState({ detail: false });
+  };
+
   render() {
     const { classes } = this.props;
 
@@ -122,6 +157,11 @@ class CustomizedTable extends React.Component<Props, State> {
                       </CustomTableCell>
                       <CustomTableCell align="left">
                         <IconButton
+                          onClick={() => this.handleDetailButtonClick(row.company_id)}
+                        >
+                          <DetailIcon />
+                        </IconButton>
+                        <IconButton
                           onClick={() => this.handleViewButtonClick(row)}
                         >
                           <ViewIcon />
@@ -147,6 +187,12 @@ class CustomizedTable extends React.Component<Props, State> {
             )}
           </Table>
         </Paper>
+        <Detail
+          open={this.state.detail}
+          handleClose={this.handleClose}
+          userdata={this.state.userdata}
+          locationdata={this.state.locationdata}
+        />
       </main>
     );
   }
@@ -159,7 +205,8 @@ class CustomizedTable extends React.Component<Props, State> {
 function mapStateToProps(state: any) {
   return {
     companyList: state.companyReducer.companyList,
-    role: state.authenticationReducer.profile.info[0].roles[0].role
+    role: state.authenticationReducer.profile.info[0].roles[0].role,
+    sessionkey: state.authenticationReducer.token,
   };
 }
 
