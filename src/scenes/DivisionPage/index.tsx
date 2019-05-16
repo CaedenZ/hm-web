@@ -202,7 +202,7 @@ class UnitPage extends React.Component<Props, State> {
                       </Typography>
                     </Grid>
                     <Grid item xs={4} style={{ margin: "auto" }}>
-                      <div>
+                      <div style={{ textTransform: "capitalize" }}>
                         {row.unit_type}:{type(row)}
                         {/* {row.unit_type !== 'Division' && <IconButton onClick={(e) => this.handleEntity(row, e)}><CompanyIcon /></IconButton>} */}
                         <Menu

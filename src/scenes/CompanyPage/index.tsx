@@ -108,9 +108,6 @@ class CustomizedTable extends React.Component<Props, State> {
             <TableHead>
               <TableRow>
                 <CustomTableCell>Company Name</CustomTableCell>
-                <CustomTableCell align="left">Contact Person</CustomTableCell>
-                <CustomTableCell align="left">Contact Number</CustomTableCell>
-                <CustomTableCell align="left">Contact Email</CustomTableCell>
                 <CustomTableCell align="left">Action</CustomTableCell>
               </TableRow>
             </TableHead>
@@ -122,15 +119,6 @@ class CustomizedTable extends React.Component<Props, State> {
                     <TableRow className={classes.row} key={row.company_id}>
                       <CustomTableCell component="th" scope="row">
                         {row.company_name}
-                      </CustomTableCell>
-                      <CustomTableCell align="left">
-                        {row.contact_person}
-                      </CustomTableCell>
-                      <CustomTableCell align="left">
-                        {row.contact_number}
-                      </CustomTableCell>
-                      <CustomTableCell align="left">
-                        {row.contact_email}
                       </CustomTableCell>
                       <CustomTableCell align="left">
                         <IconButton

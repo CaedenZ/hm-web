@@ -1,6 +1,5 @@
 import $axios from "../plugin/axios";
 import { User, CREATEUSERCRED } from "../interface/userInterface";
-import { UpdateUserState } from "../scenes/UserPage/update";
 
 export const getUserList = async (token, payload): Promise<User[]> => {
 
@@ -40,7 +39,7 @@ export const getUser = async (token, payload: string): Promise<User> => {
     return response.data.data
 }
 
-export const updateUser = async (token, payload: UpdateUserState): Promise<User[]> => {
+export const updateUser = async (token, payload: CREATEUSERCRED): Promise<User[]> => {
 
     let data = {
         ...payload,
