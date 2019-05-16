@@ -18,6 +18,7 @@ import { selectLongIncentiveAction, createLongIncentiveAction, updateLongIncenti
 import { selectShortIncentiveAction, createShortIncentiveAction, updateShortIncentiveAction, deleteShortIncentiveAction, getShortIncentiveListAction } from "../actions/shortIncentiveAction";
 import { selectEquityRangeAction, createEquityRangeAction, updateEquityRangeAction, deleteEquityRangeAction, getEquityRangeListAction } from "../actions/equityRangeAction";
 import { getJobChartListAction, updateCellAction } from "../actions/jobchartAction";
+import { selectLocationAction, createLocationAction, updateLocationAction, deleteLocationAction, getLocationListAction } from "../actions/locationAction";
 
 
 
@@ -97,6 +98,12 @@ export function mapDispatchToProps(dispatch): SharedDispatchProps {
         updateRegion: (payload) => { dispatch(updateRegionAction.request(payload)) },
         deleteRegion: (payload) => { dispatch(deleteRegionAction.request(payload)) },
         getRegionList: () => { dispatch(getRegionListAction.request()) },
+
+        selectLocation: (payload) => { dispatch(selectLocationAction(payload)) },
+        createLocation: (payload) => { dispatch(createLocationAction.request(payload)) },
+        updateLocation: (payload) => { dispatch(updateLocationAction.request(payload)) },
+        deleteLocation: (payload) => { dispatch(deleteLocationAction.request(payload)) },
+        getLocationList: () => { dispatch(getLocationListAction.request()) },
 
         selectRole: (payload) => { dispatch(selectRoleAction(payload)) },
         createRole: (payload) => { dispatch(createRoleAction.request(payload)) },

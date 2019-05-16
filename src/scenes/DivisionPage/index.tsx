@@ -29,6 +29,7 @@ import { history } from "../../store";
 import UpdateIcon from "@material-ui/icons/PlaylistAddCheck";
 import CompanyIcon from "@material-ui/icons/Business";
 import AddIcon from "@material-ui/icons/Add";
+import { isUserHR, isTCMasterSalesUserMaster } from "../../function/checkRole";
 
 const styles = (theme: Theme) => createStyles({});
 
@@ -45,6 +46,7 @@ interface InState {
   selectedCompany: Company;
   divisionList: Division[];
   entityList: Company[];
+  role: string;
 }
 
 class UnitPage extends React.Component<Props, State> {
@@ -185,7 +187,9 @@ class UnitPage extends React.Component<Props, State> {
     };
     return (
       <main>
-        <CustomButton link="/unit/create">New Division</CustomButton>
+        {!isUserHR(this.props.role) && (
+          <CustomButton link="/unit/create">New Division</CustomButton>
+        )}
         {this.props.divisionList.length > 0 && (
           <Grid style={{ marginTop: "2rem" }} container spacing={24}>
             {this.props.divisionList.map(row => (
@@ -198,7 +202,7 @@ class UnitPage extends React.Component<Props, State> {
                       </Typography>
                     </Grid>
                     <Grid item xs={4} style={{ margin: "auto" }}>
-                      <div>
+                      <div style={{ textTransform: "capitalize" }}>
                         {row.unit_type}:{type(row)}
                         {/* {row.unit_type !== 'Division' && <IconButton onClick={(e) => this.handleEntity(row, e)}><CompanyIcon /></IconButton>} */}
                         <Menu
@@ -243,7 +247,9 @@ class UnitPage extends React.Component<Props, State> {
                               </Grid>
                               <Grid item xs={4} style={{ margin: "auto" }}>
                                 <div style={{ marginTop: "1rem" }}>
-                                  {subrow.unit_type}
+                                  <div style={{ textTransform: "capitalize" }}>
+                                    {subrow.unit_type}
+                                  </div>
                                   {type(subrow)}
                                   {/* {subrow.unit_type !== 'Division' && <IconButton onClick={(e) => this.handleEntity(subrow, e)}><CompanyIcon /></IconButton>} */}
                                 </div>
@@ -265,24 +271,30 @@ class UnitPage extends React.Component<Props, State> {
                                       />
                                       {/* {childrow.unit_type !== 'Division' && <IconButton onClick={(e) => this.handleEntity(subrow, e)}><CompanyIcon /></IconButton>} */}
                                       {type(childrow)}
-                                      <IconButton
-                                        onClick={() =>
-                                          this.handleChildUpdateButtonClick(
-                                            childrow
-                                          )
-                                        }
-                                      >
-                                        <UpdateIcon />
-                                      </IconButton>
-                                      <IconButton
-                                        onClick={() =>
-                                          this.handleChildDelete(
-                                            childrow.unit_id
-                                          )
-                                        }
-                                      >
-                                        <DeleteIcon />
-                                      </IconButton>
+                                      {!isUserHR(this.props.role) && (
+                                        <IconButton
+                                          onClick={() =>
+                                            this.handleChildUpdateButtonClick(
+                                              childrow
+                                            )
+                                          }
+                                        >
+                                          <UpdateIcon />
+                                        </IconButton>
+                                      )}
+                                      {isTCMasterSalesUserMaster(
+                                        this.props.role
+                                      ) && (
+                                        <IconButton
+                                          onClick={() =>
+                                            this.handleChildDelete(
+                                              childrow.unit_id
+                                            )
+                                          }
+                                        >
+                                          <DeleteIcon />
+                                        </IconButton>
+                                      )}
                                     </ListItem>,
                                     <Divider key={childrow.unit_id + "d"} />
                                   ])}
@@ -305,22 +317,26 @@ class UnitPage extends React.Component<Props, State> {
                                 </IconButton>
                               </Grid>
                               <Grid item xs={1}>
-                                <IconButton
-                                  onClick={() =>
-                                    this.handleSubUpdateButtonClick(subrow)
-                                  }
-                                >
-                                  <UpdateIcon />
-                                </IconButton>
+                                {!isUserHR(this.props.role) && (
+                                  <IconButton
+                                    onClick={() =>
+                                      this.handleSubUpdateButtonClick(subrow)
+                                    }
+                                  >
+                                    <UpdateIcon />
+                                  </IconButton>
+                                )}
                               </Grid>
                               <Grid item xs={1}>
-                                <IconButton
-                                  onClick={() =>
-                                    this.handleSubDelete(subrow.unit_id)
-                                  }
-                                >
-                                  <DeleteIcon />
-                                </IconButton>
+                                {isTCMasterSalesUserMaster(this.props.role) && (
+                                  <IconButton
+                                    onClick={() =>
+                                      this.handleSubDelete(subrow.unit_id)
+                                    }
+                                  >
+                                    <DeleteIcon />
+                                  </IconButton>
+                                )}
                               </Grid>
                             </Grid>
                           </Paper>
@@ -337,18 +353,22 @@ class UnitPage extends React.Component<Props, State> {
                       </IconButton>
                     </Grid>
                     <Grid item xs={1}>
-                      <IconButton
-                        onClick={() => this.handleUpdateButtonClick(row)}
-                      >
-                        <UpdateIcon />
-                      </IconButton>
+                      {!isUserHR(this.props.role) && (
+                        <IconButton
+                          onClick={() => this.handleUpdateButtonClick(row)}
+                        >
+                          <UpdateIcon />
+                        </IconButton>
+                      )}
                     </Grid>
                     <Grid item xs={1}>
-                      <IconButton
-                        onClick={() => this.handleDelete(row.unit_id)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
+                      {isTCMasterSalesUserMaster(this.props.role) && (
+                        <IconButton
+                          onClick={() => this.handleDelete(row.unit_id)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      )}
                     </Grid>
                   </Grid>
                 </Paper>
@@ -369,7 +389,8 @@ function mapStateToProps(state: RootState) {
   return {
     selectedCompany: state.companyReducer.selectedCompany,
     divisionList: state.companyReducer.divisionList,
-    entityList: state.companyReducer.unitEntity
+    entityList: state.companyReducer.unitEntity,
+    role: state.authenticationReducer.profile.info[0].roles[0].role
   };
 }
 

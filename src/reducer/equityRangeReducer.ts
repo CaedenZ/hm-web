@@ -1,12 +1,9 @@
-import { Epic, ofType } from "redux-observable";
-import { AuthenticationAction } from "../actions";
+import { Epic } from "redux-observable";
 import {
     switchMap,
     map,
     catchError,
     filter,
-    tap,
-    flatMap,
 } from "rxjs/operators"
 import { of, from } from "rxjs"
 import { EquityRangeState, EquityRange } from "../interface/equityRangeInterface";
@@ -93,7 +90,7 @@ export function equityrangeReducer(state: EquityRangeState = {
 export const getEquityRangeListEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
         filter(isActionOf(getEquityRangeListAction.request)),
-        switchMap((action) =>
+        switchMap(() =>
             from(getEquityRangeList(state$.value.authenticationReducer.token, state$.value.longIncentiveReducer.selectLongIncentive.longterm_incentive_id)).pipe(
                 map((equityrangeList: EquityRange[]) => getEquityRangeListAction.success(equityrangeList)),
                 catchError(error => of(getEquityRangeListAction.failure(error.message)))

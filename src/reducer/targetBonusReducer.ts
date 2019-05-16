@@ -1,12 +1,9 @@
-import { Epic, ofType } from "redux-observable";
-import { AuthenticationAction } from "../actions";
+import { Epic } from "redux-observable";
 import {
     switchMap,
     map,
     catchError,
     filter,
-    tap,
-    flatMap,
 } from "rxjs/operators"
 import { of, from } from "rxjs"
 import { TargetBonusState, TargetBonus } from "../interface/targetBonusInterface";
@@ -90,7 +87,7 @@ export function targetBonusReducer(state: TargetBonusState = {
 export const getTargetBonusListEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
         filter(isActionOf(getTargetBonusListAction.request)),
-        switchMap((action) =>
+        switchMap(() =>
             from(getTargetBonusList(state$.value.authenticationReducer.token, state$.value.companyReducer.selectedCompany.company_id)).pipe(
                 map((targetbonusList: TargetBonus[]) => getTargetBonusListAction.success(targetbonusList)),
                 catchError(error => of(getTargetBonusListAction.failure(error.message)))

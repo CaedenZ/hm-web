@@ -36,6 +36,10 @@ import ChildUnitPage from "../scenes/UnitPage/subUnit/childUnit";
 import CreateChildUnitPage from "../scenes/UnitPage/subUnit/childUnit/create";
 import UpdateChildUnitPage from "../scenes/UnitPage/subUnit/childUnit/update";
 
+import LocationPage from "../scenes/LocationPage";
+import CreateLocationPage from "../scenes/LocationPage/create";
+import UpdateLocationPage from "../scenes/LocationPage/update";
+
 import RolePage from "../scenes/RolePage";
 import CreateRolePage from "../scenes/RolePage/create";
 import UpdateRolePage from "../scenes/RolePage/update";
@@ -123,9 +127,23 @@ class RootRoute extends React.Component<Props, State> {
             <Route
               exact
               path="/forgetpassword"
-              component={ForgetPasswordPage}
+              // component={ForgetPasswordPage}
+              render={() => (
+                <SecondaryLayout>
+                  <ForgetPasswordPage />
+                </SecondaryLayout>
+              )}
             />
-            <Route exact path="/resetpassword" component={ResetPasswordPage} />
+            <Route
+              exact
+              path="/resetpassword"
+              // component={ResetPasswordPage}
+              render={() => (
+                <SecondaryLayout>
+                  <ResetPasswordPage />
+                </SecondaryLayout>
+              )}
+            />
             {/* <Route exact path="/" component={PrimaryLayout} /> */}
             <Route
               exact
@@ -363,6 +381,34 @@ class RootRoute extends React.Component<Props, State> {
               render={() => (
                 <PrimaryLayout>
                   <UpdateRolePage />
+                </PrimaryLayout>
+              )}
+            />
+
+            <Route
+              exact
+              path="/location"
+              render={() => (
+                <PrimaryLayout>
+                  <LocationPage />
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/Location/create"
+              render={() => (
+                <PrimaryLayout>
+                  <CreateLocationPage />
+                </PrimaryLayout>
+              )}
+            />
+            <Route
+              exact
+              path="/location/update"
+              render={() => (
+                <PrimaryLayout>
+                  <UpdateLocationPage />
                 </PrimaryLayout>
               )}
             />
@@ -700,8 +746,7 @@ class RootRoute extends React.Component<Props, State> {
               path="/jobchart"
               render={() => (
                 <PrimaryLayout>
-                  {" "}
-                  <JobChartPage />{" "}
+                  <JobChartPage />
                 </PrimaryLayout>
               )}
             />

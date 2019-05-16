@@ -1,16 +1,11 @@
-import { Epic, ofType } from "redux-observable";
-import { AuthenticationAction } from "../actions";
+import { Epic } from "redux-observable";
 import {
     switchMap,
     map,
     catchError,
     filter,
-    tap,
-    flatMap,
 } from "rxjs/operators"
 import { of, from } from "rxjs"
-import { login } from "../api/authenticationAPI";
-import { loginAction } from "../actions/authenticationAction";
 import { Sector, SectorState } from "../interface/sectorInterface";
 import { getSectorList, createSector, createIndustry, deleteIndustry, deleteSector, updateSector, updateIndustry } from "../api/sectorAPIs";
 import { getSectorListAction, createSectorAction, createIndustryAction, deleteIndustryAction, deleteSectorAction, updateSectorAction, updateIndustryAction } from "../actions/sectorAction";
@@ -70,7 +65,7 @@ export function sectorReducer(state: SectorState = {
 export const getSectorListEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
         filter(isActionOf(getSectorListAction.request)),
-        switchMap((action) =>
+        switchMap(() =>
             from(getSectorList(state$.value.authenticationReducer.token)).pipe(
                 map((sectorList: Sector[]) => getSectorListAction.success(sectorList)),
                 catchError(error => of(getSectorListAction.failure(error.message)))

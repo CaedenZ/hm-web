@@ -23,6 +23,7 @@ import AddIcon from "@material-ui/icons/Add";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import classnames from "classnames";
 import { history } from "../../store";
+import { isSuperAdmin, isTechnical, isSales } from "../../function/checkRole";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -61,8 +62,6 @@ const styles = (theme: Theme) =>
     }
   });
 
-let id = 0;
-
 export interface Props
   extends WithStyles<typeof styles>,
     SharedDispatchProps,
@@ -70,6 +69,7 @@ export interface Props
 
 interface InState {
   jobFunctionList: JobFunction[];
+  role: string;
 }
 class CustomizedTable extends React.Component<Props, any> {
   constructor(props) {
@@ -121,7 +121,11 @@ class CustomizedTable extends React.Component<Props, any> {
 
     return (
       <main>
-        <CustomButton link="/jobfunction/create">New JobFunction</CustomButton>
+        {!isTechnical(this.props.role) && !isSales(this.props.role) && (
+          <CustomButton link="/jobfunction/create">
+            New JobFunction
+          </CustomButton>
+        )}
         <Paper className={classes.root}>
           <Table className={classes.table}>
             <colgroup>
@@ -159,13 +163,15 @@ class CustomizedTable extends React.Component<Props, any> {
 
                     {!this.state[index] ? (
                       <CustomTableCell align="center">
-                        <IconButton
-                          onClick={() =>
-                            this.handleDeleteJF(row.jobfunction_id)
-                          }
-                        >
-                          <DeleteIcon />
-                        </IconButton>{" "}
+                        {isSuperAdmin(this.props.role) && (
+                          <IconButton
+                            onClick={() =>
+                              this.handleDeleteJF(row.jobfunction_id)
+                            }
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        )}
                       </CustomTableCell>
                     ) : (
                       <CustomTableCell align="right">
@@ -226,7 +232,8 @@ class CustomizedTable extends React.Component<Props, any> {
 
 function mapStateToProps(state: any) {
   return {
-    jobFunctionList: state.jobFunctionReducer.jobFunctionList
+    jobFunctionList: state.jobFunctionReducer.jobFunctionList,
+    role: state.authenticationReducer.profile.info[0].roles[0].role
   };
 }
 

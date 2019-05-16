@@ -1,12 +1,9 @@
-import { Epic, ofType } from "redux-observable";
-import { AuthenticationAction } from "../actions";
+import { Epic } from "redux-observable";
 import {
     switchMap,
     map,
     catchError,
     filter,
-    tap,
-    flatMap,
 } from "rxjs/operators"
 import { of, from } from "rxjs"
 import { SalaryRangeState, SalaryRange } from "../interface/salaryRangeInterface";
@@ -91,7 +88,7 @@ export function salaryRangeReducer(state: SalaryRangeState = {
 export const getSalaryRangeListEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
         filter(isActionOf(getSalaryRangeListAction.request)),
-        switchMap((action) =>
+        switchMap(() =>
             from(getSalaryRangeList(state$.value.authenticationReducer.token, state$.value.companyReducer.selectedCompany.company_id)).pipe(
                 map((salaryrangeList: SalaryRange[]) => getSalaryRangeListAction.success(salaryrangeList)),
                 catchError(error => of(getSalaryRangeListAction.failure(error.message)))

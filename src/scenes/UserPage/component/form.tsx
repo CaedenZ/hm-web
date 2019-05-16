@@ -14,7 +14,9 @@ import {
   MenuItem,
   InputLabel,
   Select,
-  NativeSelect
+  NativeSelect,
+  FormControlLabel,
+  Checkbox
 } from "@material-ui/core";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import Avatar from "react-avatar-edit";
@@ -23,6 +25,8 @@ import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../interface/propsInterface";
 import { RootState } from "../../../reducer";
 import { Country } from "../../../interface/countryInterface";
+import { Location } from "../../../interface/locationInterface";
+import { Role } from "../../../interface/roleInterface";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -57,6 +61,9 @@ interface FormState {
   contact: string;
   alias: string;
   employee_id: string;
+  locationID: number | undefined;
+  roleID: string;
+  isCompanyContact: boolean;
 }
 interface Props
   extends InState,
@@ -65,6 +72,8 @@ interface Props
 
 interface InState {
   countryList: Country[];
+  locationList: Location[];
+  roleList: Role[];
   create: boolean;
   updateData: any;
   onSubmit: any;
@@ -91,10 +100,14 @@ class FormPage extends Component<Props, FormState> {
     remarks: "",
     status: "Active",
     business_title: "",
-    contact: ""
+    contact: "",
+    locationID: undefined,
+    roleID: "",
+    isCompanyContact: false
   };
   componentDidMount() {
     if (!this.props.create) {
+      console.log(this.props.updateData);
       this.setState(this.props.updateData);
     }
   }
@@ -111,7 +124,7 @@ class FormPage extends Component<Props, FormState> {
   handleChange = (statekay: keyof FormState) => (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    this.setState({ [statekay]: event.target.value } as Pick<
+    this.setState(({ [statekay]: event.target.value } as unknown) as Pick<
       FormState,
       keyof FormState
     >);
@@ -120,10 +133,46 @@ class FormPage extends Component<Props, FormState> {
   handleChangeSelect = (statekay: keyof FormState) => (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    this.setState({ [statekay]: event.target.value } as Pick<
+    this.setState(({ [statekay]: event.target.value } as unknown) as Pick<
       FormState,
       keyof FormState
     >);
+  };
+
+  handleLocationChangeSelect = () => (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const locationID = parseInt(event.target.value);
+    const tmpLocation = this.props.locationList.find(location => {
+      return location.location_id === locationID;
+    });
+
+    if (tmpLocation) {
+      this.setState({
+        locationID: tmpLocation.location_id,
+        address: tmpLocation.address,
+        postal_code: tmpLocation.postal_code
+      });
+    }
+  };
+
+  handleRoleChangeSelect = () => (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const roleID = event.target.value;
+    const tmpRole = this.props.roleList.find(role => {
+      return role.role_id === roleID;
+    });
+
+    if (tmpRole) {
+      this.setState({
+        roleID: tmpRole.role_id
+      });
+    }
+  };
+
+  handleChangeCheckisCompanyContact = () => {
+    this.setState({ isCompanyContact: !this.state.isCompanyContact } as any);
   };
 
   render() {
@@ -154,16 +203,6 @@ class FormPage extends Component<Props, FormState> {
             <Grid container item xs>
               <Grid container>
                 <Grid container item xs={6}>
-                  {/* <TextField
-                    required
-                    type="email"
-                    id="email"
-                    label="Email"
-                    className={classes.textField}
-                    value={this.state.email}
-                    onChange={this.handleChange("email")}
-                    margin="normal"
-                  /> */}
                   <TextValidator
                     fullWidth
                     className={classes.textField}
@@ -265,14 +304,63 @@ class FormPage extends Component<Props, FormState> {
           <Divider />
           <Divider />
 
-          <Typography component="h1" variant="h6">
+          <Typography component="h1" variant="h6" style={{ marginTop: "2rem" }}>
             Job Infomation
           </Typography>
           <Grid justify="center" container>
             <Grid item direction="column" xs={3} container />
             <Grid container item xs>
               <Grid container>
-                <Grid container item xs={6}>
+                <Grid item xs={6}>
+                  {this.props.locationList.length > 0 && (
+                    <FormControl className={classes.textField}>
+                      <InputLabel>Location</InputLabel>
+                      <NativeSelect
+                        id="location"
+                        value={this.state.locationID}
+                        onChange={this.handleLocationChangeSelect()}
+                        inputProps={{
+                          name: "location",
+                          id: "location-simple"
+                        }}
+                      >
+                        <option value={undefined} />
+                        {this.props.locationList.map(location => (
+                          <option
+                            value={location.location_id}
+                            key={location.location_id}
+                          >
+                            {location.address}
+                          </option>
+                        ))}
+                      </NativeSelect>
+                    </FormControl>
+                  )}
+                </Grid>
+                <Grid item xs={6}>
+                  {this.props.roleList.length > 0 && (
+                    <FormControl className={classes.textField}>
+                      <InputLabel>Role</InputLabel>
+                      <NativeSelect
+                        id="role"
+                        value={this.state.roleID}
+                        onChange={this.handleRoleChangeSelect()}
+                        inputProps={{
+                          name: "role",
+                          id: "role-simple"
+                        }}
+                      >
+                        <option value={undefined} />
+                        {this.props.roleList.map(role => (
+                          <option value={role.role_id} key={role.role_id}>
+                            {role.role_name}
+                          </option>
+                        ))}
+                      </NativeSelect>
+                    </FormControl>
+                  )}
+                </Grid>
+                <Grid item xs={6}>
                   <TextField
                     id="address"
                     multiline
@@ -284,14 +372,6 @@ class FormPage extends Component<Props, FormState> {
                   />
                 </Grid>
                 <Grid container item xs={6}>
-                  {/* <TextField
-                    id="postal_code"
-                    label="Postal Code"
-                    className={classes.textField}
-                    value={this.state.postal_code}
-                    onChange={this.handleChange("postal_code")}
-                    margin="normal"
-                  /> */}
                   <TextValidator
                     fullWidth
                     className={classes.textField}
@@ -309,8 +389,6 @@ class FormPage extends Component<Props, FormState> {
                     margin="normal"
                   />
                 </Grid>
-              </Grid>
-              <Grid container>
                 <Grid item xs={6}>
                   {this.props.countryList.length > 0 && (
                     <FormControl className={classes.textField}>
@@ -326,7 +404,10 @@ class FormPage extends Component<Props, FormState> {
                       >
                         <option value="" />
                         {this.props.countryList.map(country => (
-                          <option value={country.country_name}>
+                          <option
+                            value={country.country_name}
+                            key={country.country_name}
+                          >
                             {country.country_name}
                           </option>
                         ))}
@@ -334,16 +415,7 @@ class FormPage extends Component<Props, FormState> {
                     </FormControl>
                   )}
                 </Grid>
-                <Grid item xs>
-                  {/* <TextField
-                    required
-                    id="contact"
-                    label="contact"
-                    className={classes.textField}
-                    value={this.state.contact}
-                    onChange={this.handleChange("contact")}
-                    margin="normal"
-                  /> */}
+                <Grid item xs={6}>
                   <TextValidator
                     fullWidth
                     className={classes.textField}
@@ -362,7 +434,7 @@ class FormPage extends Component<Props, FormState> {
                   />
                 </Grid>
               </Grid>
-              <Grid container item xs={6}>
+              <Grid item xs={6}>
                 <TextField
                   id="business_title"
                   label="Business Title"
@@ -372,7 +444,7 @@ class FormPage extends Component<Props, FormState> {
                   margin="normal"
                 />
               </Grid>
-              <Grid container item xs={6}>
+              <Grid item xs={6}>
                 <TextField
                   id="remarks"
                   label="Remarks"
@@ -382,26 +454,22 @@ class FormPage extends Component<Props, FormState> {
                   margin="normal"
                 />
               </Grid>
+              <Grid item xs={6}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={this.state.isCompanyContact}
+                      onChange={this.handleChangeCheckisCompanyContact}
+                      color="primary"
+                    />
+                  }
+                  label="Company Contact"
+                  className={classes.textField}
+                  style={{ marginLeft: 0 }}
+                />
+              </Grid>
             </Grid>
           </Grid>
-          {/* <Grid item justify="center" container xs>
-                        
-                    </Grid>
-                    <Grid item justify="center" container xs>
-                        <div style={{ margin: 20 }}>
-                            
-                            
-
-                        </div>
-                    </Grid>
-                    <Grid item justify="center" container xs>
-                        <div style={{ margin: 20 }}>
-                            
-                            
-
-                        </div>
-                    </Grid> */}
-
           <Divider />
           <Divider />
           <div
@@ -427,7 +495,9 @@ class FormPage extends Component<Props, FormState> {
 
 function mapStateToProps(state: RootState) {
   return {
-    countryList: state.countryReducer.countryList
+    countryList: state.countryReducer.countryList,
+    locationList: state.locationReducer.locationList,
+    roleList: state.roleReducer.roleList
   };
 }
 

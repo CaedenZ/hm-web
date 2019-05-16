@@ -19,7 +19,7 @@ import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../interface/propsInterface";
 import { IconButton } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { Region } from "../../interface/regionInterface";
+import { Location } from "../../interface/locationInterface";
 import { history } from "../../store";
 import UpdateIcon from "@material-ui/icons/PlaylistAddCheck";
 import { Company } from "../../interface/companyInterface";
@@ -61,12 +61,12 @@ interface State {}
 
 interface InState {
   selectedCompany: Company;
-  regionList: Region[];
-  role: string;
+  locationList: Location[];
+  role;
 }
-class RegionPage extends React.Component<Props, State> {
+class LocationPage extends React.Component<Props, State> {
   componentDidMount() {
-    console.log("Region Page Mounted");
+    console.log("Location Page Mounted");
     if (this.props.selectedCompany.company_id === "") {
       let data = {
         type: "warning",
@@ -74,18 +74,18 @@ class RegionPage extends React.Component<Props, State> {
         id: "1"
       };
       this.props.showDialog(data);
-    } else this.props.getRegionList();
+    } else this.props.getLocationList();
   }
 
-  handleUpdateButtonClick = region => {
-    this.props.selectRegion(region);
-    history.push("/region/update");
+  handleUpdateButtonClick = location => {
+    this.props.selectLocation(location);
+    history.push("/location/update");
   };
 
   handleDelete = id => {
     const payload = {
       type: "delete",
-      object: "region",
+      object: "location",
       id: id
     };
     this.props.showDialog(payload);
@@ -97,37 +97,31 @@ class RegionPage extends React.Component<Props, State> {
     return (
       <main>
         {!isUserHR(this.props.role) && (
-          <CustomButton link="/region/create">New Region</CustomButton>
+          <CustomButton link="/location/create">New Location</CustomButton>
         )}
         <Paper className={classes.root}>
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
-                <CustomTableCell>Name</CustomTableCell>
-                <CustomTableCell align="left">Countries</CustomTableCell>
+                <CustomTableCell align="left">Name</CustomTableCell>
+                <CustomTableCell align="left">Address</CustomTableCell>
+                <CustomTableCell align="left">Postal Code</CustomTableCell>
                 <CustomTableCell align="right">Action</CustomTableCell>
               </TableRow>
             </TableHead>
-            {this.props.regionList.length > 0 && (
+            {this.props.locationList.length > 0 && (
               <TableBody>
-                {this.props.regionList.map(row => (
-                  <TableRow className={classes.row} key={row.region_id}>
+                {this.props.locationList.map(row => (
+                  <TableRow className={classes.row} key={row.location_id}>
                     <CustomTableCell component="th" scope="row">
-                      {row.region_name}
+                      {row.location_name}
                     </CustomTableCell>
-                    {row.country_list.length > 0 ? (
-                      <CustomTableCell align="right">
-                        {row.country_list.map((country, i, arr) => {
-                          if (arr.length - 1 === i) {
-                            return JSON.parse(country).country_name;
-                          } else {
-                            return JSON.parse(country).country_name + ",  ";
-                          }
-                        })}
-                      </CustomTableCell>
-                    ) : (
-                      <CustomTableCell />
-                    )}
+                    <CustomTableCell component="th" scope="row">
+                      {row.address}
+                    </CustomTableCell>
+                    <CustomTableCell component="th" scope="row">
+                      {row.postal_code}
+                    </CustomTableCell>
                     <CustomTableCell align="right">
                       {!isUserHR(this.props.role) && (
                         <IconButton
@@ -139,7 +133,7 @@ class RegionPage extends React.Component<Props, State> {
                       {/* <Button color="primary" variant="contained" onClick={() => this.handleUpdateButtonClick(row)}>view</Button> */}
                       {isTCMasterSalesUserMaster(this.props.role) && (
                         <IconButton
-                          onClick={() => this.handleDelete(row.region_id)}
+                          onClick={() => this.handleDelete(row.location_id)}
                         >
                           <DeleteIcon />
                         </IconButton>
@@ -156,14 +150,14 @@ class RegionPage extends React.Component<Props, State> {
   }
 }
 
-(RegionPage as React.ComponentClass<Props>).propTypes = {
+(LocationPage as React.ComponentClass<Props>).propTypes = {
   classes: PropTypes.object.isRequired
 } as any;
 
 function mapStateToProps(state: RootState) {
   return {
     selectedCompany: state.companyReducer.selectedCompany,
-    regionList: state.regionReducer.regionList,
+    locationList: state.locationReducer.locationList,
     role: state.authenticationReducer.profile.info[0].roles[0].role
   };
 }
@@ -171,4 +165,4 @@ function mapStateToProps(state: RootState) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(RegionPage));
+)(withStyles(styles)(LocationPage));

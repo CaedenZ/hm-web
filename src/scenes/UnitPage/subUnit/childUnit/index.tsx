@@ -75,10 +75,6 @@ interface InState {
 }
 
 class ChildUnitPage extends React.Component<Props, State> {
-  constructor(props) {
-    super(props);
-  }
-
   state = {
     anchorEl: null
   };

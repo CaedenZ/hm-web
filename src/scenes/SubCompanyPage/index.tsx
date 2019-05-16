@@ -21,6 +21,7 @@ import { IconButton } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { history } from "../../store";
 import UpdateIcon from "@material-ui/icons/PlaylistAddCheck";
+import { isUserHR, isTCMasterSalesUserMaster } from "../../function/checkRole";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -59,6 +60,7 @@ interface State {}
 interface InState {
   selectedCompany: Company;
   companyList: Entity[];
+  role: string;
 }
 
 class CustomizedTable extends React.Component<Props, State> {
@@ -98,7 +100,9 @@ class CustomizedTable extends React.Component<Props, State> {
 
     return (
       <main>
-        <CustomButton link="/entity/create">New Entity</CustomButton>
+        {!isUserHR(this.props.role) && (
+          <CustomButton link="/entity/create">New Entity</CustomButton>
+        )}
         <Paper className={classes.root}>
           <Table className={classes.table}>
             <TableHead>
@@ -106,7 +110,7 @@ class CustomizedTable extends React.Component<Props, State> {
                 <CustomTableCell>Company Name</CustomTableCell>
                 <CustomTableCell align="right">Contact Person</CustomTableCell>
                 <CustomTableCell align="right">Contact Number</CustomTableCell>
-                <CustomTableCell align="right">Contact Emai</CustomTableCell>
+                <CustomTableCell align="right">Contact Email</CustomTableCell>
                 <CustomTableCell align="right">Country</CustomTableCell>
                 <CustomTableCell align="right">Action</CustomTableCell>
               </TableRow>
@@ -132,16 +136,20 @@ class CustomizedTable extends React.Component<Props, State> {
                     </CustomTableCell>
                     <CustomTableCell align="right">
                       {/* <IconButton onClick={() => this.handleViewButtonClick(row)}><ViewIcon /></IconButton> */}
-                      <IconButton
-                        onClick={() => this.handleUpdateButtonClick(row)}
-                      >
-                        <UpdateIcon />
-                      </IconButton>
-                      <IconButton
-                        onClick={() => this.handleDelete(row.company_id)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
+                      {!isUserHR(this.props.role) && (
+                        <IconButton
+                          onClick={() => this.handleUpdateButtonClick(row)}
+                        >
+                          <UpdateIcon />
+                        </IconButton>
+                      )}
+                      {isTCMasterSalesUserMaster(this.props.role) && (
+                        <IconButton
+                          onClick={() => this.handleDelete(row.company_id)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      )}
                     </CustomTableCell>
                   </TableRow>
                 ))}
@@ -161,7 +169,8 @@ class CustomizedTable extends React.Component<Props, State> {
 function mapStateToProps(state: any) {
   return {
     selectedCompany: state.companyReducer.selectedCompany,
-    companyList: state.companyReducer.childCompanyList
+    companyList: state.companyReducer.childCompanyList,
+    role: state.authenticationReducer.profile.info[0].roles[0].role
   };
 }
 

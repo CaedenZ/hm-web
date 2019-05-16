@@ -43,8 +43,8 @@ interface FormState {
 }
 interface Props
   extends InState,
-  WithStyles<typeof styles>,
-  SharedDispatchProps { }
+    WithStyles<typeof styles>,
+    SharedDispatchProps {}
 
 interface InState {
   countryList: Country[];
@@ -56,10 +56,6 @@ interface InState {
 }
 
 class FormPage extends Component<Props, FormState> {
-  constructor(props) {
-    super(props);
-  }
-
   state: FormState = {
     year: "",
     type: "",

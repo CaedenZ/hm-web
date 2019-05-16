@@ -23,6 +23,7 @@ import { Role } from "../../interface/roleInterface";
 import { history } from "../../store";
 import UpdateIcon from "@material-ui/icons/PlaylistAddCheck";
 import { Company } from "../../interface/companyInterface";
+import { isUserHR, isTCMasterSalesUserMaster } from "../../function/checkRole";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -51,8 +52,6 @@ const styles = (theme: Theme) =>
     }
   });
 
-let id = 0;
-
 export interface Props
   extends WithStyles<typeof styles>,
     SharedDispatchProps,
@@ -63,6 +62,7 @@ interface State {}
 interface InState {
   selectedCompany: Company;
   roleList: Role[];
+  role: string;
 }
 class RolePage extends React.Component<Props, State> {
   componentDidMount() {
@@ -96,7 +96,9 @@ class RolePage extends React.Component<Props, State> {
 
     return (
       <main>
-        <CustomButton link="/role/create">New Role</CustomButton>
+        {!isUserHR(this.props.role) && (
+          <CustomButton link="/role/create">New Role</CustomButton>
+        )}
         <Paper className={classes.root}>
           <Table className={classes.table}>
             <TableHead>
@@ -117,16 +119,20 @@ class RolePage extends React.Component<Props, State> {
                       {row.role_description}
                     </CustomTableCell>
                     <CustomTableCell align="right">
-                      <IconButton
-                        onClick={() => this.handleUpdateButtonClick(row)}
-                      >
-                        <UpdateIcon />
-                      </IconButton>
-                      <IconButton
-                        onClick={() => this.handleDelete(row.role_id)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
+                      {!isUserHR(this.props.role) && (
+                        <IconButton
+                          onClick={() => this.handleUpdateButtonClick(row)}
+                        >
+                          <UpdateIcon />
+                        </IconButton>
+                      )}
+                      {isTCMasterSalesUserMaster(this.props.role) && (
+                        <IconButton
+                          onClick={() => this.handleDelete(row.role_id)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      )}
                     </CustomTableCell>
                   </TableRow>
                 ))}
@@ -146,7 +152,8 @@ class RolePage extends React.Component<Props, State> {
 function mapStateToProps(state: RootState) {
   return {
     selectedCompany: state.companyReducer.selectedCompany,
-    roleList: state.roleReducer.roleList
+    roleList: state.roleReducer.roleList,
+    role: state.authenticationReducer.profile.info[0].roles[0].role
   };
 }
 

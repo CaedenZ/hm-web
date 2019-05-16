@@ -13,46 +13,13 @@ import { SharedDispatchProps } from "../../../interface/propsInterface";
 import { CountryState } from "../../../interface/countryInterface";
 import { history } from "../../../store";
 import FormPage from "../component/form";
+import { CREATECOMPANYCRED } from "../../../interface/companyInterface";
+import { Industry, Sector } from "../../../interface/sectorInterface";
 
 const styles = (theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1
-    },
-    grid: {
-      margin: 20
-    },
-    textField: {
-      width: 200,
-      margin: 20
-    },
-    // formControl: {
-    //   margin: theme.spacing.unit * 3,
-    // },
-    paper: {
-      padding: theme.spacing.unit * 2,
-      textAlign: "center",
-      color: theme.palette.text.secondary,
-      flexDirection: "column"
-    },
-    preview: {},
-    divAvatar: {
-      margin: theme.spacing.unit * 3,
-      alignSelf: "baseline",
-      flex: 1,
-      alignItems: "center",
-      justifyContent: "center"
-    },
-    bigAvatar: {
-      width: "auto",
-      height: "auto"
-    },
-    profilebutton: {
-      alignContent: "center",
-      alignSelf: "center",
-      flex: 1,
-      alignItems: "center",
-      justifyContent: "center"
     }
   });
 
@@ -73,7 +40,22 @@ class CreateCompanyPage extends Component<Props> {
 
   handleCreateCompany = (e, data) => {
     e.preventDefault();
-    this.props.createCompany(data);
+    const companyIndustry: Industry = JSON.parse(data.industry);
+    const companySector: Sector = JSON.parse(data.sector);
+    const companyData: CREATECOMPANYCRED = {
+      logo_main: data.logo_main,
+      logo_small: data.logo_small,
+      company_name: data.company_name,
+      webpage_url: data.webpage_url,
+      industry: companyIndustry,
+      sector: companySector,
+      country: data.country,
+      base_currency_id: data.base_currency_id,
+      financialyr_dt: data.financialyr_dt,
+      parentcompany_id: data.parentcompany_id
+    };
+    console.dir(companyData);
+    this.props.createCompany(companyData);
     history.goBack();
   };
 

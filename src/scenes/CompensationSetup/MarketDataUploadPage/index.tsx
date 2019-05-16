@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import {
   createStyles,
-  Theme,
   withStyles,
   WithStyles
 } from "@material-ui/core/styles";
@@ -10,15 +9,12 @@ import { RootState } from "../../../reducer";
 import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../interface/propsInterface";
-import { Signons } from "../../../interface/signonsInterface";
 import { Button, Paper, Grid } from "@material-ui/core";
-import { Company } from "../../../interface/companyInterface";
 
 import $axios from "../../../plugin/axios";
 
-import axios from "axios";
 
-const styles = (theme: Theme) => createStyles({});
+const styles = () => createStyles({});
 
 export interface Props
   extends WithStyles<typeof styles>,

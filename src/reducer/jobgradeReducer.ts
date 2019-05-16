@@ -1,12 +1,9 @@
-import { Epic, ofType } from "redux-observable";
-import { AuthenticationAction } from "../actions";
+import { Epic } from "redux-observable";
 import {
     switchMap,
     map,
     catchError,
     filter,
-    tap,
-    flatMap,
 } from "rxjs/operators"
 import { of, from } from "rxjs"
 import { JobGradeState, JobGrade } from "../interface/jobgradeInterface";
@@ -90,7 +87,7 @@ export function jobgradeReducer(state: JobGradeState = {
 export const getJobGradeListEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
         filter(isActionOf(getJobGradeListAction.request)),
-        switchMap((action) =>
+        switchMap(() =>
             from(getJobGradeList(state$.value.authenticationReducer.token, state$.value.companyReducer.selectedCompany.company_id)).pipe(
                 map((jobgradeList: JobGrade[]) => getJobGradeListAction.success(jobgradeList)),
                 catchError(error => of(getJobGradeListAction.failure(error.message)))

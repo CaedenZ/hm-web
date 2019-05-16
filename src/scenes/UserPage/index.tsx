@@ -25,6 +25,7 @@ import UpdateIcon from "@material-ui/icons/PlaylistAddCheck";
 import ResetIcon from "@material-ui/icons/BorderColor";
 import ResetPassword from "./component/resetPassword";
 import { Company } from "../../interface/companyInterface";
+import { isUserHR, isTCMasterSalesUserMaster } from "../../function/checkRole";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -69,6 +70,7 @@ interface InState {
   selectedCompany: Company;
   userList: User[];
   currentUserEmail: string;
+  role: string;
 }
 class CustomizedTable extends React.Component<Props, State> {
   state = {
@@ -120,7 +122,9 @@ class CustomizedTable extends React.Component<Props, State> {
 
     return (
       <main>
-        <CustomButton onClick={this.handleNewUser}>New User</CustomButton>
+        {!isUserHR(this.props.role) && (
+          <CustomButton onClick={this.handleNewUser}>New User</CustomButton>
+        )}
         <Paper className={classes.root}>
           <Table className={classes.table}>
             <TableHead>
@@ -138,7 +142,11 @@ class CustomizedTable extends React.Component<Props, State> {
                 {this.props.userList.map((row, index) => (
                   <TableRow className={classes.row} key={row.email}>
                     <CustomTableCell component="th" scope="row">
-                      <img className={classes.logo} src={row.image} />
+                      <img
+                        className={classes.logo}
+                        src={row.image}
+                        alt="user"
+                      />
                     </CustomTableCell>
                     <CustomTableCell align="left">
                       {row.firstname}
@@ -149,21 +157,24 @@ class CustomizedTable extends React.Component<Props, State> {
                     <CustomTableCell align="left">{row.email}</CustomTableCell>
                     <CustomTableCell align="left">{row.status}</CustomTableCell>
                     <CustomTableCell align="left">
-                      <IconButton
-                        onClick={() => this.handleUpdateButtonClick(row)}
-                      >
-                        <UpdateIcon />
-                      </IconButton>
+                      {!isUserHR(this.props.role) && (
+                        <IconButton
+                          onClick={() => this.handleUpdateButtonClick(row)}
+                        >
+                          <UpdateIcon />
+                        </IconButton>
+                      )}
                       <IconButton onClick={() => this.handleResetPassword(row)}>
                         <ResetIcon />
                       </IconButton>
-                      {row.email !== this.props.currentUserEmail && (
-                        <IconButton
-                          onClick={() => this.handleDelete(row.email, index)}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                      )}
+                      {row.email !== this.props.currentUserEmail &&
+                        isTCMasterSalesUserMaster(this.props.role) && (
+                          <IconButton
+                            onClick={() => this.handleDelete(row.email, index)}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        )}
                     </CustomTableCell>
                   </TableRow>
                 ))}
@@ -188,7 +199,8 @@ function mapStateToProps(state: RootState) {
   return {
     selectedCompany: state.companyReducer.selectedCompany,
     userList: state.userReducer.userList,
-    currentUserEmail: state.authenticationReducer.email
+    currentUserEmail: state.authenticationReducer.email,
+    role: state.authenticationReducer.profile.info[0].roles[0].role
   };
 }
 

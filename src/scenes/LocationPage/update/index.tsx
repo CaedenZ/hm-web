@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import {
   Typography,
-  Theme,
   createStyles,
   WithStyles,
   withStyles
@@ -11,36 +10,45 @@ import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../interface/propsInterface";
 import { history } from "../../../store";
-import { RootState } from "../../../reducer";
-import { User } from "../../../interface/userInterface";
-import { Country } from "../../../interface/countryInterface";
+import { Location } from "../../../interface/locationInterface";
 import FormPage from "../component/form";
 
-const styles = (theme: Theme) =>
+const styles = () =>
   createStyles({
     root: {
       flexGrow: 1
     }
   });
-  
+
+export interface UpdateLocationState {
+  location_name: string;
+  address: string;
+  postal_code: string;
+}
 export interface Props
   extends InState,
     WithStyles<typeof styles>,
     SharedDispatchProps {}
+
 interface InState {
-  user: User;
-  countryList: Country[];
+  selectedLocation: Location;
 }
 
-class UpdateUserPage extends Component<Props> {
+class UpdateLocationPage extends Component<Props, UpdateLocationState> {
   constructor(props) {
     super(props);
-    this.handleUpdateUser = this.handleUpdateUser.bind(this);
+    this.handleUpdateLocation = this.handleUpdateLocation.bind(this);
   }
 
-  handleUpdateUser = (e, data) => {
+  state: UpdateLocationState = {
+    location_name: "",
+    address: "",
+    postal_code: ""
+  };
+
+  handleUpdateLocation = (e, data) => {
     e.preventDefault();
-    this.props.updateUser(data);
+    this.props.updateLocation(data);
     history.goBack();
   };
 
@@ -49,30 +57,29 @@ class UpdateUserPage extends Component<Props> {
     return (
       <div className={classes.root}>
         <Typography component="h1" variant="h5">
-          Update User
+          New Location
         </Typography>
         <FormPage
           create={false}
-          updateData={this.props.user}
-          onSubmit={(e, data) => this.handleUpdateUser(e, data)}
+          updateData={this.props.selectedLocation}
+          onSubmit={(e, data) => this.handleUpdateLocation(e, data)}
         />
       </div>
     );
   }
 }
 
-(UpdateUserPage as React.ComponentClass<Props>).propTypes = {
+(UpdateLocationPage as React.ComponentClass<Props>).propTypes = {
   classes: PropTypes.object.isRequired
 } as any;
 
-function mapStateToProps(state: RootState) {
+function mapStateToProps(state: any) {
   return {
-    user: state.userReducer.user,
-    countryList: state.countryReducer.countryList
+    selectedLocation: state.locationReducer.selectedLocation
   };
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(UpdateUserPage));
+)(withStyles(styles)(UpdateLocationPage));

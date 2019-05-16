@@ -23,6 +23,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import classnames from "classnames";
 import { history } from "../../store";
 import { Sector } from "../../interface/sectorInterface";
+import { isSuperAdmin, isTechnical, isSales } from "../../function/checkRole";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -61,8 +62,6 @@ const styles = (theme: Theme) =>
     }
   });
 
-let id = 0;
-
 export interface Props
   extends WithStyles<typeof styles>,
     SharedDispatchProps,
@@ -70,6 +69,7 @@ export interface Props
 
 interface InState {
   sectorList: Sector[];
+  role: string;
 }
 class CustomizedTable extends React.Component<Props, any> {
   constructor(props) {
@@ -121,7 +121,9 @@ class CustomizedTable extends React.Component<Props, any> {
 
     return (
       <main>
-        <CustomButton link="/sector/create">New Sector</CustomButton>
+        {!isTechnical(this.props.role) && !isSales(this.props.role) && (
+          <CustomButton link="/sector/create">New Sector</CustomButton>
+        )}
         <Paper className={classes.root}>
           <Table className={classes.table}>
             <colgroup>
@@ -159,11 +161,15 @@ class CustomizedTable extends React.Component<Props, any> {
 
                     {!this.state[index] ? (
                       <CustomTableCell align="center">
-                        <IconButton
-                          onClick={() => this.handleDeleteSector(row.sector_id)}
-                        >
-                          <DeleteIcon />
-                        </IconButton>{" "}
+                        {isSuperAdmin(this.props.role) && (
+                          <IconButton
+                            onClick={() =>
+                              this.handleDeleteSector(row.sector_id)
+                            }
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        )}
                       </CustomTableCell>
                     ) : (
                       <CustomTableCell align="right">
@@ -174,29 +180,33 @@ class CustomizedTable extends React.Component<Props, any> {
                           unmountOnExit={true}
                         >
                           {row.industry.length > 0 && (
-                            <TableBody>
-                              {row.industry.map(row => (
-                                <TableRow
-                                  className={classes.row}
-                                  key={row.name}
-                                >
-                                  <CustomTableCell align="right">
-                                    {row.name}
-                                  </CustomTableCell>
-                                  <CustomTableCell align="right">
-                                    <IconButton
-                                      onClick={() =>
-                                        this.handleDeleteIndustry(
-                                          row.industry_id
-                                        )
-                                      }
-                                    >
-                                      <DeleteIcon />
-                                    </IconButton>
-                                  </CustomTableCell>
-                                </TableRow>
-                              ))}
-                            </TableBody>
+                            <Table>
+                              <TableBody>
+                                {row.industry.map(row => (
+                                  <TableRow
+                                    className={classes.row}
+                                    key={row.name}
+                                  >
+                                    <CustomTableCell align="left">
+                                      {row.name}
+                                    </CustomTableCell>
+                                    <CustomTableCell align="left">
+                                      {isSuperAdmin(this.props.role) && (
+                                        <IconButton
+                                          onClick={() =>
+                                            this.handleDeleteIndustry(
+                                              row.industry_id
+                                            )
+                                          }
+                                        >
+                                          <DeleteIcon />
+                                        </IconButton>
+                                      )}
+                                    </CustomTableCell>
+                                  </TableRow>
+                                ))}
+                              </TableBody>
+                            </Table>
                           )}
                           <IconButton
                             onClick={() => this.handleNewIndustryClick(row)}
@@ -223,7 +233,8 @@ class CustomizedTable extends React.Component<Props, any> {
 
 function mapStateToProps(state: any) {
   return {
-    sectorList: state.sectorReducer.sectorList
+    sectorList: state.sectorReducer.sectorList,
+    role: state.authenticationReducer.profile.info[0].roles[0].role
   };
 }
 

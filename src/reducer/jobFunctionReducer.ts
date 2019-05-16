@@ -1,16 +1,11 @@
-import { Epic, ofType } from "redux-observable";
-import { AuthenticationAction } from "../actions";
+import { Epic } from "redux-observable";
 import {
     switchMap,
     map,
     catchError,
     filter,
-    tap,
-    flatMap,
 } from "rxjs/operators"
 import { of, from } from "rxjs"
-import { login } from "../api/authenticationAPI";
-import { loginAction } from "../actions/authenticationAction";
 import { JobFunction, JobFunctionState } from "../interface/jobfunctionInterface";
 import { getJobFunctionList, createJobFunction, createSubJobFunction, deleteSubJobFunction, deleteJobFunction } from "../api/jobFunctionAPIs";
 import { getJobFunctionListAction, createJobFunctionAction, createSubJobFunctionAction, deleteSubJobFunctionAction, deleteJobFunctionAction } from "../actions/jobFunctionAction";
@@ -70,7 +65,7 @@ export function jobFunctionReducer(state: JobFunctionState = {
 export const getJobFunctionListEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
         filter(isActionOf(getJobFunctionListAction.request)),
-        switchMap((action) =>
+        switchMap(() =>
             from(getJobFunctionList(state$.value.authenticationReducer.token)).pipe(
                 map((jobFunctionList: JobFunction[]) => getJobFunctionListAction.success(jobFunctionList)),
                 catchError(error => of(getJobFunctionListAction.failure(error.message)))

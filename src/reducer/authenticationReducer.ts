@@ -1,18 +1,14 @@
 import { Epic, ofType } from "redux-observable";
-import { AuthenticationAction } from "../actions";
 import {
     switchMap,
     map,
     catchError,
     filter,
-    tap,
-    flatMap,
 } from "rxjs/operators"
 import { of, from } from "rxjs"
 import { login, forgetPassword, getUserProfile, updatePassword } from "../api/authenticationAPI";
 import { loginAction, forgetPasswordAction, getUserProfileAction, updatePasswordAction } from "../actions/authenticationAction";
 import { isActionOf } from "typesafe-actions";
-import { push } from "connected-react-router";
 import { Profile } from "../interface/authInterface";
 
 
@@ -73,7 +69,7 @@ export function authenticationReducer(state: AuthenticationState = {
     }
 }
 
-export const loginEpic: Epic<any, any, any, any> = (action$, state$) =>
+export const loginEpic: Epic<any, any, any, any> = (action$) =>
     action$.pipe(
         filter(isActionOf([loginAction.request])),
         switchMap((action) =>
@@ -84,7 +80,7 @@ export const loginEpic: Epic<any, any, any, any> = (action$, state$) =>
         )
     )
 
-export const forgetPasswordEpic: Epic<any, any, any, any> = (action$, state$) =>
+export const forgetPasswordEpic: Epic<any, any, any, any> = (action$) =>
     action$.pipe(
         filter(isActionOf([forgetPasswordAction.request])),
         switchMap((action) =>
@@ -95,7 +91,7 @@ export const forgetPasswordEpic: Epic<any, any, any, any> = (action$, state$) =>
         )
     )
 
-export const createUserEpic: Epic<any, any, any, any> = (action$, state$) =>
+export const createUserEpic: Epic<any, any, any, any> = (action$) =>
     action$.pipe(
         filter(isActionOf([loginAction.request])),
         switchMap((action) =>
@@ -105,7 +101,7 @@ export const createUserEpic: Epic<any, any, any, any> = (action$, state$) =>
             )
         )
     )
-export const updateProfileEpic: Epic<any, any, any, any> = (action$, state$) =>
+export const updateProfileEpic: Epic<any, any, any, any> = (action$) =>
     action$.pipe(
         ofType("LOG_IN_REQUEST"),
         switchMap((action) =>

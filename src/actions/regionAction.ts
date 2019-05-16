@@ -1,7 +1,5 @@
 import { createAsyncAction, createAction } from "typesafe-actions";
 import { Region, CREATEREGIONCRED, UPDATEREGIONCRED } from "../interface/regionInterface";
-import { CreateRegionState } from "../scenes/RegionPage/create";
-import { UpdateRegionState } from "../scenes/RegionPage/update";
 
 const SELECT_REGION = "SELECT_REGION"
 export const selectRegionAction = createAction(SELECT_REGION,

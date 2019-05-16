@@ -4,7 +4,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import Paper from "@material-ui/core/Paper";
 import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import { Divider } from "@material-ui/core";
 import { connect } from "react-redux";
 import { mapDispatchToProps } from "../../helper/dispachProps";
@@ -33,7 +33,7 @@ const styles = (theme: any) => ({
     padding: `${theme.spacing.unit * 3}px`
   },
   loginSpacing: {
-    margin: "1rem 0"
+    margin: "0.5rem 0"
   }
 });
 
@@ -87,48 +87,6 @@ class SignIn extends Component<Props, State> {
           <main className={classes.main}>
             <CssBaseline />
             <Paper className={classes.paper}>
-              {/* <form onSubmit={this.handleLogin}>
-                <FormControl margin="normal" required fullWidth>
-                  <InputLabel htmlFor="email">Email Address</InputLabel>
-                  <Input
-                    type="email"
-                    id="email"
-                    name="email"
-                    autoComplete="email"
-                    autoFocus
-                    value={this.state.email}
-                    onChange={this.handleChange}
-                  />
-                </FormControl>
-                <FormControl margin="normal" required fullWidth>
-                  <InputLabel htmlFor="password">Password</InputLabel>
-                  <Input
-                    name="password"
-                    type="password"
-                    id="password"
-                    autoComplete="current-password"
-                    value={this.state.password}
-                    onChange={this.handleChange}
-                  />
-                </FormControl>
-                <FormControlLabel
-                  control={<Checkbox value="remember" color="primary" />}
-                  label="Remember me"
-                />
-                <Divider />
-                <Button
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  type="submit"
-                >
-                  Sign in
-                </Button>
-
-                <div style={{ marginTop: 20 }}>
-                  <Link to="/forgetpassword">Forget password</Link>
-                </div>
-              </form> */}
               <ValidatorForm
                 ref="form"
                 onSubmit={this.handleLogin}
@@ -171,6 +129,11 @@ class SignIn extends Component<Props, State> {
                 >
                   Sign in
                 </Button>
+                <div
+                  style={{ margin: "auto", width: "50%", textAlign: "center", marginTop: "1rem" }}
+                >
+                  <Link to={"/forgetpassword"}>Forget Password</Link>
+                </div>
               </ValidatorForm>
             </Paper>
           </main>
