@@ -62,7 +62,7 @@ interface FormState {
   alias: string;
   employee_id: string;
   locationID: number | undefined;
-  roleID: string;
+  role_id: string;
   isCompanyContact: boolean;
 }
 interface Props
@@ -102,12 +102,13 @@ class FormPage extends Component<Props, FormState> {
     business_title: "",
     contact: "",
     locationID: undefined,
-    roleID: "",
+    role_id: "",
     isCompanyContact: false
   };
   componentDidMount() {
     if (!this.props.create) {
-      console.log(this.props.updateData);
+      this.props.updateData.isCompanyContact = !!this.props.updateData
+        .isCompanyContact; //Converts to boolean
       this.setState(this.props.updateData);
     }
   }
@@ -166,7 +167,7 @@ class FormPage extends Component<Props, FormState> {
 
     if (tmpRole) {
       this.setState({
-        roleID: tmpRole.role_id
+        role_id: tmpRole.role_id
       });
     }
   };
@@ -343,7 +344,7 @@ class FormPage extends Component<Props, FormState> {
                       <InputLabel>Role</InputLabel>
                       <NativeSelect
                         id="role"
-                        value={this.state.roleID}
+                        value={this.state.role_id}
                         onChange={this.handleRoleChangeSelect()}
                         inputProps={{
                           name: "role",

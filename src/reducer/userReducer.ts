@@ -34,7 +34,7 @@ export function userReducer(
       business_title: "",
       contact: "",
       role_id: "",
-      isCompanyContact: false
+      isCompanyContact: 0
     }
   },
   action
@@ -58,7 +58,7 @@ export function userReducer(
           business_title: "",
           contact: "",
           role_id: "",
-          isCompanyContact: false
+          isCompanyContact: 0
         }
       };
     case "LOG_OUT":
@@ -79,7 +79,7 @@ export function userReducer(
           business_title: "",
           contact: "",
           role_id: "",
-          isCompanyContact: false
+          isCompanyContact: 0
         }
       };
     case "SELECT_USER":
