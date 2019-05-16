@@ -57,14 +57,15 @@ const styles = (theme: Theme) =>
 
 export interface Props
   extends WithStyles<typeof styles>,
-  SharedDispatchProps,
-  InState { }
+    SharedDispatchProps,
+    InState {}
 
 interface State {
   detail: boolean;
   companyid: string;
   locationdata: Location[];
   userdata: User[];
+  viewCompany: Company | null;
 }
 
 interface InState {
@@ -74,13 +75,13 @@ interface InState {
 }
 
 class CustomizedTable extends React.Component<Props, State> {
-
   state = {
     detail: false,
-    companyid: '',
+    companyid: "",
     locationdata: [],
     userdata: [],
-  }
+    viewCompany: null
+  };
   componentDidMount() {
     this.props.getCompanyList();
     console.log("CompangPage Mount");
@@ -114,14 +115,16 @@ class CustomizedTable extends React.Component<Props, State> {
 
   handleDetailButtonClick = async company => {
     // this.props.selectUser(company);
+    const companyID = company.company_id;
+    let ldata = { session_key: this.props.sessionkey, company_id: companyID };
+    const lresponse = await $axios.post("/company/getLocation", ldata);
+    this.setState({ locationdata: lresponse.data.data });
 
-    let ldata = { session_key: this.props.sessionkey, company_id: company }
-    const lresponse = await $axios.post('/company/getLocation', ldata)
-    this.setState({ locationdata: lresponse.data.data })
+    let udata = { session_key: this.props.sessionkey, company_id: companyID };
+    const uresponse = await $axios.post("/user/", udata);
+    this.setState({ userdata: uresponse.data.data });
 
-    let udata = { session_key: this.props.sessionkey, company_id: company }
-    const uresponse = await $axios.post('/user/', udata)
-    this.setState({ userdata: uresponse.data.data })
+    this.setState({ viewCompany: company });
 
     this.setState({ detail: true });
   };
@@ -157,7 +160,7 @@ class CustomizedTable extends React.Component<Props, State> {
                       </CustomTableCell>
                       <CustomTableCell align="left">
                         <IconButton
-                          onClick={() => this.handleDetailButtonClick(row.company_id)}
+                          onClick={() => this.handleDetailButtonClick(row)}
                         >
                           <DetailIcon />
                         </IconButton>
@@ -190,8 +193,9 @@ class CustomizedTable extends React.Component<Props, State> {
         <Detail
           open={this.state.detail}
           handleClose={this.handleClose}
-          userdata={this.state.userdata}
-          locationdata={this.state.locationdata}
+          userData={this.state.userdata}
+          locationData={this.state.locationdata}
+          companyData={this.state.viewCompany}
         />
       </main>
     );
@@ -206,7 +210,7 @@ function mapStateToProps(state: any) {
   return {
     companyList: state.companyReducer.companyList,
     role: state.authenticationReducer.profile.info[0].roles[0].role,
-    sessionkey: state.authenticationReducer.token,
+    sessionkey: state.authenticationReducer.token
   };
 }
 

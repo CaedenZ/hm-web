@@ -111,6 +111,7 @@ interface InState {
   onSubmit: any;
   create: boolean;
   updateData: any;
+  view: boolean;
 }
 
 class CreateCompanyPage extends Component<Props, FormState> {
@@ -254,23 +255,39 @@ class CreateCompanyPage extends Component<Props, FormState> {
               <Grid item xs={6}>
                 <Typography variant="h6">Company Icon</Typography>
                 <div style={{ margin: "1rem 1rem", marginTop: 0 }}>
-                  <Avatar
-                    width={200}
-                    height={150}
-                    onCrop={this.onCrop}
-                    onClose={this.onClose}
-                  />
+                  {this.props.view ? (
+                    <img
+                      alt="company icon"
+                      src={this.state.logo_small}
+                      style={{ width: 200, height: 150 }}
+                    />
+                  ) : (
+                    <Avatar
+                      width={200}
+                      height={150}
+                      onCrop={this.onCrop}
+                      onClose={this.onClose}
+                    />
+                  )}
                 </div>
               </Grid>
               <Grid item xs={6}>
                 <Typography variant="h6">Main Logo</Typography>
                 <div style={{ margin: "1rem 1rem", marginTop: 0 }}>
-                  <Avatar
-                    width={200}
-                    height={150}
-                    onCrop={this.onMainCrop}
-                    onClose={this.onMainClose}
-                  />
+                  {this.props.view ? (
+                    <img
+                      alt="company icon"
+                      src={this.state.logo_main}
+                      style={{ width: 200, height: 150 }}
+                    />
+                  ) : (
+                    <Avatar
+                      width={200}
+                      height={150}
+                      onCrop={this.onMainCrop}
+                      onClose={this.onMainClose}
+                    />
+                  )}
                 </div>
               </Grid>
             </Grid>
@@ -278,6 +295,7 @@ class CreateCompanyPage extends Component<Props, FormState> {
               <Grid container>
                 <Grid container item xs={6}>
                   <TextField
+                    disabled={this.props.view}
                     required
                     id="company_name"
                     label="Company Name​"
@@ -289,6 +307,7 @@ class CreateCompanyPage extends Component<Props, FormState> {
                 </Grid>
                 <Grid container item xs={6}>
                   <TextField
+                    disabled={this.props.view}
                     id="webpage_url"
                     label="Company Webpage URL​"
                     className={classes.textField}
@@ -312,6 +331,7 @@ class CreateCompanyPage extends Component<Props, FormState> {
                 <Grid container item xs={6}>
                   {this.props.parameterList.distintCurrencyList.length > 0 && (
                     <Select
+                      isDisabled={this.props.view}
                       className={classes.textField}
                       classes={classes}
                       textFieldProps={{
@@ -336,6 +356,7 @@ class CreateCompanyPage extends Component<Props, FormState> {
                 <Grid container item xs={6}>
                   {this.props.sectorList.length > 0 && (
                     <Select
+                      isDisabled={this.props.view}
                       className={classes.textField}
                       classes={classes}
                       textFieldProps={{
@@ -359,6 +380,7 @@ class CreateCompanyPage extends Component<Props, FormState> {
                   <Grid container item xs={6}>
                     {this.state.sector.industry && (
                       <Select
+                        isDisabled={this.props.view}
                         className={classes.textField}
                         classes={classes}
                         textFieldProps={{
@@ -384,6 +406,7 @@ class CreateCompanyPage extends Component<Props, FormState> {
                 <Grid container item xs={12}>
                   {this.props.parameterList.countryList.length > 0 && (
                     <Select
+                      isDisabled={this.props.view}
                       fullWidth
                       className={classes.countrySelect}
                       classes={classes}
@@ -411,26 +434,6 @@ class CreateCompanyPage extends Component<Props, FormState> {
             </Grid>
           </Grid>
           <Divider />
-          <Typography component="h1" variant="h6">
-            Contact Infomation
-          </Typography>
-          <Grid justify="center" container>
-            <Grid item direction="column" xs={3} container />
-            <Grid container item xs>
-              CONTACT PERSON TABLE SHOULD BE HERE
-            </Grid>
-          </Grid>
-          <Divider />
-          <Typography component="h1" variant="h6">
-            Location Infomation
-          </Typography>
-          <Grid justify="center" container>
-            <Grid item direction="column" xs={3} container />
-            <Grid container item xs>
-              LOCATION TABLE SHOULD BE HERE
-            </Grid>
-          </Grid>
-          <Divider />
           <Divider />
           <div
             style={{
@@ -439,6 +442,7 @@ class CreateCompanyPage extends Component<Props, FormState> {
             }}
           >
             <Button
+              disabled={this.props.view}
               variant="contained"
               color="primary"
               type="submit"

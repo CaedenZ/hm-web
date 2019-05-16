@@ -8,7 +8,6 @@ import {
   DialogTitle,
   DialogContent,
   DialogContentText,
-  TextField,
   DialogActions,
   Table,
   TableHead,
@@ -17,10 +16,10 @@ import {
   withStyles,
   TableCell
 } from "@material-ui/core";
-import $axios from "../../../plugin/axios";
-import { RootState } from "../../../reducer";
 import { User } from "../../../interface/userInterface";
 import { Location } from "../../../interface/locationInterface";
+import FormPage from "./form";
+import { Company } from "../../../interface/companyInterface";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -32,52 +31,58 @@ const CustomTableCell = withStyles(theme => ({
   }
 }))(TableCell);
 
-export interface Props extends SharedDispatchProps, InState { }
+export interface Props extends SharedDispatchProps, InState {}
 
 interface InState {
   open: boolean;
   handleClose: any;
   id: string;
   sessionkey: string;
-  locationdata: Location[];
-  userdata: User[];
+  locationData: Location[];
+  userData: User[];
+  companyData: Company;
 }
-export interface State {
-}
+export interface State {}
 
 class Detail extends Component<Props, State> {
-
-
-
-
+  handleViewCompany = (e, data) => {};
   render() {
     return (
       <Dialog
         open={this.props.open}
         onClose={this.props.handleClose}
         aria-labelledby="form-dialog-title"
+        maxWidth={false}
       >
         <DialogTitle id="form-dialog-title">Detail</DialogTitle>
         <DialogContent>
+          <FormPage
+            create={false}
+            view={true}
+            updateData={this.props.companyData}
+            onSubmit={(e, data) => this.handleViewCompany(e, data)}
+          />
           <DialogContentText>User</DialogContentText>
-          <Table >
+          <Table>
             <TableHead>
               <TableRow>
                 <CustomTableCell />
                 <CustomTableCell align="left">First Name</CustomTableCell>
                 <CustomTableCell align="left">Last Name</CustomTableCell>
                 <CustomTableCell align="left">Email</CustomTableCell>
+                <CustomTableCell align="left">Contact No.</CustomTableCell>
                 <CustomTableCell align="left">Status</CustomTableCell>
               </TableRow>
             </TableHead>
-            {this.props.userdata.length > 0 && (
+            {this.props.userData.length > 0 && (
               <TableBody>
-                {this.props.userdata.map((row, index) => (
+                {this.props.userData.map(row => (
                   <TableRow key={row.email}>
                     <CustomTableCell component="th" scope="row">
                       <img
                         src={row.image}
                         alt="user"
+                        style={{ maxWidth: "50%" }}
                       />
                     </CustomTableCell>
                     <CustomTableCell align="left">
@@ -87,6 +92,9 @@ class Detail extends Component<Props, State> {
                       {row.lastname}
                     </CustomTableCell>
                     <CustomTableCell align="left">{row.email}</CustomTableCell>
+                    <CustomTableCell align="left">
+                      {row.contact}
+                    </CustomTableCell>
                     <CustomTableCell align="left">{row.status}</CustomTableCell>
                   </TableRow>
                 ))}
@@ -94,7 +102,7 @@ class Detail extends Component<Props, State> {
             )}
           </Table>
           <DialogContentText>Location</DialogContentText>
-          <Table >
+          <Table>
             <TableHead>
               <TableRow>
                 <CustomTableCell align="left">Name</CustomTableCell>
@@ -102,9 +110,9 @@ class Detail extends Component<Props, State> {
                 <CustomTableCell align="left">Postal Code</CustomTableCell>
               </TableRow>
             </TableHead>
-            {this.props.locationdata.length > 0 && (
+            {this.props.locationData.length > 0 && (
               <TableBody>
-                {this.props.locationdata.map(row => (
+                {this.props.locationData.map(row => (
                   <TableRow key={row.location_id}>
                     <CustomTableCell component="th" scope="row">
                       {row.location_name}
@@ -130,7 +138,6 @@ class Detail extends Component<Props, State> {
     );
   }
 }
-
 
 export default connect(
   null,
