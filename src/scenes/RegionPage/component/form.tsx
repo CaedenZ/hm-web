@@ -73,7 +73,7 @@ class CreateRegionPage extends Component<Props, FormState> {
     };
 
     this.state.country_list.forEach(element => {
-      a.country_list.push({ country_name: element });
+      a.country_list.push(element);
     });
 
     this.props.createRegion(a);

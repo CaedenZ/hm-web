@@ -140,9 +140,8 @@ class CreateSubCompanyPage extends Component<Props, FormState> {
       keyof FormState
     >);
     const a: any = this.props.paremeterList.currencyList.find((e: Currency) => {
-      return e.country_name === JSON.parse(event.target.value).country_name;
+      return e.country_name === event.target.value;
     });
-    console.log(a);
     this.setState({ base_currency_id: a.code });
   };
 

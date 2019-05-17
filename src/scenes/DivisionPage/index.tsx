@@ -109,9 +109,7 @@ class UnitPage extends React.Component<Props, State> {
   handleEntity = (row, event) => {
     switch (row.unit_type) {
       case "country":
-        const a = JSON.parse(row.unit_data);
-        console.log(a.country_name);
-        this.props.getCompanyByCountry(a.country_name);
+        this.props.getCompanyByCountry(row.unit_data);
         break;
       case "region":
         const b = JSON.parse(row.unit_data);
@@ -175,7 +173,7 @@ class UnitPage extends React.Component<Props, State> {
         case "country":
           return (
             <Typography>
-              {JSON.parse(unit.unit_data).country_name}
+              {unit.unit_data}
               <IconButton onClick={e => this.handleEntity(unit, e)}>
                 <CompanyIcon />
               </IconButton>
