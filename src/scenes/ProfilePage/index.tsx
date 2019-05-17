@@ -21,6 +21,9 @@ import logo from "assets/images/companylogo2.png";
 import { connect } from "react-redux";
 import { Profile, UPDATEPROFILECRED } from "../../interface/authInterface";
 import { Country } from "../../interface/countryInterface";
+import { mapDispatchToProps } from "../../helper/dispachProps";
+import { SharedDispatchProps } from "../../interface/propsInterface";
+import { history } from "../../store";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -32,13 +35,17 @@ const styles = (theme: Theme) =>
       margin: "1rem"
     }
   });
-export interface Props extends InState, WithStyles<typeof styles> {}
+export interface Props
+  extends InState,
+    SharedDispatchProps,
+    WithStyles<typeof styles> {}
 
 export interface State {
   email: string;
   firstname: string;
   lastname: string;
   alias: string;
+  contact: string;
   employee_id: string;
   image: string;
   business_title: string;
@@ -62,7 +69,6 @@ class UserProfilePage extends Component<Props, State> {
     super(props);
     this.onCrop = this.onCrop.bind(this);
     this.onClose = this.onClose.bind(this);
-    // this.changeProfilePic = this.changeProfilePic.bind(this);
   }
 
   state: State = {
@@ -70,6 +76,7 @@ class UserProfilePage extends Component<Props, State> {
     firstname: "",
     lastname: "",
     alias: "",
+    contact: "",
     employee_id: "",
     image: "",
     business_title: "",
@@ -124,11 +131,12 @@ class UserProfilePage extends Component<Props, State> {
     e.preventDefault();
     let data = this.state;
     const profileData: UPDATEPROFILECRED = {
-      company_id: data.info[0].company_id,
+      company_id: data.info.company_id,
       email: data.email,
       firstname: data.firstname,
       lastname: data.lastname,
       country: data.country,
+      contact: data.contact,
       address: data.address,
       postal_code: data.postal_code,
       image: data.image,
@@ -137,11 +145,11 @@ class UserProfilePage extends Component<Props, State> {
       business_title: data.business_title,
       alias: data.alias,
       employee_id: data.employee_id,
-      role_id: data.info[0].roles[0].role_id,
+      role_id: data.info.role_id,
       isCompanyContact: this.state.isCompanyContact ? 1 : 0
     };
-    console.log(data);
-    // this.props.profileData(profileData);
+    this.props.updateUserProfile(profileData);
+    this.setState({ isUpdating: !this.state.isUpdating });
   };
 
   render() {
@@ -233,7 +241,7 @@ class UserProfilePage extends Component<Props, State> {
                       id="role"
                       label="Role"
                       className={classes.textField}
-                      value={this.state.info[0].roles[0].role}
+                      value={this.state.info.role_name}
                     />
                   )}
                   {this.props.countryList.length > 0 && (
@@ -345,5 +353,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(withStyles(styles)(UserProfilePage));

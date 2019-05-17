@@ -1,4 +1,4 @@
-import { loginAction, logoutAction, forgetPasswordAction, updatePasswordAction } from "../actions/authenticationAction";
+import { loginAction, logoutAction, forgetPasswordAction, updatePasswordAction, updateUserProfileAction } from "../actions/authenticationAction";
 import { getUserListAction, createUserAction, deleteUserAction, updateUserAction, selectUserAction } from "../actions/userAction";
 import { SharedDispatchProps } from "../interface/propsInterface";
 import { getCompanyListAction, getChildCompanyListAction, selectCompanyAction, createCompanyAction, createUnitAction, getChildUnitListAction, getUnitListAction, selectUnitAction, createSubUnitAction, deleteUnitAction, updateSubUnitAction, deleteSubUnitAction, updateUnitAction, selectSubUnitAction, getSubUnitListAction, createChildUnitAction, updateChildUnitAction, deleteChildUnitAction, createEntityAction, selectUpdateCompanyAction, updateCompanyAction, deleteCompanyAction, updateEntityAction, deleteEntityAction, selectUpdateUnitAction, selectIndexAction, getCompanyByCountryAction, getCompanyByRegionAction, selectUpdateEntityAction, getDivisionListAction } from "../actions/companyAction";
@@ -35,6 +35,7 @@ export function mapDispatchToProps(dispatch): SharedDispatchProps {
         logout: () => { dispatch(logoutAction()) },
         forgetPassword: (payload) => { dispatch(forgetPasswordAction.request(payload)) },
         updatePassword: (payload) => { dispatch(updatePasswordAction.request(payload)) },
+        updateUserProfile: (payload) => { dispatch(updateUserProfileAction.request(payload)) },
 
         getCountryList: () => { dispatch(getCountryListAction.request()) },
         getCurrencyList: () => { dispatch(getCurrencyListAction.request()) },

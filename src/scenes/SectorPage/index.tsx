@@ -234,7 +234,7 @@ class CustomizedTable extends React.Component<Props, any> {
 function mapStateToProps(state: any) {
   return {
     sectorList: state.sectorReducer.sectorList,
-    role: state.authenticationReducer.profile.info[0].roles[0].role
+    role: state.authenticationReducer.profile.info.role_name
   };
 }
 

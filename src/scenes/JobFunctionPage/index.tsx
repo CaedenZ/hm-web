@@ -233,7 +233,7 @@ class CustomizedTable extends React.Component<Props, any> {
 function mapStateToProps(state: any) {
   return {
     jobFunctionList: state.jobFunctionReducer.jobFunctionList,
-    role: state.authenticationReducer.profile.info[0].roles[0].role
+    role: state.authenticationReducer.profile.info.role_name
   };
 }
 

@@ -5,13 +5,15 @@ import {
   login,
   forgetPassword,
   getUserProfile,
-  updatePassword
+  updatePassword,
+  updateUserProfile
 } from "../api/authenticationAPI";
 import {
   loginAction,
   forgetPasswordAction,
   getUserProfileAction,
-  updatePasswordAction
+  updatePasswordAction,
+  updateUserProfileAction
 } from "../actions/authenticationAction";
 import { isActionOf } from "typesafe-actions";
 import { Profile } from "../interface/authInterface";
@@ -35,6 +37,7 @@ export function authenticationReducer(
       firstname: "",
       lastname: "",
       alias: "",
+      contact: "",
       employee_id: "",
       image: "",
       business_title: "",
@@ -71,6 +74,12 @@ export function authenticationReducer(
       return {
         ...state,
         profile: action.payload
+      };
+    case "UPDATE_USER_PROFILE_SUCCESS":
+      action.asyncDispatch(getUserProfileAction.request(action.payload.email));
+      return {
+        ...state,
+        email: action.payload.email
       };
     default:
       return state;
@@ -128,6 +137,24 @@ export const getUserProfileEpic: Epic<any, any, any, any> = (action$, state$) =>
       ).pipe(
         map((profile: Profile) => getUserProfileAction.success(profile)),
         catchError(error => of(getUserProfileAction.failure(error.message)))
+      )
+    )
+  );
+export const updateUserProfileEpic: Epic<any, any, any, any> = (
+  action$,
+  state$
+) =>
+  action$.pipe(
+    filter(isActionOf(updateUserProfileAction.request)),
+    switchMap(action =>
+      from(
+        updateUserProfile(
+          state$.value.authenticationReducer.token,
+          action.payload
+        )
+      ).pipe(
+        map((token: string) => updateUserProfileAction.success(token)),
+        catchError(error => of(updateUserProfileAction.failure(error.message)))
       )
     )
   );

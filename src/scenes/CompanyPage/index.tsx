@@ -309,7 +309,7 @@ class CustomizedTable extends React.Component<Props, State> {
 function mapStateToProps(state: any) {
   return {
     companyList: state.companyReducer.companyList,
-    role: state.authenticationReducer.profile.info[0].roles[0].role,
+    role: state.authenticationReducer.profile.info.role_name,
     sessionkey: state.authenticationReducer.token
   };
 }

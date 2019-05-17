@@ -22,6 +22,7 @@ export interface Profile {
   firstname: string;
   lastname: string;
   alias: string;
+  contact: string;
   employee_id: string;
   image: string;
   business_title: string;
@@ -39,6 +40,7 @@ export interface UPDATEPROFILECRED {
   firstname: string;
   lastname: string;
   alias: string;
+  contact: string;
   employee_id: string;
   image: string;
   business_title: string;

@@ -388,7 +388,7 @@ function mapStateToProps(state: RootState) {
     selectedCompany: state.companyReducer.selectedCompany,
     divisionList: state.companyReducer.divisionList,
     entityList: state.companyReducer.unitEntity,
-    role: state.authenticationReducer.profile.info[0].roles[0].role
+    role: state.authenticationReducer.profile.info.role_name
   };
 }
 

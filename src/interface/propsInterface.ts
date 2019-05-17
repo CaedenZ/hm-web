@@ -69,6 +69,7 @@ import {
   CREATELOCATIONCRED,
   UPDATELOCATIONCRED
 } from "./locationInterface";
+import { UPDATEPROFILECRED } from "./authInterface";
 
 export interface SharedDispatchProps {
   showSnackBar: () => void;
@@ -80,6 +81,7 @@ export interface SharedDispatchProps {
   logout: () => void;
   forgetPassword: (cred: FORGETPWCRED) => void;
   updatePassword: (cred: string) => void;
+  updateUserProfile: (cred: UPDATEPROFILECRED) => void;
 
   getUserList: () => void;
   getCompanyList: () => void;
