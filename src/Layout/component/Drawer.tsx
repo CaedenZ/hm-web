@@ -189,13 +189,13 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
           path: "/location",
           icon: <LocationOnIcon />,
           index: 5
-        },
-        {
-          title: "Role",
-          path: "/role",
-          icon: <RoleIcon />,
-          index: 6
         }
+        // {
+        //   title: "Role",
+        //   path: "/role",
+        //   icon: <RoleIcon />,
+        //   index: 6
+        // }
       ];
 
       let user = [
@@ -234,12 +234,12 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
           icon: <LocationOnIcon />,
           index: 5
         },
-        {
-          title: "Role",
-          path: "/role",
-          icon: <RoleIcon />,
-          index: 6
-        },
+        // {
+        //   title: "Role",
+        //   path: "/role",
+        //   icon: <RoleIcon />,
+        //   index: 6
+        // },
         {
           title: "Company",
           path: "/company/updateself",
