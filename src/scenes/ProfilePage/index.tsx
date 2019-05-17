@@ -23,7 +23,6 @@ import { Profile, UPDATEPROFILECRED } from "../../interface/authInterface";
 import { Country } from "../../interface/countryInterface";
 import { mapDispatchToProps } from "../../helper/dispachProps";
 import { SharedDispatchProps } from "../../interface/propsInterface";
-import { history } from "../../store";
 
 const styles = (theme: Theme) =>
   createStyles({

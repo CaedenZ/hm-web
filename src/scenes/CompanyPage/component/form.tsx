@@ -147,10 +147,9 @@ class CreateCompanyPage extends Component<Props, FormState> {
 
       const tmpCountryList: object[] = [];
       for (const country of this.props.updateData.country) {
-        const tmpCountry = JSON.parse(country);
         tmpCountryList.push({
-          value: tmpCountry.country_name,
-          label: tmpCountry.country_name
+          value: country,
+          label: country
         });
       }
       this.setState({ displayCountry: tmpCountryList });
@@ -418,7 +417,7 @@ class CreateCompanyPage extends Component<Props, FormState> {
                       }}
                       options={this.props.parameterList.countryList.map(
                         country => ({
-                          value: JSON.stringify(country),
+                          value: country.country_name,
                           label: country.country_name
                         })
                       )}

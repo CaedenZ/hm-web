@@ -17,7 +17,16 @@ import { SharedDispatchProps } from "../../interface/propsInterface";
 import { Company } from "../../interface/companyInterface";
 import { mapDispatchToProps } from "../../helper/dispachProps";
 import { connect } from "react-redux";
-import { IconButton, InputBase, Grid } from "@material-ui/core";
+import {
+  IconButton,
+  InputBase,
+  Grid,
+  Dialog,
+  DialogTitle,
+  DialogActions,
+  Button,
+  DialogContent
+} from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { history } from "../../store";
 import UpdateIcon from "@material-ui/icons/PlaylistAddCheck";
@@ -107,7 +116,7 @@ interface State {
   locationdata: Location[];
   userdata: User[];
   viewCompany: Company | null;
-  displayarr: Company[];
+  searchedVal: string;
 }
 
 interface InState {
@@ -123,12 +132,11 @@ class CustomizedTable extends React.Component<Props, State> {
     locationdata: [],
     userdata: [],
     viewCompany: null,
-    displayarr: []
+    searchedVal: ""
   };
+
   componentDidMount() {
-    this.props.getCompanyList();
-    console.log("CompangPage Mount");
-    this.setState({ displayarr: this.props.companyList });
+    console.log("CompanyPage Mount");
   }
 
   sortCompanyListcompare(
@@ -158,6 +166,7 @@ class CustomizedTable extends React.Component<Props, State> {
   };
 
   handleDetailButtonClick = async company => {
+    console.log(this.props.companyList);
     // this.props.selectUser(company);
     const companyID = company.company_id;
     let ldata = { session_key: this.props.sessionkey, company_id: companyID };
@@ -177,20 +186,24 @@ class CustomizedTable extends React.Component<Props, State> {
     this.setState({ detail: false });
   };
 
-  handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    let arr = this.props.companyList.filter(e => {
+  handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ searchedVal: event.target.value });
+  };
+
+  filteredList = () => {
+    return this.props.companyList.filter(e => {
       if (
         e.company_name
           .toString()
           .toLowerCase()
-          .indexOf(event.target.value.toLowerCase()) >= 0 ||
-        this.checkcountry(e.country, event.target.value)
+          .indexOf(this.state.searchedVal.toLowerCase()) >= 0 ||
+        this.checkcountry(e.country, this.state.searchedVal)
       ) {
         return e;
+      } else {
+        return null;
       }
     });
-
-    this.setState({ displayarr: arr });
   };
 
   checkcountry(countryList, search) {
@@ -236,7 +249,7 @@ class CustomizedTable extends React.Component<Props, State> {
                   root: classes.inputRoot,
                   input: classes.inputInput
                 }}
-                onChange={this.handleChange}
+                onChange={this.handleSearch}
               />
             </div>
           </Grid>
@@ -249,9 +262,9 @@ class CustomizedTable extends React.Component<Props, State> {
                 <CustomTableCell align="left">Action</CustomTableCell>
               </TableRow>
             </TableHead>
-            {this.state.displayarr.length > 0 && (
+            {this.filteredList().length > 0 && (
               <TableBody>
-                {this.state.displayarr
+                {this.filteredList()
                   .sort(this.sortCompanyListcompare)
                   .map((row: Company) => (
                     <TableRow className={classes.row} key={row.company_id}>
@@ -290,13 +303,27 @@ class CustomizedTable extends React.Component<Props, State> {
             )}
           </Table>
         </Paper>
-        <Detail
+
+        <Dialog
           open={this.state.detail}
-          handleClose={this.handleClose}
-          userData={this.state.userdata}
-          locationData={this.state.locationdata}
-          companyData={this.state.viewCompany}
-        />
+          onClose={this.handleClose}
+          aria-labelledby="form-dialog-title"
+          maxWidth={false}
+        >
+          <DialogTitle id="form-dialog-title">Detail</DialogTitle>
+          <DialogContent>
+            <Detail
+              userData={this.state.userdata}
+              locationData={this.state.locationdata}
+              companyData={this.state.viewCompany}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleClose} color="primary">
+              Close
+            </Button>
+          </DialogActions>
+        </Dialog>
       </main>
     );
   }
