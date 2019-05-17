@@ -21,7 +21,7 @@ import { IconButton } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { history } from "../../store";
 import UpdateIcon from "@material-ui/icons/PlaylistAddCheck";
-import { isUserHR, isTCMasterSalesUserMaster } from "../../function/checkRole";
+import { isUserHR, isUserPowerOrHR } from "../../function/checkRole";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -143,7 +143,7 @@ class CustomizedTable extends React.Component<Props, State> {
                           <UpdateIcon />
                         </IconButton>
                       )}
-                      {isTCMasterSalesUserMaster(this.props.role) && (
+                      {!isUserPowerOrHR(this.props.role) && (
                         <IconButton
                           onClick={() => this.handleDelete(row.company_id)}
                         >

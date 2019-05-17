@@ -26,7 +26,7 @@ import ResetIcon from "@material-ui/icons/BorderColor";
 import DetailIcon from "@material-ui/icons/Face";
 import ResetPassword from "./component/resetPassword";
 import { Company } from "../../interface/companyInterface";
-import { isUserHR, isTCMasterSalesUserMaster } from "../../function/checkRole";
+import { isUserHR, isUserPowerOrHR } from "../../function/checkRole";
 import FormPage from "./component/form";
 
 const CustomTableCell = withStyles(theme => ({
@@ -192,7 +192,7 @@ class CustomizedTable extends React.Component<Props, State> {
                         <ResetIcon />
                       </IconButton>
                       {row.email !== this.props.currentUserEmail &&
-                        isTCMasterSalesUserMaster(this.props.role) && (
+                        !isUserPowerOrHR(this.props.role) && (
                           <IconButton
                             onClick={() => this.handleDelete(row.email, index)}
                           >

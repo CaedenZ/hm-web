@@ -29,7 +29,7 @@ import { history } from "../../store";
 import UpdateIcon from "@material-ui/icons/PlaylistAddCheck";
 import CompanyIcon from "@material-ui/icons/Business";
 import AddIcon from "@material-ui/icons/Add";
-import { isUserHR, isTCMasterSalesUserMaster } from "../../function/checkRole";
+import { isUserHR, isUserPowerOrHR } from "../../function/checkRole";
 
 const styles = (theme: Theme) => createStyles({});
 
@@ -282,9 +282,7 @@ class UnitPage extends React.Component<Props, State> {
                                           <UpdateIcon />
                                         </IconButton>
                                       )}
-                                      {isTCMasterSalesUserMaster(
-                                        this.props.role
-                                      ) && (
+                                      {!isUserPowerOrHR(this.props.role) && (
                                         <IconButton
                                           onClick={() =>
                                             this.handleChildDelete(
@@ -328,7 +326,7 @@ class UnitPage extends React.Component<Props, State> {
                                 )}
                               </Grid>
                               <Grid item xs={1}>
-                                {isTCMasterSalesUserMaster(this.props.role) && (
+                                {!isUserPowerOrHR(this.props.role) && (
                                   <IconButton
                                     onClick={() =>
                                       this.handleSubDelete(subrow.unit_id)
@@ -362,7 +360,7 @@ class UnitPage extends React.Component<Props, State> {
                       )}
                     </Grid>
                     <Grid item xs={1}>
-                      {isTCMasterSalesUserMaster(this.props.role) && (
+                      {!isUserPowerOrHR(this.props.role) && (
                         <IconButton
                           onClick={() => this.handleDelete(row.unit_id)}
                         >

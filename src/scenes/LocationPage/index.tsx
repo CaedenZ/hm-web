@@ -23,7 +23,7 @@ import { Location } from "../../interface/locationInterface";
 import { history } from "../../store";
 import UpdateIcon from "@material-ui/icons/PlaylistAddCheck";
 import { Company } from "../../interface/companyInterface";
-import { isUserHR, isTCMasterSalesUserMaster } from "../../function/checkRole";
+import { isUserHR, isUserPowerOrHR } from "../../function/checkRole";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -131,7 +131,7 @@ class LocationPage extends React.Component<Props, State> {
                         </IconButton>
                       )}
                       {/* <Button color="primary" variant="contained" onClick={() => this.handleUpdateButtonClick(row)}>view</Button> */}
-                      {isTCMasterSalesUserMaster(this.props.role) && (
+                      {!isUserPowerOrHR(this.props.role) && (
                         <IconButton
                           onClick={() => this.handleDelete(row.location_id)}
                         >

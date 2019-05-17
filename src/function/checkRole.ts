@@ -54,7 +54,7 @@ export const isUserPower = (role: string) => {
   }
 };
 
-export const isTCMasterSalesUserMaster = (role: string) => {
-  const userArray: string[] = ["User Master", "SuperAdmin", "TC Sales"];
+export const isUserPowerOrHR = (role: string) => {
+  const userArray: string[] = ["User Power", "User HR"];
   return userArray.includes(role);
 };

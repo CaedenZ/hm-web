@@ -23,7 +23,7 @@ import { Role } from "../../interface/roleInterface";
 import { history } from "../../store";
 import UpdateIcon from "@material-ui/icons/PlaylistAddCheck";
 import { Company } from "../../interface/companyInterface";
-import { isUserHR, isTCMasterSalesUserMaster } from "../../function/checkRole";
+import { isUserHR, isUserPowerOrHR } from "../../function/checkRole";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -126,7 +126,7 @@ class RolePage extends React.Component<Props, State> {
                           <UpdateIcon />
                         </IconButton>
                       )}
-                      {isTCMasterSalesUserMaster(this.props.role) && (
+                      {!isUserPowerOrHR(this.props.role) && (
                         <IconButton
                           onClick={() => this.handleDelete(row.role_id)}
                         >
