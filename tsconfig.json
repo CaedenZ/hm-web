@@ -16,5 +16,6 @@
     "jsx": "preserve",
     "noImplicitAny": false
   },
-  "include": ["src", "src/api/salaryRangeAPI.ts"]
+  "include": ["src", "src/api/salaryRangeAPI.ts"],
+  "NODE_PATH": "src/"
 }

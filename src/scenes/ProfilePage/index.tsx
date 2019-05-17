@@ -17,7 +17,7 @@ import {
 } from "@material-ui/core";
 import Avatar from "react-avatar-edit";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import logo from "assets/images/companylogo2.png";
+import logo from "../../assets/images/companylogo2.png";
 import { connect } from "react-redux";
 import { Profile, UPDATEPROFILECRED } from "../../interface/authInterface";
 import { Country } from "../../interface/countryInterface";
