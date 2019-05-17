@@ -151,11 +151,8 @@ class FormPage extends Component<Props, FormState> {
                     }}
                   >
                     {this.props.selectedCompany.country.map(country => (
-                      <MenuItem
-                        key={JSON.parse(country).country_name}
-                        value={JSON.parse(country).country_name}
-                      >
-                        {JSON.parse(country).country_name}
+                      <MenuItem key={country} value={country}>
+                        {country}
                       </MenuItem>
                     ))}
                   </Select>

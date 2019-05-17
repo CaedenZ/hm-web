@@ -197,11 +197,8 @@ class CreateMainUnitPage extends Component<Props, CreateUnitState> {
                 }}
               >
                 {this.props.parentCompany.country.map(country => (
-                  <MenuItem
-                    key={JSON.parse(country).country_name}
-                    value={country}
-                  >
-                    {JSON.parse(country).country_name}
+                  <MenuItem key={country} value={country}>
+                    {country}
                   </MenuItem>
                 ))}
               </Select>

@@ -136,18 +136,15 @@ class JobChartPage extends React.Component<Props, State> {
                 <InputLabel htmlFor="country">Country</InputLabel>
                 <Select
                   value={this.state.country}
-                  onChange={this.handleChangeSelectCompany}
+                  onChange={this.handleChangeSelectCountry}
                   inputProps={{
                     name: "country",
                     id: "country-simple"
                   }}
                 >
                   {JSON.parse(this.state.company).country.map(country => (
-                    <MenuItem
-                      key={JSON.parse(country).country_name}
-                      value={JSON.parse(country).country_name}
-                    >
-                      {JSON.parse(country).country_name}
+                    <MenuItem key={country} value={country}>
+                      {country}
                     </MenuItem>
                   ))}
                 </Select>
