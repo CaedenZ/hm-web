@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
-import InputBase from "@material-ui/core/InputBase";
 import Badge from "@material-ui/core/Badge";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
@@ -14,7 +13,7 @@ import {
   withStyles,
   WithStyles
 } from "@material-ui/core/styles";
-import SearchIcon from "@material-ui/icons/Search";
+import BottomAppBar from "./bottomAppBar";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
@@ -25,7 +24,7 @@ import { mapDispatchToProps } from "../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../interface/propsInterface";
 import { Profile } from "../../interface/authInterface";
-import { Avatar, Typography } from "@material-ui/core";
+import { Avatar, Typography, Grid } from "@material-ui/core";
 
 const drawerWidth = "15vw";
 
@@ -34,50 +33,11 @@ const styles = (theme: Theme) =>
     appBar: {
       width: `calc(100% - ${drawerWidth})`,
       marginLeft: drawerWidth,
-      height: theme.spacing.unit * 10
-      // backgroundColor:'white'
+      height: theme.spacing.unit * 16,
+      backgroundColor: "white"
     },
     grow: {
       flexGrow: 1
-    },
-    search: {
-      position: "relative",
-      borderRadius: theme.shape.borderRadius,
-      backgroundColor: fade(theme.palette.common.white, 0.15),
-      "&:hover": {
-        backgroundColor: fade(theme.palette.common.white, 0.25)
-      },
-      marginRight: theme.spacing.unit * 2,
-      marginLeft: 0,
-      width: "100%",
-      [theme.breakpoints.up("sm")]: {
-        marginLeft: theme.spacing.unit * 3,
-        width: "auto"
-      }
-    },
-    searchIcon: {
-      width: theme.spacing.unit * 9,
-      height: "100%",
-      position: "absolute",
-      pointerEvents: "none",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center"
-    },
-    inputRoot: {
-      color: "inherit",
-      width: "100%"
-    },
-    inputInput: {
-      paddingTop: theme.spacing.unit,
-      paddingRight: theme.spacing.unit,
-      paddingBottom: theme.spacing.unit,
-      paddingLeft: theme.spacing.unit * 10,
-      transition: theme.transitions.create("width"),
-      width: "100%",
-      [theme.breakpoints.up("md")]: {
-        width: 200
-      }
     },
     sectionDesktop: {
       display: "none",
@@ -197,46 +157,41 @@ class PrimarySearchAppBar extends React.Component<Props, State> {
       <div>
         <AppBar position="fixed" className={classes.appBar}>
           <Toolbar style={{ padding: 0 }}>
-            <CompanySelect />
-            <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon />
-              </div>
-              <InputBase
-                placeholder="Search…"
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput
-                }}
-              />
-            </div>
-            <div className={classes.grow} />
-            <div className={classes.sectionDesktop}>
-              <IconButton
-                aria-owns={isMenuOpen ? "material-appbar" : undefined}
-                aria-haspopup="true"
-                onClick={this.handleProfileMenuOpen}
-                color="inherit"
-              >
-                <Avatar
-                  alt="Profile Image"
-                  src={this.props.profile.image}
-                  className={classes.avatar}
-                />
-                <Typography variant="subtitle1" style={{ color: "white" }}>
-                  {this.props.profile.email}
-                </Typography>
-              </IconButton>
-            </div>
-            <div className={classes.sectionMobile}>
-              <IconButton
-                aria-haspopup="true"
-                onClick={this.handleMobileMenuOpen}
-                color="inherit"
-              >
-                <MoreIcon />
-              </IconButton>
-            </div>
+            <Grid container direction="column" justify="center">
+              <Grid container item justify="center" style={{ height: 80 }}>
+                <CompanySelect />
+                <div className={classes.grow} />
+                <div className={classes.sectionDesktop}>
+                  <IconButton
+                    aria-owns={isMenuOpen ? "material-appbar" : undefined}
+                    aria-haspopup="true"
+                    onClick={this.handleProfileMenuOpen}
+                    color="inherit"
+                  >
+                    <Avatar
+                      alt="Profile Image"
+                      src={this.props.profile.image}
+                      className={classes.avatar}
+                    />
+                    <Typography variant="subtitle1">
+                      {this.props.profile.email}
+                    </Typography>
+                  </IconButton>
+                </div>
+                <div className={classes.sectionMobile}>
+                  <IconButton
+                    aria-haspopup="true"
+                    onClick={this.handleMobileMenuOpen}
+                    color="inherit"
+                  >
+                    <MoreIcon />
+                  </IconButton>
+                </div>
+              </Grid>
+              <Grid container item justify="center">
+                <BottomAppBar />
+              </Grid>
+            </Grid>
           </Toolbar>
         </AppBar>
         {renderMenu}

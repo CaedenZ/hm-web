@@ -27,43 +27,14 @@ class Layout extends Component<Props> {
     this.props.getJobChartList();
   }
   render() {
-    const breadcrumb = () => {
-      const pathnames = history.location.pathname.split("/").filter(x => x);
-
-      return (
-        <Breadcrumbs
-          separator={<NavigateNextIcon fontSize="small" />}
-          arial-label="Breadcrumb"
-        >
-          <RouterLink key="/" to="/">
-            <p>Home</p>
-          </RouterLink>
-          {pathnames.map((value, index) => {
-            const last = index === pathnames.length - 1;
-            const to = `/${pathnames.slice(0, index + 1).join("/")}`;
-            const displayTo = to.split("/")[to.split("/").length - 1];
-            return last ? (
-              <Typography color="textPrimary" key={to}>
-                {displayTo}
-              </Typography>
-            ) : (
-                <RouterLink key={to} to={to}>
-                  <p>{displayTo}</p>
-                </RouterLink>
-              );
-          })}
-        </Breadcrumbs>
-      );
-    };
-
     if (this.props.token === "") {
       return <Redirect to="/login" />;
     } else {
       return (
         <PermanentDrawerLeft>
-          <div style={{ display: "inline-block" }}>
+          <div style={{ display: "inline-block", height: "5vh" }}>
             {/* <Home /> */}
-            {breadcrumb()}
+            {/* {breadcrumb()} */}
           </div>
           <ErrorBoundary>{this.props.children}</ErrorBoundary>
           <CustomSnackBar />
