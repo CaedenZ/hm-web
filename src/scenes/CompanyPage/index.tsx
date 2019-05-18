@@ -32,7 +32,7 @@ import { history } from "../../store";
 import UpdateIcon from "@material-ui/icons/PlaylistAddCheck";
 import ViewIcon from "@material-ui/icons/ZoomIn";
 import DetailIcon from "@material-ui/icons/Face";
-import { isTechnical, isSuperAdmin } from "../../function/checkRole";
+import { isTechnical, isMaster } from "../../function/checkRole";
 import Detail from "./component/Detail";
 import { User } from "../../interface/userInterface";
 import $axios from "../../plugin/axios";
@@ -282,14 +282,16 @@ class CustomizedTable extends React.Component<Props, State> {
                         >
                           <ViewIcon />
                         </IconButton>
-                        <IconButton
-                          onClick={() => this.handleUpdateButtonClick(row)}
-                        >
-                          <UpdateIcon />
-                        </IconButton>
-                        {/* <Button color="primary" variant="contained" onClick={() => this.handleUpdateButtonClick(row)}>view</Button> */}
+                        {!isTechnical(this.props.role) && (
+                          <IconButton
+                            onClick={() => this.handleUpdateButtonClick(row)}
+                          >
+                            <UpdateIcon />
+                          </IconButton>
+                        )}
+
                         {row.company_id !== "5ZwOXIkeKuPhpFriTsmD" &&
-                          isSuperAdmin(this.props.role) && (
+                          isMaster(this.props.role) && (
                             <IconButton
                               onClick={() => this.handleDelete(row.company_id)}
                             >

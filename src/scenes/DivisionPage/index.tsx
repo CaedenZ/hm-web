@@ -342,11 +342,13 @@ class UnitPage extends React.Component<Props, State> {
                   )}
                   <Grid justify="flex-end" alignItems="flex-end" container>
                     <Grid item xs={1}>
-                      <IconButton
-                        onClick={() => this.handleAddButtonClick(row)}
-                      >
-                        <AddIcon />
-                      </IconButton>
+                      {!isUserHR(this.props.role) && (
+                        <IconButton
+                          onClick={() => this.handleAddButtonClick(row)}
+                        >
+                          <AddIcon />
+                        </IconButton>
+                      )}
                     </Grid>
                     <Grid item xs={1}>
                       {!isUserHR(this.props.role) && (

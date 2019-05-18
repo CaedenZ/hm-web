@@ -1,16 +1,12 @@
 import React, { Component } from "react";
 import PermanentDrawerLeft from "./component/Drawer";
 import { connect } from "react-redux";
-import { Redirect, Link as RouterLink } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { mapDispatchToProps } from "../helper/dispachProps";
 import { SharedDispatchProps } from "../interface/propsInterface";
-import Breadcrumbs from "@material-ui/lab/Breadcrumbs";
-import NavigateNextIcon from "@material-ui/icons/NavigateNext";
-import Typography from "@material-ui/core/Typography";
 import CustomSnackBar from "./component/snackBar";
 import CustomDialog from "./component/deleteDialog";
 import ErrorBoundary from "./component/error";
-import { history } from "../store";
 
 export interface Props extends SharedDispatchProps {
   token: string;
@@ -33,8 +29,6 @@ class Layout extends Component<Props> {
       return (
         <PermanentDrawerLeft>
           <div style={{ display: "inline-block", height: "5vh" }}>
-            {/* <Home /> */}
-            {/* {breadcrumb()} */}
           </div>
           <ErrorBoundary>{this.props.children}</ErrorBoundary>
           <CustomSnackBar />

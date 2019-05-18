@@ -188,9 +188,13 @@ class CustomizedTable extends React.Component<Props, State> {
                           <UpdateIcon />
                         </IconButton>
                       )}
-                      <IconButton onClick={() => this.handleResetPassword(row)}>
-                        <ResetIcon />
-                      </IconButton>
+                      {isUserHR(this.props.role) && (
+                        <IconButton
+                          onClick={() => this.handleResetPassword(row)}
+                        >
+                          <ResetIcon />
+                        </IconButton>
+                      )}
                       {row.email !== this.props.currentUserEmail &&
                         !isUserPowerOrHR(this.props.role) && (
                           <IconButton

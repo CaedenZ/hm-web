@@ -23,7 +23,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import classnames from "classnames";
 import { history } from "../../store";
 import { Sector } from "../../interface/sectorInterface";
-import { isSuperAdmin, isTechnical, isSales } from "../../function/checkRole";
+import { isMaster, isTechnical, isSales } from "../../function/checkRole";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -161,7 +161,7 @@ class CustomizedTable extends React.Component<Props, any> {
 
                     {!this.state[index] ? (
                       <CustomTableCell align="center">
-                        {isSuperAdmin(this.props.role) && (
+                        {isMaster(this.props.role) && (
                           <IconButton
                             onClick={() =>
                               this.handleDeleteSector(row.sector_id)
@@ -191,7 +191,7 @@ class CustomizedTable extends React.Component<Props, any> {
                                       {row.name}
                                     </CustomTableCell>
                                     <CustomTableCell align="left">
-                                      {isSuperAdmin(this.props.role) && (
+                                      {isMaster(this.props.role) && (
                                         <IconButton
                                           onClick={() =>
                                             this.handleDeleteIndustry(

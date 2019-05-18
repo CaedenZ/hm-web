@@ -18,7 +18,7 @@ import MailIcon from "@material-ui/icons/Mail";
 import UserIcon from "@material-ui/icons/Person";
 import CompanyIcon from "@material-ui/icons/Business";
 import UnitIcon from "@material-ui/icons/Group";
-import RoleIcon from "@material-ui/icons/Functions";
+// import RoleIcon from "@material-ui/icons/Functions";
 import JobGradeIcon from "@material-ui/icons/Note";
 import RegionIcon from "@material-ui/icons/SwapHoriz";
 import SettingIcon from "@material-ui/icons/Settings";
@@ -40,7 +40,7 @@ import { SharedDispatchProps } from "../../interface/propsInterface";
 import { Company } from "../../interface/companyInterface";
 import { Collapse } from "@material-ui/core";
 import packageJson from "../../../package.json";
-import { isSuperAdmin } from "../../function/checkRole";
+import { isMaster } from "../../function/checkRole";
 
 const drawerWidth = "15vw";
 
@@ -281,7 +281,7 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
     const adminfunction = (): any => {
       //Init the admin list
       let adm: object[] = [];
-      if (isSuperAdmin(this.props.role)) {
+      if (isMaster(this.props.role)) {
         //Only SuperAdmin is allowed to use the Setting
         adm.push({
           title: "Setting",

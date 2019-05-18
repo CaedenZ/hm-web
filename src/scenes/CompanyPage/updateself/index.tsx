@@ -14,6 +14,7 @@ import { Company } from "../../../interface/companyInterface";
 import { CountryState } from "../../../interface/countryInterface";
 import { history } from "../../../store";
 import FormPage from "../component/form";
+import { isUserHR } from "../../../function/checkRole";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -50,6 +51,7 @@ export interface Props
 interface InState {
   updatingCompany: Company;
   paremeterList: CountryState;
+  role: string;
 }
 class UpdateCompanyPage extends Component<Props, UpdateCompanyState> {
   constructor(props) {
@@ -82,26 +84,6 @@ class UpdateCompanyPage extends Component<Props, UpdateCompanyState> {
     webpage_url: ""
   };
 
-  // componentDidMount() {
-  //   const s: UpdateCompanyState = {
-  //     ...this.props.updatingCompany,
-  //     industry: [],
-  //     country: [],
-  //     sector: [],
-  //   }
-
-  //   this.props.updatingCompany.industry.forEach(element => {
-  //     s.industry.push(element.name)
-  //   });
-  //   this.props.updatingCompany.sector.forEach(element => {
-  //     s.sector.push(element.name)
-  //   });
-  //   this.props.updatingCompany.country.forEach(element => {
-  //     s.country.push(element.country_name)
-  //   });
-
-  //   this.setState(s)
-  // }
   onClose() {
     this.setState({ logo_small: "" });
   }
@@ -171,7 +153,8 @@ class UpdateCompanyPage extends Component<Props, UpdateCompanyState> {
           My Company
         </Typography>
         <FormPage
-          create={false}
+          view={isUserHR(this.props.role)}
+          create={!isUserHR(this.props.role)}
           updateData={this.props.updatingCompany}
           onSubmit={(e, data) => this.handleUpdateCompany(e, data)}
         />
@@ -187,7 +170,8 @@ class UpdateCompanyPage extends Component<Props, UpdateCompanyState> {
 function mapStateToProps(state: any) {
   return {
     updatingCompany: state.companyReducer.companyList[0],
-    paremeterList: state.countryReducer
+    paremeterList: state.countryReducer,
+    role: state.authenticationReducer.profile.info.role_name
   };
 }
 
