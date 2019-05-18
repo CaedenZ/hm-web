@@ -131,7 +131,9 @@ class CustomizedTable extends React.Component<Props, State> {
                     <CustomTableCell align="right">
                       {row.contact_email}
                     </CustomTableCell>
-                    <CustomTableCell align="right">row.country</CustomTableCell>
+                    <CustomTableCell align="right">
+                      {row.country}
+                    </CustomTableCell>
                     <CustomTableCell align="right">
                       {/* <IconButton onClick={() => this.handleViewButtonClick(row)}><ViewIcon /></IconButton> */}
                       {!isUserHR(this.props.role) && (
