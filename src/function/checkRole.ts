@@ -1,11 +1,3 @@
-export const isSuperAdmin = (role: string) => {
-  if (role === "SuperAdmin") {
-    return true;
-  } else {
-    return false;
-  }
-};
-
 export const isMaster = (role: string) => {
   if (role === "TC Master") {
     return true;
