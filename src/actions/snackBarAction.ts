@@ -1,7 +1,7 @@
 import { createAction } from "typesafe-actions";
 
-const CLOSS_SNACKBAR = "CLOSS_SNACKBAR"
-export const closeSnackBarAction = createAction(CLOSS_SNACKBAR,
+const CLOSE_SNACKBAR = "CLOSE_SNACKBAR"
+export const closeSnackBarAction = createAction(CLOSE_SNACKBAR,
     action => {
         return () => action()
     })

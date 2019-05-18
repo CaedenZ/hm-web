@@ -23,7 +23,7 @@ export function dialogReducer(state: DialogState = {
                 id: '',
             }
         case 'SHOW_DIALOG': return { open: true, type: action.payload.type, object: action.payload.object, id: action.payload.id }
-        case 'CLOSS_DIALOG': return { open: false, type: '', object: '', id: '', }
+        case 'CLOSE_DIALOG': return { open: false, type: '', object: '', id: '', }
         case 'GET_COMPANY_LIST_FAILURE': return { open: true, type: 'token', object: '', id: '', }
         case 'GET_CHILD_COMPANY_LIST_FAILURE': return { open: true, type: 'token', object: '', id: '', }
         case 'GET_UNIT_LIST_FAILURE': return { open: true, type: 'token', object: '', id: '', }
