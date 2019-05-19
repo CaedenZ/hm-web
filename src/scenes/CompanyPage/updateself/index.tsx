@@ -56,10 +56,6 @@ interface InState {
 class UpdateCompanyPage extends Component<Props, UpdateCompanyState> {
   constructor(props) {
     super(props);
-    this.onCrop = this.onCrop.bind(this);
-    this.onClose = this.onClose.bind(this);
-    this.onMainCrop = this.onMainCrop.bind(this);
-    this.onMainClose = this.onMainClose.bind(this);
     this.handleUpdateCompany = this.handleUpdateCompany.bind(this);
   }
 
@@ -84,41 +80,9 @@ class UpdateCompanyPage extends Component<Props, UpdateCompanyState> {
     webpage_url: ""
   };
 
-  onClose() {
-    this.setState({ logo_small: "" });
+  componentDidMount() {
+    console.log(!isUserHR(this.props.role));
   }
-
-  onCrop(image) {
-    this.setState({ logo_small: image });
-    console.log(this.state);
-  }
-
-  onMainClose() {
-    this.setState({ logo_main: "" });
-  }
-
-  onMainCrop(logoMain) {
-    this.setState({ logo_main: logoMain });
-    console.log(this.state);
-  }
-
-  handleChange = (statekay: keyof UpdateCompanyState) => (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    this.setState(({ [statekay]: event.target.value } as unknown) as Pick<
-      UpdateCompanyState,
-      keyof UpdateCompanyState
-    >);
-  };
-
-  handleChangeSelect = (statekay: keyof UpdateCompanyState) => (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    this.setState(({ [statekay]: event.target.value } as unknown) as Pick<
-      UpdateCompanyState,
-      keyof UpdateCompanyState
-    >);
-  };
 
   handleUpdateCompany = (e, data) => {
     e.preventDefault();
@@ -154,7 +118,7 @@ class UpdateCompanyPage extends Component<Props, UpdateCompanyState> {
         </Typography>
         <FormPage
           view={isUserHR(this.props.role)}
-          create={!isUserHR(this.props.role)}
+          create={false}
           updateData={this.props.updatingCompany}
           onSubmit={(e, data) => this.handleUpdateCompany(e, data)}
         />
