@@ -50,3 +50,8 @@ export const isUserPowerOrHR = (role: string) => {
   const userArray: string[] = ["User Power", "User HR"];
   return userArray.includes(role);
 };
+
+export const isUserGroup = (role: string) => {
+  const userArray: string[] = ["User Power", "User HR", "User Master"];
+  return userArray.includes(role);
+};

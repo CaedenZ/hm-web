@@ -27,6 +27,7 @@ import { RootState } from "../../../reducer";
 import { Country } from "../../../interface/countryInterface";
 import { Location } from "../../../interface/locationInterface";
 import { Role } from "../../../interface/roleInterface";
+import { isUserGroup } from "../../../function/checkRole";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -70,6 +71,7 @@ interface FormState {
   locationID: number | undefined;
   role_id: string;
   isCompanyContact: boolean;
+  displayRoleList: Role[];
 }
 interface Props
   extends InState,
@@ -80,6 +82,7 @@ interface InState {
   countryList: Country[];
   locationList: Location[];
   roleList: Role[];
+  role: string;
   create: boolean;
   view: boolean;
   updateData: any;
@@ -110,7 +113,8 @@ class FormPage extends Component<Props, FormState> {
     contact: "",
     locationID: undefined,
     role_id: "",
-    isCompanyContact: false
+    isCompanyContact: false,
+    displayRoleList: []
   };
   componentDidMount() {
     if (!this.props.create) {
@@ -118,6 +122,17 @@ class FormPage extends Component<Props, FormState> {
         .isCompanyContact; //Converts to boolean
       this.setState(this.props.updateData);
     }
+    let tmpRoleList: Role[] = [];
+    if (isUserGroup(this.props.role)) {
+      for (const role of this.props.roleList) {
+        if (isUserGroup(role.role_name)) {
+          tmpRoleList.push(role);
+        }
+      }
+    } else {
+      tmpRoleList = this.props.roleList;
+    }
+    this.setState({ displayRoleList: tmpRoleList });
   }
 
   onClose() {
@@ -367,7 +382,7 @@ class FormPage extends Component<Props, FormState> {
                   )}
                 </Grid>
                 <Grid item xs={6}>
-                  {this.props.roleList.length > 0 && (
+                  {this.state.displayRoleList.length > 0 && (
                     <FormControl className={classes.textField}>
                       <InputLabel>Role</InputLabel>
                       <NativeSelect
@@ -382,7 +397,7 @@ class FormPage extends Component<Props, FormState> {
                         }}
                       >
                         <option value={undefined} />
-                        {this.props.roleList.map(role => (
+                        {this.state.displayRoleList.map(role => (
                           <option value={role.role_id} key={role.role_id}>
                             {role.role_name}
                           </option>
@@ -454,6 +469,7 @@ class FormPage extends Component<Props, FormState> {
                 </Grid>
                 <Grid item xs={6}>
                   <TextValidator
+                    required
                     disabled={this.props.view}
                     InputProps={{ classes: { disabled: classes.disabled } }}
                     fullWidth
@@ -542,7 +558,8 @@ function mapStateToProps(state: RootState) {
   return {
     countryList: state.countryReducer.countryList,
     locationList: state.locationReducer.locationList,
-    roleList: state.roleReducer.roleList
+    roleList: state.roleReducer.roleList,
+    role: state.authenticationReducer.profile.info.role_name
   };
 }
 
