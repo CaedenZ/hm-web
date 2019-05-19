@@ -201,12 +201,16 @@ class FormPage extends Component<Props, FormState> {
             <Grid item xs={3}>
               <div style={{ margin: "1rem" }}>
                 <Typography variant="h6">Profile Picture</Typography>
-                <Avatar
-                  width={200}
-                  height={150}
-                  onCrop={this.onCrop}
-                  onClose={this.onClose}
-                />
+                {this.props.view ? (
+                  <img src={this.state.image} alt="Preview" />
+                ) : (
+                  <Avatar
+                    width={200}
+                    height={150}
+                    onCrop={this.onCrop}
+                    onClose={this.onClose}
+                  />
+                )}
               </div>
             </Grid>
             <Grid container item xs>
