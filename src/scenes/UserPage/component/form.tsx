@@ -220,7 +220,7 @@ class FormPage extends Component<Props, FormState> {
               <Grid container>
                 <Grid container item xs={6}>
                   <TextValidator
-                    disabled={this.props.view}
+                    disabled={this.props.view || !this.props.create}
                     InputProps={{ classes: { disabled: classes.disabled } }}
                     fullWidth
                     className={classes.textField}
