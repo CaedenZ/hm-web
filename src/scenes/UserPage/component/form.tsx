@@ -416,7 +416,7 @@ class FormPage extends Component<Props, FormState> {
                     name="postal_code"
                     autoComplete="postal-code"
                     value={this.state.postal_code}
-                    validators={["required", "isNumber"]}
+                    validators={["required"]}
                     errorMessages={[
                       "this field is required",
                       "postal code is not valid"
