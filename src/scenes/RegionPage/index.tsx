@@ -116,7 +116,7 @@ class RegionPage extends React.Component<Props, State> {
                       {row.region_name}
                     </CustomTableCell>
                     {row.country_list.length > 0 ? (
-                      <CustomTableCell align="right">
+                      <CustomTableCell align="left">
                         {row.country_list.map((country, i, arr) => {
                           if (arr.length - 1 === i) {
                             return country;
