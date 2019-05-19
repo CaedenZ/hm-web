@@ -17,6 +17,7 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
+import UserIcon from "@material-ui/icons/Person";
 import CompanySelect from "./companySelect";
 import { history } from "../../store";
 import { mapDispatchToProps } from "../../helper/dispachProps";
@@ -171,7 +172,9 @@ class PrimarySearchAppBar extends React.Component<Props, State> {
                       alt="Profile Image"
                       src={this.props.profile.image}
                       className={classes.avatar}
-                    />
+                    >
+                      {this.props.profile.image === "" && <UserIcon />}
+                    </Avatar>
                     <Typography variant="subtitle1">
                       {this.props.profile.email}
                     </Typography>

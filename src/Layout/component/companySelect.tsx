@@ -48,7 +48,7 @@ class CompanySelectMenu extends React.Component<Props, State> {
 
     return (
       <div>
-        <Grid container spacing={16}>
+        <Grid container spacing={16} style={{height: "100%"}}>
           <Grid
             container
             item
