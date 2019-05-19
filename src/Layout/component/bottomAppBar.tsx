@@ -17,6 +17,7 @@ import { Link as RouterLink } from "react-router-dom";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import { fade } from "@material-ui/core/styles/colorManipulator";
 import SearchIcon from "@material-ui/icons/Search";
+import { isUserHR } from "../../function/checkRole";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -79,6 +80,7 @@ interface State {}
 interface InState {
   companyList: Company[];
   selectedCompany: Company;
+  role: string;
 }
 class BottomAppBar extends React.Component<Props, State> {
   state = {
@@ -117,20 +119,24 @@ class BottomAppBar extends React.Component<Props, State> {
         style={{ marginLeft: "1rem" }}
       >
         <RouterLink key="/" to="/" className={classes.link}>
-          <p>Home</p>
+          <p>Dashboard</p>
         </RouterLink>
         {pathnames.map((value, index) => {
           const last = index === pathnames.length - 1;
           const to = `/${pathnames.slice(0, index + 1).join("/")}`;
           const displayTo = to.split("/")[to.split("/").length - 1];
+          const isUserHRAndPageIsCompany =
+            isUserHR(this.props.role) && displayTo === "company";
           return last ? (
             <Typography key={to} style={{ color: "#FFF" }}>
               {displayTo}
             </Typography>
           ) : (
-            <RouterLink key={to} to={to} className={classes.link}>
-              <p>{displayTo}</p>
-            </RouterLink>
+            !isUserHRAndPageIsCompany && (
+              <RouterLink key={to} to={to} className={classes.link}>
+                <p>{displayTo}</p>
+              </RouterLink>
+            )
           );
         })}
       </Breadcrumbs>
@@ -188,7 +194,8 @@ class BottomAppBar extends React.Component<Props, State> {
 function mapStateToProps(state: any) {
   return {
     companyList: state.companyReducer.companyList,
-    selectedCompany: state.companyReducer.selectedCompany
+    selectedCompany: state.companyReducer.selectedCompany,
+    role: state.authenticationReducer.profile.info.role_name
   };
 }
 
