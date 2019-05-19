@@ -20,6 +20,7 @@ import { RootState } from "../../../../reducer";
 import { mapDispatchToProps } from "../../../../helper/dispachProps";
 import { connect } from "react-redux";
 import UpdateCell from "./updatecell";
+import { isMaster } from "../../../../function/checkRole";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -78,6 +79,7 @@ interface InState {
   selectedCompany: Company;
   jobchartList: JobChart[];
   companyData: JobChart[];
+  role: string;
 }
 class CustomizedTable extends React.Component<Props, State> {
   state = {
@@ -216,7 +218,9 @@ class CustomizedTable extends React.Component<Props, State> {
 
     return (
       <Paper className={classes.root}>
-        <Button onClick={this.handleEditButtonClick}>Edit</Button>
+        {isMaster(this.props.role) && (
+          <Button onClick={this.handleEditButtonClick}>Edit</Button>
+        )}
         <UpdateCell
           open={this.state.updatebox}
           handleClose={this.handleClose}
@@ -249,7 +253,8 @@ class CustomizedTable extends React.Component<Props, State> {
 
 function mapStateToProps(state: RootState) {
   return {
-    selectedCompany: state.companyReducer.selectedCompany
+    selectedCompany: state.companyReducer.selectedCompany,
+    role: state.authenticationReducer.profile.info.role_name
   };
 }
 

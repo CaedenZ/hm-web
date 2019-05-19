@@ -24,6 +24,7 @@ import {
 import { Company } from "../../../interface/companyInterface";
 import CustomizedTable from "./component/table";
 import { getJobChartByID } from "../../../api/jobchartAPI";
+import { isMaster } from "../../../function/checkRole";
 
 const styles = (theme: Theme) => createStyles({});
 
@@ -43,6 +44,7 @@ interface InState {
   sessionkey: string;
   companyList: Company[];
   jobchartList: JobChart[];
+  role: string;
 }
 class JobChartPage extends React.Component<Props, State> {
   state: State = {
@@ -153,7 +155,9 @@ class JobChartPage extends React.Component<Props, State> {
           )}
           {this.state.company !== "" && (
             <Grid item xs={3}>
-              <CustomButton onClick={this.handleAdd}>Add</CustomButton>
+              {isMaster(this.props.role) && (
+                <CustomButton onClick={this.handleAdd}>Add</CustomButton>
+              )}
             </Grid>
           )}
         </Grid>
@@ -175,7 +179,8 @@ function mapStateToProps(state: RootState) {
   return {
     sessionkey: state.authenticationReducer.token,
     companyList: state.companyReducer.companyList,
-    jobchartList: state.jobchartReducer.jobchartList
+    jobchartList: state.jobchartReducer.jobchartList,
+    role: state.authenticationReducer.profile.info.role_name
   };
 }
 
