@@ -208,11 +208,13 @@ class CustomizedTable extends React.Component<Props, any> {
                               </TableBody>
                             </Table>
                           )}
-                          <IconButton
-                            onClick={() => this.handleNewIndustryClick(row)}
-                          >
-                            <AddIcon />
-                          </IconButton>
+                          {isMaster(this.props.role) && (
+                            <IconButton
+                              onClick={() => this.handleNewIndustryClick(row)}
+                            >
+                              <AddIcon />
+                            </IconButton>
+                          )}
                         </Collapse>
                       </CustomTableCell>
                     )}

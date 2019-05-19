@@ -304,13 +304,15 @@ class UnitPage extends React.Component<Props, State> {
                               container
                             >
                               <Grid item xs={1}>
-                                <IconButton
-                                  onClick={() =>
-                                    this.handleSubAddButtonClick(subrow)
-                                  }
-                                >
-                                  <AddIcon />
-                                </IconButton>
+                                {!isUserHR(this.props.role) && (
+                                  <IconButton
+                                    onClick={() =>
+                                      this.handleSubAddButtonClick(subrow)
+                                    }
+                                  >
+                                    <AddIcon />
+                                  </IconButton>
+                                )}
                               </Grid>
                               <Grid item xs={1}>
                                 {!isUserHR(this.props.role) && (
