@@ -29,6 +29,9 @@ const styles = () =>
       width: "20rem",
       margin: "1rem"
     },
+    disabled: {
+      color: "#545454"
+    },
     countrySelect: {
       width: "56rem",
       margin: "1rem"
@@ -295,6 +298,7 @@ class CreateCompanyPage extends Component<Props, FormState> {
                 <Grid container item xs={6}>
                   <TextField
                     disabled={this.props.view}
+                    InputProps={{ classes: { disabled: classes.disabled } }}
                     required
                     id="company_name"
                     label="Company Name​"
@@ -307,6 +311,7 @@ class CreateCompanyPage extends Component<Props, FormState> {
                 <Grid container item xs={6}>
                   <TextField
                     disabled={this.props.view}
+                    InputProps={{ classes: { disabled: classes.disabled } }}
                     id="webpage_url"
                     label="Company Webpage URL​"
                     className={classes.textField}
