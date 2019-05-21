@@ -144,10 +144,10 @@ class JobChartPage extends React.Component<Props, State> {
                 >
                   {JSON.parse(this.state.company).country.map(country => (
                     <MenuItem
-                      key={JSON.parse(country).country_name}
-                      value={JSON.parse(country).country_name}
+                      key={(country)}
+                      value={(country)}
                     >
-                      {JSON.parse(country).country_name}
+                      {(country)}
                     </MenuItem>
                   ))}
                 </Select>

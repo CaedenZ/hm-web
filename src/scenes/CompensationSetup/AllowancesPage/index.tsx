@@ -148,7 +148,7 @@ class AllowancesPage extends React.Component<Props, State> {
                 }}
               >
                 {this.props.selectedCompany.country.map((country) =>
-                  <MenuItem key={JSON.parse(country).country_name} value={JSON.parse(country).country_name}>{JSON.parse(country).country_name}</MenuItem>
+                  <MenuItem key={(country)} value={(country)}>{(country)}</MenuItem>
                 )}
               </Select>
             </FormControl>

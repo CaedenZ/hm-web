@@ -19,7 +19,10 @@ import {
   MenuItem,
   Grid,
   FormControlLabel,
-  Checkbox
+  Checkbox,
+  TextField,
+  Button,
+  Divider
 } from "@material-ui/core";
 import { history } from "../../../store";
 import { Company } from "../../../interface/companyInterface";
@@ -43,7 +46,11 @@ const styles = (theme: Theme) =>
     },
     logo: {
       height: "20px"
-    }
+    },
+    textField: {
+      marginLeft: theme.spacing.unit,
+      marginRight: theme.spacing.unit,
+    },
   });
 
 export interface Props
@@ -52,8 +59,12 @@ export interface Props
   InState { }
 
 interface State {
-  country: string;
+  filtercountry: string;
+  filterglobal: boolean;
+  jobgrade_name: string;
+  type: string;
   global: boolean;
+  country: string;
 }
 
 interface InState {
@@ -63,8 +74,12 @@ interface InState {
 }
 class JobGradePage extends React.Component<Props, State> {
   state = {
+    filtercountry: "",
+    filterglobal: true,
+    jobgrade_name: "",
+    type: "",
+    global: false,
     country: "",
-    global: true
   };
 
   componentDidMount() {
@@ -98,9 +113,9 @@ class JobGradePage extends React.Component<Props, State> {
     history.push("/jobgrade/create");
   };
 
-  handleChange = () => {
-    this.setState({ global: !this.state.global } as any);
-    this.setState({ country: '' } as any);
+  handleChangeglobal = () => {
+    this.setState({ filterglobal: !this.state.filterglobal } as any);
+    this.setState({ filtercountry: '' } as any);
   };
 
   handleChangeSelect = (statekay: keyof State) => (
@@ -109,36 +124,131 @@ class JobGradePage extends React.Component<Props, State> {
     this.setState({ [statekay]: event.target.value } as any);
   };
 
+  handleChange = (statekay: keyof State) => (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    this.setState({ [statekay]: event.target.value } as any);
+  };
+
+  handleChangeCheck = () => {
+    this.setState({ global: !this.state.global } as any);
+    this.setState({ country: "" });
+  };
+
   getdata = () => {
-    if (this.state.global) {
+    if (this.state.filterglobal) {
       return this.props.jobgradeList.filter(e => {
         return e.global === 1;
       });
-    } else if (this.state.country !== "") {
+    } else if (this.state.filtercountry !== "") {
       return this.props.jobgradeList.filter(e => {
-        return e.country === this.state.country;
+        return e.country === this.state.filtercountry;
       });
     } else {
       return this.props.jobgradeList;
     }
   };
 
+  handleCreateJobGrade = (e, data) => {
+    // console.log(this.props.business_titleList)
+    e.preventDefault();
+    this.props.createJobGrade(data)
+  }
+
   render() {
     let data = this.getdata();
 
+    let { classes } = this.props
     return (
       <main>
-        <CustomButton onClick={this.handleNewGrade}>
-          Create New Grade
-        </CustomButton>
+        <form onSubmit={e => this.handleCreateJobGrade(e, this.state)}>
+          <Grid container>
+            <Grid item>
+              <TextField
+                id="outlined-jobgrade_name"
+                label="Name"
+                className={classes.textField}
+                value={this.state.jobgrade_name}
+                onChange={this.handleChange('jobgrade_name')}
+                margin="normal"
+                variant="outlined"
+              />
+            </Grid>
+            <Grid item>
+              <TextField
+                id="outlined-type"
+                label="type"
+                className={classes.textField}
+                value={this.state.type}
+                onChange={this.handleChange('type')}
+                margin="normal"
+                variant="outlined"
+              />
+            </Grid>
+            <Grid item xs={3} style={{ padding: '1em' }}>
+              {this.props.selectedCompany.country.length > 0 && (
+                <FormControl fullWidth>
+                  <InputLabel style={{ marginLeft: "20px" }} required>
+                    Country
+                  </InputLabel>
+                  <Select
+                    fullWidth
+                    disabled={this.state.global}
+                    id="country"
+                    className={classes.textField}
+                    value={this.state.country}
+                    onChange={this.handleChangeSelect("country")}
+                    inputProps={{
+                      name: "country",
+                      id: "country-simple"
+                    }}
+                    variant="outlined"
+                  >
+                    {this.props.selectedCompany.country.map(country => (
+                      <MenuItem
+                        key={(country)}
+                        value={(country)}
+                      >
+                        {(country)}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              )}
+            </Grid>
+            <Grid item style={{ padding: '1em' }}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={this.state.global}
+                    onChange={this.handleChangeCheck}
+                    color="primary"
+                  />
+                }
+                label="Global"
+              />
+            </Grid>
+            <Grid justify={"center"} item style={{ padding: '1em' }}>
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                style={{ marginLeft: "auto" }}
+              >
+                Create
+            </Button>
+            </Grid>
+          </Grid>
+        </form>
+        <Divider/>
         <Grid container>
           <Grid item xs={3}>
             <FormControlLabel
               style={{ height: "100%", width: "100%" }}
               control={
                 <Checkbox
-                  checked={this.state.global}
-                  onChange={this.handleChange}
+                  checked={this.state.filterglobal}
+                  onChange={this.handleChangeglobal}
                   color="primary"
                 />
               }
@@ -146,22 +256,22 @@ class JobGradePage extends React.Component<Props, State> {
             />
           </Grid>
           <Grid item xs={3}>
-            <FormControl style={{ width: "100%" }} disabled={this.state.global}>
-              <InputLabel htmlFor="country">Country</InputLabel>
+            <FormControl style={{ width: "100%" }} disabled={this.state.filterglobal}>
+              <InputLabel htmlFor="filtercountry">Country</InputLabel>
               <Select
-                value={this.state.country}
-                onChange={this.handleChangeSelect("country")}
+                value={this.state.filtercountry}
+                onChange={this.handleChangeSelect("filtercountry")}
                 inputProps={{
-                  name: "country",
-                  id: "country-simple"
+                  name: "filtercountry",
+                  id: "filtercountry-simple"
                 }}
               >
                 {this.props.selectedCompany.country.map(country => (
                   <MenuItem
-                    key={JSON.parse(country).country_name}
-                    value={JSON.parse(country).country_name}
+                    key={(country)}
+                    value={(country)}
                   >
-                    {JSON.parse(country).country_name}
+                    {(country)}
                   </MenuItem>
                 ))}
               </Select>
