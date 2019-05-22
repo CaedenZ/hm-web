@@ -1,5 +1,6 @@
 import Axios from "axios";
-import { history } from "../store";
+import { history, store } from "../store";
+import { logoutAction } from "../actions/authenticationAction";
 
 const $axios = Axios.create({
   baseURL: "https://fwnm24zinh.execute-api.ap-southeast-1.amazonaws.com/v1"
@@ -12,6 +13,9 @@ $axios.interceptors.response.use(
     if (status === 405) {
       response.data = null;
       history.push("/");
+    } else if (status === 401) {
+      store.dispatch(logoutAction());
+      history.push("/login");
     }
     return response;
   },
