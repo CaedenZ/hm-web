@@ -48,7 +48,7 @@ class CompanySelectMenu extends React.Component<Props, State> {
 
     return (
       <div>
-        <Grid container spacing={16} style={{height: "100%"}}>
+        <Grid container spacing={16} style={{ height: "100%" }}>
           <Grid
             container
             item
@@ -60,15 +60,11 @@ class CompanySelectMenu extends React.Component<Props, State> {
           >
             {this.props.companyList.length > 0 && (
               <ListItem className={classes.listitem}>
-                {this.props.companyList[this.state.selectedIndex].logo_small !==
-                  "" && (
+                {this.props.selectedCompany.logo_small !== "" && (
                   <img
                     alt="company small logo"
                     style={{ height: "50px" }}
-                    src={
-                      this.props.companyList[this.state.selectedIndex]
-                        .logo_small
-                    }
+                    src={this.props.selectedCompany.logo_small}
                   />
                 )}
                 {this.props.selectedCompany.company_id !== "" ? (
