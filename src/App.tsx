@@ -12,6 +12,11 @@ const theme = createMuiTheme({
       main: "rgba(245, 96, 0, 0.99)",
       dark: "rgba(245, 56, 0, 0.99)",
     },
+    secondary: {
+      light: "rgba(255, 170, 0, 0.99)",
+      main: "rgba(255, 170, 0, 0.99)",
+      dark: "rgba(255, 170, 0, 0.99)",
+    }
   },
   typography: {
     useNextVariants: true,

@@ -11,7 +11,11 @@ import {
   Divider,
   Checkbox,
   FormControlLabel,
-  Button
+  Button,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem
 } from "@material-ui/core";
 import { mapDispatchToProps } from "../../../../helper/dispachProps";
 import { connect } from "react-redux";
@@ -43,8 +47,8 @@ interface FormState {
 }
 interface Props
   extends InState,
-    WithStyles<typeof styles>,
-    SharedDispatchProps {}
+  WithStyles<typeof styles>,
+  SharedDispatchProps { }
 
 interface InState {
   countryList: Country[];
@@ -141,14 +145,30 @@ class FormPage extends Component<Props, FormState> {
               />
             </Grid>
             <Grid justify={"center"} container item>
-              <TextField
-                id="investing_type"
-                label="investing_type"
-                className={classes.textField}
-                value={this.state.investing_type}
-                onChange={this.handleChange("investing_type")}
-                margin="normal"
-              />
+              <FormControl >
+                <InputLabel style={{ marginLeft: "20px" }} required>investing_type</InputLabel>
+                <Select
+                  value={this.state.investing_type}
+                  className={classes.textField}
+                  onChange={this.handleChangeSelect("investing_type")}
+                  inputProps={{
+                    name: "investing_type",
+                    id: "investing_type-simple"
+                  }}
+                >
+                  <MenuItem
+                    value="Cliff"
+                  >
+                    Cliff
+                    </MenuItem>
+                  <MenuItem
+                    value="Fixed"
+                  >
+                    Fixed
+                    </MenuItem>
+                </Select>
+              </FormControl>
+
             </Grid>
             <Grid justify={"center"} container item>
               <TextField

@@ -37,13 +37,14 @@ interface FormState {
   jobgrade_id: string;
   type: string;
   value: string;
+  value_type: string;
   isOptional: boolean;
   country: string;
 }
 interface Props
   extends InState,
-    WithStyles<typeof styles>,
-    SharedDispatchProps {}
+  WithStyles<typeof styles>,
+  SharedDispatchProps { }
 
 interface InState {
   countryList: Country[];
@@ -60,7 +61,8 @@ class FormPage extends Component<Props, FormState> {
     type: "",
     value: "",
     isOptional: false,
-    country: ""
+    country: "",
+    value_type: "",
   };
   componentDidMount() {
     if (!this.props.create) {
@@ -117,6 +119,16 @@ class FormPage extends Component<Props, FormState> {
                 className={classes.textField}
                 value={this.state.value}
                 onChange={this.handleChange("value")}
+                margin="normal"
+              />
+            </Grid>
+            <Grid justify={"center"} container item>
+              <TextField
+                id="value_type"
+                label="value_type"
+                className={classes.textField}
+                value={this.state.value_type}
+                onChange={this.handleChange("value_type")}
                 margin="normal"
               />
             </Grid>
