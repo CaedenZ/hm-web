@@ -244,6 +244,56 @@ class CreateCompanyPage extends Component<Props, FormState> {
     >);
   };
 
+  companyIcon = () => {
+    if (this.props.view) {
+      if (this.state.logo_small !== "") {
+        return (
+          <img
+            alt="company icon"
+            src={this.state.logo_small}
+            style={{ width: 200, height: 150 }}
+          />
+        );
+      } else {
+        return <div style={{ width: 200, height: 150 }} />;
+      }
+    } else {
+      return (
+        <Avatar
+          width={200}
+          height={150}
+          onCrop={this.onCrop}
+          onClose={this.onClose}
+        />
+      );
+    }
+  };
+
+  companyMain = () => {
+    if (this.props.view) {
+      if (this.state.logo_small !== "") {
+        return (
+          <img
+            alt="company main"
+            src={this.state.logo_main}
+            style={{ width: 200, height: 150 }}
+          />
+        );
+      } else {
+        return <div style={{ width: 200, height: 150 }} />;
+      }
+    } else {
+      return (
+        <Avatar
+          width={200}
+          height={150}
+          onCrop={this.onMainCrop}
+          onClose={this.onMainClose}
+        />
+      );
+    }
+  };
+
   render() {
     const { classes } = this.props;
     return (
@@ -257,7 +307,7 @@ class CreateCompanyPage extends Component<Props, FormState> {
               <Grid item xs={6}>
                 <Typography variant="h6">Company Icon</Typography>
                 <div style={{ margin: "1rem 1rem", marginTop: 0 }}>
-                  {this.props.view ? (
+                  {/* {this.props.view ? (
                     <img
                       alt="company icon"
                       src={this.state.logo_small}
@@ -270,15 +320,16 @@ class CreateCompanyPage extends Component<Props, FormState> {
                       onCrop={this.onCrop}
                       onClose={this.onClose}
                     />
-                  )}
+                  )} */}
+                  {this.companyIcon()}
                 </div>
               </Grid>
               <Grid item xs={6}>
                 <Typography variant="h6">Main Logo</Typography>
                 <div style={{ margin: "1rem 1rem", marginTop: 0 }}>
-                  {this.props.view ? (
+                  {/* {this.props.view ? (
                     <img
-                      alt="company icon"
+                      alt="company main"
                       src={this.state.logo_main}
                       style={{ width: 200, height: 150 }}
                     />
@@ -289,7 +340,8 @@ class CreateCompanyPage extends Component<Props, FormState> {
                       onCrop={this.onMainCrop}
                       onClose={this.onMainClose}
                     />
-                  )}
+                  )} */}
+                  {this.companyMain()}
                 </div>
               </Grid>
             </Grid>
