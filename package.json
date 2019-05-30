@@ -30,8 +30,8 @@
     "redux-observable": "^1.1.0",
     "redux-persist": "^5.10.0",
     "rxjs": "^6.4.0",
-    "typesafe-actions": "^3.2.1",
-    "typescript": "3.3.3333"
+    "typesafe-actions": "4.4.0",
+    "typescript": "3.5.1"
   },
   "scripts": {
     "start": "react-scripts start",
