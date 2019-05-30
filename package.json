@@ -20,7 +20,7 @@
     "react-dom": "^16.8.6",
     "react-material-ui-form-validator": "^2.0.8",
     "react-navigation": "^3.11.0",
-    "react-redux": "^6.0.1",
+    "react-redux": "^7.0.3",
     "react-router-dom": "^5.0.0",
     "react-router-redux": "^4.0.8",
     "react-scripts": "3.0.1",
