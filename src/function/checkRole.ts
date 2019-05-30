@@ -1,5 +1,5 @@
 export const isMaster = (role: string) => {
-  if (role === "TC Master") {
+  if (role === "TC Master" || role === "SuperAdmin") {
     return true;
   } else {
     return false;
