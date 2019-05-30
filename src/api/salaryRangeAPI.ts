@@ -26,10 +26,11 @@ export const createSalaryRange = async (token, payload: CREATESALARYRANGECRED, c
     return response.data.data
 }
 
-export const updateSalaryRange = async (token, payload: UPDATESALARYRANGECRED): Promise<SalaryRange[]> => {
+export const updateSalaryRange = async (token, payload: UPDATESALARYRANGECRED, companyid): Promise<SalaryRange[]> => {
 
     let data = {
         ...payload,
+        company_id: companyid,
         session_key: token,
     }
 

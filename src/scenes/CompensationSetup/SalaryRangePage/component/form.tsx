@@ -83,6 +83,17 @@ class FormPage extends Component<Props, FormState> {
       FormState,
       keyof FormState
     >);
+
+
+    let selectedjg = this.props.jobgradeList.find(jg => {
+      return jg.jobgrade_id === this.state.jobgrade_id
+    })
+
+    if (selectedjg !== undefined) {
+      if (selectedjg.global === 0) {
+        this.setState({ country: selectedjg.country })
+      }
+    }
   };
 
   render() {

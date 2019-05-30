@@ -122,6 +122,7 @@ class CustomizedTable extends React.Component<Props, State> {
               <CustomTableCell align="left">Name</CustomTableCell>
               <CustomTableCell align="left">Type</CustomTableCell>
               <CustomTableCell align="left">Country</CustomTableCell>
+              <CustomTableCell align="left">Global</CustomTableCell>
               <CustomTableCell align="left">Action</CustomTableCell>
             </TableRow>
           </TableHead>
@@ -134,6 +135,7 @@ class CustomizedTable extends React.Component<Props, State> {
                   </CustomTableCell>
                   <CustomTableCell align="left">{row.type}</CustomTableCell>
                   <CustomTableCell align="left">{row.country}</CustomTableCell>
+                  <CustomTableCell align="left">{row.global}</CustomTableCell>
                   <CustomTableCell align="left">
                     <IconButton
                       onClick={() => this.handleUpdateButtonClick(row)}

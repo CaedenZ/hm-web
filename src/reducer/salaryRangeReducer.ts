@@ -111,7 +111,7 @@ export const updateSalaryRangeEpic: Epic<any, any, any, any> = (action$, state$)
     action$.pipe(
         filter(isActionOf(updateSalaryRangeAction.request)),
         switchMap((action) =>
-            from(updateSalaryRange(state$.value.authenticationReducer.token, action.payload)).pipe(
+            from(updateSalaryRange(state$.value.authenticationReducer.token, action.payload, state$.value.companyReducer.selectedCompany.company_id)).pipe(
                 map(() => updateSalaryRangeAction.success()),
                 catchError(error => of(updateSalaryRangeAction.failure(error.message)))
             )

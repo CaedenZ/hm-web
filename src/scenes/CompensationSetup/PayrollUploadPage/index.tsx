@@ -50,9 +50,11 @@ export interface Props
 interface State {
   queue: boolean;
   queueitem: boolean;
+  queuelog: boolean;
   filename: string;
   listqueue: ListQueue[];
   listqueueitem: ListQueueItem[];
+  listqueuelog: ListQueueLog[];
 }
 
 interface ListQueue {
@@ -71,6 +73,12 @@ interface ListQueueItem {
   process_dt: string;
 }
 
+interface ListQueueLog {
+  record_no: number;
+  status: string;
+  message: string;
+}
+
 interface InState {
   sessionkey: string;
   companyid: string;
@@ -80,9 +88,11 @@ class PayrollUploadPage extends React.Component<Props, State> {
   state: State = {
     queue: false,
     queueitem: false,
+    queuelog: false,
     filename: '',
     listqueue: [],
     listqueueitem: [],
+    listqueuelog: [],
   }
   readFile = async (e: any) => {
     // this.setState({ data: e.target.files[0] });
@@ -120,6 +130,14 @@ class PayrollUploadPage extends React.Component<Props, State> {
     }
     console.log(retUploadData);
 
+    let data = {
+      session_key: this.props.sessionkey,
+      company_id: this.props.companyid,
+      type: 0,
+      file_name: fileToBeUploaded.name
+    }
+
+    await $axios.post("/company/uploadExceldata", data);
     this.setState({ filename: fileToBeUploaded.name })
   };
 
@@ -134,16 +152,42 @@ class PayrollUploadPage extends React.Component<Props, State> {
     this.setState({ queue: true })
   }
 
-  listqueueitem = async () => {
+  listqueueitem = async (filepath) => {
     let data = {
       session_key: this.props.sessionkey,
-      type: 0
+      type: 0,
+      source_filepath: filepath,
     }
     const listqueueitem = await $axios.post('/company/getImportQueueData', data);
     console.log(listqueueitem.data.data)
     this.setState({ listqueueitem: listqueueitem.data.data })
     this.setState({ queueitem: true })
 
+  }
+
+  listQueueLogs = async (filepath) => {
+    let data = {
+      session_key: this.props.sessionkey,
+      source_filepath: filepath,
+    }
+    const listqueuelog = await $axios.post('/company/getDataLog', data);
+    console.log(listqueuelog.data.data)
+    this.setState({ listqueuelog: listqueuelog.data.data })
+    this.setState({ queuelog: true })
+
+  }
+
+  getstatus = (id) => {
+    switch (id) {
+      case 0:
+        return 'Uploaded'
+      case 1:
+        return 'Processing'
+      case 2:
+        return 'Success'
+      case 3:
+        return 'Failed'
+    }
   }
 
   render() {
@@ -173,9 +217,7 @@ class PayrollUploadPage extends React.Component<Props, State> {
           <Button color="primary" onClick={this.listqueue} variant="contained" component="span">
             List Queue
               </Button>
-          <Button color="primary" onClick={this.listqueueitem} variant="contained" component="span">
-            List Queue Items
-              </Button>
+
         </Grid>
         {this.state.queue && <Grid container>
           <Paper className={classes.paper}>
@@ -189,6 +231,7 @@ class PayrollUploadPage extends React.Component<Props, State> {
                   <CustomTableCell align="left">Type</CustomTableCell>
                   <CustomTableCell align="left">uploaded</CustomTableCell>
                   <CustomTableCell align="left">status</CustomTableCell>
+                  <CustomTableCell align="left">List Queue Items</CustomTableCell>
                 </TableRow>
               </TableHead>
               {this.state.listqueue.length > 0 && (
@@ -200,8 +243,10 @@ class PayrollUploadPage extends React.Component<Props, State> {
                       </CustomTableCell>
                       <CustomTableCell align="left">{row.type}</CustomTableCell>
                       <CustomTableCell align="left">{row.uploaded}</CustomTableCell>
-                      <CustomTableCell align="left">{row.status}
-                      </CustomTableCell>
+                      <CustomTableCell align="left">{this.getstatus(row.status)}</CustomTableCell>
+                      <CustomTableCell><Button color="primary" onClick={() => this.listqueueitem(row.source_filepath)} variant="contained" component="span">
+                        List Queue Items
+              </Button></CustomTableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -236,8 +281,36 @@ class PayrollUploadPage extends React.Component<Props, State> {
                       <CustomTableCell align="left">{row.uploaded}</CustomTableCell>
                       <CustomTableCell align="left">{row.user}</CustomTableCell>
                       <CustomTableCell align="left">{row.customer_id}</CustomTableCell>
-                      <CustomTableCell align="left">{row.status}</CustomTableCell>
+                      <CustomTableCell align="left">{this.getstatus(row.status)}</CustomTableCell>
                       <CustomTableCell align="left">{row.process_dt}</CustomTableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              )}
+            </Table>
+            <Divider />
+          </Paper>
+        </Grid>}
+        {this.state.queuelog && <Grid container>
+          <Paper className={classes.paper}>
+            <Typography component="h1" variant="h6">
+              List Queue
+          </Typography>
+            <Table className={classes.table}>
+              <TableHead>
+                <TableRow>
+                  <CustomTableCell align="left">record_no</CustomTableCell>
+                  <CustomTableCell align="left">status</CustomTableCell>
+                  <CustomTableCell align="left">message</CustomTableCell>
+                </TableRow>
+              </TableHead>
+              {this.state.listqueuelog.length > 0 && (
+                <TableBody>
+                  {this.state.listqueuelog.map((row, index) => (
+                    <TableRow className={classes.row} key={row.record_no}>
+                      <CustomTableCell component="th" scope="row">{row.record_no}</CustomTableCell>
+                      <CustomTableCell align="left">{row.status}</CustomTableCell>
+                      <CustomTableCell align="left">{row.message}</CustomTableCell>
                     </TableRow>
                   ))}
                 </TableBody>

@@ -40,11 +40,12 @@ interface FormState {
   isBonus: boolean;
   isOptional: boolean;
   country: string;
+  value_type: string;
 }
 interface Props
   extends InState,
-    WithStyles<typeof styles>,
-    SharedDispatchProps {}
+  WithStyles<typeof styles>,
+  SharedDispatchProps { }
 
 interface InState {
   countryList: Country[];
@@ -62,7 +63,8 @@ class FormPage extends Component<Props, FormState> {
     value: "",
     isBonus: false,
     isOptional: false,
-    country: ""
+    country: "",
+    value_type: "",
   };
   componentDidMount() {
     if (!this.props.create) {
@@ -181,6 +183,16 @@ class FormPage extends Component<Props, FormState> {
                   </Select>
                 </FormControl>
               )}
+            </Grid>
+            <Grid justify={"center"} container item>
+              <TextField
+                id="value_type"
+                label="value_type"
+                className={classes.textField}
+                value={this.state.value_type}
+                onChange={this.handleChange("value_type")}
+                margin="normal"
+              />
             </Grid>
             <Grid justify={"center"} container item>
               <FormControlLabel

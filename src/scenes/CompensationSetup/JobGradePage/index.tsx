@@ -166,131 +166,136 @@ class JobGradePage extends React.Component<Props, State> {
     let { classes } = this.props
     return (
       <main>
-        {!this.state.created && <Paper style={{ padding: "1em" }}>
+        {!this.state.created && <div>
           <Typography component="h1" variant="h6">
             Create Job Grade
-          </Typography>
-          <form onSubmit={e => this.handleCreateJobGrade(e, this.state)}>
-            <Grid container>
-              <Grid item xs={3}>
-                <TextField
-                  id="outlined-jobgrade_name"
-                  label="Name"
-                  className={classes.textField}
-                  value={this.state.jobgrade_name}
-                  onChange={this.handleChange('jobgrade_name')}
-                  margin="normal"
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid item xs={3}>
-                <TextField
-                  id="outlined-type"
-                  label="type"
-                  className={classes.textField}
-                  value={this.state.type}
-                  onChange={this.handleChange('type')}
-                  margin="normal"
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid item xs={3} style={{ padding: '1em' }}>
-                {this.props.selectedCompany.country.length > 0 && (
-                  <FormControl fullWidth>
-                    <InputLabel style={{ marginLeft: "20px" }} required>
-                      Country
+      </Typography>
+          <Paper style={{ backgroundColor: 'rgba(255, 170, 0, 0.99)' }}>
+            <form onSubmit={e => this.handleCreateJobGrade(e, this.state)}>
+              <Grid container>
+                <Grid item xs={3}>
+                  <TextField
+                    style={{ backgroundColor: 'white' }}
+                    id="outlined-jobgrade_name"
+                    label="Name"
+                    className={classes.textField}
+                    value={this.state.jobgrade_name}
+                    onChange={this.handleChange('jobgrade_name')}
+                    margin="normal"
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid item xs={3}>
+                  <TextField
+                    style={{ backgroundColor: 'white' }}
+                    id="outlined-type"
+                    label="type"
+                    className={classes.textField}
+                    value={this.state.type}
+                    onChange={this.handleChange('type')}
+                    margin="normal"
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid item xs={1} style={{ padding: '1em' }}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={this.state.global}
+                        onChange={this.handleChangeCheck}
+                        color="primary"
+                      />
+                    }
+                    label="Global"
+                  />
+                </Grid>
+                <Grid item xs={3} style={{ padding: '1em' }}>
+                  {this.props.selectedCompany.country.length > 0 && (
+                    <FormControl fullWidth>
+                      <InputLabel style={{ marginLeft: "20px" }} required>
+                        Country
                   </InputLabel>
-                    <Select
-                      fullWidth
-                      disabled={this.state.global}
-                      id="country"
-                      className={classes.textField}
-                      value={this.state.country}
-                      onChange={this.handleChangeSelect("country")}
-                      inputProps={{
-                        name: "country",
-                        id: "country-simple"
-                      }}
-                      variant="outlined"
-                    >
-                      {this.props.selectedCompany.country.map(country => (
-                        <MenuItem
-                          key={(country)}
-                          value={(country)}
-                        >
-                          {(country)}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                )}
-              </Grid>
-              <Grid item xs={1} style={{ padding: '1em' }}>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={this.state.global}
-                      onChange={this.handleChangeCheck}
-                      color="primary"
-                    />
-                  }
-                  label="Global"
-                />
-              </Grid>
-              <Grid xs={1} justify={"center"} item style={{ padding: '1em' }}>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  type="submit"
-                  style={{ marginLeft: "auto" }}
-                >
-                  Create
-            </Button>
-              </Grid>
-            </Grid>
-          </form></Paper>}
-        <Divider />
-        <Grid container>
-          <Grid item xs={3}>
-            <FormControlLabel
-              style={{ height: "100%", width: "100%" }}
-              control={
-                <Checkbox
-                  checked={this.state.filterglobal}
-                  onChange={this.handleChangeglobal}
-                  color="primary"
-                />
-              }
-              label="Global"
-            />
-          </Grid>
-          <Grid item xs={3}>
-            <FormControl style={{ width: "100%" }} disabled={this.state.filterglobal}>
-              <InputLabel htmlFor="filtercountry">Country</InputLabel>
-              <Select
-                value={this.state.filtercountry}
-                onChange={this.handleChangeSelect("filtercountry")}
-                inputProps={{
-                  name: "filtercountry",
-                  id: "filtercountry-simple"
-                }}
-              >
-                {this.props.selectedCompany.country.map(country => (
-                  <MenuItem
-                    key={(country)}
-                    value={(country)}
+                      <Select
+                        fullWidth
+                        disabled={this.state.global}
+                        id="country"
+                        className={classes.textField}
+                        value={this.state.country}
+                        onChange={this.handleChangeSelect("country")}
+                        inputProps={{
+                          name: "country",
+                          id: "country-simple"
+                        }}
+                        variant="outlined"
+                      >
+                        {this.props.selectedCompany.country.map(country => (
+                          <MenuItem
+                            key={(country)}
+                            value={(country)}
+                          >
+                            {(country)}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  )}
+                </Grid>
+                <Grid xs={1} justify={"center"} item style={{ padding: '1em' }}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                    style={{ marginLeft: "auto" }}
                   >
-                    {(country)}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-        </Grid>
+                    Create
+            </Button>
+                </Grid>
+              </Grid>
+            </form></Paper></div>}
+        <Divider />
+
         <Typography component="h1" variant="h6">
           Current Job Grade
           </Typography>
-        <CustomizedTable jobgradeList={data} />
+        <Paper style={{ padding: "1em" }}>
+          <Grid container>
+            <Grid item xs={3}>
+              <FormControlLabel
+                style={{ height: "100%", width: "100%" }}
+                control={
+                  <Checkbox
+                    checked={this.state.filterglobal}
+                    onChange={this.handleChangeglobal}
+                  />
+                }
+                label="Global"
+              />
+            </Grid>
+            <Grid item xs={3}>
+              <FormControl style={{ width: "100%" }} disabled={this.state.filterglobal}>
+                <InputLabel htmlFor="filtercountry">Country</InputLabel>
+                <Select
+                  value={this.state.filtercountry}
+                  onChange={this.handleChangeSelect("filtercountry")}
+                  inputProps={{
+                    name: "filtercountry",
+                    id: "filtercountry-simple"
+                  }}
+                >
+                  {this.props.selectedCompany.country.map(country => (
+                    <MenuItem
+                      key={(country)}
+                      value={(country)}
+                    >
+                      {(country)}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
+          <CustomizedTable jobgradeList={data} />
+        </Paper>
       </main>
     );
   }
