@@ -88,6 +88,10 @@ class CustomizedTable extends React.Component<Props, any> {
     console.log("SectorPage Mount");
   }
 
+  sortSectorListcompare(a: { name: string }, b: { name: string }) {
+    return a.name.localeCompare(b.name);
+  }
+
   handleNewIndustryClick = (sector: Sector) => {
     this.props.selectSector(sector);
     history.push("/sector/createindustry");
@@ -141,85 +145,87 @@ class CustomizedTable extends React.Component<Props, any> {
             </TableHead>
             {this.props.sectorList.length > 0 && (
               <TableBody>
-                {this.props.sectorList.map((row, index) => [
-                  <TableRow className={classes.row} key={row.name}>
-                    <CustomTableCell component="th" scope="row">
-                      {row.name}
-                    </CustomTableCell>
-                    <CustomTableCell align="left">
-                      <IconButton
-                        className={classnames(classes.expand, {
-                          [classes.expandOpen]: this.state[index]
-                        })}
-                        onClick={() => this.handleClick(index)}
-                        aria-expanded={this.state[index]}
-                        aria-label="Show more"
-                      >
-                        <ExpandMoreIcon />
-                      </IconButton>
-                    </CustomTableCell>
-
-                    {!this.state[index] ? (
-                      <CustomTableCell align="center">
-                        {isMaster(this.props.role) && (
-                          <IconButton
-                            onClick={() =>
-                              this.handleDeleteSector(row.sector_id)
-                            }
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                        )}
+                {this.props.sectorList
+                  .sort(this.sortSectorListcompare)
+                  .map((row, index) => [
+                    <TableRow className={classes.row} key={row.name}>
+                      <CustomTableCell component="th" scope="row">
+                        {row.name}
                       </CustomTableCell>
-                    ) : (
-                      <CustomTableCell align="right">
-                        <Collapse
-                          key={row.name}
-                          in={this.state[index]}
-                          timeout="auto"
-                          unmountOnExit={true}
+                      <CustomTableCell align="left">
+                        <IconButton
+                          className={classnames(classes.expand, {
+                            [classes.expandOpen]: this.state[index]
+                          })}
+                          onClick={() => this.handleClick(index)}
+                          aria-expanded={this.state[index]}
+                          aria-label="Show more"
                         >
-                          {row.industry.length > 0 && (
-                            <Table>
-                              <TableBody>
-                                {row.industry.map(row => (
-                                  <TableRow
-                                    className={classes.row}
-                                    key={row.name}
-                                  >
-                                    <CustomTableCell align="left">
-                                      {row.name}
-                                    </CustomTableCell>
-                                    <CustomTableCell align="left">
-                                      {isMaster(this.props.role) && (
-                                        <IconButton
-                                          onClick={() =>
-                                            this.handleDeleteIndustry(
-                                              row.industry_id
-                                            )
-                                          }
-                                        >
-                                          <DeleteIcon />
-                                        </IconButton>
-                                      )}
-                                    </CustomTableCell>
-                                  </TableRow>
-                                ))}
-                              </TableBody>
-                            </Table>
-                          )}
+                          <ExpandMoreIcon />
+                        </IconButton>
+                      </CustomTableCell>
+
+                      {!this.state[index] ? (
+                        <CustomTableCell align="center">
                           {isMaster(this.props.role) && (
                             <IconButton
-                              onClick={() => this.handleNewIndustryClick(row)}
+                              onClick={() =>
+                                this.handleDeleteSector(row.sector_id)
+                              }
                             >
-                              <AddIcon />
+                              <DeleteIcon />
                             </IconButton>
                           )}
-                        </Collapse>
-                      </CustomTableCell>
-                    )}
-                  </TableRow>
-                ])}
+                        </CustomTableCell>
+                      ) : (
+                        <CustomTableCell align="right">
+                          <Collapse
+                            key={row.name}
+                            in={this.state[index]}
+                            timeout="auto"
+                            unmountOnExit={true}
+                          >
+                            {row.industry.length > 0 && (
+                              <Table>
+                                <TableBody>
+                                  {row.industry.map(row => (
+                                    <TableRow
+                                      className={classes.row}
+                                      key={row.name}
+                                    >
+                                      <CustomTableCell align="left">
+                                        {row.name}
+                                      </CustomTableCell>
+                                      <CustomTableCell align="left">
+                                        {isMaster(this.props.role) && (
+                                          <IconButton
+                                            onClick={() =>
+                                              this.handleDeleteIndustry(
+                                                row.industry_id
+                                              )
+                                            }
+                                          >
+                                            <DeleteIcon />
+                                          </IconButton>
+                                        )}
+                                      </CustomTableCell>
+                                    </TableRow>
+                                  ))}
+                                </TableBody>
+                              </Table>
+                            )}
+                            {isMaster(this.props.role) && (
+                              <IconButton
+                                onClick={() => this.handleNewIndustryClick(row)}
+                              >
+                                <AddIcon />
+                              </IconButton>
+                            )}
+                          </Collapse>
+                        </CustomTableCell>
+                      )}
+                    </TableRow>
+                  ])}
               </TableBody>
             )}
           </Table>

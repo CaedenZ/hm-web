@@ -69,7 +69,7 @@ class Detail extends Component<Props, State> {
                         <img
                           src={row.image}
                           alt="user"
-                          style={{ maxWidth: "50%" }}
+                          style={{ maxWidth: "20%" }}
                         />
                       </CustomTableCell>
                       <CustomTableCell align="left">
