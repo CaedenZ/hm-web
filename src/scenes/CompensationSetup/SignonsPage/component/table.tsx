@@ -22,6 +22,7 @@ import { Signons } from "../../../../interface/signonsInterface";
 import { RootState } from "../../../../reducer";
 import { mapDispatchToProps } from "../../../../helper/dispachProps";
 import { connect } from "react-redux";
+import CheckIcon from "@material-ui/icons/Check"
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -55,10 +56,10 @@ const styles = (theme: Theme) =>
 
 export interface Props
   extends WithStyles<typeof styles>,
-    SharedDispatchProps,
-    InState {}
+  SharedDispatchProps,
+  InState { }
 
-interface State {}
+interface State { }
 
 interface InState {
   selectedCompany: Company;
@@ -122,6 +123,7 @@ class CustomizedTable extends React.Component<Props, State> {
               <CustomTableCell align="left">Type</CustomTableCell>
               <CustomTableCell align="left">Value</CustomTableCell>
               <CustomTableCell align="left">Signon Breakdown</CustomTableCell>
+              <CustomTableCell align="left">Optional</CustomTableCell>
               <CustomTableCell align="left">Action</CustomTableCell>
             </TableRow>
           </TableHead>
@@ -136,6 +138,7 @@ class CustomizedTable extends React.Component<Props, State> {
                   <CustomTableCell align="left">
                     {row.signons_breakdown}
                   </CustomTableCell>
+                  <CustomTableCell align="left">{row.isOptional ? <CheckIcon /> : ""}</CustomTableCell>
                   <CustomTableCell align="left">
                     <IconButton
                       onClick={() => this.handleUpdateButtonClick(row)}

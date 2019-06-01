@@ -116,6 +116,7 @@ class FormPage extends Component<Props, FormState> {
               <TextField
                 id="value"
                 label="value"
+                type="number"
                 className={classes.textField}
                 value={this.state.value}
                 onChange={this.handleChange("value")}

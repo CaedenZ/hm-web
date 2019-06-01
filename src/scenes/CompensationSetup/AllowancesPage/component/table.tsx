@@ -22,7 +22,7 @@ import { Allowances } from "../../../../interface/allowanceInterface";
 import { RootState } from "../../../../reducer";
 import { mapDispatchToProps } from "../../../../helper/dispachProps";
 import { connect } from "react-redux";
-
+import CheckIcon from "@material-ui/icons/Check"
 
 const CustomTableCell = withStyles(theme => ({
     head: {
@@ -126,7 +126,7 @@ class CustomizedTable extends React.Component<Props, State> {
                             <CustomTableCell align="left">Type</CustomTableCell>
                             <CustomTableCell align="left">Value</CustomTableCell>
                             <CustomTableCell align="left">Country</CustomTableCell>
-                            <CustomTableCell align="left">isBonus</CustomTableCell>
+                            <CustomTableCell align="left">Bonus</CustomTableCell>
                             <CustomTableCell align="left">Action</CustomTableCell>
                         </TableRow>
                     </TableHead>
@@ -137,7 +137,7 @@ class CustomizedTable extends React.Component<Props, State> {
                                 <CustomTableCell align="left">{row.type}</CustomTableCell>
                                 <CustomTableCell align="left">{row.value}</CustomTableCell>
                                 <CustomTableCell align="left">{row.country}</CustomTableCell>
-                                <CustomTableCell align="left">{row.isBonus}</CustomTableCell>
+                                <CustomTableCell align="left">{row.isBonus ? <CheckIcon/> : ""}</CustomTableCell>
                                 <CustomTableCell align="left">
                                     <IconButton onClick={() => this.handleUpdateButtonClick(row)}><UpdateIcon /></IconButton>
                                     <IconButton onClick={() => this.handleDelete(row.allowances_id, index)}><DeleteIcon /></IconButton>
