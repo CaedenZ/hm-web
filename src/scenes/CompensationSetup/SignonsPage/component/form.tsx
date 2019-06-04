@@ -31,19 +31,18 @@ const styles = () =>
   });
 
 interface FormState {
-  signons_name: string;
   type: string;
-  global: boolean;
-  signons_id: string;
-  country: string;
+  isOptional: boolean;
+  value: string;
+  signons_breakdown: string;
 }
 interface Props
   extends InState,
-    WithStyles<typeof styles>,
-    SharedDispatchProps {}
+  WithStyles<typeof styles>,
+  SharedDispatchProps { }
 
 interface InState {
-  countryList: Country[];
+  countryList: string[];
   create: boolean;
   updateData: any;
   onSubmit: any;
@@ -51,11 +50,10 @@ interface InState {
 
 class FormPage extends Component<Props, FormState> {
   state: FormState = {
-    signons_name: "",
     type: "",
-    global: false,
-    signons_id: "",
-    country: ""
+    isOptional: false,
+    value: "",
+    signons_breakdown: ""
   };
   componentDidMount() {
     if (!this.props.create) {
@@ -80,7 +78,7 @@ class FormPage extends Component<Props, FormState> {
   };
 
   handleChangeCheck = () => {
-    this.setState({ global: !this.state.global } as any);
+    this.setState({ isOptional: !this.state.isOptional } as any);
   };
 
   render() {
@@ -97,16 +95,6 @@ class FormPage extends Component<Props, FormState> {
           <Grid justify="center" container>
             <Grid justify={"center"} container item>
               <TextField
-                id="signons_name"
-                label="signons_name"
-                className={classes.textField}
-                value={this.state.signons_name}
-                onChange={this.handleChange("signons_name")}
-                margin="normal"
-              />
-            </Grid>
-            <Grid justify={"center"} container item>
-              <TextField
                 id="type"
                 label="type"
                 className={classes.textField}
@@ -116,43 +104,35 @@ class FormPage extends Component<Props, FormState> {
               />
             </Grid>
             <Grid justify={"center"} container item>
-              {this.props.countryList.length > 0 && (
-                <FormControl>
-                  <InputLabel style={{ marginLeft: "20px" }} required>
-                    Country
-                  </InputLabel>
-                  <Select
-                    id="country"
-                    className={classes.textField}
-                    value={this.state.country}
-                    onChange={this.handleChangeSelect("country")}
-                    inputProps={{
-                      name: "country",
-                      id: "country-simple"
-                    }}
-                  >
-                    {this.props.countryList.map(country => (
-                      <MenuItem
-                        key={country.country_name}
-                        value={country.country_name}
-                      >
-                        {country.country_name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              )}
+              <TextField
+                id="value"
+                label="value"
+                className={classes.textField}
+                value={this.state.value}
+                onChange={this.handleChange("value")}
+                margin="normal"
+              />
+            </Grid>
+            <Grid justify={"center"} container item>
+              <TextField
+                id="signons_breakdown"
+                label="signons_breakdown"
+                className={classes.textField}
+                value={this.state.signons_breakdown}
+                onChange={this.handleChange("signons_breakdown")}
+                margin="normal"
+              />
             </Grid>
             <Grid justify={"center"} container item>
               <FormControlLabel
                 control={
                   <Checkbox
-                    checked={this.state.global}
+                    checked={this.state.isOptional}
                     onChange={this.handleChangeCheck}
                     color="primary"
                   />
                 }
-                label="Global"
+                label="Optional"
               />
             </Grid>
           </Grid>
@@ -182,7 +162,7 @@ class FormPage extends Component<Props, FormState> {
 
 function mapStateToProps(state: RootState) {
   return {
-    countryList: state.countryReducer.countryList
+    countryList: state.companyReducer.selectedCompany.country
   };
 }
 

@@ -30,6 +30,13 @@ const styles = (theme: Theme) =>
     textField: {
       width: "20rem",
       margin: "1rem"
+    },
+    textFieldValue: {
+      width: "16rem",
+    },
+    textFieldSign: {
+      width: "3rem",
+      margin: "8px",
     }
   });
 
@@ -122,6 +129,7 @@ class FormPage extends Component<Props, FormState> {
               <TextField
                 id="value"
                 label="value"
+                type="number"
                 className={classes.textField}
                 value={this.state.value}
                 onChange={this.handleChange("value")}
@@ -174,10 +182,10 @@ class FormPage extends Component<Props, FormState> {
                   >
                     {this.props.selectedCompany.country.map(country => (
                       <MenuItem
-                        key={country.country_name}
-                        value={country.country_name}
+                        key={country}
+                        value={country}
                       >
-                        {country.country_name}
+                        {country}
                       </MenuItem>
                     ))}
                   </Select>

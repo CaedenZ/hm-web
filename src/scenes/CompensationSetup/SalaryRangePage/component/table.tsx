@@ -55,10 +55,10 @@ const styles = (theme: Theme) =>
 
 export interface Props
   extends WithStyles<typeof styles>,
-    SharedDispatchProps,
-    InState {}
+  SharedDispatchProps,
+  InState { }
 
-interface State {}
+interface State { }
 
 interface InState {
   selectedCompany: Company;
@@ -119,7 +119,7 @@ class CustomizedTable extends React.Component<Props, State> {
         <Table className={classes.table}>
           <TableHead>
             <TableRow>
-              <CustomTableCell align="left">Jobgrade Name</CustomTableCell>
+              <CustomTableCell align="left">Job Grade Name</CustomTableCell>
               <CustomTableCell align="left">Type</CustomTableCell>
               <CustomTableCell align="left">Min</CustomTableCell>
               <CustomTableCell align="left">Mid</CustomTableCell>
