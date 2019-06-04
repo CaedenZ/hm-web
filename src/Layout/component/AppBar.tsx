@@ -114,7 +114,13 @@ class PrimarySearchAppBar extends React.Component<Props, State> {
         <MenuItem button onClick={() => history.push("/profile")}>
           Profile
         </MenuItem>
-        <MenuItem button onClick={() => this.props.logout()}>
+        <MenuItem
+          button
+          onClick={() => {
+            this.props.logout();
+            history.push("/login");
+          }}
+        >
           Log out
         </MenuItem>
       </Menu>
