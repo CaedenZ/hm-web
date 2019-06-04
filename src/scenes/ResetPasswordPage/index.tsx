@@ -1,57 +1,46 @@
 import React, { Component } from "react";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import FormControl from "@material-ui/core/FormControl";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles";
 import { SharedDispatchProps } from "../../interface/propsInterface";
 import { mapDispatchToProps } from "../../helper/dispachProps";
 import { connect } from "react-redux";
+import { history } from "../../store";
+import { parse as ParseQuery } from "querystringify";
+import $axios from "../../plugin/axios";
 
 const styles = (theme: any) => ({
+  centerLogin: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100vh"
+  },
   main: {
     width: "auto",
     display: "block", // Fix IE 11 issue.
     marginLeft: theme.spacing.unit * 3,
     marginRight: theme.spacing.unit * 3,
     [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
-      width: 400,
-      marginLeft: "auto",
-      marginRight: "auto"
+      width: "20vw"
     }
   },
   paper: {
-    marginTop: theme.spacing.unit * 8,
     display: "flex",
-    // flexDirection: 'column',
     alignItems: "center",
-    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme
-      .spacing.unit * 3}px`
+    justifyContent: "center",
+    padding: `${theme.spacing.unit * 3}px`
   },
-  avatar: {
-    margin: theme.spacing.unit,
-    backgroundColor: theme.palette.secondary.main
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing.unit
-  },
-  submit: {
-    marginTop: theme.spacing.unit * 3
+  pwSpacing: {
+    margin: "0.5rem 0"
   }
 });
 
-export interface Props
-  extends SharedDispatchProps,
-    InState,
-    WithStyles<typeof styles> {}
+export interface Props extends SharedDispatchProps, WithStyles<typeof styles> {}
 
-interface InState {
-  usertoken: string;
-}
 export interface State {
   password: string;
   confirmPassword: string;
@@ -70,6 +59,15 @@ class ResetPasswordPage extends Component<Props, State> {
     this.dynSetState = this.dynSetState.bind(this);
   }
 
+  componentDidMount() {
+    ValidatorForm.addValidationRule("isPasswordMatch", value => {
+      if (value !== this.state.password) {
+        return false;
+      }
+      return true;
+    });
+  }
+
   dynSetState(key: keyof State, value: string) {
     this.setState({
       [key]: value
@@ -78,63 +76,89 @@ class ResetPasswordPage extends Component<Props, State> {
 
   handleChange(event) {
     this.dynSetState(event.target.id, event.target.value);
-    // console.dir(event.target)
   }
 
-  handleReset = event => {
+  handleReset = async event => {
     event.preventDefault();
-    if (this.state.password !== this.state.confirmPassword) {
-      this.props.showDialog("aaa");
+    const queryStrings = history.location.search;
+    const queryObject = ParseQuery(queryStrings);
+    const token = queryObject.token;
+    const email = queryObject.email;
+    const resetPWObject = {
+      app_key: "p9Eg6HN7FFXjA9WTNZ5n",
+      token: token,
+      email: email,
+      password: this.state.password
+    };
+    const resetResponse = await $axios.post(
+      "/user/resetPassword",
+      resetPWObject
+    );
+    if (resetResponse.data.error) {
+      const dialogData = {
+        type: "warning",
+        object: resetResponse.data.message,
+        id: "1"
+      };
+      this.props.showDialog(dialogData);
+    } else {
+      history.push("/login");
     }
-    // this.props.login(this.state)
-    console.log(this.state);
   };
+
   render() {
     const { classes } = this.props;
     return (
-      <main className={classes.main}>
-        <CssBaseline />
-        <Paper className={classes.paper}>
-          <Typography component="h1" variant="h5">
-            Set your new password
-          </Typography>
-          <form className={classes.form} onSubmit={this.handleReset}>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="password">New Password</InputLabel>
-              <Input
-                name="password"
+      <div className={classes.centerLogin}>
+        <main className={classes.main}>
+          <CssBaseline />
+          <Paper className={classes.paper}>
+            <ValidatorForm
+              ref="form"
+              onSubmit={this.handleReset}
+              debounceTime={500}
+            >
+              <Typography component="h1" variant="h5">
+                Set your new password
+              </Typography>
+              <TextValidator
+                fullWidth
+                required
+                label="Password"
+                onChange={this.handleChange}
                 type="password"
                 id="password"
-                autoComplete="current-password"
+                name="password"
                 value={this.state.password}
-                onChange={this.handleChange}
+                validators={["required"]}
+                errorMessages={["this field is required"]}
+                className={classes.pwSpacing}
               />
-            </FormControl>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="confirmPassword">
-                Confirm Password
-              </InputLabel>
-              <Input
-                name="confirmPassword"
+              <TextValidator
+                fullWidth
+                required
+                label="Confirm Password"
+                onChange={this.handleChange}
                 type="password"
                 id="confirmPassword"
-                autoComplete="current-password"
+                name="confirmPassword"
                 value={this.state.confirmPassword}
-                onChange={this.handleChange}
+                validators={["isPasswordMatch", "required"]}
+                errorMessages={["password mismatch", "this field is required"]}
+                className={classes.pwSpacing}
               />
-            </FormControl>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              Confirm
-            </Button>
-          </form>
-        </Paper>
-      </main>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+              >
+                Confirm
+              </Button>
+            </ValidatorForm>
+          </Paper>
+        </main>
+      </div>
     );
   }
 }
