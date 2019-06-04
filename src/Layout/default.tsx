@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PermanentDrawerLeft from "./component/Drawer";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
 import { mapDispatchToProps } from "../helper/dispachProps";
 import { SharedDispatchProps } from "../interface/propsInterface";
 import CustomSnackBar from "./component/snackBar";
@@ -11,6 +10,7 @@ import { history } from "../store";
 
 export interface Props extends SharedDispatchProps {
   token: string;
+  pathname: string;
 }
 
 class Layout extends Component<Props> {
@@ -24,7 +24,12 @@ class Layout extends Component<Props> {
       this.props.getJobFunctionList();
       this.props.getRoleFunctionList();
       this.props.getJobChartList();
-    } else {
+    } else if (this.props.pathname !== "/resetpassword") {
+      history.replace("/login");
+    }
+  }
+  componentWillReceiveProps(newProps) {
+    if (newProps.token === "") {
       history.replace("/login");
     }
   }
@@ -42,7 +47,8 @@ class Layout extends Component<Props> {
 
 function mapStateToProps(state: any) {
   return {
-    token: state.authenticationReducer.token
+    token: state.authenticationReducer.token,
+    pathname: state.router.location.pathname
   };
 }
 
