@@ -111,20 +111,16 @@ class AllowancesPage extends React.Component<Props, State> {
   };
 
   getdata = () => {
-    if (this.props.allowancesList instanceof Array) {
-      if (this.state.global) {
-        return this.props.allowancesList.filter(e => {
-          return e.jobgrade_global === 1;
-        });
-      } else if (this.state.country !== "") {
-        return this.props.allowancesList.filter(e => {
-          return e.country === this.state.country;
-        });
-      } else {
-        return this.props.allowancesList;
-      }
+    if (this.state.global) {
+      return this.props.allowancesList.filter(e => {
+        return e.jobgrade_global === 1;
+      });
+    } else if (this.state.country !== "") {
+      return this.props.allowancesList.filter(e => {
+        return e.country === this.state.country;
+      });
     } else {
-      return [];
+      return this.props.allowancesList;
     }
   };
 
