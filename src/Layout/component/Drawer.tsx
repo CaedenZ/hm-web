@@ -78,8 +78,8 @@ const styles = (theme: Theme) =>
 
 export interface Props
   extends InState,
-    SharedDispatchProps,
-    WithStyles<typeof styles> {}
+  SharedDispatchProps,
+  WithStyles<typeof styles> { }
 
 interface InState {
   companyList: Company[];
@@ -279,10 +279,10 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
       } else return null;
     };
     const adminfunction = (): any => {
-      //Init the admin list
+      // Init the admin list
       let adm: object[] = [];
       if (isMaster(this.props.role)) {
-        //Only SuperAdmin is allowed to use the Setting
+        // Only SuperAdmin is allowed to use the Setting
         adm.push({
           title: "Setting",
           path: "/setting",
@@ -341,12 +341,6 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
           path: "/allowances",
           icon: <AllowanceIcon />,
           index: 14
-        },
-        {
-          title: "Target Bonus",
-          path: "/targetbonus",
-          icon: <TargetBonusIcon />,
-          index: 15
         },
         {
           title: "Signons",

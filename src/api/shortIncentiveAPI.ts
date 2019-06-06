@@ -42,7 +42,7 @@ export const updateShortIncentive = async (token, payload: UPDATESHORTINCENTIVEC
 export const deleteShortIncentive = async (token, payload: string) => {
 
     let data = {
-        shortincentive_id: payload,
+        shortterm_incentive_id: payload,
         session_key: token,
     }
 

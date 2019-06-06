@@ -1,8 +1,8 @@
 export interface Allowances {
-    allowances_id: string,
+    allowance_id: string,
     jobgrade_id: string,
     jobgrade_name: string,
-    jobgrade_global:number,
+    jobgrade_global: number,
     type: string,
     country: string,
     value: string,

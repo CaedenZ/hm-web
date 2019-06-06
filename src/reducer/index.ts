@@ -161,6 +161,7 @@ import {
   updateLocationEpic,
   deleteLocationEpic
 } from "./locationReducer";
+import { insertDataEpic } from "./dataInsertReducer";
 
 export const history = createBrowserHistory();
 
@@ -310,7 +311,9 @@ export const rootEpic = combineEpics(
   deleteEquityRangeEpic,
 
   getJobChartListEpic,
-  updateCellEpic
+  updateCellEpic,
+
+  insertDataEpic,
 );
 
 // export type DetailState = DetailState

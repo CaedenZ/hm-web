@@ -96,6 +96,10 @@ class FormPage extends Component<Props, FormState> {
     }
   };
 
+  handleChangeSelectJG = (e) =>{
+    this.setState({jobgrade_id:e.target.value})
+  }
+
   render() {
     const { classes } = this.props;
     return (

@@ -42,7 +42,7 @@ export const updateAllowances = async (token, payload: UPDATEALLOWANCESCRED): Pr
 export const deleteAllowances = async (token, payload: string) => {
 
     let data = {
-        allowances_id: payload,
+        allowance_id: payload,
         session_key: token,
     }
 

@@ -128,9 +128,6 @@ class CustomizedTable extends React.Component<Props, State> {
               <CustomTableCell align="left">Type</CustomTableCell>
               <CustomTableCell align="left">Value</CustomTableCell>
               <CustomTableCell align="left">Investing Type</CustomTableCell>
-              <CustomTableCell align="left">
-                Investing Breakdown
-              </CustomTableCell>
               <CustomTableCell align="left">Share Exchange</CustomTableCell>
               <CustomTableCell align="left">Share Symbol</CustomTableCell>
               <CustomTableCell align="left">Action</CustomTableCell>
@@ -149,9 +146,6 @@ class CustomizedTable extends React.Component<Props, State> {
                   <CustomTableCell align="left">{row.value}</CustomTableCell>
                   <CustomTableCell align="left">
                     {row.investing_type}
-                  </CustomTableCell>
-                  <CustomTableCell align="left">
-                    {row.investing_breakdown}
                   </CustomTableCell>
                   <CustomTableCell align="left">
                     {row.share_exchange}

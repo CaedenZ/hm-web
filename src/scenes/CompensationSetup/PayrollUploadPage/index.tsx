@@ -6,7 +6,7 @@ import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../interface/propsInterface";
 import { Button, Paper, Grid, Divider, Typography, TableCell, Theme, Table, TableHead, TableRow, TableBody, IconButton } from "@material-ui/core";
-
+import ManualForm from "./form"
 import $axios from "../../../plugin/axios";
 
 const styles = (theme: Theme) =>
@@ -51,6 +51,7 @@ interface State {
   queue: boolean;
   queueitem: boolean;
   queuelog: boolean;
+  manual: boolean;
   filename: string;
   listqueue: ListQueue[];
   listqueueitem: ListQueueItem[];
@@ -89,6 +90,7 @@ class PayrollUploadPage extends React.Component<Props, State> {
     queue: false,
     queueitem: false,
     queuelog: false,
+    manual: false,
     filename: '',
     listqueue: [],
     listqueueitem: [],
@@ -176,6 +178,9 @@ class PayrollUploadPage extends React.Component<Props, State> {
     this.setState({ queuelog: true })
 
   }
+  handleManualEntry = () => {
+    this.setState({ manual: true })
+  }
 
   getstatus = (id) => {
     switch (id) {
@@ -216,6 +221,9 @@ class PayrollUploadPage extends React.Component<Props, State> {
 
           <Button color="primary" onClick={this.listqueue} variant="contained" component="span">
             List Queue
+              </Button>
+          <Button color="primary" onClick={this.handleManualEntry} variant="contained" component="span">
+            Manual Entry
               </Button>
 
         </Grid>
@@ -316,6 +324,15 @@ class PayrollUploadPage extends React.Component<Props, State> {
                 </TableBody>
               )}
             </Table>
+            <Divider />
+          </Paper>
+        </Grid>}
+        {this.state.manual && <Grid container>
+          <Paper className={classes.paper}>
+            <Typography component="h1" variant="h6">
+              Manual Entry
+          </Typography>
+            <ManualForm />
             <Divider />
           </Paper>
         </Grid>}

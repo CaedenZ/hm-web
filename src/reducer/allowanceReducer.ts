@@ -15,7 +15,7 @@ import { isActionOf } from "typesafe-actions";
 export function allowancesReducer(state: AllowancesState = {
     allowancesList: [],
     selectAllowances: {
-        allowances_id: '',
+        allowance_id: '',
         jobgrade_id: '',
         jobgrade_name: '',
         type: '',

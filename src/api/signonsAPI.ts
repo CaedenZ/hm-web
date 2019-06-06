@@ -42,7 +42,7 @@ export const updateSignons = async (token, payload: UPDATESIGNONSCRED): Promise<
 export const deleteSignons = async (token, payload: string) => {
 
     let data = {
-        salaryRange_id: payload,
+        signons_id: payload,
         session_key: token,
     }
 

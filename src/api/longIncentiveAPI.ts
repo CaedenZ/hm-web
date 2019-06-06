@@ -42,7 +42,7 @@ export const updateLongIncentive = async (token, payload: UPDATELONGINCENTIVECRE
 export const deleteLongIncentive = async (token, payload: string) => {
 
     let data = {
-        longincentive_id: payload,
+        longterm_incentive_id: payload,
         session_key: token,
     }
 

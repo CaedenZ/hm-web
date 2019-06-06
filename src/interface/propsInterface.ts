@@ -216,4 +216,6 @@ export interface SharedDispatchProps {
 
   getJobChartList: () => void;
   updateCell: (cred: UPDATECELL) => void;
+
+  insertData: (cred: any) => void;
 }

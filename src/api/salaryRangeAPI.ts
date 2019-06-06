@@ -43,7 +43,7 @@ export const updateSalaryRange = async (token, payload: UPDATESALARYRANGECRED, c
 export const deleteSalaryRange = async (token, payload: string) => {
 
     let data = {
-        salaryRange_id: payload,
+        salary_range_id: payload,
         session_key: token,
     }
 

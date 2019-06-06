@@ -15,7 +15,13 @@ import {
   FormControl,
   InputLabel,
   Select,
-  MenuItem
+  MenuItem,
+  TableCell,
+  Table,
+  TableHead,
+  TableRow,
+  TableBody,
+  IconButton
 } from "@material-ui/core";
 import { mapDispatchToProps } from "../../../../helper/dispachProps";
 import { connect } from "react-redux";
@@ -30,20 +36,43 @@ const styles = (theme: Theme) =>
     textField: {
       width: "20rem",
       margin: "1rem"
-    }
+    },
+    table: {
+      minWidth: 700
+    },
+    row: {
+      "&:nth-of-type(odd)": {
+        backgroundColor: theme.palette.background.default
+      }
+    },
   });
+
+const CustomTableCell = withStyles(theme => ({
+  head: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white
+  },
+  body: {
+    fontSize: 14
+  },
+}))(TableCell);
 
 interface FormState {
   type: string;
   value: string;
   isBonus: boolean;
   isOptional: boolean;
-  year: string;
+  year: number;
   investing_type: string;
-  investing_breakdown: string;
+  investing_breakdown: BreakdownItem[];
   share_symbol: string;
   share_exchange: string;
   currency: string;
+}
+
+interface BreakdownItem {
+  year: string,
+  value: string,
 }
 interface Props
   extends InState,
@@ -61,13 +90,13 @@ interface InState {
 
 class FormPage extends Component<Props, FormState> {
   state: FormState = {
-    year: "",
+    year: 2,
     type: "",
     value: "",
     isBonus: false,
     isOptional: false,
     investing_type: "",
-    investing_breakdown: "",
+    investing_breakdown: [{ year: '', value: '' }, { year: '', value: '' }, { year: '', value: '' }, { year: '', value: '' }, { year: '', value: '' }, { year: '', value: '' }, { year: '', value: '' }, { year: '', value: '' }, { year: '', value: '' }, { year: '', value: '' }],
     share_symbol: "",
     share_exchange: "",
     currency: ""
@@ -102,8 +131,59 @@ class FormPage extends Component<Props, FormState> {
     this.setState({ isOptional: !this.state.isOptional } as any);
   };
 
+  handleChangebreakdownyear = (i) => (e) => {
+    const result = {
+      ...this.state.investing_breakdown,
+    }
+    result[i].year = e.target.value
+    this.setState({ investing_breakdown: result })
+  }
+
+  handleChangebreakdownvalue = (i) => (e) => {
+    const result = {
+      ...this.state.investing_breakdown,
+    }
+    result[i].value = e.target.value
+    this.setState({ investing_breakdown: result })
+  }
+
+  handleChangeYear = (e) => {
+    if (e.target.value < 10) {
+      this.setState({ year: e.target.value })
+    }
+  }
   render() {
     const { classes } = this.props;
+
+    let tablerow: any[] = [];
+    for (let i = 0; i < this.state.year; i++) {
+      console.log(i)
+      tablerow.push(<TableRow>
+        <CustomTableCell>
+          <TextField
+            id="breakdownyear"
+            label="breakdownyear"
+            className={classes.textField}
+            value={this.state.investing_breakdown[i].year}
+            onChange={this.handleChangebreakdownyear(i)}
+            margin="normal"
+            variant="outlined"
+          />
+        </CustomTableCell>
+        <CustomTableCell>
+          <TextField
+            id="breakdownvalue"
+            label="breakdownvalue"
+            className={classes.textField}
+            value={this.state.investing_breakdown[i].value}
+            onChange={this.handleChangebreakdownvalue(i)}
+            margin="normal"
+            variant="outlined"
+          />
+        </CustomTableCell>
+      </TableRow>
+      )
+    }
     return (
       <Paper style={{ marginTop: "2rem" }}>
         <form
@@ -118,9 +198,11 @@ class FormPage extends Component<Props, FormState> {
               <TextField
                 id="year"
                 label="year"
+                type="number"
+                InputProps={{ inputProps: { min: 0, max: 10 } }}
                 className={classes.textField}
                 value={this.state.year}
-                onChange={this.handleChange("year")}
+                onChange={this.handleChangeYear}
                 margin="normal"
               />
             </Grid>
@@ -170,16 +252,20 @@ class FormPage extends Component<Props, FormState> {
               </FormControl>
 
             </Grid>
-            <Grid justify={"center"} container item>
-              <TextField
-                id="investing_breakdown"
-                label="investing_breakdown"
-                className={classes.textField}
-                value={this.state.investing_breakdown}
-                onChange={this.handleChange("investing_breakdown")}
-                margin="normal"
-              />
-            </Grid>
+            <Paper>
+              <Typography style={{ margin: "1rem" }} variant='h5'>Investing breakdown</Typography>
+              <Table className={classes.table}>
+                <TableHead>
+                  <TableRow>
+                    <CustomTableCell align="left">Yeay</CustomTableCell>
+                    <CustomTableCell align="left">Value</CustomTableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {tablerow}
+                </TableBody>
+              </Table>
+            </Paper>
             <Grid justify={"center"} container item>
               <TextField
                 id="share_symbol"

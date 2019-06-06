@@ -91,7 +91,7 @@ class CustomizedTable extends React.Component<Props, State> {
     }
 
     handleDelete = (id, index) => {
-
+        console.log(id)
         const payload = {
             type: 'delete',
             object: 'allowances',
@@ -132,15 +132,15 @@ class CustomizedTable extends React.Component<Props, State> {
                     </TableHead>
                     {this.props.allowancesList.length > 0 && <TableBody>
                         {this.props.allowancesList.map((row, index) => (
-                            <TableRow className={classes.row} key={row.allowances_id}>
+                            <TableRow className={classes.row} key={row.allowance_id}>
                                 <CustomTableCell component="th" scope="row">{row.jobgrade_name}</CustomTableCell>
                                 <CustomTableCell align="left">{row.type}</CustomTableCell>
                                 <CustomTableCell align="left">{row.value}</CustomTableCell>
                                 <CustomTableCell align="left">{row.country}</CustomTableCell>
-                                <CustomTableCell align="left">{row.isBonus ? <CheckIcon/> : ""}</CustomTableCell>
+                                <CustomTableCell align="left">{row.isBonus ? <CheckIcon /> : ""}</CustomTableCell>
                                 <CustomTableCell align="left">
                                     <IconButton onClick={() => this.handleUpdateButtonClick(row)}><UpdateIcon /></IconButton>
-                                    <IconButton onClick={() => this.handleDelete(row.allowances_id, index)}><DeleteIcon /></IconButton>
+                                    <IconButton onClick={() => this.handleDelete(row.allowance_id, index)}><DeleteIcon /></IconButton>
                                 </CustomTableCell>
                             </TableRow>
                         ))}

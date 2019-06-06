@@ -19,6 +19,7 @@ import { selectShortIncentiveAction, createShortIncentiveAction, updateShortInce
 import { selectEquityRangeAction, createEquityRangeAction, updateEquityRangeAction, deleteEquityRangeAction, getEquityRangeListAction } from "../actions/equityRangeAction";
 import { getJobChartListAction, updateCellAction } from "../actions/jobchartAction";
 import { selectLocationAction, createLocationAction, updateLocationAction, deleteLocationAction, getLocationListAction } from "../actions/locationAction";
+import { insertDataAction } from "../actions/dataInsertAction";
 
 
 
@@ -167,5 +168,7 @@ export function mapDispatchToProps(dispatch): SharedDispatchProps {
 
         getJobChartList: () => { dispatch(getJobChartListAction.request()) },
         updateCell: (payload) => { dispatch(updateCellAction.request(payload)) },
+
+        insertData: (payload) => { dispatch(insertDataAction.request(payload)) },
     }
 }

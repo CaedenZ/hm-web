@@ -42,7 +42,7 @@ export const updateTargetBonus = async (token, payload: UPDATETARGETBONUSCRED): 
 export const deleteTargetBonus = async (token, payload: string) => {
 
     let data = {
-        targetbonus_id: payload,
+        target_bonus_id: payload,
         session_key: token,
     }
 

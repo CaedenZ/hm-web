@@ -95,6 +95,7 @@ class FormPage extends Component<Props, FormState> {
           <Grid justify="center" container>
             <Grid justify={"center"} container item>
               <TextField
+                required
                 id="type"
                 label="type"
                 className={classes.textField}
@@ -105,6 +106,7 @@ class FormPage extends Component<Props, FormState> {
             </Grid>
             <Grid justify={"center"} container item>
               <TextField
+                required
                 id="value"
                 label="value"
                 className={classes.textField}
@@ -115,6 +117,7 @@ class FormPage extends Component<Props, FormState> {
             </Grid>
             <Grid justify={"center"} container item>
               <TextField
+                required
                 id="signons_breakdown"
                 label="signons_breakdown"
                 className={classes.textField}

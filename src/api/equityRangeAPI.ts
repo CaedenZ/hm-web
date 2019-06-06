@@ -42,7 +42,7 @@ export const updateEquityRange = async (token, payload: UPDATEEQUITYRANGECRED): 
 export const deleteEquityRange = async (token, payload: string) => {
 
     let data = {
-        equityrange_id: payload,
+        equity_range_id: payload,
         session_key: token,
     }
 
