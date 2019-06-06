@@ -3,13 +3,17 @@ import { Allowances, CREATEALLOWANCESCRED, UPDATEALLOWANCESCRED } from "../inter
 
 export const getAllowancesList = async (token, payload): Promise<Allowances[]> => {
 
-    let data = {
+    const data = {
         company_id: payload,
-        session_key: token,
+        session_key: token
     }
     const response = await $axios.post('/company/getAllowance', data)
     console.log(response.data.data)
-    return response.data.data
+    if(response.data.error) {
+        return [];
+    } else {
+        return response.data.data
+    }
 }
 
 export const createAllowances = async (token, payload: CREATEALLOWANCESCRED, companyid): Promise<Allowances[]> => {

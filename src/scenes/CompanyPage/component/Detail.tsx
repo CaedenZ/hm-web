@@ -29,8 +29,6 @@ const CustomTableCell = withStyles(theme => ({
 export interface Props extends SharedDispatchProps, InState {}
 
 interface InState {
-  id: string;
-  sessionkey: string;
   locationData: Location[];
   userData: User[];
   companyData: Company;

@@ -127,7 +127,6 @@ class RootRoute extends React.Component<Props, State> {
             <Route
               exact
               path="/forgetpassword"
-              // component={ForgetPasswordPage}
               render={() => (
                 <SecondaryLayout>
                   <ForgetPasswordPage />
@@ -137,7 +136,6 @@ class RootRoute extends React.Component<Props, State> {
             <Route
               exact
               path="/resetpassword"
-              // component={ResetPasswordPage}
               render={() => (
                 <SecondaryLayout>
                   <ResetPasswordPage />

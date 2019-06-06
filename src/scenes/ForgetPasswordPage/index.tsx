@@ -58,7 +58,7 @@ class ForgetPasswordPage extends Component<Props, State> {
   }
 
   state = {
-    email: "zfy0120@gmail.com",
+    email: "",
     app_key: "p9Eg6HN7FFXjA9WTNZ5n"
   };
 

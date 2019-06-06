@@ -4,12 +4,11 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import Paper from "@material-ui/core/Paper";
 import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles";
-import { Redirect, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Divider } from "@material-ui/core";
 import { connect } from "react-redux";
 import { mapDispatchToProps } from "../../helper/dispachProps";
 import { SharedDispatchProps } from "../../interface/propsInterface";
-
 const styles = (theme: any) => ({
   centerLogin: {
     display: "flex",
@@ -63,7 +62,6 @@ class SignIn extends Component<Props, State> {
     this.handleChange = this.handleChange.bind(this);
     this.dynSetState = this.dynSetState.bind(this);
   }
-
   dynSetState(key: keyof State, value: string) {
     this.setState({
       [key]: value
@@ -81,67 +79,65 @@ class SignIn extends Component<Props, State> {
 
   render() {
     const { classes } = this.props;
-    if (this.props.usertoken === "") {
-      return (
-        <div className={classes.centerLogin}>
-          <main className={classes.main}>
-            <CssBaseline />
-            <Paper className={classes.paper}>
-              <ValidatorForm
-                ref="form"
-                onSubmit={this.handleLogin}
-                debounceTime={500}
+    return (
+      <div className={classes.centerLogin}>
+        <main className={classes.main}>
+          <CssBaseline />
+          <Paper className={classes.paper}>
+            <ValidatorForm
+              ref="form"
+              onSubmit={this.handleLogin}
+              debounceTime={500}
+            >
+              <TextValidator
+                fullWidth
+                label="Email"
+                onChange={this.handleChange}
+                id="email"
+                name="email"
+                autoComplete="email"
+                value={this.state.email}
+                validators={["required", "isEmail"]}
+                errorMessages={["this field is required", "email is not valid"]}
+                className={classes.loginSpacing}
+              />
+              <TextValidator
+                fullWidth
+                label="Password"
+                onChange={this.handleChange}
+                type="password"
+                id="password"
+                name="password"
+                autoComplete="current-password"
+                value={this.state.password}
+                validators={["required"]}
+                errorMessages={["this field is required"]}
+                className={classes.loginSpacing}
+              />
+              <Divider className={classes.loginSpacing} />
+              <Button
+                fullWidth
+                variant="contained"
+                color="primary"
+                type="submit"
               >
-                <TextValidator
-                  fullWidth
-                  label="Email"
-                  onChange={this.handleChange}
-                  id="email"
-                  name="email"
-                  autoComplete="email"
-                  value={this.state.email}
-                  validators={["required", "isEmail"]}
-                  errorMessages={[
-                    "this field is required",
-                    "email is not valid"
-                  ]}
-                  className={classes.loginSpacing}
-                />
-                <TextValidator
-                  fullWidth
-                  label="Password"
-                  onChange={this.handleChange}
-                  type="password"
-                  id="password"
-                  name="password"
-                  autoComplete="current-password"
-                  value={this.state.password}
-                  validators={["required"]}
-                  errorMessages={["this field is required"]}
-                  className={classes.loginSpacing}
-                />
-                <Divider className={classes.loginSpacing} />
-                <Button
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  type="submit"
-                >
-                  Sign in
-                </Button>
-                <div
-                  style={{ margin: "auto", width: "50%", textAlign: "center", marginTop: "1rem" }}
-                >
-                  <Link to={"/forgetpassword"}>Forget Password</Link>
-                </div>
-              </ValidatorForm>
-            </Paper>
-          </main>
-        </div>
-      );
-    } else {
-      return <Redirect to="/" />;
-    }
+                Sign in
+              </Button>
+              <div
+                style={{
+                  margin: "auto",
+                  width: "50%",
+                  textAlign: "center",
+                  marginTop: "1rem"
+                }}
+              >
+                <Link to={"/forgetpassword"}>Forget Password</Link>
+              </div>
+            </ValidatorForm>
+          </Paper>
+        </main>
+      </div>
+    );
   }
 }
 

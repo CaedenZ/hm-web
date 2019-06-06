@@ -95,7 +95,6 @@ interface State {
 class PermanentDrawerLeft extends React.Component<Props, State> {
   constructor(props) {
     super(props);
-    this.handleLogout = this.handleLogout.bind(this);
     this.handleExpand = this.handleExpand.bind(this);
   }
 
@@ -104,10 +103,6 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
     expended2: false,
     expended3: false,
     selectedIndex: null
-  };
-
-  handleLogout = () => {
-    this.props.logout();
   };
 
   handleExpand = (expansion: number) => {
