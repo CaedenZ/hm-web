@@ -28,7 +28,7 @@ class App extends Component {
     return (
       <Provider store={store}>
         <MuiThemeProvider theme={theme}>
-          <RootRoute init={false} />
+          <RootRoute />
         </MuiThemeProvider>
       </Provider>
     );

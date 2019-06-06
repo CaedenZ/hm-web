@@ -19,7 +19,6 @@ import { Country } from "../../../interface/countryInterface";
 import CustomizedTable from './component/table'
 import { JobGrade } from "../../../interface/jobgradeInterface";
 
-
 const styles = (theme: Theme) =>
   createStyles({
     root: {
@@ -51,7 +50,10 @@ const styles = (theme: Theme) =>
     }
   });
 
-export interface Props extends WithStyles<typeof styles>, SharedDispatchProps, InState { }
+export interface Props
+  extends WithStyles<typeof styles>,
+    SharedDispatchProps,
+    InState {}
 
 interface State {
   filtercountry: string,
@@ -74,7 +76,6 @@ interface InState {
   jobgradeList: JobGrade[],
 }
 class AllowancesPage extends React.Component<Props, State> {
-
   state = {
     filtercountry: '',
     filterglobal: true,
@@ -90,37 +91,35 @@ class AllowancesPage extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    console.log('AllowancesPage MOunt')
-    if (this.props.selectedCompany.company_id === '') {
+    console.log("AllowancesPage MOunt");
+    if (this.props.selectedCompany.company_id === "") {
       let data = {
-        type: 'warning',
-        object: 'Please Select a Company first',
-        id: '1'
-      }
-      this.props.showDialog(data)
-    }
-    else this.props.getAllowancesList()
+        type: "warning",
+        object: "Please Select a Company first",
+        id: "1"
+      };
+      this.props.showDialog(data);
+    } else this.props.getAllowancesList();
   }
 
-  handleUpdateButtonClick = (allowances) => {
-    this.props.selectAllowances(allowances)
-    history.push('/allowances/update')
-    console.log('clicked')
-  }
+  handleUpdateButtonClick = allowances => {
+    this.props.selectAllowances(allowances);
+    history.push("/allowances/update");
+    console.log("clicked");
+  };
 
-  handleDelete = (id) => {
-
+  handleDelete = id => {
     const payload = {
-      type: 'delete',
-      object: 'allowances',
-      id: id,
-    }
-    this.props.showDialog(payload)
-  }
+      type: "delete",
+      object: "allowances",
+      id: id
+    };
+    this.props.showDialog(payload);
+  };
 
   handleNewGrade = () => {
-    history.push('/allowances/create')
-  }
+    history.push("/allowances/create");
+  };
 
   handleChangeSelect = (statekay: keyof State) => (
     event: React.ChangeEvent<HTMLSelectElement>
@@ -152,10 +151,7 @@ class AllowancesPage extends React.Component<Props, State> {
         return e.country === this.state.filtercountry
       })
     }
-    else {
-      return this.props.allowancesList
-    }
-  }
+  };
 
   handleCreateAllowance = (e, data) => {
     // console.log(this.props.business_titleList)
@@ -380,4 +376,7 @@ function mapStateToProps(state: RootState) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(AllowancesPage));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(AllowancesPage));

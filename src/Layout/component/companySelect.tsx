@@ -40,7 +40,7 @@ class CompanySelectMenu extends React.Component<Props, State> {
   };
 
   componentDidMount() {
-    this.props.getCompanyList();
+    // this.props.getCompanyList();
   }
 
   render() {
