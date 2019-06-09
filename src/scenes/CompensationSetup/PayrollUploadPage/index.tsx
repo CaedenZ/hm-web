@@ -8,6 +8,8 @@ import { SharedDispatchProps } from "../../../interface/propsInterface";
 import { Button, Paper, Grid, Divider, Typography, TableCell, Theme, Table, TableHead, TableRow, TableBody, IconButton } from "@material-ui/core";
 import ManualForm from "./form"
 import $axios from "../../../plugin/axios";
+import ReactDataGrid from "react-data-grid";
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -28,7 +30,8 @@ const styles = (theme: Theme) =>
       height: "20px"
     },
     paper: {
-      padding: '5px'
+      padding: '5px',
+      width: '100%'
     }
   });
 
@@ -96,6 +99,10 @@ class PayrollUploadPage extends React.Component<Props, State> {
     listqueueitem: [],
     listqueuelog: [],
   }
+
+  componentDidMount(){
+    this.listqueue()
+  }
   readFile = async (e: any) => {
     // this.setState({ data: e.target.files[0] });
     console.dir(e.target.files[0]);
@@ -150,6 +157,7 @@ class PayrollUploadPage extends React.Component<Props, State> {
     }
     const listqueue = await $axios.post('/company/getImportQueue', data);
     console.log(listqueue.data.data)
+    console.log(this.state.listqueue)
     this.setState({ listqueue: listqueue.data.data })
     this.setState({ queue: true })
   }
@@ -173,7 +181,7 @@ class PayrollUploadPage extends React.Component<Props, State> {
       source_filepath: filepath,
     }
     const listqueuelog = await $axios.post('/company/getDataLog', data);
-    console.log(listqueuelog.data.data)
+    // console.log(listqueuelog.data.data)
     this.setState({ listqueuelog: listqueuelog.data.data })
     this.setState({ queuelog: true })
 
@@ -197,6 +205,46 @@ class PayrollUploadPage extends React.Component<Props, State> {
 
   render() {
     const { classes } = this.props
+    const that = this
+
+    const columns: any = [
+      {key:'source_filepath',name:"source_filepath"},
+      {key:'type',name:"type"},
+      {key:'uploaded',name:"uploaded"},
+      {key:'status',name:"status"},
+      {key:'action',name:"action"},
+    ]
+
+    function actions(row){
+      return[
+        // {
+        //   icon: <DeleteIcon />,
+        //   callback: () => {
+        //     alert(row.source_filepath);
+        //   }
+        // },
+        {
+          icon: <Button color='primary'>Item</Button>,
+          callback: () => {
+            that.listqueueitem(row.source_filepath);
+          }
+        },
+        {
+          icon: <Button color='primary'>Log</Button>,
+          callback: () => {
+            that.listQueueLogs(row.source_filepath);
+          }
+        }
+      ];
+    }  
+
+    function getCellActions(column, row) {
+      const cellActions = {
+        action: actions(row)
+      };
+      return cellActions[column.key];
+    }
+
     return (
       <main>
         <Grid
@@ -232,34 +280,12 @@ class PayrollUploadPage extends React.Component<Props, State> {
             <Typography component="h1" variant="h6">
               List Queue
           </Typography>
-            <Table className={classes.table}>
-              <TableHead>
-                <TableRow>
-                  <CustomTableCell align="left">source_filepath</CustomTableCell>
-                  <CustomTableCell align="left">Type</CustomTableCell>
-                  <CustomTableCell align="left">uploaded</CustomTableCell>
-                  <CustomTableCell align="left">status</CustomTableCell>
-                  <CustomTableCell align="left">List Queue Items</CustomTableCell>
-                </TableRow>
-              </TableHead>
-              {this.state.listqueue.length > 0 && (
-                <TableBody>
-                  {this.state.listqueue.map((row, index) => (
-                    <TableRow className={classes.row} key={row.source_filepath}>
-                      <CustomTableCell component="th" scope="row">
-                        {row.source_filepath}
-                      </CustomTableCell>
-                      <CustomTableCell align="left">{row.type}</CustomTableCell>
-                      <CustomTableCell align="left">{row.uploaded}</CustomTableCell>
-                      <CustomTableCell align="left">{this.getstatus(row.status)}</CustomTableCell>
-                      <CustomTableCell><Button color="primary" onClick={() => this.listqueueitem(row.source_filepath)} variant="contained" component="span">
-                        List Queue Items
-              </Button></CustomTableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              )}
-            </Table>
+            <ReactDataGrid
+            columns = {columns}
+            rowGetter = {i => this.state.listqueue[i]}
+            rowsCount = {5}
+            getCellActions={getCellActions}
+            enableCellSelect={true} />
             <Divider />
           </Paper>
         </Grid>}
