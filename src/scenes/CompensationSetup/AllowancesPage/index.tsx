@@ -52,8 +52,8 @@ const styles = (theme: Theme) =>
 
 export interface Props
   extends WithStyles<typeof styles>,
-    SharedDispatchProps,
-    InState {}
+  SharedDispatchProps,
+  InState { }
 
 interface State {
   filtercountry: string,
@@ -136,6 +136,7 @@ class AllowancesPage extends React.Component<Props, State> {
   handleChangeCheck = () => {
     this.setState({ filterglobal: !this.state.filterglobal } as any);
     this.setState({ filtercountry: '' } as any);
+    console.log('aaa')
     console.log(this.getdata())
   };
 
@@ -151,13 +152,24 @@ class AllowancesPage extends React.Component<Props, State> {
         return e.country === this.state.filtercountry
       })
     }
+    else 
+    return this.props.allowancesList
   };
 
-  handleCreateAllowance = (e, data) => {
-    // console.log(this.props.business_titleList)
-    e.preventDefault();
+  handleCreateAllowance = () => {
+    const data = {
+      country: "country",
+      isBonus: "0",
+      isOptional: "0",
+      jobgrade_country: "jobgrade_country",
+      jobgrade_global: 0,
+      jobgrade_id: "jobgrade_id",
+      jobgrade_name: "jobgrade_name",
+      type: "test",
+      value: "0",
+      value_type: 1
+    }
     this.props.createAllowances(data)
-    this.setState({ created: true })
   }
 
   handleChangeCheckisBonus = () => {
@@ -173,152 +185,8 @@ class AllowancesPage extends React.Component<Props, State> {
     const { classes } = this.props
     return (
       <main>
-        {!this.state.created && <div>
-          <Typography component="h1" variant="h6">
-            Create Allowances
-    </Typography>
-          <Paper style={{ backgroundColor: 'rgba(255, 170, 0, 0.99)' }}>
-            <form onSubmit={e => this.handleCreateAllowance(e, this.state)}>
-              <Grid container>
-                <Grid item xs={3}>
-                  <TextField
-                    required
-                    id="type"
-                    label="type"
-                    className={classes.textField}
-                    value={this.state.type}
-                    onChange={this.handleChange("type")}
-                    margin="normal"
-                  />
-                </Grid>
-                <Grid item xs={3} style={{ padding: '1em' }}>
-                  {this.props.jobgradeList.length > 0 && (
-                    <FormControl style={{ width: "100%" }}>
-                      <InputLabel style={{ marginLeft: "20px" }} required>
-                        Job Grade
-                  </InputLabel>
-                      <Select
-                        id="jobgrade_id"
-                        className={classes.textField}
-                        value={this.state.jobgrade_id}
-                        onChange={this.handleChangeSelect("jobgrade_id")}
-                        inputProps={{
-                          name: "jobgrade_id",
-                          id: "country-simple"
-                        }}
-                      >
-                        {this.props.jobgradeList.map(jobgrade => (
-                          <MenuItem
-                            key={jobgrade.jobgrade_name}
-                            value={jobgrade.jobgrade_id}
-                          >
-                            {jobgrade.jobgrade_name}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
-                  )}
-                </Grid>
-                <Grid item xs={3} style={{ padding: '1em' }}>
-                  {this.props.selectedCompany.country.length > 0 && (
-                    <FormControl style={{ width: "100%" }}>
-                      <InputLabel style={{ marginLeft: "20px" }} required>
-                        Country
-                  </InputLabel>
-                      <Select
-                        id="country"
-                        className={classes.textField}
-                        value={this.state.country}
-                        onChange={this.handleChangeSelect("country")}
-                        inputProps={{
-                          name: "country",
-                          id: "country-simple"
-                        }}
-                      >
-                        {this.props.selectedCompany.country.map(country => (
-                          <MenuItem
-                            key={country}
-                            value={country}
-                          >
-                            {country}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
-                  )}
-                </Grid>
-                <Grid xs={1} justify={"center"} item style={{ padding: '1em' }}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={this.state.isBonus}
-                        onChange={this.handleChangeCheckisBonus}
-                        color="primary"
-                      />
-                    }
-                    label="isBonus"
-                  />
-                </Grid>
-                <Grid xs={1} justify={"center"} item style={{ padding: '1em' }}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={this.state.isOptional}
-                        onChange={this.handleChangeCheckisOptional}
-                        color="primary"
-                      />
-                    }
-                    label="isOptional"
-                  />
-                </Grid>
 
-                <Grid item xs={2}>
-                  <TextField
-                    required
-                    id="value"
-                    label="value"
-                    type="number"
-                    className={classes.textField}
-                    value={this.state.value}
-                    onChange={this.handleChange("value")}
-                    margin="normal"
-                  />
-                </Grid>
-                <Grid item xs={2} justify={"center"} style={{ padding: '1em' }}>
-                  <FormControl style={{ width: "100%" }}>
-                    <InputLabel style={{ marginLeft: "20px" }} required>
-                      Value Type
-                  </InputLabel>
-                    <Select
-                      id="value_type"
-                      className={classes.textField}
-                      value={this.state.value_type}
-                      onChange={this.handleChangeSelect("value_type")}
-                      inputProps={{
-                        name: "value_type",
-                        id: "value_type-simple"
-                      }}
-                    >
-                      <MenuItem value="%">%</MenuItem>
-                      <MenuItem value="Fixed">Fixed</MenuItem>
-                      <MenuItem value="Range">Range</MenuItem>
-
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid xs={2} justify={"center"} item style={{ padding: '2rem' }}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    type="submit"
-                    style={{ marginLeft: "auto" }}
-                  >
-                    Create
-          </Button>
-                </Grid>
-              </Grid>
-            </form></Paper></div>}
-
+        <CustomButton onClick={this.handleCreateAllowance}>Create</CustomButton>
         <Divider />
 
         <Typography component="h1" variant="h6">

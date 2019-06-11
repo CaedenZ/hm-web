@@ -17,16 +17,23 @@ export interface SalaryRangeState {
 }
 
 export interface CREATESALARYRANGECRED {
+    jobgrade_id: string,
+    jobgrade_name: string,
+    jobgrade_global: number,
     type: string,
-    global: number,
+    country: string,
     min: string,
     mid: string,
     max: string,
 }
 
 export interface UPDATESALARYRANGECRED {
+    salary_range_id: string,
+    jobgrade_id: string,
+    jobgrade_name: string,
+    jobgrade_global: number,
     type: string,
-    global: number,
+    country: string,
     min: string,
     mid: string,
     max: string,

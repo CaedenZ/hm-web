@@ -2,7 +2,7 @@ export interface JobGrade {
     jobgrade_id: string,
     jobgrade_name: string,
     type: string,
-    global: number,
+    global: string,
     country: string,
     salary_range: string,
     allowance: string,
@@ -18,7 +18,7 @@ export interface JobGradeState {
 export interface CREATEJOBGRADECRED {
     jobgrade_name: string,
     type: string,
-    global: number,
+    global: string,
     country: string,
 }
 
@@ -26,6 +26,6 @@ export interface UPDATEJOBGRADECRED {
     jobgrade_id: string,
     jobgrade_name: string,
     type: string,
-    global: number,
+    global: string,
     country: string,
 }

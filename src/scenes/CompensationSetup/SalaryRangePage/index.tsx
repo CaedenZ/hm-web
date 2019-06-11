@@ -95,7 +95,18 @@ class SalaryRangePage extends React.Component<Props, State> {
   };
 
   handleNewGrade = () => {
-    history.push("/salaryrange/create");
+    const data:any = {
+      country: "country",
+jobgrade_country: "jobgrade_country",
+jobgrade_global: "0",
+jobgrade_id: "jobgrade_id",
+jobgrade_name: "jobgrade_name",
+max: "3",
+mid: "2",
+min: "1",
+type: "0",
+    }
+    this.props.createSalaryRange(data)
   };
 
   handleChange = () => {

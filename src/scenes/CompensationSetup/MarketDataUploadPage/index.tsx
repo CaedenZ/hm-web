@@ -8,6 +8,8 @@ import { SharedDispatchProps } from "../../../interface/propsInterface";
 import { Button, Paper, Grid, Divider, Typography, TableCell, Theme, Table, TableHead, TableRow, TableBody, IconButton } from "@material-ui/core";
 import ManualForm from "./form"
 import $axios from "../../../plugin/axios";
+import ReactDataGrid from "react-data-grid";
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -28,7 +30,8 @@ const styles = (theme: Theme) =>
       height: "20px"
     },
     paper: {
-      padding: '5px'
+      padding: '5px',
+      width: '100%'
     }
   });
 
@@ -48,14 +51,38 @@ export interface Props
   InState { }
 
 interface State {
+  data: boolean,
   queue: boolean;
   queueitem: boolean;
   queuelog: boolean;
   manual: boolean;
   filename: string;
+  listdata: ListData[];
   listqueue: ListQueue[];
   listqueueitem: ListQueueItem[];
   listqueuelog: ListQueueLog[];
+}
+
+interface ListData {
+  id: number,
+  company_id: string,
+  user_id: string,
+  year: string,
+  country: string,
+  survey_company: string,
+  employee_id: string,
+  company_grade: string,
+  survey_grade: string,
+  jobfunction: string,
+  sjobfunction: string,
+  currency: string,
+  annual_base_pay: string,
+  annual_cash_allowance: string,
+  annual_fixed_pay: string,
+  target_total: string,
+  target_direct_comp: string,
+  target_total_rem: string,
+  uploaded_dt: string
 }
 
 interface ListQueue {
@@ -87,15 +114,22 @@ interface InState {
 class MarketDataUploadPage extends React.Component<Props, State> {
 
   state: State = {
+    data: false,
     queue: false,
     queueitem: false,
     queuelog: false,
     manual: false,
     filename: '',
+    listdata: [],
     listqueue: [],
     listqueueitem: [],
     listqueuelog: [],
   }
+
+  componentDidMount(){
+    this.listdata()
+  }
+
   readFile = async (e: any) => {
     // this.setState({ data: e.target.files[0] });
     console.dir(e.target.files[0]);
@@ -135,13 +169,26 @@ class MarketDataUploadPage extends React.Component<Props, State> {
     let data = {
       session_key: this.props.sessionkey,
       company_id: this.props.companyid,
-      type: 0,
+      type: 1,
       file_name: fileToBeUploaded.name
     }
 
     await $axios.post("/company/uploadExceldata", data);
     this.setState({ filename: fileToBeUploaded.name })
   };
+
+  listdata = async () => {
+    let data = {
+      session_key: this.props.sessionkey,
+      type: 1,
+      customer_id: this.props.companyid
+    }
+    const listdata = await $axios.post('/company/getData', data);
+    console.log(listdata.data.data)
+    console.log(this.state.listdata)
+    this.setState({ listdata: listdata.data.data })
+    this.setState({ data: true })
+  }
 
   listqueue = async () => {
     let data = {
@@ -150,6 +197,7 @@ class MarketDataUploadPage extends React.Component<Props, State> {
     }
     const listqueue = await $axios.post('/company/getImportQueue', data);
     console.log(listqueue.data.data)
+    console.log(this.state.listqueue)
     this.setState({ listqueue: listqueue.data.data })
     this.setState({ queue: true })
   }
@@ -157,7 +205,7 @@ class MarketDataUploadPage extends React.Component<Props, State> {
   listqueueitem = async (filepath) => {
     let data = {
       session_key: this.props.sessionkey,
-      type: 0,
+      type: 1,
       source_filepath: filepath,
     }
     const listqueueitem = await $axios.post('/company/getImportQueueData', data);
@@ -173,7 +221,7 @@ class MarketDataUploadPage extends React.Component<Props, State> {
       source_filepath: filepath,
     }
     const listqueuelog = await $axios.post('/company/getDataLog', data);
-    console.log(listqueuelog.data.data)
+    // console.log(listqueuelog.data.data)
     this.setState({ listqueuelog: listqueuelog.data.data })
     this.setState({ queuelog: true })
 
@@ -197,6 +245,67 @@ class MarketDataUploadPage extends React.Component<Props, State> {
 
   render() {
     const { classes } = this.props
+    const that = this
+
+    const columns: any = [
+      { key: 'source_filepath', name: "source_filepath" },
+      { key: 'type', name: "type" },
+      { key: 'uploaded', name: "uploaded" },
+      { key: 'status', name: "status" },
+      { key: 'action', name: "action" },
+    ]
+
+    const datacolumn: any = [
+      { key: 'id', name: "id" },
+      { key: 'company_id', name: "company_id" },
+      { key: 'user_id', name: "user_id" },
+      { key: 'year', name: "year" },
+      { key: 'country', name: "country" },
+      { key: 'survey_company', name: "survey_company" },
+      { key: 'employee_id', name: "employee_id" },
+      { key: 'company_grade', name: "company_grade" },
+      { key: 'survey_grade', name: "survey_grade" },
+      { key: 'jobfunction', name: "jobfunction" },
+      { key: 'sjobfunction', name: "sjobfunction" },
+      { key: 'annual_base_pay', name: "annual_base_pay" },
+      { key: 'annual_cash_allowance', name: "annual_cash_allowance" },
+      { key: 'annual_fixed_pay', name: "annual_fixed_pay" },
+      { key: 'target_total', name: "target_total" },
+      { key: 'target_direct_comp', name: "target_direct_comp" },
+      { key: 'target_total_rem', name: "target_total_rem" },
+      { key: 'uploaded_dt', name: "uploaded_dt" },
+    ]
+
+    function actions(row) {
+      return [
+        // {
+        //   icon: <DeleteIcon />,
+        //   callback: () => {
+        //     alert(row.source_filepath);
+        //   }
+        // },
+        {
+          icon: <Button color='primary'>Item</Button>,
+          callback: () => {
+            that.listqueueitem(row.source_filepath);
+          }
+        },
+        {
+          icon: <Button color='primary'>Log</Button>,
+          callback: () => {
+            that.listQueueLogs(row.source_filepath);
+          }
+        }
+      ];
+    }
+
+    function getCellActions(column, row) {
+      const cellActions = {
+        action: actions(row)
+      };
+      return cellActions[column.key];
+    }
+
     return (
       <main>
         <Grid
@@ -227,39 +336,31 @@ class MarketDataUploadPage extends React.Component<Props, State> {
               </Button>
 
         </Grid>
+        {this.state.data && <Grid container>
+          <Paper className={classes.paper}>
+            <Typography component="h1" variant="h6">
+              List Data
+          </Typography>
+            <ReactDataGrid
+              columns={datacolumn}
+              rowGetter={i => this.state.listdata[i]}
+              rowsCount={this.state.listdata.length}
+              enableCellSelect={true} />
+            <Divider />
+          </Paper>
+        </Grid>}
+
         {this.state.queue && <Grid container>
           <Paper className={classes.paper}>
             <Typography component="h1" variant="h6">
               List Queue
           </Typography>
-            <Table className={classes.table}>
-              <TableHead>
-                <TableRow>
-                  <CustomTableCell align="left">source_filepath</CustomTableCell>
-                  <CustomTableCell align="left">Type</CustomTableCell>
-                  <CustomTableCell align="left">uploaded</CustomTableCell>
-                  <CustomTableCell align="left">status</CustomTableCell>
-                  <CustomTableCell align="left">List Queue Items</CustomTableCell>
-                </TableRow>
-              </TableHead>
-              {this.state.listqueue.length > 0 && (
-                <TableBody>
-                  {this.state.listqueue.map((row, index) => (
-                    <TableRow className={classes.row} key={row.source_filepath}>
-                      <CustomTableCell component="th" scope="row">
-                        {row.source_filepath}
-                      </CustomTableCell>
-                      <CustomTableCell align="left">{row.type}</CustomTableCell>
-                      <CustomTableCell align="left">{row.uploaded}</CustomTableCell>
-                      <CustomTableCell align="left">{this.getstatus(row.status)}</CustomTableCell>
-                      <CustomTableCell><Button color="primary" onClick={() => this.listqueueitem(row.source_filepath)} variant="contained" component="span">
-                        List Queue Items
-              </Button></CustomTableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              )}
-            </Table>
+            <ReactDataGrid
+              columns={columns}
+              rowGetter={i => this.state.listqueue[i]}
+              rowsCount={this.state.listqueue.length}
+              getCellActions={getCellActions}
+              enableCellSelect={true} />
             <Divider />
           </Paper>
         </Grid>}

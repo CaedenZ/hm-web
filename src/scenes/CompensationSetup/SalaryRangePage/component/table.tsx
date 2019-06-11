@@ -22,6 +22,11 @@ import { SalaryRange } from "../../../../interface/salaryRangeInterface";
 import { RootState } from "../../../../reducer";
 import { mapDispatchToProps } from "../../../../helper/dispachProps";
 import { connect } from "react-redux";
+import ReactDataGrid from "react-data-grid";
+import { Editors } from "react-data-grid-addons";
+
+const { DropDownEditor } = Editors;
+  
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -89,7 +94,7 @@ class CustomizedTable extends React.Component<Props, State> {
     console.log("clicked");
   };
 
-  handleDelete = (id, index) => {
+  handleDelete = (id) => {
     const payload = {
       type: "delete",
       object: "salaryrange",
@@ -111,81 +116,67 @@ class CustomizedTable extends React.Component<Props, State> {
     history.push("/salaryrange/" + path);
   };
 
+  
+  typeEditor = <DropDownEditor options={[...this.props.selectedCompany.country,'']} />;
+  globalEditor = <DropDownEditor options={['Y','N']} />;
+
+  
+
+  
+  onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
+      const row = this.props.salaryrangeList.slice();
+      for (let i = fromRow; i <= toRow; i++) {
+        row[i] = { ...row[i], ...updated };
+        console.log(row[i])
+        this.props.updateSalaryRange(row[i])
+      }
+      return { row };
+  };
+
   render() {
     const { classes } = this.props;
+    const that = this;
+
+
+    const columns: any = [
+      {key:'jobgrade_name',name:"jobgrade_name", editable: true},
+      {key:'type',name:"type", editable: true},
+      {key:'min',name:"min", editable: true},
+      {key:'mid',name:"mid", editable: true},
+      {key:'max',name:"max", editable: true},
+      {key:'jobgrade_global',name:"global", editor: this.globalEditor},
+      {key:'jobgrade_country',name:"country", editor: this.typeEditor},
+      {key:'action',name:"action"},
+    ]
+
+    function actions(row){
+      return[
+        {
+          icon: <DeleteIcon />,
+          callback: () => {
+            that.handleDelete(row.jobgrade_id);
+          }
+        },
+        
+      ];
+    }  
+
+    function getCellActions(column, row) {
+      const cellActions = {
+        action: actions(row)
+      };
+      return cellActions[column.key];
+    }
 
     return (
       <Paper className={classes.root}>
-        <Table className={classes.table}>
-          <TableHead>
-            <TableRow>
-              <CustomTableCell align="left">Job Grade Name</CustomTableCell>
-              <CustomTableCell align="left">Type</CustomTableCell>
-              <CustomTableCell align="left">Min</CustomTableCell>
-              <CustomTableCell align="left">Mid</CustomTableCell>
-              <CustomTableCell align="left">Max</CustomTableCell>
-              <CustomTableCell align="left">Country</CustomTableCell>
-              <CustomTableCell align="left">Action</CustomTableCell>
-            </TableRow>
-          </TableHead>
-          {this.props.salaryrangeList.length > 0 && (
-            <TableBody>
-              {this.props.salaryrangeList.map((row, index) => (
-                <TableRow className={classes.row} key={row.salary_range_id}>
-                  <CustomTableCell component="th" scope="row">
-                    {row.jobgrade_name}
-                  </CustomTableCell>
-                  <CustomTableCell align="left">{row.type}</CustomTableCell>
-                  <CustomTableCell align="left">{row.min}</CustomTableCell>
-                  <CustomTableCell align="left">{row.mid}</CustomTableCell>
-                  <CustomTableCell align="left">{row.max}</CustomTableCell>
-                  <CustomTableCell align="left">{row.country}</CustomTableCell>
-                  <CustomTableCell align="left">
-                    <IconButton
-                      onClick={() => this.handleUpdateButtonClick(row)}
-                    >
-                      <UpdateIcon />
-                    </IconButton>
-                    <IconButton
-                      onClick={() =>
-                        this.handleDelete(row.salary_range_id, index)
-                      }
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                    <Menu
-                      id="simple-menu"
-                      anchorEl={this.state.anchorEl}
-                      open={Boolean(this.state.anchorEl)}
-                      onClose={this.handleClose}
-                    >
-                      <MenuItem
-                        onClick={() => this.handleRedirect("salaryrange")}
-                      >
-                        SalaryRange
-                      </MenuItem>
-                      <MenuItem
-                        onClick={() => this.handleRedirect("equityrange")}
-                      >
-                        EquityRange
-                      </MenuItem>
-                      <MenuItem
-                        onClick={() => this.handleRedirect("salaryrange")}
-                      >
-                        SalaryRange
-                      </MenuItem>
-                      <MenuItem
-                        onClick={() => this.handleRedirect("targetbonus")}
-                      >
-                        TargetBonus
-                      </MenuItem>
-                    </Menu>
-                  </CustomTableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          )}
-        </Table>
+        <ReactDataGrid
+            columns = {columns}
+            rowGetter = {i => this.props.salaryrangeList[i]}
+            rowsCount = {this.props.salaryrangeList.length}
+            getCellActions={getCellActions}
+            onGridRowsUpdated={this.onGridRowsUpdated}
+            enableCellSelect={true} />
       </Paper>
     );
   }

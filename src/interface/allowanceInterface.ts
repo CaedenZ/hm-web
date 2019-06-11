@@ -19,15 +19,25 @@ export interface AllowancesState {
 
 export interface CREATEALLOWANCESCRED {
     jobgrade_id: string,
+    jobgrade_name: string,
+    jobgrade_global: number,
     type: string,
-    global: number,
     country: string,
+    value: string,
+    isBonus: string,
+    isOptional: string,
+    value_type: number,
 }
 
 export interface UPDATEALLOWANCESCRED {
     allowances_id: string,
     jobgrade_id: string,
+    jobgrade_name: string,
+    jobgrade_global: number,
     type: string,
-    global: number,
     country: string,
+    value: string,
+    isBonus: string,
+    isOptional: string,
+    value_type: number,
 }

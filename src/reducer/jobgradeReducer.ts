@@ -18,7 +18,7 @@ export function jobgradeReducer(state: JobGradeState = {
         jobgrade_id: '',
         jobgrade_name: '',
         type: '',
-        global: 0,
+        global: 'N',
         country: '',
         salary_range: '',
         allowance: '',

@@ -142,7 +142,7 @@ class JobGradePage extends React.Component<Props, State> {
   getdata = () => {
     if (this.state.filterglobal) {
       return this.props.jobgradeList.filter(e => {
-        return e.global === 1;
+        return e.global === 'Y';
       });
     } else if (this.state.filtercountry !== "") {
       return this.props.jobgradeList.filter(e => {
@@ -153,9 +153,13 @@ class JobGradePage extends React.Component<Props, State> {
     }
   };
 
-  handleCreateJobGrade = (e, data) => {
-    // console.log(this.props.business_titleList)
-    e.preventDefault();
+  handleCreateJobGrade = () => {
+    const data = {
+      jobgrade_name: "Jobgrade Name",
+    type: "Type",
+    global: 'N',
+    country: "Country",
+    }
     this.props.createJobGrade(data)
     this.setState({ created: true })
   }
@@ -166,92 +170,7 @@ class JobGradePage extends React.Component<Props, State> {
     let { classes } = this.props
     return (
       <main>
-        {!this.state.created && <div>
-          <Typography component="h1" variant="h6">
-            Create Job Grade
-      </Typography>
-          <Paper style={{ backgroundColor: 'rgba(255, 170, 0, 0.99)' }}>
-            <form onSubmit={e => this.handleCreateJobGrade(e, this.state)}>
-              <Grid container>
-                <Grid item xs={3}>
-                  <TextField
-                    style={{ backgroundColor: 'white' }}
-                    id="outlined-jobgrade_name"
-                    label="Name"
-                    className={classes.textField}
-                    value={this.state.jobgrade_name}
-                    onChange={this.handleChange('jobgrade_name')}
-                    margin="normal"
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item xs={3}>
-                  <TextField
-                    style={{ backgroundColor: 'white' }}
-                    id="outlined-type"
-                    label="type"
-                    className={classes.textField}
-                    value={this.state.type}
-                    onChange={this.handleChange('type')}
-                    margin="normal"
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item xs={1} style={{ padding: '1em' }}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={this.state.global}
-                        onChange={this.handleChangeCheck}
-                        color="primary"
-                      />
-                    }
-                    label="Global"
-                  />
-                </Grid>
-                <Grid item xs={3} style={{ padding: '1em' }}>
-                  {this.props.selectedCompany.country.length > 0 && (
-                    <FormControl fullWidth>
-                      <InputLabel style={{ marginLeft: "20px" }} required>
-                        Country
-                  </InputLabel>
-                      <Select
-                        fullWidth
-                        disabled={this.state.global}
-                        id="country"
-                        className={classes.textField}
-                        value={this.state.country}
-                        onChange={this.handleChangeSelect("country")}
-                        inputProps={{
-                          name: "country",
-                          id: "country-simple"
-                        }}
-                        variant="outlined"
-                      >
-                        {this.props.selectedCompany.country.map(country => (
-                          <MenuItem
-                            key={(country)}
-                            value={(country)}
-                          >
-                            {(country)}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
-                  )}
-                </Grid>
-                <Grid xs={1} justify={"center"} item style={{ padding: '1em' }}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    type="submit"
-                    style={{ marginLeft: "auto" }}
-                  >
-                    Create
-            </Button>
-                </Grid>
-              </Grid>
-            </form></Paper></div>}
+        <CustomButton onClick={this.handleCreateJobGrade}>Create</CustomButton>
         <Divider />
 
         <Typography component="h1" variant="h6">

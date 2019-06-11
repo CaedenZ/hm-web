@@ -90,7 +90,7 @@ class FormPage extends Component<Props, FormState> {
     })
 
     if (selectedjg !== undefined) {
-      if (selectedjg.global === 0) {
+      if (selectedjg.global === 'N') {
         this.setState({ country: selectedjg.country })
       }
     }
