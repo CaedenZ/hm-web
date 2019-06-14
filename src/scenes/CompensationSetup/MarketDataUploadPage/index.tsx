@@ -126,7 +126,7 @@ class MarketDataUploadPage extends React.Component<Props, State> {
     listqueuelog: [],
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.listdata()
   }
 
@@ -169,7 +169,7 @@ class MarketDataUploadPage extends React.Component<Props, State> {
     let data = {
       session_key: this.props.sessionkey,
       company_id: this.props.companyid,
-      type: 1,
+      type: 0,
       file_name: fileToBeUploaded.name
     }
 
@@ -180,8 +180,8 @@ class MarketDataUploadPage extends React.Component<Props, State> {
   listdata = async () => {
     let data = {
       session_key: this.props.sessionkey,
-      type: 1,
-      customer_id: this.props.companyid
+      type: 0,
+      company_id: this.props.companyid
     }
     const listdata = await $axios.post('/company/getData', data);
     console.log(listdata.data.data)
@@ -205,7 +205,7 @@ class MarketDataUploadPage extends React.Component<Props, State> {
   listqueueitem = async (filepath) => {
     let data = {
       session_key: this.props.sessionkey,
-      type: 1,
+      type: 0,
       source_filepath: filepath,
     }
     const listqueueitem = await $axios.post('/company/getImportQueueData', data);

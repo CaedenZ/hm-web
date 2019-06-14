@@ -126,7 +126,7 @@ class PayrollUploadPage extends React.Component<Props, State> {
     listqueuelog: [],
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.listdata()
   }
 
@@ -169,7 +169,7 @@ class PayrollUploadPage extends React.Component<Props, State> {
     let data = {
       session_key: this.props.sessionkey,
       company_id: this.props.companyid,
-      type: 0,
+      type: 1,
       file_name: fileToBeUploaded.name
     }
 
@@ -180,8 +180,8 @@ class PayrollUploadPage extends React.Component<Props, State> {
   listdata = async () => {
     let data = {
       session_key: this.props.sessionkey,
-      type: 0,
-      customer_id: this.props.companyid
+      type: 1,
+      company_id: this.props.companyid
     }
     const listdata = await $axios.post('/company/getData', data);
     console.log(listdata.data.data)
@@ -205,7 +205,7 @@ class PayrollUploadPage extends React.Component<Props, State> {
   listqueueitem = async (filepath) => {
     let data = {
       session_key: this.props.sessionkey,
-      type: 0,
+      type: 1,
       source_filepath: filepath,
     }
     const listqueueitem = await $axios.post('/company/getImportQueueData', data);
@@ -255,24 +255,24 @@ class PayrollUploadPage extends React.Component<Props, State> {
       { key: 'action', name: "action" },
     ]
 
+
     const datacolumn: any = [
       { key: 'id', name: "id" },
       { key: 'company_id', name: "company_id" },
       { key: 'user_id', name: "user_id" },
       { key: 'year', name: "year" },
       { key: 'country', name: "country" },
-      { key: 'survey_company', name: "survey_company" },
       { key: 'employee_id', name: "employee_id" },
-      { key: 'company_grade', name: "company_grade" },
-      { key: 'survey_grade', name: "survey_grade" },
+      { key: 'gender', name: "gender" },
       { key: 'jobfunction', name: "jobfunction" },
       { key: 'sjobfunction', name: "sjobfunction" },
       { key: 'annual_base_pay', name: "annual_base_pay" },
       { key: 'annual_cash_allowance', name: "annual_cash_allowance" },
       { key: 'annual_fixed_pay', name: "annual_fixed_pay" },
-      { key: 'target_total', name: "target_total" },
-      { key: 'target_direct_comp', name: "target_direct_comp" },
-      { key: 'target_total_rem', name: "target_total_rem" },
+      { key: 'business_title', name: "business_title" },
+      { key: 'grade', name: "grade" },
+      { key: 'department', name: "department" },
+      { key: 'currency', name: "currency" },
       { key: 'uploaded_dt', name: "uploaded_dt" },
     ]
 

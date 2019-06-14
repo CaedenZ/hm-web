@@ -2,7 +2,7 @@ export interface Allowances {
     allowance_id: string,
     jobgrade_id: string,
     jobgrade_name: string,
-    jobgrade_global: number,
+    jobgrade_global: string,
     type: string,
     country: string,
     value: string,
@@ -20,7 +20,7 @@ export interface AllowancesState {
 export interface CREATEALLOWANCESCRED {
     jobgrade_id: string,
     jobgrade_name: string,
-    jobgrade_global: number,
+    jobgrade_global: string,
     type: string,
     country: string,
     value: string,
@@ -30,10 +30,10 @@ export interface CREATEALLOWANCESCRED {
 }
 
 export interface UPDATEALLOWANCESCRED {
-    allowances_id: string,
+    allowance_id: string,
     jobgrade_id: string,
     jobgrade_name: string,
-    jobgrade_global: number,
+    jobgrade_global: string,
     type: string,
     country: string,
     value: string,

@@ -109,7 +109,7 @@ export const updateShortIncentiveEpic: Epic<any, any, any, any> = (action$, stat
     action$.pipe(
         filter(isActionOf(updateShortIncentiveAction.request)),
         switchMap((action) =>
-            from(updateShortIncentive(state$.value.authenticationReducer.token, action.payload)).pipe(
+            from(updateShortIncentive(state$.value.authenticationReducer.token, action.payload,state$.value.companyReducer.selectedCompany.company_id)).pipe(
                 map(() => updateShortIncentiveAction.success()),
                 catchError(error => of(updateShortIncentiveAction.failure(error.message)))
             )

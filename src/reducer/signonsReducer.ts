@@ -16,11 +16,15 @@ export function signonsReducer(state: SignonsState = {
     signonsList: [],
     selectSignons: {
         signons_id: '',
-        company_id: '',
         type: '',
         value: '',
         isOptional: 0,
-        signons_breakdown: '',
+        month1: '',
+        month2: '',
+        month3: '',
+        month4: '',
+        month5: '',
+        month6: '',
     },
 }, action) {
     switch (action.type) {
@@ -102,7 +106,7 @@ export const updateSignonsEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
         filter(isActionOf(updateSignonsAction.request)),
         switchMap((action) =>
-            from(updateSignons(state$.value.authenticationReducer.token, action.payload)).pipe(
+            from(updateSignons(state$.value.authenticationReducer.token, action.payload, state$.value.companyReducer.selectedCompany.company_id)).pipe(
                 map(() => updateSignonsAction.success()),
                 catchError(error => of(updateSignonsAction.failure(error.message)))
             )

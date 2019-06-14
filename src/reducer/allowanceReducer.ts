@@ -19,7 +19,7 @@ export function allowancesReducer(state: AllowancesState = {
         jobgrade_id: '',
         jobgrade_name: '',
         type: '',
-        jobgrade_global: 0,
+        jobgrade_global: '',
         country: '',
         value: '',
         isBonus: '',
@@ -112,7 +112,7 @@ export const updateAllowancesEpic: Epic<any, any, any, any> = (action$, state$) 
     action$.pipe(
         filter(isActionOf(updateAllowancesAction.request)),
         switchMap((action) =>
-            from(updateAllowances(state$.value.authenticationReducer.token, action.payload)).pipe(
+            from(updateAllowances(state$.value.authenticationReducer.token, action.payload, state$.value.companyReducer.selectedCompany.company_id)).pipe(
                 map(() => updateAllowancesAction.success()),
                 catchError(error => of(updateAllowancesAction.failure(error.message)))
             )

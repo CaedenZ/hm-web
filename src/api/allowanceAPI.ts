@@ -1,5 +1,6 @@
 import $axios from "../plugin/axios";
 import { Allowances, CREATEALLOWANCESCRED, UPDATEALLOWANCESCRED } from "../interface/allowanceInterface";
+import { sortRows } from "../helper/sort";
 
 export const getAllowancesList = async (token, payload): Promise<Allowances[]> => {
 
@@ -9,10 +10,10 @@ export const getAllowancesList = async (token, payload): Promise<Allowances[]> =
     }
     const response = await $axios.post('/company/getAllowance', data)
     console.log(response.data.data)
-    if(response.data.error) {
+    if (response.data.error) {
         return [];
     } else {
-        return response.data.data
+        return sortRows(response.data.data,"jobgrade_name","ASC")
     }
 }
 
@@ -30,11 +31,12 @@ export const createAllowances = async (token, payload: CREATEALLOWANCESCRED, com
     return response.data.data
 }
 
-export const updateAllowances = async (token, payload: UPDATEALLOWANCESCRED): Promise<Allowances[]> => {
+export const updateAllowances = async (token, payload: UPDATEALLOWANCESCRED, companyid): Promise<Allowances[]> => {
 
     let data = {
         ...payload,
         session_key: token,
+        company_id:companyid,
     }
 
     const response = await $axios.post('/company/updateAllowance', data)

@@ -17,16 +17,24 @@ export interface ShortIncentiveState {
 }
 
 export interface CREATESHORTINCENTIVECRED {
-    shortincentive_name: string,
+    jobgrade_id: string,
+    jobgrade_name: string,
+    jobgrade_global: number,
     type: string,
-    global: number,
     country: string,
+    value: string,
+    isOptional: number,
+    value_type: number,
 }
 
 export interface UPDATESHORTINCENTIVECRED {
-    shortincentive_id: string,
-    shortincentive_name: string,
+    shortterm_incentive_id: string,
+    jobgrade_id: string,
+    jobgrade_name: string,
+    jobgrade_global: number,
     type: string,
-    global: number,
     country: string,
+    value: string,
+    isOptional: number,
+    value_type: number,
 }

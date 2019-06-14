@@ -1,5 +1,6 @@
 import $axios from "../plugin/axios";
 import { TargetBonus, CREATETARGETBONUSCRED, UPDATETARGETBONUSCRED } from "../interface/targetBonusInterface";
+import { sortRows } from "../helper/sort";
 
 export const getTargetBonusList = async (token, payload): Promise<TargetBonus[]> => {
 
@@ -9,7 +10,7 @@ export const getTargetBonusList = async (token, payload): Promise<TargetBonus[]>
     }
     const response = await $axios.post('/company/getTargetBonus', data)
     console.log(response.data.data)
-    return response.data.data
+    return sortRows(response.data.data,"jobgrade_name","ASC")
 }
 
 export const createTargetBonus = async (token, payload: CREATETARGETBONUSCRED, companyid): Promise<TargetBonus[]> => {

@@ -26,10 +26,11 @@ export const createLongIncentive = async (token, payload: CREATELONGINCENTIVECRE
     return response.data.data
 }
 
-export const updateLongIncentive = async (token, payload: UPDATELONGINCENTIVECRED): Promise<LongIncentive[]> => {
+export const updateLongIncentive = async (token, payload: UPDATELONGINCENTIVECRED, companyid): Promise<LongIncentive[]> => {
 
     let data = {
         ...payload,
+        company_id: companyid,
         session_key: token,
     }
 

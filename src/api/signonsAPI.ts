@@ -26,10 +26,11 @@ export const createSignons = async (token, payload: CREATESIGNONSCRED, companyid
     return response.data.data
 }
 
-export const updateSignons = async (token, payload: UPDATESIGNONSCRED): Promise<Signons[]> => {
+export const updateSignons = async (token, payload: UPDATESIGNONSCRED, companyid): Promise<Signons[]> => {
 
     let data = {
         ...payload,
+        company_id: companyid,
         session_key: token,
     }
 

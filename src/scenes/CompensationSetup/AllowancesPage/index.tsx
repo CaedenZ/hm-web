@@ -78,7 +78,7 @@ interface InState {
 class AllowancesPage extends React.Component<Props, State> {
   state = {
     filtercountry: '',
-    filterglobal: true,
+    filterglobal: false,
     created: false,
     jobgrade_id: "",
     type: "",
@@ -144,7 +144,7 @@ class AllowancesPage extends React.Component<Props, State> {
   getdata = () => {
     if (this.state.filterglobal) {
       return this.props.allowancesList.filter(e => {
-        return e.jobgrade_global === 1
+        return e.jobgrade_global === 'Y'
       })
     }
     else if (this.state.filtercountry !== '') {
@@ -152,17 +152,16 @@ class AllowancesPage extends React.Component<Props, State> {
         return e.country === this.state.filtercountry
       })
     }
-    else 
-    return this.props.allowancesList
+    else { return this.props.allowancesList }
   };
 
   handleCreateAllowance = () => {
     const data = {
       country: "country",
-      isBonus: "0",
-      isOptional: "0",
+      isBonus: "Y",
+      isOptional: "Y",
       jobgrade_country: "jobgrade_country",
-      jobgrade_global: 0,
+      jobgrade_global: "Y",
       jobgrade_id: "jobgrade_id",
       jobgrade_name: "jobgrade_name",
       type: "test",

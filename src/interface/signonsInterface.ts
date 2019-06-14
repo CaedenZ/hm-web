@@ -1,10 +1,14 @@
 export interface Signons {
     signons_id: string,
-    company_id: string,
     type: string,
     value: string,
     isOptional: number,
-    signons_breakdown: string,
+    month1: string,
+    month2: string,
+    month3: string,
+    month4: string,
+    month5: string,
+    month6: string,
 }
 
 
@@ -14,16 +18,26 @@ export interface SignonsState {
 }
 
 export interface CREATESIGNONSCRED {
-    signons_name: string,
     type: string,
-    global: number,
-    country: string,
+    value: string,
+    isOptional: number,
+    month1: string,
+    month2: string,
+    month3: string,
+    month4: string,
+    month5: string,
+    month6: string,
 }
 
 export interface UPDATESIGNONSCRED {
     signons_id: string,
-    signons_name: string,
     type: string,
-    global: number,
-    country: string,
+    value: string,
+    isOptional: number,
+    month1: string,
+    month2: string,
+    month3: string,
+    month4: string,
+    month5: string,
+    month6: string,
 }

@@ -64,7 +64,7 @@ interface InState {
 class ShortIncentivePage extends React.Component<Props, State> {
   state = {
     country: "",
-    global: true
+    global: false
   };
 
   componentDidMount() {

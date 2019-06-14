@@ -78,7 +78,7 @@ interface InState {
 class JobGradePage extends React.Component<Props, State> {
   state = {
     filtercountry: "",
-    filterglobal: true,
+    filterglobal: false,
     jobgrade_name: "",
     type: "",
     global: false,
@@ -155,10 +155,10 @@ class JobGradePage extends React.Component<Props, State> {
 
   handleCreateJobGrade = () => {
     const data = {
-      jobgrade_name: "Jobgrade Name",
-    type: "Type",
-    global: 'N',
-    country: "Country",
+      jobgrade_name: "",
+      type: "",
+      global: 'Y',
+      country: "",
     }
     this.props.createJobGrade(data)
     this.setState({ created: true })

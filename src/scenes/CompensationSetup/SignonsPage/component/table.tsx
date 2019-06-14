@@ -23,6 +23,10 @@ import { RootState } from "../../../../reducer";
 import { mapDispatchToProps } from "../../../../helper/dispachProps";
 import { connect } from "react-redux";
 import CheckIcon from "@material-ui/icons/Check"
+import ReactDataGrid from "react-data-grid";
+import { Editors } from "react-data-grid-addons";
+
+const { DropDownEditor } = Editors;
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -90,7 +94,7 @@ class CustomizedTable extends React.Component<Props, State> {
     console.log("clicked");
   };
 
-  handleDelete = (id, index) => {
+  handleDelete = (id) => {
     const payload = {
       type: "delete",
       object: "signons",
@@ -112,50 +116,68 @@ class CustomizedTable extends React.Component<Props, State> {
     history.push("/signons/" + path);
   };
 
+  typeEditor = <DropDownEditor options={[...this.props.selectedCompany.country, '']} />;
+  globalEditor = <DropDownEditor options={['Y', 'N']} />;
+
+
+
+
+  onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
+    const row = this.props.signonsList.slice();
+    for (let i = fromRow; i <= toRow; i++) {
+      row[i] = { ...row[i], ...updated };
+      console.log(row[i])
+      this.props.updateSignons(row[i])
+    }
+    return { row };
+  };
+
   render() {
     const { classes } = this.props;
+    const that = this;
+
+
+    const columns: any = [
+      { key: 'type', name: "type", editable: true },
+      { key: 'value', name: "value", editable: true },
+      { key: 'isOptional', name: "isOptional", editor: this.globalEditor },
+      { key: 'month1', name: "month1", editable: true },
+      { key: 'month2', name: "month2", editable: true },
+      { key: 'month3', name: "month3", editable: true },
+      { key: 'month4', name: "month4", editable: true },
+      { key: 'month5', name: "month5", editable: true },
+      { key: 'month6', name: "month6", editable: true },
+      { key: 'action', name: "action" },
+    ]
+
+    function actions(row) {
+      return [
+        {
+          icon: <DeleteIcon />,
+          callback: () => {
+            that.handleDelete(row.signons_id);
+          }
+        },
+
+      ];
+    }
+
+    function getCellActions(column, row) {
+      const cellActions = {
+        action: actions(row)
+      };
+      return cellActions[column.key];
+    }
 
     return (
       <Paper className={classes.root}>
-        <Table className={classes.table}>
-          <TableHead>
-            <TableRow>
-              <CustomTableCell align="left">Type</CustomTableCell>
-              <CustomTableCell align="left">Value</CustomTableCell>
-              <CustomTableCell align="left">Signon Breakdown</CustomTableCell>
-              <CustomTableCell align="left">Optional</CustomTableCell>
-              <CustomTableCell align="left">Action</CustomTableCell>
-            </TableRow>
-          </TableHead>
-          {this.props.signonsList.length > 0 && (
-            <TableBody>
-              {this.props.signonsList.map((row, index) => (
-                <TableRow className={classes.row} key={row.signons_breakdown}>
-                  <CustomTableCell component="th" scope="row">
-                    {row.type}
-                  </CustomTableCell>
-                  <CustomTableCell align="left">{row.value}</CustomTableCell>
-                  <CustomTableCell align="left">
-                    {row.signons_breakdown}
-                  </CustomTableCell>
-                  <CustomTableCell align="left">{row.isOptional ? <CheckIcon /> : ""}</CustomTableCell>
-                  <CustomTableCell align="left">
-                    <IconButton
-                      onClick={() => this.handleUpdateButtonClick(row)}
-                    >
-                      <UpdateIcon />
-                    </IconButton>
-                    <IconButton
-                      onClick={() => this.handleDelete(row.signons_id, index)}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </CustomTableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          )}
-        </Table>
+        <ReactDataGrid
+          columns={columns}
+          rowGetter={i => this.props.signonsList[i]}
+          rowsCount={this.props.signonsList.length}
+          getCellActions={getCellActions}
+          onGridRowsUpdated={this.onGridRowsUpdated}
+          enableCellSelect={true} />
       </Paper>
     );
   }

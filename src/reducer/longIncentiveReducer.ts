@@ -18,10 +18,13 @@ export function longIncentiveReducer(state: LongIncentiveState = {
         longterm_incentive_id: '',
         value: '',
         type: '',
-        global: 0,
-        country: '',
         investing_type: '',
-        investing_breakdown: '',
+        year1: 0,
+        year2: 0,
+        year3: 0,
+        year4: 0,
+        year5: 0,
+        year6: 0,
         share_symbol: '',
         share_exchange: '',
         currency: '',
@@ -113,7 +116,7 @@ export const updateLongIncentiveEpic: Epic<any, any, any, any> = (action$, state
     action$.pipe(
         filter(isActionOf(updateLongIncentiveAction.request)),
         switchMap((action) =>
-            from(updateLongIncentive(state$.value.authenticationReducer.token, action.payload)).pipe(
+            from(updateLongIncentive(state$.value.authenticationReducer.token, action.payload, state$.value.companyReducer.selectedCompany.company_id)).pipe(
                 map(() => updateLongIncentiveAction.success()),
                 catchError(error => of(updateLongIncentiveAction.failure(error.message)))
             )

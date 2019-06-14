@@ -1,5 +1,6 @@
 import $axios from "../plugin/axios";
 import { JobGrade, CREATEJOBGRADECRED, UPDATEJOBGRADECRED } from "../interface/jobgradeInterface";
+import { sortRows } from "../helper/sort";
 
 export const getJobGradeList = async (token, payload): Promise<JobGrade[]> => {
 
@@ -9,7 +10,8 @@ export const getJobGradeList = async (token, payload): Promise<JobGrade[]> => {
     }
     const response = await $axios.post('/company/getJobGrade', data)
     console.log(response.data.data)
-    return response.data.data
+    
+    return sortRows(response.data.data,"jobgrade_name","ASC")
 }
 
 export const createJobGrade = async (token, payload: CREATEJOBGRADECRED, companyid): Promise<JobGrade[]> => {

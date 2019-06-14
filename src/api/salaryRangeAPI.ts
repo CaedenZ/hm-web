@@ -1,5 +1,6 @@
 import $axios from "../plugin/axios";
 import { SalaryRange, CREATESALARYRANGECRED, UPDATESALARYRANGECRED } from "../interface/salaryRangeInterface";
+import { sortRows } from "../helper/sort";
 
 export const getSalaryRangeList = async (token, payload): Promise<SalaryRange[]> => {
 
@@ -9,7 +10,7 @@ export const getSalaryRangeList = async (token, payload): Promise<SalaryRange[]>
     }
     const response = await $axios.post('/company/getSalaryRange', data)
     console.log(response.data.data)
-    return response.data.data
+    return sortRows(response.data.data,"jobgrade_name","ASC")
 }
 
 export const createSalaryRange = async (token, payload: CREATESALARYRANGECRED, companyid): Promise<SalaryRange[]> => {

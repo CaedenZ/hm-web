@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import {
   createStyles,
@@ -75,13 +75,13 @@ class CustomizedTable extends React.Component<Props, State> {
     country: "",
     global: false,
     anchorEl: null,
-    row:[],
+    row: [],
   };
 
-  countryTypes(){
+  countryTypes() {
     const type = []
     this.props.selectedCompany.country.forEach(element => {
-      type.push({id:element,value:element})
+      type.push({ id: element, value: element })
     });
     return type
   };
@@ -95,9 +95,10 @@ class CustomizedTable extends React.Component<Props, State> {
         id: "1"
       };
       this.props.showDialog(data);
-    } else {this.props.getJobGradeList();
-    // this.setState({row:this.props.jobgradeList})
-  }
+    } else {
+      this.props.getJobGradeList();
+      // this.setState({row:this.props.jobgradeList})
+    }
   }
 
   handleUpdateButtonClick = jobgrade => {
@@ -128,49 +129,52 @@ class CustomizedTable extends React.Component<Props, State> {
     history.push("/jobgrade/" + path);
   };
 
-  
-  
-  typeEditor = <DropDownEditor options={[...this.props.selectedCompany.country,'']} />;
-  globalEditor = <DropDownEditor options={['Y','N']} />;
 
-  
 
-  
+  typeEditor = <DropDownEditor options={[...this.props.selectedCompany.country, '']} />;
+  globalEditor = <DropDownEditor options={['Y', 'N']} />;
+
+
+
+
   onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
-      const row = this.props.jobgradeList.slice();
-      for (let i = fromRow; i <= toRow; i++) {
-        row[i] = { ...row[i], ...updated };
-        console.log(row[i])
-        this.props.updateJobGrade(row[i])
-      }
-      return { row };
+    const row = this.props.jobgradeList.slice();
+    for (let i = fromRow; i <= toRow; i++) {
+      row[i] = { ...row[i], ...updated };
+      console.log(row[i])
+      this.props.updateJobGrade(row[i])
+    }
+    return { row };
   };
-  
+
 
   render() {
     const { classes } = this.props;
     const that = this;
 
 
-    const columns: any = [
-      {key:'jobgrade_name',name:"jobgrade_name", editable: true},
-      {key:'type',name:"type", editable: true},
-      {key:'global',name:"global", editor: this.globalEditor},
-      {key:'country',name:"country", editor: this.typeEditor},
-      {key:'action',name:"action"},
-    ]
+    const defaultColumnProperties = {
+    };
 
-    function actions(row){
-      return[
+    const columns: any = [
+      { key: 'jobgrade_name', name: "jobgrade_name", editable: true, sortDescendingFirst: true },
+      { key: 'type', name: "type", editable: true },
+      { key: 'global', name: "global", editor: this.globalEditor },
+      { key: 'country', name: "country", editor: this.typeEditor },
+      { key: 'action', name: "action" },
+    ].map(c => ({ ...c, ...defaultColumnProperties }));
+
+    function actions(row) {
+      return [
         {
           icon: <DeleteIcon />,
           callback: () => {
             that.handleDelete(row.jobgrade_id);
           }
         },
-        
+
       ];
-    }  
+    }
 
     function getCellActions(column, row) {
       const cellActions = {
@@ -179,52 +183,17 @@ class CustomizedTable extends React.Component<Props, State> {
       return cellActions[column.key];
     }
 
+
     return (
+
       <Paper className={classes.root}>
         <ReactDataGrid
-            columns = {columns}
-            rowGetter = {i => this.props.jobgradeList[i]}
-            rowsCount = {this.props.jobgradeList.length}
-            getCellActions={getCellActions}
-            onGridRowsUpdated={this.onGridRowsUpdated}
-            enableCellSelect={true} />
-        {/* <Table className={classes.table}>
-          <TableHead>
-            <TableRow>
-              <CustomTableCell align="left">Name</CustomTableCell>
-              <CustomTableCell align="left">Type</CustomTableCell>
-              <CustomTableCell align="left">Country</CustomTableCell>
-              <CustomTableCell align="left">Global</CustomTableCell>
-              <CustomTableCell align="left">Action</CustomTableCell>
-            </TableRow>
-          </TableHead>
-          {this.props.jobgradeList.length > 0 && (
-            <TableBody>
-              {this.props.jobgradeList.map((row, index) => (
-                <TableRow className={classes.row} key={row.jobgrade_id}>
-                  <CustomTableCell component="th" scope="row">
-                    {row.jobgrade_name}
-                  </CustomTableCell>
-                  <CustomTableCell align="left">{row.type}</CustomTableCell>
-                  <CustomTableCell align="left">{row.country}</CustomTableCell>
-                  <CustomTableCell align="left">{row.global}</CustomTableCell>
-                  <CustomTableCell align="left">
-                    <IconButton
-                      onClick={() => this.handleUpdateButtonClick(row)}
-                    >
-                      <UpdateIcon />
-                    </IconButton>
-                    <IconButton
-                      onClick={() => this.handleDelete(row.jobgrade_id, index)}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </CustomTableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          )}
-        </Table> */}
+          columns={columns}
+          rowGetter={i => this.props.jobgradeList[i]}
+          rowsCount={this.props.jobgradeList.length}
+          getCellActions={getCellActions}
+          onGridRowsUpdated={this.onGridRowsUpdated}
+          enableCellSelect={true} />
       </Paper>
     );
   }

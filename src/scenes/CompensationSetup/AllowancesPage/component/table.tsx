@@ -22,7 +22,11 @@ import { Allowances } from "../../../../interface/allowanceInterface";
 import { RootState } from "../../../../reducer";
 import { mapDispatchToProps } from "../../../../helper/dispachProps";
 import { connect } from "react-redux";
-import CheckIcon from "@material-ui/icons/Check"
+import CheckIcon from "@material-ui/icons/Check";
+import ReactDataGrid from "react-data-grid";
+import { Editors } from "react-data-grid-addons";
+
+const { DropDownEditor } = Editors;
 
 const CustomTableCell = withStyles(theme => ({
     head: {
@@ -90,7 +94,7 @@ class CustomizedTable extends React.Component<Props, State> {
         console.log('clicked')
     }
 
-    handleDelete = (id, index) => {
+    handleDelete = (id) => {
         console.log(id)
         const payload = {
             type: 'delete',
@@ -113,39 +117,68 @@ class CustomizedTable extends React.Component<Props, State> {
         history.push('/allowances/' + path)
     }
 
+    typeEditor = <DropDownEditor options={[...this.props.selectedCompany.country, '']} />;
+    globalEditor = <DropDownEditor options={['Y', 'N']} />;
+
+
+
+
+    onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
+        const row = this.props.allowancesList.slice();
+        for (let i = fromRow; i <= toRow; i++) {
+            row[i] = { ...row[i], ...updated };
+            console.log(row[i])
+            this.props.updateAllowances(row[i])
+        }
+        return { row };
+    };
 
     render() {
         const { classes } = this.props;
+        const that = this;
+
+
+        const columns: any = [
+            { key: 'jobgrade_id', name: "jobgrade_id", editable: true },
+            { key: 'jobgrade_name', name: "jobgrade_name", editable: true },
+            { key: 'jobgrade_global', name: "jobgrade_global", editor: this.globalEditor },
+            { key: 'jobgrade_country', name: "country", editor: this.typeEditor },
+            { key: 'type', name: "type", editable: true },
+            { key: 'value_type', name: "value_type", editable: true },
+            { key: 'value', name: "value", editable: true },
+            { key: 'isBonus', name: "isBonus", editor: this.globalEditor },
+            { key: 'isOptional', name: "isOptional", editor: this.globalEditor },
+            { key: 'action', name: "action" },
+        ]
+
+        function actions(row) {
+            return [
+                {
+                    icon: <DeleteIcon />,
+                    callback: () => {
+                        that.handleDelete(row.allowance_id);
+                    }
+                },
+
+            ];
+        }
+
+        function getCellActions(column, row) {
+            const cellActions = {
+                action: actions(row)
+            };
+            return cellActions[column.key];
+        }
 
         return (
             <Paper className={classes.root}>
-                <Table className={classes.table}>
-                    <TableHead>
-                        <TableRow>
-                            <CustomTableCell align="left">JobGrade Name</CustomTableCell>
-                            <CustomTableCell align="left">Type</CustomTableCell>
-                            <CustomTableCell align="left">Value</CustomTableCell>
-                            <CustomTableCell align="left">Country</CustomTableCell>
-                            <CustomTableCell align="left">Bonus</CustomTableCell>
-                            <CustomTableCell align="left">Action</CustomTableCell>
-                        </TableRow>
-                    </TableHead>
-                    {this.props.allowancesList.length > 0 && <TableBody>
-                        {this.props.allowancesList.map((row, index) => (
-                            <TableRow className={classes.row} key={row.allowance_id}>
-                                <CustomTableCell component="th" scope="row">{row.jobgrade_name}</CustomTableCell>
-                                <CustomTableCell align="left">{row.type}</CustomTableCell>
-                                <CustomTableCell align="left">{row.value}</CustomTableCell>
-                                <CustomTableCell align="left">{row.country}</CustomTableCell>
-                                <CustomTableCell align="left">{row.isBonus ? <CheckIcon /> : ""}</CustomTableCell>
-                                <CustomTableCell align="left">
-                                    <IconButton onClick={() => this.handleUpdateButtonClick(row)}><UpdateIcon /></IconButton>
-                                    <IconButton onClick={() => this.handleDelete(row.allowance_id, index)}><DeleteIcon /></IconButton>
-                                </CustomTableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>}
-                </Table>
+                <ReactDataGrid
+                    columns={columns}
+                    rowGetter={i => this.props.allowancesList[i]}
+                    rowsCount={this.props.allowancesList.length}
+                    getCellActions={getCellActions}
+                    onGridRowsUpdated={this.onGridRowsUpdated}
+                    enableCellSelect={true} />
             </Paper>
         );
     }

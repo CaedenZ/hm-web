@@ -26,10 +26,11 @@ export const createShortIncentive = async (token, payload: CREATESHORTINCENTIVEC
     return response.data.data
 }
 
-export const updateShortIncentive = async (token, payload: UPDATESHORTINCENTIVECRED): Promise<ShortIncentive[]> => {
+export const updateShortIncentive = async (token, payload: UPDATESHORTINCENTIVECRED,companyid): Promise<ShortIncentive[]> => {
 
     let data = {
         ...payload,
+        company_id: companyid,
         session_key: token,
     }
 

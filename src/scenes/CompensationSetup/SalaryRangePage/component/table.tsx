@@ -26,7 +26,7 @@ import ReactDataGrid from "react-data-grid";
 import { Editors } from "react-data-grid-addons";
 
 const { DropDownEditor } = Editors;
-  
+
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -116,21 +116,21 @@ class CustomizedTable extends React.Component<Props, State> {
     history.push("/salaryrange/" + path);
   };
 
-  
-  typeEditor = <DropDownEditor options={[...this.props.selectedCompany.country,'']} />;
-  globalEditor = <DropDownEditor options={['Y','N']} />;
 
-  
+  typeEditor = <DropDownEditor options={[...this.props.selectedCompany.country, '']} />;
+  globalEditor = <DropDownEditor options={['Y', 'N']} />;
 
-  
+
+
+
   onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
-      const row = this.props.salaryrangeList.slice();
-      for (let i = fromRow; i <= toRow; i++) {
-        row[i] = { ...row[i], ...updated };
-        console.log(row[i])
-        this.props.updateSalaryRange(row[i])
-      }
-      return { row };
+    const row = this.props.salaryrangeList.slice();
+    for (let i = fromRow; i <= toRow; i++) {
+      row[i] = { ...row[i], ...updated };
+      console.log(row[i])
+      this.props.updateSalaryRange(row[i])
+    }
+    return { row };
   };
 
   render() {
@@ -139,27 +139,27 @@ class CustomizedTable extends React.Component<Props, State> {
 
 
     const columns: any = [
-      {key:'jobgrade_name',name:"jobgrade_name", editable: true},
-      {key:'type',name:"type", editable: true},
-      {key:'min',name:"min", editable: true},
-      {key:'mid',name:"mid", editable: true},
-      {key:'max',name:"max", editable: true},
-      {key:'jobgrade_global',name:"global", editor: this.globalEditor},
-      {key:'jobgrade_country',name:"country", editor: this.typeEditor},
-      {key:'action',name:"action"},
+      { key: 'jobgrade_name', name: "jobgrade_name", editable: true },
+      { key: 'type', name: "type", editable: true },
+      { key: 'min', name: "min", editable: true },
+      { key: 'mid', name: "mid", editable: true },
+      { key: 'max', name: "max", editable: true },
+      { key: 'jobgrade_global', name: "global", editor: this.globalEditor },
+      { key: 'jobgrade_country', name: "country", editor: this.typeEditor },
+      { key: 'action', name: "action" },
     ]
 
-    function actions(row){
-      return[
+    function actions(row) {
+      return [
         {
           icon: <DeleteIcon />,
           callback: () => {
-            that.handleDelete(row.jobgrade_id);
+            that.handleDelete(row.salary_range_id);
           }
         },
-        
+
       ];
-    }  
+    }
 
     function getCellActions(column, row) {
       const cellActions = {
@@ -171,12 +171,12 @@ class CustomizedTable extends React.Component<Props, State> {
     return (
       <Paper className={classes.root}>
         <ReactDataGrid
-            columns = {columns}
-            rowGetter = {i => this.props.salaryrangeList[i]}
-            rowsCount = {this.props.salaryrangeList.length}
-            getCellActions={getCellActions}
-            onGridRowsUpdated={this.onGridRowsUpdated}
-            enableCellSelect={true} />
+          columns={columns}
+          rowGetter={i => this.props.salaryrangeList[i]}
+          rowsCount={this.props.salaryrangeList.length}
+          getCellActions={getCellActions}
+          onGridRowsUpdated={this.onGridRowsUpdated}
+          enableCellSelect={true} />
       </Paper>
     );
   }

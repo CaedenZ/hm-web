@@ -23,6 +23,10 @@ import { LongIncentive } from "../../../../interface/longIncentiveInterface";
 import { RootState } from "../../../../reducer";
 import { mapDispatchToProps } from "../../../../helper/dispachProps";
 import { connect } from "react-redux";
+import ReactDataGrid from "react-data-grid";
+import { Editors } from "react-data-grid-addons";
+
+const { DropDownEditor } = Editors;
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -56,10 +60,10 @@ const styles = (theme: Theme) =>
 
 export interface Props
   extends WithStyles<typeof styles>,
-    SharedDispatchProps,
-    InState {}
+  SharedDispatchProps,
+  InState { }
 
-interface State {}
+interface State { }
 
 interface InState {
   selectedCompany: Company;
@@ -90,7 +94,7 @@ class CustomizedTable extends React.Component<Props, State> {
     console.log("clicked");
   };
 
-  handleDelete = (id, index) => {
+  handleDelete = (id) => {
     const payload = {
       type: "delete",
       object: "longincentive",
@@ -117,66 +121,78 @@ class CustomizedTable extends React.Component<Props, State> {
     history.push("/longincentive/" + path);
   };
 
+  typeEditor = <DropDownEditor options={[...this.props.selectedCompany.country, '']} />;
+  globalEditor = <DropDownEditor options={['Y', 'N']} />;
+
+
+
+
+  onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
+    const row = this.props.longincentiveList.slice();
+    for (let i = fromRow; i <= toRow; i++) {
+      row[i] = { ...row[i], ...updated };
+      console.log(row[i])
+      this.props.updateLongIncentive(row[i])
+    }
+    return { row };
+  };
+
   render() {
     const { classes } = this.props;
+    const that = this;
+
+
+    const columns: any = [
+      { key: 'value', name: "value", editable: true },
+      { key: 'type', name: "type", editable: true },
+      { key: 'investing_type', name: "investing_type", editor: this.globalEditor },
+      { key: 'share_symbol', name: "share_symbol", editable: true },
+      { key: 'share_exchange', name: "share_exchange", editor: this.typeEditor },
+      { key: 'currency', name: "currency", editable: true },
+      { key: 'isOptional', name: "isOptional", editor: this.globalEditor },
+      { key: 'year1', name: "year1", editable: true },
+      { key: 'year2', name: "year2", editable: true },
+      { key: 'year3', name: "year3", editable: true },
+      { key: 'year4', name: "year4", editable: true },
+      { key: 'year5', name: "year5", editable: true },
+      { key: 'year6', name: "year6", editable: true },
+      { key: 'action', name: "action" },
+    ]
+
+    function actions(row) {
+      return [
+        {
+          icon: <DeleteIcon />,
+          callback: () => {
+            that.handleDelete(row.longterm_incentive_id);
+          }
+        },
+        {
+          icon: <EquityRangeIcon />,
+          callback: () => {
+            that.handleEquityRangeButtonClick(row.longterm_incentive_id);
+          }
+        },
+
+      ];
+    }
+
+    function getCellActions(column, row) {
+      const cellActions = {
+        action: actions(row)
+      };
+      return cellActions[column.key];
+    }
 
     return (
       <Paper className={classes.root}>
-        <Table className={classes.table}>
-          <TableHead>
-            <TableRow>
-              <CustomTableCell align="left">Type</CustomTableCell>
-              <CustomTableCell align="left">Value</CustomTableCell>
-              <CustomTableCell align="left">Investing Type</CustomTableCell>
-              <CustomTableCell align="left">Share Exchange</CustomTableCell>
-              <CustomTableCell align="left">Share Symbol</CustomTableCell>
-              <CustomTableCell align="left">Action</CustomTableCell>
-            </TableRow>
-          </TableHead>
-          {this.props.longincentiveList.length > 0 && (
-            <TableBody>
-              {this.props.longincentiveList.map((row, index) => (
-                <TableRow
-                  className={classes.row}
-                  key={row.longterm_incentive_id}
-                >
-                  <CustomTableCell component="th" scope="row">
-                    {row.type}
-                  </CustomTableCell>
-                  <CustomTableCell align="left">{row.value}</CustomTableCell>
-                  <CustomTableCell align="left">
-                    {row.investing_type}
-                  </CustomTableCell>
-                  <CustomTableCell align="left">
-                    {row.share_exchange}
-                  </CustomTableCell>
-                  <CustomTableCell align="left">
-                    {row.share_symbol}
-                  </CustomTableCell>
-                  <CustomTableCell align="left">
-                    <IconButton
-                      onClick={() => this.handleEquityRangeButtonClick(row)}
-                    >
-                      <EquityRangeIcon />
-                    </IconButton>
-                    <IconButton
-                      onClick={() => this.handleUpdateButtonClick(row)}
-                    >
-                      <UpdateIcon />
-                    </IconButton>
-                    <IconButton
-                      onClick={() =>
-                        this.handleDelete(row.longterm_incentive_id, index)
-                      }
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </CustomTableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          )}
-        </Table>
+        <ReactDataGrid
+          columns={columns}
+          rowGetter={i => this.props.longincentiveList[i]}
+          rowsCount={this.props.longincentiveList.length}
+          getCellActions={getCellActions}
+          onGridRowsUpdated={this.onGridRowsUpdated}
+          enableCellSelect={true} />
       </Paper>
     );
   }
