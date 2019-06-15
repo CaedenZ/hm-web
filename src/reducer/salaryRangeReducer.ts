@@ -19,7 +19,7 @@ export function salaryRangeReducer(state: SalaryRangeState = {
         jobgrade_id: '',
         jobgrade_name: '',
         type: '',
-        jobgrade_global: 0,
+        jobgrade_global: '',
         country: '',
         min: '',
         mid: '',

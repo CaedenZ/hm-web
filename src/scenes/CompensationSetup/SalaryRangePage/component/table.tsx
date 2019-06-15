@@ -24,19 +24,11 @@ import { mapDispatchToProps } from "../../../../helper/dispachProps";
 import { connect } from "react-redux";
 import ReactDataGrid from "react-data-grid";
 import { Editors } from "react-data-grid-addons";
+import { JobGrade } from "../../../../interface/jobgradeInterface";
 
 const { DropDownEditor } = Editors;
 
 
-const CustomTableCell = withStyles(theme => ({
-  head: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white
-  },
-  body: {
-    fontSize: 14
-  }
-}))(TableCell);
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -68,6 +60,8 @@ interface State { }
 interface InState {
   selectedCompany: Company;
   salaryrangeList: SalaryRange[];
+  jobgradeList: JobGrade[];
+  onUpdate:Function;
 }
 class CustomizedTable extends React.Component<Props, State> {
   state = {
@@ -119,6 +113,7 @@ class CustomizedTable extends React.Component<Props, State> {
 
   typeEditor = <DropDownEditor options={[...this.props.selectedCompany.country, '']} />;
   globalEditor = <DropDownEditor options={['Y', 'N']} />;
+  jobgradeEditor = <DropDownEditor options={[...this.props.jobgradeList.map(a=>a.jobgrade_name)]} />;
 
 
 
@@ -128,7 +123,7 @@ class CustomizedTable extends React.Component<Props, State> {
     for (let i = fromRow; i <= toRow; i++) {
       row[i] = { ...row[i], ...updated };
       console.log(row[i])
-      this.props.updateSalaryRange(row[i])
+      this.props.onUpdate(row[i])
     }
     return { row };
   };
@@ -139,13 +134,13 @@ class CustomizedTable extends React.Component<Props, State> {
 
 
     const columns: any = [
-      { key: 'jobgrade_name', name: "jobgrade_name", editable: true },
+      { key: 'jobgrade_name', name: "jobgrade_name", editor: this.jobgradeEditor },
       { key: 'type', name: "type", editable: true },
       { key: 'min', name: "min", editable: true },
       { key: 'mid', name: "mid", editable: true },
       { key: 'max', name: "max", editable: true },
-      { key: 'jobgrade_global', name: "global", editor: this.globalEditor },
-      { key: 'jobgrade_country', name: "country", editor: this.typeEditor },
+      { key: 'jobgrade_global', name: "global"},
+      { key: 'jobgrade_country', name: "country"},
       { key: 'action', name: "action" },
     ]
 
@@ -188,7 +183,8 @@ class CustomizedTable extends React.Component<Props, State> {
 
 function mapStateToProps(state: RootState) {
   return {
-    selectedCompany: state.companyReducer.selectedCompany
+    selectedCompany: state.companyReducer.selectedCompany,
+    jobgradeList: state.jobgradeReducer.jobgradeList,
   };
 }
 

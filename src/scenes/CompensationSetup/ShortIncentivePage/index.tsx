@@ -54,6 +54,7 @@ export interface Props
 interface State {
   country: string;
   global: boolean;
+  created: boolean;
 }
 
 interface InState {
@@ -64,7 +65,8 @@ interface InState {
 class ShortIncentivePage extends React.Component<Props, State> {
   state = {
     country: "",
-    global: false
+    global: false,
+    created: false,
   };
 
   componentDidMount() {
@@ -80,9 +82,8 @@ class ShortIncentivePage extends React.Component<Props, State> {
   }
 
   handleUpdateButtonClick = shortincentive => {
-    this.props.selectShortIncentive(shortincentive);
-    history.push("/shortincentive/update");
-    console.log("clicked");
+    this.props.updateShortIncentive(shortincentive);
+    this.setState({ created: false })
   };
 
   handleDelete = id => {
@@ -95,7 +96,26 @@ class ShortIncentivePage extends React.Component<Props, State> {
   };
 
   handleNewGrade = () => {
-    history.push("/shortincentive/create");
+    if (!this.state.created) {
+      const data = {
+        jobgrade_id: ' ',
+        jobgrade_name: ' ',
+        jobgrade_global: ' ',
+        type: ' ',
+        country: ' ',
+        value: ' ',
+        isOptional: ' ',
+        value_type: ' ',
+      }
+      this.props.createShortIncentive(data)
+    }
+    else {
+      this.props.showDialog({
+        type: 'warning',
+        object: 'Please do not create multiple entry in a single time',
+        id: '1'
+      })
+    }
   };
 
   handleChange = () => {
@@ -112,7 +132,7 @@ class ShortIncentivePage extends React.Component<Props, State> {
   getdata = () => {
     if (this.state.global) {
       return this.props.shortincentiveList.filter(e => {
-        return e.jobgrade_global === 1;
+        return e.jobgrade_global === 'Y';
       });
     } else if (this.state.country !== "") {
       return this.props.shortincentiveList.filter(e => {
@@ -168,7 +188,7 @@ class ShortIncentivePage extends React.Component<Props, State> {
             </FormControl>
           </Grid>
         </Grid>
-        <CustomizedTable shortincentiveList={data} />
+        <CustomizedTable shortincentiveList={data} onUpdate={this.handleUpdateButtonClick} />
       </main>
     );
   }

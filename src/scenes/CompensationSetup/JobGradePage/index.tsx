@@ -98,10 +98,9 @@ class JobGradePage extends React.Component<Props, State> {
     } else this.props.getJobGradeList();
   }
 
-  handleUpdateButtonClick = jobgrade => {
-    this.props.selectJobGrade(jobgrade);
-    history.push("/jobgrade/update");
-    console.log("clicked");
+  handleUpdate = jobgrade => {
+    this.props.updateJobGrade(jobgrade);
+    this.setState({ created: false })
   };
 
   handleDelete = id => {
@@ -154,14 +153,22 @@ class JobGradePage extends React.Component<Props, State> {
   };
 
   handleCreateJobGrade = () => {
-    const data = {
-      jobgrade_name: "",
-      type: "",
-      global: 'Y',
-      country: "",
+    if (!this.state.created) {
+      const data = {
+        jobgrade_name: "",
+        type: "",
+        global: 'Y',
+        country: "",
+      }
+      this.props.createJobGrade(data)
+      this.setState({ created: true })
+    }else{
+      this.props.showDialog({
+        type:'warning',
+        object:'Please do not create multiple entry in a single time',
+        id:'1'
+      })
     }
-    this.props.createJobGrade(data)
-    this.setState({ created: true })
   }
 
   render() {
@@ -213,7 +220,7 @@ class JobGradePage extends React.Component<Props, State> {
               </FormControl>
             </Grid>
           </Grid>
-          <CustomizedTable jobgradeList={data} />
+          <CustomizedTable jobgradeList={data} onUpdate={this.handleUpdate} />
         </Paper>
       </main>
     );

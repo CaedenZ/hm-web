@@ -59,14 +59,6 @@ interface State {
   filtercountry: string,
   filterglobal: boolean,
   created: boolean,
-  jobgrade_id: string;
-  type: string;
-  value: string;
-  isBonus: boolean;
-  isOptional: boolean;
-  country: string;
-  sign: string;
-  value_type: string;
 }
 
 interface InState {
@@ -80,14 +72,6 @@ class AllowancesPage extends React.Component<Props, State> {
     filtercountry: '',
     filterglobal: false,
     created: false,
-    jobgrade_id: "",
-    type: "",
-    value: "",
-    isBonus: false,
-    isOptional: false,
-    country: "",
-    value_type: "",
-    sign: "",
   }
 
   componentDidMount() {
@@ -103,9 +87,8 @@ class AllowancesPage extends React.Component<Props, State> {
   }
 
   handleUpdateButtonClick = allowances => {
-    this.props.selectAllowances(allowances);
-    history.push("/allowances/update");
-    console.log("clicked");
+    this.props.updateAllowances(allowances);
+    this.setState({created:false})
   };
 
   handleDelete = id => {
@@ -136,8 +119,6 @@ class AllowancesPage extends React.Component<Props, State> {
   handleChangeCheck = () => {
     this.setState({ filterglobal: !this.state.filterglobal } as any);
     this.setState({ filtercountry: '' } as any);
-    console.log('aaa')
-    console.log(this.getdata())
   };
 
 
@@ -156,7 +137,8 @@ class AllowancesPage extends React.Component<Props, State> {
   };
 
   handleCreateAllowance = () => {
-    const data = {
+    if(!this.state.created)
+    {const data = {
       country: "country",
       isBonus: "Y",
       isOptional: "Y",
@@ -168,16 +150,15 @@ class AllowancesPage extends React.Component<Props, State> {
       value: "0",
       value_type: 1
     }
-    this.props.createAllowances(data)
+    this.props.createAllowances(data)}
+    else {
+      this.props.showDialog({
+        type: 'warning',
+        object: 'Please do not create multiple entry in a single time',
+        id: '1'
+      })
+    }
   }
-
-  handleChangeCheckisBonus = () => {
-    this.setState({ isBonus: !this.state.isBonus } as any);
-  };
-
-  handleChangeCheckisOptional = () => {
-    this.setState({ isOptional: !this.state.isOptional } as any);
-  };
 
   render() {
     let data = this.getdata()
@@ -223,7 +204,7 @@ class AllowancesPage extends React.Component<Props, State> {
               </FormControl>
             </Grid>
           </Grid>
-          <CustomizedTable allowancesList={data} />
+          <CustomizedTable allowancesList={data} onUpdate={this.handleUpdateButtonClick} />
         </Paper>
       </main >
     );

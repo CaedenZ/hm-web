@@ -28,15 +28,6 @@ import { Editors } from "react-data-grid-addons";
 
 const { DropDownEditor } = Editors;
 
-const CustomTableCell = withStyles(theme => ({
-  head: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white
-  },
-  body: {
-    fontSize: 14
-  }
-}))(TableCell);
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -68,6 +59,7 @@ interface State { }
 interface InState {
   selectedCompany: Company;
   longincentiveList: LongIncentive[];
+  onUpdate:Function;
 }
 class CustomizedTable extends React.Component<Props, State> {
   state = {
@@ -123,8 +115,8 @@ class CustomizedTable extends React.Component<Props, State> {
 
   typeEditor = <DropDownEditor options={[...this.props.selectedCompany.country, '']} />;
   globalEditor = <DropDownEditor options={['Y', 'N']} />;
-
-
+  currencyEditor = <DropDownEditor options={[this.props.selectedCompany.base_currency_id]} />;
+  investingEditor = <DropDownEditor options={['Cliff', 'Fixed']} />;
 
 
   onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
@@ -132,7 +124,7 @@ class CustomizedTable extends React.Component<Props, State> {
     for (let i = fromRow; i <= toRow; i++) {
       row[i] = { ...row[i], ...updated };
       console.log(row[i])
-      this.props.updateLongIncentive(row[i])
+      this.props.onUpdate(row[i])
     }
     return { row };
   };
@@ -145,10 +137,10 @@ class CustomizedTable extends React.Component<Props, State> {
     const columns: any = [
       { key: 'value', name: "value", editable: true },
       { key: 'type', name: "type", editable: true },
-      { key: 'investing_type', name: "investing_type", editor: this.globalEditor },
+      { key: 'investing_type', name: "investing_type", editor: this.investingEditor },
       { key: 'share_symbol', name: "share_symbol", editable: true },
       { key: 'share_exchange', name: "share_exchange", editor: this.typeEditor },
-      { key: 'currency', name: "currency", editable: true },
+      { key: 'currency', name: "currency", editor: this.currencyEditor },
       { key: 'isOptional', name: "isOptional", editor: this.globalEditor },
       { key: 'year1', name: "year1", editable: true },
       { key: 'year2', name: "year2", editable: true },

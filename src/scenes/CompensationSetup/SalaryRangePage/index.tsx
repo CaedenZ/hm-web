@@ -54,6 +54,7 @@ export interface Props
 interface State {
   country: string;
   global: boolean;
+  created: boolean;
 }
 
 interface InState {
@@ -64,7 +65,8 @@ interface InState {
 class SalaryRangePage extends React.Component<Props, State> {
   state = {
     country: "",
-    global: false
+    global: false,
+    created: false,
   };
 
   componentDidMount() {
@@ -80,9 +82,8 @@ class SalaryRangePage extends React.Component<Props, State> {
   }
 
   handleUpdateButtonClick = salaryrange => {
-    this.props.selectSalaryRange(salaryrange);
-    history.push("/salaryrange/update");
-    console.log("clicked");
+    this.props.updateSalaryRange(salaryrange);
+    this.setState({ created: false })
   };
 
   handleDelete = id => {
@@ -95,18 +96,27 @@ class SalaryRangePage extends React.Component<Props, State> {
   };
 
   handleNewGrade = () => {
-    const data:any = {
-      country: "country",
-jobgrade_country: "jobgrade_country",
-jobgrade_global: "0",
-jobgrade_id: "jobgrade_id",
-jobgrade_name: "jobgrade_name",
-max: "3",
-mid: "2",
-min: "1",
-type: "0",
+    if (this.state.created) {
+      const data: any = {
+        country: "country",
+        jobgrade_country: "jobgrade_country",
+        jobgrade_global: "0",
+        jobgrade_id: "jobgrade_id",
+        jobgrade_name: "jobgrade_name",
+        max: "3",
+        mid: "2",
+        min: "1",
+        type: "0",
+      }
+      this.props.createSalaryRange(data)
     }
-    this.props.createSalaryRange(data)
+    else {
+      this.props.showDialog({
+        type: 'warning',
+        object: 'Please do not create multiple entry in a single time',
+        id: '1'
+      })
+    }
   };
 
   handleChange = () => {
@@ -123,7 +133,7 @@ type: "0",
   getdata = () => {
     if (this.state.global) {
       return this.props.salaryrangeList.filter(e => {
-        return e.jobgrade_global === 1;
+        return e.jobgrade_global === 'Y';
       });
     } else if (this.state.country !== "") {
       return this.props.salaryrangeList.filter(e => {
@@ -179,7 +189,7 @@ type: "0",
             </FormControl>
           </Grid>
         </Grid>
-        <CustomizedTable salaryrangeList={data} />
+        <CustomizedTable salaryrangeList={data} onUpdate={this.handleUpdateButtonClick} />
       </main>
     );
   }

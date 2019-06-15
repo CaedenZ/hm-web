@@ -28,17 +28,6 @@ import { Editors } from "react-data-grid-addons";
 const { DropDownEditor } = Editors;
 
 
-
-const CustomTableCell = withStyles(theme => ({
-  head: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white
-  },
-  body: {
-    fontSize: 14
-  }
-}))(TableCell);
-
 const styles = (theme: Theme) =>
   createStyles({
     root: {
@@ -69,6 +58,7 @@ interface State { }
 interface InState {
   selectedCompany: Company;
   jobgradeList: JobGrade[];
+  onUpdate:Function
 }
 class CustomizedTable extends React.Component<Props, State> {
   state = {
@@ -141,8 +131,16 @@ class CustomizedTable extends React.Component<Props, State> {
     const row = this.props.jobgradeList.slice();
     for (let i = fromRow; i <= toRow; i++) {
       row[i] = { ...row[i], ...updated };
-      console.log(row[i])
-      this.props.updateJobGrade(row[i])
+      if((row[i].global==='Y'&&row[i].country !== '')||(row[i].global==='N'&&row[i].country === '')){
+        this.props.showDialog({
+          type:'warning',
+          object:'Data is not valid',
+          id:1
+        })
+      }
+      else {
+        this.props.onUpdate(row[i])
+      }
     }
     return { row };
   };

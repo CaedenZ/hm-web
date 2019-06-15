@@ -19,11 +19,11 @@ export function shortIncentiveReducer(state: ShortIncentiveState = {
         jobgrade_id: '',
         jobgrade_name: '',
         type: '',
-        jobgrade_global: 0,
+        jobgrade_global: '',
         country: '',
         value: '',
-        isOptional: 0,
-        value_type: 0,
+        isOptional: '',
+        value_type: '',
     },
 }, action) {
     switch (action.type) {

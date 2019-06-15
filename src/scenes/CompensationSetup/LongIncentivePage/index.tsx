@@ -39,12 +39,13 @@ const styles = (theme: Theme) =>
 
 export interface Props
   extends WithStyles<typeof styles>,
-    SharedDispatchProps,
-    InState {}
+  SharedDispatchProps,
+  InState { }
 
 interface State {
   country: string;
   global: boolean;
+  created: boolean;
 }
 
 interface InState {
@@ -55,7 +56,8 @@ interface InState {
 class LongIncentivePage extends React.Component<Props, State> {
   state = {
     country: "",
-    global: true
+    global: true,
+    created: false,
   };
 
   componentDidMount() {
@@ -71,9 +73,8 @@ class LongIncentivePage extends React.Component<Props, State> {
   }
 
   handleUpdateButtonClick = longincentive => {
-    this.props.selectLongIncentive(longincentive);
-    history.push("/longincentive/update");
-    console.log("clicked");
+    this.props.updateLongIncentive(longincentive);
+    this.setState({ created: false })
   };
 
   handleDelete = id => {
@@ -86,7 +87,31 @@ class LongIncentivePage extends React.Component<Props, State> {
   };
 
   handleNewGrade = () => {
-    history.push("/longincentive/create");
+    if (!this.state.created) {
+      const data = {
+        value: ' ',
+        type: ' ',
+        investing_type: ' ',
+        share_symbol: ' ',
+        share_exchange: ' ',
+        currency: ' ',
+        isOptional: ' ',
+        year1: 1,
+        year2: 2,
+        year3: 3,
+        year4: 4,
+        year5: 5,
+        year6: 6,
+      }
+      this.props.createLongIncentive(data)
+    }
+    else {
+      this.props.showDialog({
+        type: 'warning',
+        object: 'Please do not create multiple entry in a single time',
+        id: '1'
+      })
+    }
   };
 
   render() {
@@ -95,7 +120,7 @@ class LongIncentivePage extends React.Component<Props, State> {
         <CustomButton onClick={this.handleNewGrade}>
           Create New Long Term Incentive
         </CustomButton>
-        <CustomizedTable longincentiveList={this.props.longincentiveList} />
+        <CustomizedTable longincentiveList={this.props.longincentiveList} onUpdate={this.handleUpdateButtonClick} />
       </main>
     );
   }
