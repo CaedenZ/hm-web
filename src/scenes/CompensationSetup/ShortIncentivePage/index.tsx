@@ -21,7 +21,6 @@ import {
   FormControlLabel,
   Checkbox
 } from "@material-ui/core";
-import { history } from "../../../store";
 import { Company } from "../../../interface/companyInterface";
 import { Country } from "../../../interface/countryInterface";
 import CustomizedTable from "./component/table";
