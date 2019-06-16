@@ -18,7 +18,7 @@ export function signonsReducer(state: SignonsState = {
         signons_id: '',
         type: '',
         value: '',
-        isOptional: 0,
+        isOptional: '',
         month1: '',
         month2: '',
         month3: '',

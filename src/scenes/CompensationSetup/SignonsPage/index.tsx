@@ -39,12 +39,13 @@ const styles = (theme: Theme) =>
 
 export interface Props
   extends WithStyles<typeof styles>,
-    SharedDispatchProps,
-    InState {}
+  SharedDispatchProps,
+  InState { }
 
 interface State {
   country: string;
   global: boolean;
+  created: boolean;
 }
 
 interface InState {
@@ -55,7 +56,8 @@ interface InState {
 class SignonsPage extends React.Component<Props, State> {
   state = {
     country: "",
-    global: true
+    global: true,
+    created: false,
   };
 
   componentDidMount() {
@@ -71,9 +73,8 @@ class SignonsPage extends React.Component<Props, State> {
   }
 
   handleUpdateButtonClick = signons => {
-    this.props.selectSignons(signons);
-    history.push("/signons/update");
-    console.log("clicked");
+    this.props.updateSignons(signons);
+    this.setState({ created: false })
   };
 
   handleDelete = id => {
@@ -86,7 +87,27 @@ class SignonsPage extends React.Component<Props, State> {
   };
 
   handleNewGrade = () => {
-    history.push("/signons/create");
+    if (!this.state.created) {
+      const data = {
+        value: ' ',
+        type: ' ',
+        isOptional: 'N',
+        month1: '',
+        month2: '',
+        month3: '',
+        month4: '',
+        month5: '',
+        month6: '',
+      }
+      this.props.createSignons(data)
+    }
+    else {
+      this.props.showDialog({
+        type: 'warning',
+        object: 'Please do not create multiple entry in a single time',
+        id: '1'
+      })
+    }
   };
 
   render() {
@@ -95,7 +116,7 @@ class SignonsPage extends React.Component<Props, State> {
         <CustomButton onClick={this.handleNewGrade}>
           Create New Sign Ons
         </CustomButton>
-        <CustomizedTable signonsList={this.props.signonsList} />
+        <CustomizedTable signonsList={this.props.signonsList} onUpdate={this.handleUpdateButtonClick} />
       </main>
     );
   }

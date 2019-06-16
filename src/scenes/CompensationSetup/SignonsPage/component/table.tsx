@@ -28,15 +28,6 @@ import { Editors } from "react-data-grid-addons";
 
 const { DropDownEditor } = Editors;
 
-const CustomTableCell = withStyles(theme => ({
-  head: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white
-  },
-  body: {
-    fontSize: 14
-  }
-}))(TableCell);
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -68,6 +59,7 @@ interface State { }
 interface InState {
   selectedCompany: Company;
   signonsList: Signons[];
+  onUpdate: Function;
 }
 class CustomizedTable extends React.Component<Props, State> {
   state = {
@@ -127,7 +119,7 @@ class CustomizedTable extends React.Component<Props, State> {
     for (let i = fromRow; i <= toRow; i++) {
       row[i] = { ...row[i], ...updated };
       console.log(row[i])
-      this.props.updateSignons(row[i])
+      this.props.onUpdate(row[i])
     }
     return { row };
   };
