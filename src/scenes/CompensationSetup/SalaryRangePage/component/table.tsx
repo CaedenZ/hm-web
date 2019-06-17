@@ -61,7 +61,7 @@ interface InState {
   selectedCompany: Company;
   salaryrangeList: SalaryRange[];
   jobgradeList: JobGrade[];
-  onUpdate:Function;
+  onUpdate: Function;
 }
 class CustomizedTable extends React.Component<Props, State> {
   state = {
@@ -113,7 +113,7 @@ class CustomizedTable extends React.Component<Props, State> {
 
   typeEditor = <DropDownEditor options={[...this.props.selectedCompany.country, '']} />;
   globalEditor = <DropDownEditor options={['Y', 'N']} />;
-  jobgradeEditor = <DropDownEditor options={[...this.props.jobgradeList.map(a=>a.jobgrade_name)]} />;
+  jobgradeEditor = <DropDownEditor options={[...this.props.jobgradeList.map(a => a.jobgrade_name)]} />;
 
 
 
@@ -135,12 +135,12 @@ class CustomizedTable extends React.Component<Props, State> {
 
     const columns: any = [
       { key: 'jobgrade_name', name: "jobgrade_name", editor: this.jobgradeEditor },
+      { key: 'country', name: "country", editor: this.typeEditor },
       { key: 'type', name: "type", editable: true },
       { key: 'min', name: "min", editable: true },
       { key: 'mid', name: "mid", editable: true },
       { key: 'max', name: "max", editable: true },
-      { key: 'jobgrade_global', name: "global"},
-      { key: 'jobgrade_country', name: "country"},
+      // { key: 'jobgrade_global', name: "global" },
       { key: 'action', name: "action" },
     ]
 
