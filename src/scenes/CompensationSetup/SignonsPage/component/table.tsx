@@ -24,7 +24,7 @@ import { mapDispatchToProps } from "../../../../helper/dispachProps";
 import { connect } from "react-redux";
 import CheckIcon from "@material-ui/icons/Check"
 import ReactDataGrid from "react-data-grid";
-import { Editors } from "react-data-grid-addons";
+import { Editors,Data,Filters,Toolbar } from "react-data-grid-addons";
 
 const { DropDownEditor } = Editors;
 
@@ -65,7 +65,8 @@ class CustomizedTable extends React.Component<Props, State> {
   state = {
     country: "",
     global: false,
-    anchorEl: null
+    anchorEl: null,
+    filters: {}
   };
 
   componentDidMount() {
@@ -129,18 +130,56 @@ class CustomizedTable extends React.Component<Props, State> {
     const that = this;
 
 
+    const selectors = Data.Selectors;
+
+    const {
+      NumericFilter,
+      AutoCompleteFilter,
+      MultiSelectFilter,
+      SingleSelectFilter
+    } = Filters;
+
+    const handleFilterChange = filter => {
+      console.log(this.state.filters)
+      const newFilters = { ...this.state.filters };
+      if (filter.filterTerm) {
+        newFilters[filter.column.key] = filter;
+      } else {
+        delete newFilters[filter.column.key];
+      }
+      this.setState({ filters: newFilters });
+    };
+
+    function getValidFilterValues(rows, columnId) {
+      return rows
+        .map(r => r[columnId])
+        .filter((item, i, a) => {
+          return i === a.indexOf(item);
+        });
+    }
+
+    function getRows(rows, filters) {
+      return selectors.getRows({ rows, filters });
+    }
+
+    const filteredRows = getRows(this.props.signonsList, this.state.filters);
+
+    const defaultColumnProperties = {
+      filterable: true,
+    };
+
     const columns: any = [
-      { key: 'type', name: "type", editable: true },
-      { key: 'value', name: "value", editable: true },
-      { key: 'isOptional', name: "isOptional", editor: this.globalEditor },
-      { key: 'month1', name: "month1", editable: true },
-      { key: 'month2', name: "month2", editable: true },
-      { key: 'month3', name: "month3", editable: true },
-      { key: 'month4', name: "month4", editable: true },
-      { key: 'month5', name: "month5", editable: true },
-      { key: 'month6', name: "month6", editable: true },
+      { key: 'type', name: "type", filterRenderer: AutoCompleteFilter, editable: true },
+      { key: 'value', name: "value", filterRenderer: AutoCompleteFilter, editable: true },
+      { key: 'isOptional', name: "isOptional", filterRenderer: AutoCompleteFilter, editor: this.globalEditor },
+      { key: 'month1', name: "month1", filterRenderer: NumericFilter, editable: true },
+      { key: 'month2', name: "month2", filterRenderer: NumericFilter, editable: true },
+      { key: 'month3', name: "month3", filterRenderer: NumericFilter, editable: true },
+      { key: 'month4', name: "month4", filterRenderer: NumericFilter, editable: true },
+      { key: 'month5', name: "month5", filterRenderer: NumericFilter, editable: true },
+      { key: 'month6', name: "month6", filterRenderer: NumericFilter, editable: true },
       { key: 'action', name: "action" },
-    ]
+    ].map(c => ({ ...c, ...defaultColumnProperties }));
 
     function actions(row) {
       return [
@@ -165,8 +204,12 @@ class CustomizedTable extends React.Component<Props, State> {
       <Paper className={classes.root}>
         <ReactDataGrid
           columns={columns}
-          rowGetter={i => this.props.signonsList[i]}
-          rowsCount={this.props.signonsList.length}
+          rowGetter={i => filteredRows[i]}
+          rowsCount={filteredRows.length}
+          toolbar={<Toolbar enableFilter={true} />}
+          onAddFilter={filter => handleFilterChange(filter)}
+          onClearFilters={() => this.setState({ filters: {} })}
+          getValidFilterValues={columnKey => getValidFilterValues(this.props.signonsList, columnKey)}
           getCellActions={getCellActions}
           onGridRowsUpdated={this.onGridRowsUpdated}
           enableCellSelect={true} />

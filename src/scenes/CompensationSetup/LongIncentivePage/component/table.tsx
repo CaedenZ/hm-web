@@ -24,7 +24,7 @@ import { RootState } from "../../../../reducer";
 import { mapDispatchToProps } from "../../../../helper/dispachProps";
 import { connect } from "react-redux";
 import ReactDataGrid from "react-data-grid";
-import { Editors } from "react-data-grid-addons";
+import { Editors, Toolbar, Filters, Data } from "react-data-grid-addons";
 
 const { DropDownEditor } = Editors;
 
@@ -59,13 +59,14 @@ interface State { }
 interface InState {
   selectedCompany: Company;
   longincentiveList: LongIncentive[];
-  onUpdate:Function;
+  onUpdate: Function;
 }
 class CustomizedTable extends React.Component<Props, State> {
   state = {
     country: "",
     global: false,
-    anchorEl: null
+    anchorEl: null,
+    filters: {}
   };
 
   componentDidMount() {
@@ -133,23 +134,60 @@ class CustomizedTable extends React.Component<Props, State> {
     const { classes } = this.props;
     const that = this;
 
+    const selectors = Data.Selectors;
+
+    const {
+      NumericFilter,
+      AutoCompleteFilter,
+      MultiSelectFilter,
+      SingleSelectFilter
+    } = Filters;
+
+    const handleFilterChange = filter => {
+      console.log(this.state.filters)
+      const newFilters = { ...this.state.filters };
+      if (filter.filterTerm) {
+        newFilters[filter.column.key] = filter;
+      } else {
+        delete newFilters[filter.column.key];
+      }
+      this.setState({ filters: newFilters });
+    };
+
+    function getValidFilterValues(rows, columnId) {
+      return rows
+        .map(r => r[columnId])
+        .filter((item, i, a) => {
+          return i === a.indexOf(item);
+        });
+    }
+
+    function getRows(rows, filters) {
+      return selectors.getRows({ rows, filters });
+    }
+
+    const filteredRows = getRows(this.props.longincentiveList, this.state.filters);
+
+    const defaultColumnProperties = {
+      filterable: true,
+    };
 
     const columns: any = [
-      { key: 'value', name: "value", editable: true },
-      { key: 'type', name: "type", editable: true },
-      { key: 'investing_type', name: "investing_type", editor: this.investingEditor },
-      { key: 'share_symbol', name: "share_symbol", editable: true },
-      { key: 'share_exchange', name: "share_exchange", editor: this.typeEditor },
-      { key: 'currency', name: "currency", editor: this.currencyEditor },
-      { key: 'isOptional', name: "isOptional", editor: this.globalEditor },
-      { key: 'year1', name: "year1", editable: true },
-      { key: 'year2', name: "year2", editable: true },
-      { key: 'year3', name: "year3", editable: true },
-      { key: 'year4', name: "year4", editable: true },
-      { key: 'year5', name: "year5", editable: true },
-      { key: 'year6', name: "year6", editable: true },
+      { key: 'value', name: "value", filterRenderer: AutoCompleteFilter, editable: true },
+      { key: 'type', name: "type", filterRenderer: AutoCompleteFilter, editable: true },
+      { key: 'investing_type', name: "investing_type", filterRenderer: AutoCompleteFilter, editor: this.investingEditor },
+      { key: 'share_symbol', name: "share_symbol", filterRenderer: AutoCompleteFilter, editable: true },
+      { key: 'share_exchange', name: "share_exchange", filterRenderer: AutoCompleteFilter, editor: this.typeEditor },
+      { key: 'currency', name: "currency", filterRenderer: AutoCompleteFilter, editor: this.currencyEditor },
+      { key: 'isOptional', name: "isOptional", filterRenderer: AutoCompleteFilter, editor: this.globalEditor },
+      { key: 'year1', name: "year1", filterRenderer: NumericFilter, editable: true },
+      { key: 'year2', name: "year2", filterRenderer: NumericFilter, editable: true },
+      { key: 'year3', name: "year3", filterRenderer: NumericFilter, editable: true },
+      { key: 'year4', name: "year4", filterRenderer: NumericFilter, editable: true },
+      { key: 'year5', name: "year5", filterRenderer: NumericFilter, editable: true },
+      { key: 'year6', name: "year6", filterRenderer: NumericFilter, editable: true },
       { key: 'action', name: "action" },
-    ]
+    ].map(c => ({ ...c, ...defaultColumnProperties }));
 
     function actions(row) {
       return [
@@ -180,8 +218,12 @@ class CustomizedTable extends React.Component<Props, State> {
       <Paper className={classes.root}>
         <ReactDataGrid
           columns={columns}
-          rowGetter={i => this.props.longincentiveList[i]}
-          rowsCount={this.props.longincentiveList.length}
+          rowGetter={i => filteredRows[i]}
+          rowsCount={filteredRows.length}
+          toolbar={<Toolbar enableFilter={true} />}
+          onAddFilter={filter => handleFilterChange(filter)}
+          onClearFilters={() => this.setState({ filters: {} })}
+          getValidFilterValues={columnKey => getValidFilterValues(this.props.longincentiveList, columnKey)}
           getCellActions={getCellActions}
           onGridRowsUpdated={this.onGridRowsUpdated}
           enableCellSelect={true} />

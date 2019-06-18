@@ -12,7 +12,7 @@ import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../../../interface/propsInterface";
 import { history } from "../../../../../store";
 import { RootState } from "../../../../../reducer";
-import { EquityRange } from "../../../../../interface/equityRangeInterface";
+import { JobGrade } from "../../../../../interface/jobgradeInterface";
 import { Country } from "../../../../../interface/countryInterface";
 import FormPage from "../component/form";
 
@@ -64,22 +64,22 @@ const styles = (theme: Theme) =>
 
 export interface Props
   extends InState,
-    WithStyles<typeof styles>,
-    SharedDispatchProps {}
+  WithStyles<typeof styles>,
+  SharedDispatchProps { }
 interface InState {
-  equityrange: EquityRange;
+  jobgrade: JobGrade;
   countryList: Country[];
 }
 
-class UpdateEquityRangePage extends Component<Props> {
+class UpdateJobGradePage extends Component<Props> {
   constructor(props) {
     super(props);
-    this.handleUpdateEquityRange = this.handleUpdateEquityRange.bind(this);
+    this.handleUpdateJobGrade = this.handleUpdateJobGrade.bind(this);
   }
 
-  handleUpdateEquityRange = (e, data) => {
+  handleUpdateJobGrade = (e, data) => {
     e.preventDefault();
-    this.props.updateEquityRange(data);
+    this.props.updateJobGrade(data);
     history.goBack();
   };
 
@@ -88,25 +88,25 @@ class UpdateEquityRangePage extends Component<Props> {
     return (
       <div className={classes.root}>
         <Typography component="h1" variant="h5">
-          Update EquityRange
+          Update JobGrade
         </Typography>
         <FormPage
           create={false}
-          updateData={this.props.equityrange}
-          onSubmit={(e, data) => this.handleUpdateEquityRange(e, data)}
+          updateData={this.props.jobgrade}
+          onSubmit={(e, data) => this.handleUpdateJobGrade(e, data)}
         />
       </div>
     );
   }
 }
 
-(UpdateEquityRangePage as React.ComponentClass<Props>).propTypes = {
+(UpdateJobGradePage as React.ComponentClass<Props>).propTypes = {
   classes: PropTypes.object.isRequired
 } as any;
 
 function mapStateToProps(state: RootState) {
   return {
-    equityrange: state.equityrangeReducer.selectEquityRange,
+    jobgrade: state.jobgradeReducer.selectJobGrade,
     countryList: state.countryReducer.countryList
   };
 }
@@ -114,4 +114,4 @@ function mapStateToProps(state: RootState) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(UpdateEquityRangePage));
+)(withStyles(styles)(UpdateJobGradePage));

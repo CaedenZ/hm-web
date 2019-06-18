@@ -23,7 +23,10 @@ import { RootState } from "../../../../reducer";
 import { mapDispatchToProps } from "../../../../helper/dispachProps";
 import { connect } from "react-redux";
 import ReactDataGrid from "react-data-grid";
-import { Editors } from "react-data-grid-addons";
+import { Editors, Toolbar, Data, Filters } from "react-data-grid-addons";
+
+
+
 
 const { DropDownEditor } = Editors;
 
@@ -66,6 +69,7 @@ class CustomizedTable extends React.Component<Props, State> {
     global: false,
     anchorEl: null,
     row: [],
+    filters: {},
   };
 
   countryTypes() {
@@ -91,12 +95,6 @@ class CustomizedTable extends React.Component<Props, State> {
     }
   }
 
-  handleUpdateButtonClick = jobgrade => {
-    this.props.selectJobGrade(jobgrade);
-    history.push("/jobgrade/update");
-    console.log("clicked");
-  };
-
   handleDelete = (id) => {
     const payload = {
       type: "delete",
@@ -106,41 +104,14 @@ class CustomizedTable extends React.Component<Props, State> {
     this.props.showDialog(payload);
   };
 
-  handleListButtonClick = (event, row) => {
-    this.setState({ anchorEl: event.currentTarget });
-    this.props.selectJobGrade(row);
-  };
-
-  handleClose = () => {
-    this.setState({ anchorEl: null });
-  };
-
-  handleRedirect = path => {
-    history.push("/jobgrade/" + path);
-  };
-
-
-
-  typeEditor = <DropDownEditor options={[...this.props.selectedCompany.country, '']} />;
+  typeEditor = <DropDownEditor options={[...this.props.selectedCompany.country, 'Global']} />;
   globalEditor = <DropDownEditor options={['Y', 'N']} />;
-
-
-
 
   onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
     const row = this.props.jobgradeList.slice();
     for (let i = fromRow; i <= toRow; i++) {
       row[i] = { ...row[i], ...updated };
-      // if((row[i].global==='Y'&&row[i].country !== '')||(row[i].global==='N'&&row[i].country === '')){
-      //   this.props.showDialog({
-      //     type:'warning',
-      //     object:'Data is not valid',
-      //     id:1
-      //   })
-      // }
-      // else {
       this.props.onUpdate(row[i])
-      // }
     }
     return { row };
   };
@@ -150,16 +121,50 @@ class CustomizedTable extends React.Component<Props, State> {
     const { classes } = this.props;
     const that = this;
 
+    const selectors = Data.Selectors;
+
+    const {
+      NumericFilter,
+      AutoCompleteFilter,
+      MultiSelectFilter,
+      SingleSelectFilter
+    } = Filters;
+
+    const handleFilterChange = filter => {
+      console.log(this.state.filters)
+      const newFilters = { ...this.state.filters };
+      if (filter.filterTerm) {
+        newFilters[filter.column.key] = filter;
+      } else {
+        delete newFilters[filter.column.key];
+      }
+      this.setState({ filters: newFilters });
+    };
+
+    function getValidFilterValues(rows, columnId) {
+      return rows
+        .map(r => r[columnId])
+        .filter((item, i, a) => {
+          return i === a.indexOf(item);
+        });
+    }
+
+    function getRows(rows, filters) {
+      return selectors.getRows({ rows, filters });
+    }
+
+    const filteredRows = getRows(this.props.jobgradeList, this.state.filters);
 
     const defaultColumnProperties = {
+      filterable: true,
     };
 
     const columns: any = [
-      { key: 'jobgrade_name', name: "jobgrade_name", editable: true, sortDescendingFirst: true },
-      { key: 'type', name: "type", editable: true },
-      { key: 'global', name: "global", editor: this.globalEditor },
-      { key: 'country', name: "country", editor: this.typeEditor },
-      { key: 'action', name: "action" },
+      { key: 'country', name: "Country", filterRenderer: AutoCompleteFilter, editor: this.typeEditor },
+      { key: 'type', name: "Type", filterRenderer: AutoCompleteFilter, editable: true },
+      { key: 'jobgrade_name', name: "Job Grade", filterRenderer: AutoCompleteFilter, editable: true },
+      // { key: 'global', name: "global", editor: this.globalEditor },
+      { key: 'action', name: "Action" },
     ].map(c => ({ ...c, ...defaultColumnProperties }));
 
     function actions(row) {
@@ -187,8 +192,12 @@ class CustomizedTable extends React.Component<Props, State> {
       <Paper className={classes.root}>
         <ReactDataGrid
           columns={columns}
-          rowGetter={i => this.props.jobgradeList[i]}
-          rowsCount={this.props.jobgradeList.length}
+          rowGetter={i => filteredRows[i]}
+          rowsCount={filteredRows.length}
+          toolbar={<Toolbar enableFilter={true} />}
+          onAddFilter={filter => handleFilterChange(filter)}
+          onClearFilters={() => this.setState({ filters: {} })}
+          getValidFilterValues={columnKey => getValidFilterValues(this.props.jobgradeList, columnKey)}
           getCellActions={getCellActions}
           onGridRowsUpdated={this.onGridRowsUpdated}
           enableCellSelect={true} />

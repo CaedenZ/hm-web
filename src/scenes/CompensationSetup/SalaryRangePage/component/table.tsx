@@ -23,7 +23,7 @@ import { RootState } from "../../../../reducer";
 import { mapDispatchToProps } from "../../../../helper/dispachProps";
 import { connect } from "react-redux";
 import ReactDataGrid from "react-data-grid";
-import { Editors } from "react-data-grid-addons";
+import { Editors, Filters, Data, Toolbar } from "react-data-grid-addons";
 import { JobGrade } from "../../../../interface/jobgradeInterface";
 
 const { DropDownEditor } = Editors;
@@ -67,7 +67,8 @@ class CustomizedTable extends React.Component<Props, State> {
   state = {
     country: "",
     global: false,
-    anchorEl: null
+    anchorEl: null,
+    filters: {},
   };
 
   componentDidMount() {
@@ -82,11 +83,6 @@ class CustomizedTable extends React.Component<Props, State> {
     } else this.props.getSalaryRangeList();
   }
 
-  handleUpdateButtonClick = salaryrange => {
-    this.props.selectSalaryRange(salaryrange);
-    history.push("/salaryrange/update");
-    console.log("clicked");
-  };
 
   handleDelete = (id) => {
     const payload = {
@@ -97,25 +93,10 @@ class CustomizedTable extends React.Component<Props, State> {
     this.props.showDialog(payload);
   };
 
-  handleListButtonClick = (event, row) => {
-    this.setState({ anchorEl: event.currentTarget });
-    this.props.selectSalaryRange(row);
-  };
-
-  handleClose = () => {
-    this.setState({ anchorEl: null });
-  };
-
-  handleRedirect = path => {
-    history.push("/salaryrange/" + path);
-  };
-
 
   typeEditor = <DropDownEditor options={[...this.props.selectedCompany.country, '']} />;
   globalEditor = <DropDownEditor options={['Y', 'N']} />;
   jobgradeEditor = <DropDownEditor options={[...this.props.jobgradeList.map(a => a.jobgrade_name)]} />;
-
-
 
 
   onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
@@ -132,17 +113,53 @@ class CustomizedTable extends React.Component<Props, State> {
     const { classes } = this.props;
     const that = this;
 
+    const selectors = Data.Selectors;
+
+    const {
+      NumericFilter,
+      AutoCompleteFilter,
+      MultiSelectFilter,
+      SingleSelectFilter
+    } = Filters;
+
+    const handleFilterChange = filter => {
+      console.log(this.state.filters)
+      const newFilters = { ...this.state.filters };
+      if (filter.filterTerm) {
+        newFilters[filter.column.key] = filter;
+      } else {
+        delete newFilters[filter.column.key];
+      }
+      this.setState({ filters: newFilters });
+    };
+
+    function getValidFilterValues(rows, columnId) {
+      return rows
+        .map(r => r[columnId])
+        .filter((item, i, a) => {
+          return i === a.indexOf(item);
+        });
+    }
+
+    function getRows(rows, filters) {
+      return selectors.getRows({ rows, filters });
+    }
+
+    const filteredRows = getRows(this.props.salaryrangeList, this.state.filters);
+
+    const defaultColumnProperties = {
+      filterable: true,
+    };
 
     const columns: any = [
-      { key: 'jobgrade_name', name: "jobgrade_name", editor: this.jobgradeEditor },
-      { key: 'country', name: "country", editor: this.typeEditor },
-      { key: 'type', name: "type", editable: true },
-      { key: 'min', name: "min", editable: true },
-      { key: 'mid', name: "mid", editable: true },
-      { key: 'max', name: "max", editable: true },
-      // { key: 'jobgrade_global', name: "global" },
-      { key: 'action', name: "action" },
-    ]
+      { key: 'country', name: "Country", filterRenderer: AutoCompleteFilter, editor: this.typeEditor },
+      { key: 'type', name: "Name", filterRenderer: AutoCompleteFilter, editable: true },
+      { key: 'jobgrade_name', name: "Job Grade", filterRenderer: AutoCompleteFilter, editor: this.jobgradeEditor },
+      { key: 'min', name: "Min", filterRenderer: NumericFilter, editable: true },
+      { key: 'mid', name: "Mid", filterRenderer: NumericFilter, editable: true },
+      { key: 'max', name: "Max", filterRenderer: NumericFilter, editable: true },
+      { key: 'action', name: "Action" },
+    ].map(c => ({ ...c, ...defaultColumnProperties }));
 
     function actions(row) {
       return [
@@ -167,8 +184,12 @@ class CustomizedTable extends React.Component<Props, State> {
       <Paper className={classes.root}>
         <ReactDataGrid
           columns={columns}
-          rowGetter={i => this.props.salaryrangeList[i]}
-          rowsCount={this.props.salaryrangeList.length}
+          rowGetter={i => filteredRows[i]}
+          rowsCount={filteredRows.length}
+          toolbar={<Toolbar enableFilter={true} />}
+          onAddFilter={filter => handleFilterChange(filter)}
+          onClearFilters={() => this.setState({ filters: {} })}
+          getValidFilterValues={columnKey => getValidFilterValues(this.props.salaryrangeList, columnKey)}
           getCellActions={getCellActions}
           onGridRowsUpdated={this.onGridRowsUpdated}
           enableCellSelect={true} />

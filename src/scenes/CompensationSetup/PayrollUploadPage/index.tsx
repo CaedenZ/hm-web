@@ -5,7 +5,7 @@ import { RootState } from "../../../reducer";
 import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../interface/propsInterface";
-import { Button, Paper, Grid, Divider, Typography, TableCell, Theme, Table, TableHead, TableRow, TableBody, IconButton } from "@material-ui/core";
+import { Button, Paper, Grid, Divider, Typography, TableCell, Theme, Table, TableHead, TableRow, TableBody, IconButton, Modal, Dialog } from "@material-ui/core";
 import ManualForm from "./form"
 import $axios from "../../../plugin/axios";
 import ReactDataGrid from "react-data-grid";
@@ -243,6 +243,15 @@ class PayrollUploadPage extends React.Component<Props, State> {
     }
   }
 
+  handleClose = () => {
+    this.setState({
+      queue: false,
+      queueitem: false,
+      queuelog: false,
+      manual: false,
+    })
+  }
+
   render() {
     const { classes } = this.props
     const that = this
@@ -350,11 +359,8 @@ class PayrollUploadPage extends React.Component<Props, State> {
           </Paper>
         </Grid>}
 
-        {this.state.queue && <Grid container>
-          <Paper className={classes.paper}>
-            <Typography component="h1" variant="h6">
-              List Queue
-          </Typography>
+        <Dialog open={this.state.queue} onClose={this.handleClose} scroll='paper' >
+          <div style={{ width: '800px' }}>
             <ReactDataGrid
               columns={columns}
               rowGetter={i => this.state.listqueue[i]}
@@ -362,81 +368,71 @@ class PayrollUploadPage extends React.Component<Props, State> {
               getCellActions={getCellActions}
               enableCellSelect={true} />
             <Divider />
-          </Paper>
-        </Grid>}
-        {this.state.queueitem && <Grid container>
-          <Paper className={classes.paper}>
-            <Typography component="h1" variant="h6">
-              List Queue
+          </div>
+        </Dialog>
+
+        <Dialog open={this.state.queueitem} onClose={this.handleClose} scroll='paper'>
+          <Table className={classes.table}>
+            <TableHead>
+              <TableRow>
+                <CustomTableCell align="left">source_filepath</CustomTableCell>
+                <CustomTableCell align="left">uploaded</CustomTableCell>
+                <CustomTableCell align="left">user</CustomTableCell>
+                <CustomTableCell align="left">customer_id</CustomTableCell>
+                <CustomTableCell align="left">status</CustomTableCell>
+                <CustomTableCell align="left">process_dt</CustomTableCell>
+              </TableRow>
+            </TableHead>
+            {this.state.listqueueitem.length > 0 && (
+              <TableBody>
+                {this.state.listqueueitem.map((row, index) => (
+                  <TableRow className={classes.row} key={row.source_filepath}>
+                    <CustomTableCell component="th" scope="row">
+                      {row.source_filepath}
+                    </CustomTableCell>
+                    <CustomTableCell align="left">{row.uploaded}</CustomTableCell>
+                    <CustomTableCell align="left">{row.user}</CustomTableCell>
+                    <CustomTableCell align="left">{row.customer_id}</CustomTableCell>
+                    <CustomTableCell align="left">{this.getstatus(row.status)}</CustomTableCell>
+                    <CustomTableCell align="left">{row.process_dt}</CustomTableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            )}
+          </Table>
+          <Divider />
+        </Dialog>
+
+        <Dialog open={this.state.queuelog} onClose={this.handleClose} scroll='paper'>
+          <Typography component="h1" variant="h6">
+            List Queue
           </Typography>
-            <Table className={classes.table}>
-              <TableHead>
-                <TableRow>
-                  <CustomTableCell align="left">source_filepath</CustomTableCell>
-                  <CustomTableCell align="left">uploaded</CustomTableCell>
-                  <CustomTableCell align="left">user</CustomTableCell>
-                  <CustomTableCell align="left">customer_id</CustomTableCell>
-                  <CustomTableCell align="left">status</CustomTableCell>
-                  <CustomTableCell align="left">process_dt</CustomTableCell>
-                </TableRow>
-              </TableHead>
-              {this.state.listqueueitem.length > 0 && (
-                <TableBody>
-                  {this.state.listqueueitem.map((row, index) => (
-                    <TableRow className={classes.row} key={row.source_filepath}>
-                      <CustomTableCell component="th" scope="row">
-                        {row.source_filepath}
-                      </CustomTableCell>
-                      <CustomTableCell align="left">{row.uploaded}</CustomTableCell>
-                      <CustomTableCell align="left">{row.user}</CustomTableCell>
-                      <CustomTableCell align="left">{row.customer_id}</CustomTableCell>
-                      <CustomTableCell align="left">{this.getstatus(row.status)}</CustomTableCell>
-                      <CustomTableCell align="left">{row.process_dt}</CustomTableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              )}
-            </Table>
-            <Divider />
-          </Paper>
-        </Grid>}
-        {this.state.queuelog && <Grid container>
-          <Paper className={classes.paper}>
-            <Typography component="h1" variant="h6">
-              List Queue
-          </Typography>
-            <Table className={classes.table}>
-              <TableHead>
-                <TableRow>
-                  <CustomTableCell align="left">record_no</CustomTableCell>
-                  <CustomTableCell align="left">status</CustomTableCell>
-                  <CustomTableCell align="left">message</CustomTableCell>
-                </TableRow>
-              </TableHead>
-              {this.state.listqueuelog.length > 0 && (
-                <TableBody>
-                  {this.state.listqueuelog.map((row, index) => (
-                    <TableRow className={classes.row} key={row.record_no}>
-                      <CustomTableCell component="th" scope="row">{row.record_no}</CustomTableCell>
-                      <CustomTableCell align="left">{row.status}</CustomTableCell>
-                      <CustomTableCell align="left">{row.message}</CustomTableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              )}
-            </Table>
-            <Divider />
-          </Paper>
-        </Grid>}
-        {this.state.manual && <Grid container>
-          <Paper className={classes.paper}>
-            <Typography component="h1" variant="h6">
-              Manual Entry
-          </Typography>
-            <ManualForm />
-            <Divider />
-          </Paper>
-        </Grid>}
+          <Table className={classes.table}>
+            <TableHead>
+              <TableRow>
+                <CustomTableCell align="left">record_no</CustomTableCell>
+                <CustomTableCell align="left">status</CustomTableCell>
+                <CustomTableCell align="left">message</CustomTableCell>
+              </TableRow>
+            </TableHead>
+            {this.state.listqueuelog.length > 0 && (
+              <TableBody>
+                {this.state.listqueuelog.map((row, index) => (
+                  <TableRow className={classes.row} key={row.record_no}>
+                    <CustomTableCell component="th" scope="row">{row.record_no}</CustomTableCell>
+                    <CustomTableCell align="left">{row.status}</CustomTableCell>
+                    <CustomTableCell align="left">{row.message}</CustomTableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            )}
+          </Table>
+          <Divider />
+        </Dialog>
+
+        <Dialog open={this.state.manual} onClose={this.handleClose} scroll='paper'>
+          <ManualForm />
+        </Dialog>
       </main>
     );
   }

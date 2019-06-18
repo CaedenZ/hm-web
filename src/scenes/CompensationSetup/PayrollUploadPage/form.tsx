@@ -45,21 +45,20 @@ interface FormState {
     type: number,
     year: string,
     country: string,
-    survey_company: string,
     employee_id: string,
-    company_grade: string,
-    survey_grade: string,
+    gender: string,
     jobfunction: string,
     jobfunctionJSON: string,
     sjobfunctionList: SubJobFunction[],
     sjobfunction: string,
-    currency: string,
     annual_base_pay: string,
     annual_fixed_pay: string,
     annual_cash_allowance: string,
-    target_total: string,
-    target_direct_comp: string,
-    target_total_rem: string
+    business_title: string,
+    grade: string,
+    department: string,
+    currency: string,
+    uploaded_dt: string
 }
 interface Props
     extends InState,
@@ -77,21 +76,20 @@ class FormPage extends Component<Props, FormState> {
         type: 0,
         year: "2019",
         country: "Singapore",
-        survey_company: "HRBS RANK",
         employee_id: "",
-        company_grade: "",
-        survey_grade: "",
+        gender: "",
         jobfunction: "",
         jobfunctionJSON: "",
         sjobfunctionList: [],
         sjobfunction: "",
-        currency: "SGD",
         annual_base_pay: "",
         annual_fixed_pay: "",
         annual_cash_allowance: "",
-        target_total: "",
-        target_direct_comp: "",
-        target_total_rem: ""
+        business_title: "",
+        grade: "",
+        department: "",
+        currency: "SGD",
+        uploaded_dt: ""
     };
 
     handleChange = (statekay: keyof FormState) => (
@@ -123,14 +121,10 @@ class FormPage extends Component<Props, FormState> {
     render() {
         const { classes } = this.props;
         return (
-            <Paper style={{ marginTop: "2rem" }}>
                 <form
                     onSubmit={e => this.handleSubmit(e)}
                     style={{ padding: "2rem" }}
                 >
-                    <Typography component="h1" variant="h6">
-                        Allowance Infomation
-          </Typography>
                     <Grid justify="center" container>
                         <Grid justify={"center"} container item>
                             <TextField
@@ -228,11 +222,11 @@ class FormPage extends Component<Props, FormState> {
                         </Grid>
                         <Grid justify={"center"} container item>
                             <TextField
-                                id="survey_company"
-                                label="survey_company"
+                                id="gender"
+                                label="gender"
                                 className={classes.textField}
-                                value={this.state.survey_company}
-                                onChange={this.handleChange("survey_company")}
+                                value={this.state.gender}
+                                onChange={this.handleChange("gender")}
                                 margin="normal"
                             />
                         </Grid>
@@ -243,26 +237,6 @@ class FormPage extends Component<Props, FormState> {
                                 className={classes.textField}
                                 value={this.state.employee_id}
                                 onChange={this.handleChange("employee_id")}
-                                margin="normal"
-                            />
-                        </Grid>
-                        <Grid justify={"center"} container item>
-                            <TextField
-                                id="company_grade"
-                                label="company_grade"
-                                className={classes.textField}
-                                value={this.state.company_grade}
-                                onChange={this.handleChange("company_grade")}
-                                margin="normal"
-                            />
-                        </Grid>
-                        <Grid justify={"center"} container item>
-                            <TextField
-                                id="survey_grade"
-                                label="survey_grade"
-                                className={classes.textField}
-                                value={this.state.survey_grade}
-                                onChange={this.handleChange("survey_grade")}
                                 margin="normal"
                             />
                         </Grid>
@@ -308,31 +282,41 @@ class FormPage extends Component<Props, FormState> {
                         </Grid>
                         <Grid justify={"center"} container item>
                             <TextField
-                                id="target_total"
-                                label="target_total"
+                                id="business_title"
+                                label="business_title"
                                 className={classes.textField}
-                                value={this.state.target_total}
-                                onChange={this.handleChange("target_total")}
+                                value={this.state.business_title}
+                                onChange={this.handleChange("business_title")}
                                 margin="normal"
                             />
                         </Grid>
                         <Grid justify={"center"} container item>
                             <TextField
-                                id="target_direct_comp"
-                                label="target_direct_comp"
+                                id="grade"
+                                label="grade"
                                 className={classes.textField}
-                                value={this.state.target_direct_comp}
-                                onChange={this.handleChange("target_direct_comp")}
+                                value={this.state.grade}
+                                onChange={this.handleChange("grade")}
                                 margin="normal"
                             />
                         </Grid>
                         <Grid justify={"center"} container item>
                             <TextField
-                                id="target_total_rem"
-                                label="target_total_rem"
+                                id="department"
+                                label="department"
                                 className={classes.textField}
-                                value={this.state.target_total_rem}
-                                onChange={this.handleChange("target_total_rem")}
+                                value={this.state.department}
+                                onChange={this.handleChange("department")}
+                                margin="normal"
+                            />
+                        </Grid>
+                        <Grid justify={"center"} container item>
+                            <TextField
+                                id="uploaded_dt"
+                                label="uploaded_dt"
+                                className={classes.textField}
+                                value={this.state.uploaded_dt}
+                                onChange={this.handleChange("uploaded_dt")}
                                 margin="normal"
                             />
                         </Grid>
@@ -357,7 +341,6 @@ class FormPage extends Component<Props, FormState> {
             </Button>
                     </div>
                 </form>
-            </Paper>
         );
     }
 }

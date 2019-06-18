@@ -150,7 +150,7 @@ class SalaryRangePage extends React.Component<Props, State> {
     return (
       <main>
         <CustomButton onClick={this.handleNewGrade}>
-          Create New Salary Range
+          Create
         </CustomButton>
         <Grid container>
           <Grid item xs={3}>

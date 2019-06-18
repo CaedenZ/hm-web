@@ -24,7 +24,7 @@ export function equityrangeReducer(state: EquityRangeState = {
         mid: '',
         max: '',
         country: '',
-        jobgrade_global: 0,
+        jobgrade_global: '',
         value_type: 0,
     },
 }, action) {
@@ -91,7 +91,7 @@ export const getEquityRangeListEpic: Epic<any, any, any, any> = (action$, state$
     action$.pipe(
         filter(isActionOf(getEquityRangeListAction.request)),
         switchMap(() =>
-            from(getEquityRangeList(state$.value.authenticationReducer.token, state$.value.longIncentiveReducer.selectLongIncentive.longterm_incentive_id)).pipe(
+            from(getEquityRangeList(state$.value.authenticationReducer.token, state$.value.longIncentiveReducer.selectLongIncentive)).pipe(
                 map((equityrangeList: EquityRange[]) => getEquityRangeListAction.success(equityrangeList)),
                 catchError(error => of(getEquityRangeListAction.failure(error.message)))
             )
@@ -102,7 +102,7 @@ export const createEquityRangeEpic: Epic<any, any, any, any> = (action$, state$)
     action$.pipe(
         filter(isActionOf(createEquityRangeAction.request)),
         switchMap((action) =>
-            from(createEquityRange(state$.value.authenticationReducer.token, action.payload, state$.value.companyReducer.selectedCompany.company_id)).pipe(
+            from(createEquityRange(state$.value.authenticationReducer.token, action.payload, state$.value.longIncentiveReducer.selectLongIncentive)).pipe(
                 map(() => createEquityRangeAction.success()),
                 catchError(error => of(createEquityRangeAction.failure(error.message)))
             )

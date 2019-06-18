@@ -10,6 +10,8 @@ import {
   TextField,
   Divider,
   FormControl,
+  Checkbox,
+  FormControlLabel,
   Button,
   MenuItem,
   InputLabel,
@@ -19,8 +21,6 @@ import { mapDispatchToProps } from "../../../../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../../../interface/propsInterface";
 import { RootState } from "../../../../../reducer";
-import { Country } from "../../../../../interface/countryInterface";
-import { JobGrade } from "../../../../../interface/jobgradeInterface";
 import { Company } from "../../../../../interface/companyInterface";
 
 const styles = (theme: Theme) =>
@@ -32,21 +32,18 @@ const styles = (theme: Theme) =>
   });
 
 interface FormState {
-  jobgrade_id: string;
+  jobgrade_name: string;
   type: string;
-  min: string;
-  mid: string;
-  max: string;
+  global: boolean;
+  jobgrade_id: string;
   country: string;
 }
 interface Props
   extends InState,
-    WithStyles<typeof styles>,
-    SharedDispatchProps {}
+  WithStyles<typeof styles>,
+  SharedDispatchProps { }
 
 interface InState {
-  countryList: Country[];
-  jobgradeList: JobGrade[];
   selectedCompany: Company;
   create: boolean;
   updateData: any;
@@ -55,11 +52,10 @@ interface InState {
 
 class FormPage extends Component<Props, FormState> {
   state: FormState = {
-    jobgrade_id: "",
+    jobgrade_name: "",
     type: "",
-    min: "",
-    mid: "",
-    max: "",
+    global: false,
+    jobgrade_id: "",
     country: ""
   };
   componentDidMount() {
@@ -84,6 +80,11 @@ class FormPage extends Component<Props, FormState> {
     >);
   };
 
+  handleChangeCheck = () => {
+    this.setState({ global: !this.state.global } as any);
+    this.setState({ country: "" });
+  };
+
   render() {
     const { classes } = this.props;
     return (
@@ -98,71 +99,35 @@ class FormPage extends Component<Props, FormState> {
           <Grid justify="center" container>
             <Grid justify={"center"} container item>
               <TextField
-                id="type"
-                label="type"
+                id="jobgrade_name"
+                label="jobgrade_name"
                 className={classes.textField}
-                value={this.state.type}
-                onChange={this.handleChange("type")}
+                value={this.state.jobgrade_name}
+                onChange={this.handleChange("jobgrade_name")}
                 margin="normal"
               />
             </Grid>
             <Grid justify={"center"} container item>
-              <TextField
-                id="min"
-                label="min"
-                className={classes.textField}
-                value={this.state.min}
-                onChange={this.handleChange("min")}
-                margin="normal"
-              />
-            </Grid>
-            <Grid justify={"center"} container item>
-              <TextField
-                id="mid"
-                label="mid"
-                className={classes.textField}
-                value={this.state.mid}
-                onChange={this.handleChange("mid")}
-                margin="normal"
-              />
-            </Grid>
-            <Grid justify={"center"} container item>
-              <TextField
-                id="max"
-                label="max"
-                className={classes.textField}
-                value={this.state.max}
-                onChange={this.handleChange("max")}
-                margin="normal"
-              />
-            </Grid>
-            <Grid justify={"center"} container item>
-              {this.props.jobgradeList.length > 0 && (
-                <FormControl>
-                  <InputLabel style={{ marginLeft: "20px" }} required>
-                    Job Grade
-                  </InputLabel>
-                  <Select
-                    id="jobgrade_id"
-                    className={classes.textField}
-                    value={this.state.jobgrade_id}
-                    onChange={this.handleChangeSelect("jobgrade_id")}
-                    inputProps={{
-                      name: "jobgrade_id",
-                      id: "country-simple"
-                    }}
-                  >
-                    {this.props.jobgradeList.map(jobgrade => (
-                      <MenuItem
-                        key={jobgrade.jobgrade_name}
-                        value={jobgrade.jobgrade_id}
-                      >
-                        {jobgrade.jobgrade_name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              )}
+              <FormControl>
+                <InputLabel style={{ marginLeft: "20px" }} required>
+                  Type
+                </InputLabel>
+                <Select
+                  id="type"
+                  className={classes.textField}
+                  value={this.state.type}
+                  onChange={this.handleChangeSelect("type")}
+                  inputProps={{
+                    name: "type",
+                    id: "type-simple"
+                  }}
+                >
+                  <MenuItem value="Technical">Technical</MenuItem>
+                  <MenuItem value="Non-Technical">Non-Technical</MenuItem>
+                  <MenuItem value="Executive">Executive</MenuItem>
+                  <MenuItem value="Non-Executive">Non-Executive</MenuItem>
+                </Select>
+              </FormControl>
             </Grid>
             <Grid justify={"center"} container item>
               {this.props.selectedCompany.country.length > 0 && (
@@ -171,6 +136,7 @@ class FormPage extends Component<Props, FormState> {
                     Country
                   </InputLabel>
                   <Select
+                    disabled={this.state.global}
                     id="country"
                     className={classes.textField}
                     value={this.state.country}
@@ -191,6 +157,18 @@ class FormPage extends Component<Props, FormState> {
                   </Select>
                 </FormControl>
               )}
+            </Grid>
+            <Grid justify={"center"} container item>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={this.state.global}
+                    onChange={this.handleChangeCheck}
+                    color="primary"
+                  />
+                }
+                label="Global"
+              />
             </Grid>
           </Grid>
 
@@ -219,9 +197,7 @@ class FormPage extends Component<Props, FormState> {
 
 function mapStateToProps(state: RootState) {
   return {
-    selectedCompany: state.companyReducer.selectedCompany,
-    countryList: state.countryReducer.countryList,
-    jobgradeList: state.jobgradeReducer.jobgradeList
+    selectedCompany: state.companyReducer.selectedCompany
   };
 }
 

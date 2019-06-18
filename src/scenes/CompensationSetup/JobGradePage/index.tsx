@@ -158,15 +158,15 @@ class JobGradePage extends React.Component<Props, State> {
         jobgrade_name: "",
         type: "",
         global: 'Y',
-        country: "",
+        country: "Global",
       }
       this.props.createJobGrade(data)
       this.setState({ created: true })
-    }else{
+    } else {
       this.props.showDialog({
-        type:'warning',
-        object:'Please do not create multiple entry in a single time',
-        id:'1'
+        type: 'warning',
+        object: 'Please do not create multiple entry in a single time',
+        id: '1'
       })
     }
   }
@@ -179,47 +179,10 @@ class JobGradePage extends React.Component<Props, State> {
       <main>
         <CustomButton onClick={this.handleCreateJobGrade}>Create</CustomButton>
         <Divider />
-
         <Typography component="h1" variant="h6">
           Current Job Grade
           </Typography>
         <Paper style={{ padding: "1em" }}>
-          <Grid container>
-            <Grid item xs={3}>
-              <FormControlLabel
-                style={{ height: "100%", width: "100%" }}
-                control={
-                  <Checkbox
-                    checked={this.state.filterglobal}
-                    onChange={this.handleChangeglobal}
-                  />
-                }
-                label="Global"
-              />
-            </Grid>
-            <Grid item xs={3}>
-              <FormControl style={{ width: "100%" }} disabled={this.state.filterglobal}>
-                <InputLabel htmlFor="filtercountry">Country</InputLabel>
-                <Select
-                  value={this.state.filtercountry}
-                  onChange={this.handleChangeSelect("filtercountry")}
-                  inputProps={{
-                    name: "filtercountry",
-                    id: "filtercountry-simple"
-                  }}
-                >
-                  {this.props.selectedCompany.country.map(country => (
-                    <MenuItem
-                      key={(country)}
-                      value={(country)}
-                    >
-                      {(country)}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-          </Grid>
           <CustomizedTable jobgradeList={data} onUpdate={this.handleUpdate} />
         </Paper>
       </main>

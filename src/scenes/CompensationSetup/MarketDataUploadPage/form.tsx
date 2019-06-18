@@ -123,14 +123,10 @@ class FormPage extends Component<Props, FormState> {
     render() {
         const { classes } = this.props;
         return (
-            <Paper style={{ marginTop: "2rem" }}>
                 <form
                     onSubmit={e => this.handleSubmit(e)}
                     style={{ padding: "2rem" }}
                 >
-                    <Typography component="h1" variant="h6">
-                        Allowance Infomation
-          </Typography>
                     <Grid justify="center" container>
                         <Grid justify={"center"} container item>
                             <TextField
@@ -357,7 +353,6 @@ class FormPage extends Component<Props, FormState> {
             </Button>
                     </div>
                 </form>
-            </Paper>
         );
     }
 }

@@ -3,7 +3,7 @@ export interface EquityRange {
     lti_id: string,
     jobgrade_id: string,
     jobgrade_name: string,
-    jobgrade_global:number,
+    jobgrade_global: string,
     type: string,
     min: string,
     mid: string,
@@ -19,16 +19,27 @@ export interface EquityRangeState {
 }
 
 export interface CREATEEQUITYRANGECRED {
-    equityrange_name: string,
+    jobgrade_id: string,
+    jobgrade_name: string,
+    jobgrade_global: string,
     type: string,
-    global: number,
+    min: string,
+    mid: string,
+    max: string,
     country: string,
+    value_type: number,
 }
 
 export interface UPDATEEQUITYRANGECRED {
-    equityrange_id: string,
-    equityrange_name: string,
+    equity_range_id: string,
+    lti_id: string,
+    jobgrade_id: string,
+    jobgrade_name: string,
+    jobgrade_global: string,
     type: string,
-    global: number,
+    min: string,
+    mid: string,
+    max: string,
     country: string,
+    value_type: number,
 }

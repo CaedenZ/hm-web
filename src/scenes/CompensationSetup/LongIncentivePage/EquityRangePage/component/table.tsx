@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import {
   createStyles,
@@ -18,20 +18,19 @@ import { history } from "../../../../../store";
 import UpdateIcon from "@material-ui/icons/PlaylistAddCheck";
 import { SharedDispatchProps } from "../../../../../interface/propsInterface";
 import { Company } from "../../../../../interface/companyInterface";
-import { EquityRange } from "../../../../../interface/equityRangeInterface";
+import { JobGrade } from "../../../../../interface/jobgradeInterface";
 import { RootState } from "../../../../../reducer";
 import { mapDispatchToProps } from "../../../../../helper/dispachProps";
 import { connect } from "react-redux";
+import ReactDataGrid from "react-data-grid";
+import { Editors, Toolbar, Data, Filters } from "react-data-grid-addons";
+import { EquityRange } from "../../../../../interface/equityRangeInterface";
 
-const CustomTableCell = withStyles(theme => ({
-  head: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white
-  },
-  body: {
-    fontSize: 14
-  }
-}))(TableCell);
+
+
+
+const { DropDownEditor } = Editors;
+
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -55,20 +54,31 @@ const styles = (theme: Theme) =>
 
 export interface Props
   extends WithStyles<typeof styles>,
-    SharedDispatchProps,
-    InState {}
+  SharedDispatchProps,
+  InState { }
 
-interface State {}
+interface State { }
 
 interface InState {
   selectedCompany: Company;
   equityrangeList: EquityRange[];
+  onUpdate: Function
 }
 class CustomizedTable extends React.Component<Props, State> {
   state = {
     country: "",
     global: false,
-    anchorEl: null
+    anchorEl: null,
+    row: [],
+    filters: {},
+  };
+
+  countryTypes() {
+    const type = []
+    this.props.selectedCompany.country.forEach(element => {
+      type.push({ id: element, value: element })
+    });
+    return type
   };
 
   componentDidMount() {
@@ -80,16 +90,13 @@ class CustomizedTable extends React.Component<Props, State> {
         id: "1"
       };
       this.props.showDialog(data);
-    } else this.props.getEquityRangeList();
+    } else {
+      this.props.getEquityRangeList();
+      // this.setState({row:this.props.equityrangeList})
+    }
   }
 
-  handleUpdateButtonClick = equityrange => {
-    this.props.selectEquityRange(equityrange);
-    history.push("/longincentive/equityrange/update");
-    console.log("clicked");
-  };
-
-  handleDelete = (id, index) => {
+  handleDelete = (id) => {
     const payload = {
       type: "delete",
       object: "equityrange",
@@ -98,63 +105,103 @@ class CustomizedTable extends React.Component<Props, State> {
     this.props.showDialog(payload);
   };
 
-  handleListButtonClick = (event, row) => {
-    this.setState({ anchorEl: event.currentTarget });
-    this.props.selectEquityRange(row);
+  typeEditor = <DropDownEditor options={[...this.props.selectedCompany.country, 'Global']} />;
+  globalEditor = <DropDownEditor options={['Y', 'N']} />;
+
+  onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
+    const row = this.props.equityrangeList.slice();
+    for (let i = fromRow; i <= toRow; i++) {
+      row[i] = { ...row[i], ...updated };
+      this.props.onUpdate(row[i])
+    }
+    return { row };
   };
 
-  handleClose = () => {
-    this.setState({ anchorEl: null });
-  };
-
-  handleRedirect = path => {
-    history.push("/equityrange/" + path);
-  };
 
   render() {
     const { classes } = this.props;
+    const that = this;
+
+    const selectors = Data.Selectors;
+
+    const {
+      NumericFilter,
+      AutoCompleteFilter,
+      MultiSelectFilter,
+      SingleSelectFilter
+    } = Filters;
+
+    const handleFilterChange = filter => {
+      console.log(this.state.filters)
+      const newFilters = { ...this.state.filters };
+      if (filter.filterTerm) {
+        newFilters[filter.column.key] = filter;
+      } else {
+        delete newFilters[filter.column.key];
+      }
+      this.setState({ filters: newFilters });
+    };
+
+    function getValidFilterValues(rows, columnId) {
+      return rows
+        .map(r => r[columnId])
+        .filter((item, i, a) => {
+          return i === a.indexOf(item);
+        });
+    }
+
+    function getRows(rows, filters) {
+      return selectors.getRows({ rows, filters });
+    }
+
+    const filteredRows = getRows(this.props.equityrangeList, this.state.filters);
+
+    const defaultColumnProperties = {
+      filterable: true,
+    };
+
+    const columns: any = [
+      { key: 'country', name: "Country", filterRenderer: AutoCompleteFilter, editor: this.typeEditor },
+      { key: 'type', name: "Type", filterRenderer: AutoCompleteFilter, editable: true },
+      { key: 'equityrange_name', name: "Job Grade", filterRenderer: AutoCompleteFilter, editable: true },
+      // { key: 'global', name: "global", editor: this.globalEditor },
+      { key: 'action', name: "Action" },
+    ].map(c => ({ ...c, ...defaultColumnProperties }));
+
+    function actions(row) {
+      return [
+        {
+          icon: <DeleteIcon />,
+          callback: () => {
+            that.handleDelete(row.equityrange_id);
+          }
+        },
+
+      ];
+    }
+
+    function getCellActions(column, row) {
+      const cellActions = {
+        action: actions(row)
+      };
+      return cellActions[column.key];
+    }
+
 
     return (
+
       <Paper className={classes.root}>
-        <Table className={classes.table}>
-          <TableHead>
-            <TableRow>
-              <CustomTableCell align="left">Type</CustomTableCell>
-              <CustomTableCell align="left">Min</CustomTableCell>
-              <CustomTableCell align="left">Mid</CustomTableCell>
-              <CustomTableCell align="left">Max</CustomTableCell>
-              <CustomTableCell align="left">Action</CustomTableCell>
-            </TableRow>
-          </TableHead>
-          {this.props.equityrangeList.length > 0 && (
-            <TableBody>
-              {this.props.equityrangeList.map((row, index) => (
-                <TableRow className={classes.row} key={row.equity_range_id}>
-                  <CustomTableCell component="th" scope="row">
-                    {row.type}
-                  </CustomTableCell>
-                  <CustomTableCell align="left">{row.min}</CustomTableCell>
-                  <CustomTableCell align="left">{row.mid}</CustomTableCell>
-                  <CustomTableCell align="left">{row.max}</CustomTableCell>
-                  <CustomTableCell align="left">
-                    <IconButton
-                      onClick={() => this.handleUpdateButtonClick(row)}
-                    >
-                      <UpdateIcon />
-                    </IconButton>
-                    <IconButton
-                      onClick={() =>
-                        this.handleDelete(row.equity_range_id, index)
-                      }
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </CustomTableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          )}
-        </Table>
+        <ReactDataGrid
+          columns={columns}
+          rowGetter={i => filteredRows[i]}
+          rowsCount={filteredRows.length}
+          toolbar={<Toolbar enableFilter={true} />}
+          onAddFilter={filter => handleFilterChange(filter)}
+          onClearFilters={() => this.setState({ filters: {} })}
+          getValidFilterValues={columnKey => getValidFilterValues(this.props.equityrangeList, columnKey)}
+          getCellActions={getCellActions}
+          onGridRowsUpdated={this.onGridRowsUpdated}
+          enableCellSelect={true} />
       </Paper>
     );
   }

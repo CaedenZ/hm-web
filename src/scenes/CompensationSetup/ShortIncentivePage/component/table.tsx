@@ -23,7 +23,7 @@ import { RootState } from "../../../../reducer";
 import { mapDispatchToProps } from "../../../../helper/dispachProps";
 import { connect } from "react-redux";
 import ReactDataGrid from "react-data-grid";
-import { Editors } from "react-data-grid-addons";
+import { Editors, Toolbar, Data, Filters } from "react-data-grid-addons";
 import { JobGrade } from "../../../../interface/jobgradeInterface";
 
 const { DropDownEditor } = Editors;
@@ -58,14 +58,15 @@ interface State { }
 interface InState {
   selectedCompany: Company;
   shortincentiveList: ShortIncentive[];
-  onUpdate:Function;
-  jobgradeList:JobGrade[]
+  onUpdate: Function;
+  jobgradeList: JobGrade[]
 }
 class CustomizedTable extends React.Component<Props, State> {
   state = {
     country: "",
     global: false,
-    anchorEl: null
+    anchorEl: null,
+    filters: {}
   };
 
   componentDidMount() {
@@ -110,7 +111,7 @@ class CustomizedTable extends React.Component<Props, State> {
 
   typeEditor = <DropDownEditor options={[...this.props.selectedCompany.country, '']} />;
   globalEditor = <DropDownEditor options={['Y', 'N']} />;
-  jobgradeEditor = <DropDownEditor options={[...this.props.jobgradeList.map(a=>a.jobgrade_name)]} />;
+  jobgradeEditor = <DropDownEditor options={[...this.props.jobgradeList.map(a => a.jobgrade_name)]} />;
   valueEditor = <DropDownEditor options={['Percent', 'Fixed']} />;
 
   onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
@@ -127,16 +128,52 @@ class CustomizedTable extends React.Component<Props, State> {
     const { classes } = this.props;
     const that = this;
 
+    const selectors = Data.Selectors;
+
+    const {
+      NumericFilter,
+      AutoCompleteFilter,
+      MultiSelectFilter,
+      SingleSelectFilter
+    } = Filters;
+
+    const handleFilterChange = filter => {
+      console.log(this.state.filters)
+      const newFilters = { ...this.state.filters };
+      if (filter.filterTerm) {
+        newFilters[filter.column.key] = filter;
+      } else {
+        delete newFilters[filter.column.key];
+      }
+      this.setState({ filters: newFilters });
+    };
+
+    function getValidFilterValues(rows, columnId) {
+      return rows
+        .map(r => r[columnId])
+        .filter((item, i, a) => {
+          return i === a.indexOf(item);
+        });
+    }
+
+    function getRows(rows, filters) {
+      return selectors.getRows({ rows, filters });
+    }
+
+    const filteredRows = getRows(this.props.shortincentiveList, this.state.filters);
+
+    const defaultColumnProperties = {
+      filterable: true,
+    };
     const columns: any = [
-      { key: 'jobgrade_name', name: "jobgrade_name", editor: this.jobgradeEditor },
-      { key: 'jobgrade_global', name: "jobgrade_global", editor: this.globalEditor },
-      { key: 'type', name: "type", editable: true },
-      { key: 'country', name: "country", editor: this.typeEditor },
-      { key: 'value', name: "value", editable: true },
-      { key: 'isOptional', name: "isOptional", editor: this.globalEditor },
-      { key: 'value_type', name: "value_type", editor: this.valueEditor },
-      { key: 'action', name: "action" },
-    ]
+      { key: 'country', name: "Country", filterRenderer: AutoCompleteFilter, editor: this.typeEditor },
+      { key: 'type', name: "Name", filterRenderer: AutoCompleteFilter, editable: true },
+      { key: 'jobgrade_name', name: "Job Grade", filterRenderer: AutoCompleteFilter, editor: this.jobgradeEditor },
+      { key: 'value_type', name: "Value Type", filterRenderer: AutoCompleteFilter, editor: this.valueEditor },
+      { key: 'value', name: "Value", filterRenderer: AutoCompleteFilter, editable: true },
+      { key: 'isOptional', name: "isOptional", filterRenderer: AutoCompleteFilter, editor: this.globalEditor },
+      { key: 'action', name: "Action" },
+    ].map(c => ({ ...c, ...defaultColumnProperties }));
 
     function actions(row) {
       return [
@@ -160,8 +197,12 @@ class CustomizedTable extends React.Component<Props, State> {
       <Paper className={classes.root}>
         <ReactDataGrid
           columns={columns}
-          rowGetter={i => this.props.shortincentiveList[i]}
-          rowsCount={this.props.shortincentiveList.length}
+          rowGetter={i => filteredRows[i]}
+          rowsCount={filteredRows.length}
+          toolbar={<Toolbar enableFilter={true} />}
+          onAddFilter={filter => handleFilterChange(filter)}
+          onClearFilters={() => this.setState({ filters: {} })}
+          getValidFilterValues={columnKey => getValidFilterValues(this.props.shortincentiveList, columnKey)}
           getCellActions={getCellActions}
           onGridRowsUpdated={this.onGridRowsUpdated}
           enableCellSelect={true} />

@@ -148,7 +148,7 @@ class ShortIncentivePage extends React.Component<Props, State> {
     return (
       <main>
         <CustomButton onClick={this.handleNewGrade}>
-          Create New Short Term Incentive
+          Create
         </CustomButton>
         <Grid container>
           <Grid item xs={3}>

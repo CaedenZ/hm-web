@@ -5,7 +5,7 @@ import { RootState } from "../../../reducer";
 import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../interface/propsInterface";
-import { Button, Paper, Grid, Divider, Typography, TableCell, Theme, Table, TableHead, TableRow, TableBody, IconButton } from "@material-ui/core";
+import { Button, Paper, Grid, Divider, Typography, TableCell, Theme, Table, TableHead, TableRow, TableBody, IconButton, Dialog } from "@material-ui/core";
 import ManualForm from "./form"
 import $axios from "../../../plugin/axios";
 import ReactDataGrid from "react-data-grid";
@@ -243,6 +243,15 @@ class MarketDataUploadPage extends React.Component<Props, State> {
     }
   }
 
+  handleClose = () => {
+    this.setState({
+      queue: false,
+      queueitem: false,
+      queuelog: false,
+      manual: false,
+    })
+  }
+
   render() {
     const { classes } = this.props
     const that = this
@@ -350,25 +359,18 @@ class MarketDataUploadPage extends React.Component<Props, State> {
           </Paper>
         </Grid>}
 
-        {this.state.queue && <Grid container>
-          <Paper className={classes.paper}>
-            <Typography component="h1" variant="h6">
-              List Queue
-          </Typography>
+          <Dialog open={this.state.queue} onClose={this.handleClose} scroll='paper'>
+            <div style={{width:'800px'}}>
             <ReactDataGrid
               columns={columns}
               rowGetter={i => this.state.listqueue[i]}
               rowsCount={this.state.listqueue.length}
               getCellActions={getCellActions}
               enableCellSelect={true} />
-            <Divider />
-          </Paper>
-        </Grid>}
-        {this.state.queueitem && <Grid container>
-          <Paper className={classes.paper}>
-            <Typography component="h1" variant="h6">
-              List Queue
-          </Typography>
+            </div>
+          </Dialog>
+
+          <Dialog open={this.state.queueitem} onClose={this.handleClose} scroll='paper'>
             <Table className={classes.table}>
               <TableHead>
                 <TableRow>
@@ -397,14 +399,9 @@ class MarketDataUploadPage extends React.Component<Props, State> {
                 </TableBody>
               )}
             </Table>
-            <Divider />
-          </Paper>
-        </Grid>}
-        {this.state.queuelog && <Grid container>
-          <Paper className={classes.paper}>
-            <Typography component="h1" variant="h6">
-              List Queue
-          </Typography>
+          </Dialog>
+
+          <Dialog open={this.state.queuelog} onClose={this.handleClose} scroll='paper'>
             <Table className={classes.table}>
               <TableHead>
                 <TableRow>
@@ -425,35 +422,28 @@ class MarketDataUploadPage extends React.Component<Props, State> {
                 </TableBody>
               )}
             </Table>
-            <Divider />
-          </Paper>
-        </Grid>}
-        {this.state.manual && <Grid container>
-          <Paper className={classes.paper}>
-            <Typography component="h1" variant="h6">
-              Manual Entry
-          </Typography>
+          </Dialog>
+
+          <Dialog open={this.state.manual} onClose={this.handleClose} scroll='paper'>
             <ManualForm />
-            <Divider />
-          </Paper>
-        </Grid>}
+          </Dialog>
       </main>
     );
-  }
-}
-
+      }
+    }
+    
 (MarketDataUploadPage as React.ComponentClass<Props>).propTypes = {
-  classes: PropTypes.object.isRequired
-} as any;
-
+          classes: PropTypes.object.isRequired
+        } as any;
+        
 function mapStateToProps(state: RootState) {
   return {
-    sessionkey: state.authenticationReducer.token,
-    companyid: state.companyReducer.selectedCompany.company_id,
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(MarketDataUploadPage));
+            sessionkey: state.authenticationReducer.token,
+          companyid: state.companyReducer.selectedCompany.company_id,
+        };
+      }
+      
+      export default connect(
+        mapStateToProps,
+        mapDispatchToProps
+      )(withStyles(styles)(MarketDataUploadPage));
