@@ -92,12 +92,12 @@ class SignonsPage extends React.Component<Props, State> {
         value: ' ',
         type: ' ',
         isOptional: 'N',
-        month1: '',
-        month2: '',
-        month3: '',
-        month4: '',
-        month5: '',
-        month6: '',
+        month1: '0',
+        month2: '0',
+        month3: '0',
+        month4: '0',
+        month5: '0',
+        month6: '0',
       }
       this.props.createSignons(data)
     }

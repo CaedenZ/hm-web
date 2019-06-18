@@ -58,7 +58,7 @@ interface State { }
 interface InState {
   selectedCompany: Company;
   jobgradeList: JobGrade[];
-  onUpdate:Function
+  onUpdate: Function
 }
 class CustomizedTable extends React.Component<Props, State> {
   state = {
@@ -131,16 +131,16 @@ class CustomizedTable extends React.Component<Props, State> {
     const row = this.props.jobgradeList.slice();
     for (let i = fromRow; i <= toRow; i++) {
       row[i] = { ...row[i], ...updated };
-      if((row[i].global==='Y'&&row[i].country !== '')||(row[i].global==='N'&&row[i].country === '')){
-        this.props.showDialog({
-          type:'warning',
-          object:'Data is not valid',
-          id:1
-        })
-      }
-      else {
-        this.props.onUpdate(row[i])
-      }
+      // if((row[i].global==='Y'&&row[i].country !== '')||(row[i].global==='N'&&row[i].country === '')){
+      //   this.props.showDialog({
+      //     type:'warning',
+      //     object:'Data is not valid',
+      //     id:1
+      //   })
+      // }
+      // else {
+      this.props.onUpdate(row[i])
+      // }
     }
     return { row };
   };

@@ -96,7 +96,7 @@ class SalaryRangePage extends React.Component<Props, State> {
   };
 
   handleNewGrade = () => {
-    if (this.state.created) {
+    if (!this.state.created) {
       const data: any = {
         country: "country",
         jobgrade_country: "jobgrade_country",
