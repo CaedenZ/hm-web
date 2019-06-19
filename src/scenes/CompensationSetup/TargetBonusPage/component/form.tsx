@@ -118,6 +118,7 @@ class FormPage extends Component<Props, FormState> {
               <TextField
                 id="min"
                 label="min"
+                type="number"
                 className={classes.textField}
                 value={this.state.min}
                 onChange={this.handleChange("min")}
@@ -128,6 +129,7 @@ class FormPage extends Component<Props, FormState> {
               <TextField
                 id="mid"
                 label="mid"
+                type="number"
                 className={classes.textField}
                 value={this.state.mid}
                 onChange={this.handleChange("mid")}
@@ -138,6 +140,7 @@ class FormPage extends Component<Props, FormState> {
               <TextField
                 id="max"
                 label="max"
+                type="number"
                 className={classes.textField}
                 value={this.state.max}
                 onChange={this.handleChange("max")}
