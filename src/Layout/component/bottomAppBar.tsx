@@ -11,7 +11,6 @@ import { mapDispatchToProps } from "../../helper/dispachProps";
 import { connect } from "react-redux";
 import { Company } from "../../interface/companyInterface";
 import { SharedDispatchProps } from "../../interface/propsInterface";
-import { history } from "../../store";
 import Breadcrumbs from "@material-ui/lab/Breadcrumbs";
 import { Link as RouterLink } from "react-router-dom";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
@@ -81,16 +80,13 @@ interface InState {
   companyList: Company[];
   selectedCompany: Company;
   role: string;
+  history: any;
 }
 class BottomAppBar extends React.Component<Props, State> {
   state = {
     anchorEl: null,
     selectedIndex: 0
   };
-
-  componentDidMount() {
-    // this.props.getCompanyList();
-  }
 
   handleClickListItem = event => {
     this.setState({ anchorEl: event.currentTarget });
@@ -108,8 +104,9 @@ class BottomAppBar extends React.Component<Props, State> {
   };
 
   breadcrumb = classes => {
-    const pathnames = history.location.pathname.split("/").filter(x => x);
-
+    const pathnames = this.props.history.location.pathname
+      .split("/")
+      .filter(x => x);
     return (
       <Breadcrumbs
         separator={
@@ -145,7 +142,6 @@ class BottomAppBar extends React.Component<Props, State> {
 
   render() {
     const { classes } = this.props;
-    // const { anchorEl } = this.state;
 
     return (
       <div className={classes.root}>
@@ -195,7 +191,8 @@ function mapStateToProps(state: any) {
   return {
     companyList: state.companyReducer.companyList,
     selectedCompany: state.companyReducer.selectedCompany,
-    role: state.authenticationReducer.profile.info.role_name
+    role: state.authenticationReducer.profile.info.role_name,
+    history: state.router
   };
 }
 
