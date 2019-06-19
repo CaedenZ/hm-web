@@ -88,7 +88,7 @@ class AllowancesPage extends React.Component<Props, State> {
 
   handleUpdateButtonClick = allowances => {
     this.props.updateAllowances(allowances);
-    this.setState({created:false})
+    this.setState({ created: false })
   };
 
   handleDelete = id => {
@@ -137,20 +137,21 @@ class AllowancesPage extends React.Component<Props, State> {
   };
 
   handleCreateAllowance = () => {
-    if(!this.state.created)
-    {const data = {
-      country: "country",
-      isBonus: "Y",
-      isOptional: "Y",
-      jobgrade_country: "jobgrade_country",
-      jobgrade_global: "Y",
-      jobgrade_id: "jobgrade_id",
-      jobgrade_name: "jobgrade_name",
-      type: "test",
-      value: "0",
-      value_type: 1
+    if (!this.state.created) {
+      const data = {
+        country: "country",
+        isBonus: "Y",
+        isOptional: "Y",
+        jobgrade_country: "jobgrade_country",
+        jobgrade_global: "Y",
+        jobgrade_id: "jobgrade_id",
+        jobgrade_name: "jobgrade_name",
+        type: "test",
+        value: "0",
+        value_type: 1
+      }
+      this.props.createAllowances(data)
     }
-    this.props.createAllowances(data)}
     else {
       this.props.showDialog({
         type: 'warning',
@@ -173,37 +174,6 @@ class AllowancesPage extends React.Component<Props, State> {
           Current Allowances
           </Typography>
         <Paper>
-          <Grid container>
-            <Grid item xs={3}>
-              <FormControlLabel style={{ height: '100%', width: '100%' }}
-                control={
-                  <Checkbox
-                    checked={this.state.filterglobal}
-                    onChange={this.handleChangeCheck}
-                    color="primary"
-                  />
-                }
-                label="Global"
-              />
-            </Grid>
-            <Grid item xs={3}>
-              <FormControl style={{ width: '100%' }} disabled={this.state.filterglobal}>
-                <InputLabel htmlFor="filtercountry">Country</InputLabel>
-                <Select
-                  value={this.state.filtercountry}
-                  onChange={this.handleChangeSelect('filtercountry')}
-                  inputProps={{
-                    name: 'filtercountry',
-                    id: 'filtercountry-simple',
-                  }}
-                >
-                  {this.props.selectedCompany.country.map((country) =>
-                    <MenuItem key={(country)} value={(country)}>{(country)}</MenuItem>
-                  )}
-                </Select>
-              </FormControl>
-            </Grid>
-          </Grid>
           <CustomizedTable allowancesList={data} onUpdate={this.handleUpdateButtonClick} />
         </Paper>
       </main >

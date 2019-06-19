@@ -19,7 +19,8 @@ import {
   MenuItem,
   Grid,
   FormControlLabel,
-  Checkbox
+  Checkbox,
+  Typography
 } from "@material-ui/core";
 import { history } from "../../../store";
 import { Company } from "../../../interface/companyInterface";
@@ -152,43 +153,9 @@ class SalaryRangePage extends React.Component<Props, State> {
         <CustomButton onClick={this.handleNewGrade}>
           Create
         </CustomButton>
-        <Grid container>
-          <Grid item xs={3}>
-            <FormControlLabel
-              style={{ height: "100%", width: "100%" }}
-              control={
-                <Checkbox
-                  checked={this.state.global}
-                  onChange={this.handleChange}
-                  color="primary"
-                />
-              }
-              label="Global"
-            />
-          </Grid>
-          <Grid item xs={3}>
-            <FormControl style={{ width: "100%" }} disabled={this.state.global}>
-              <InputLabel htmlFor="country">Country</InputLabel>
-              <Select
-                value={this.state.country}
-                onChange={this.handleChangeSelect("country")}
-                inputProps={{
-                  name: "country",
-                  id: "country-simple"
-                }}
-              >
-                {this.props.selectedCompany.country.map(country => (
-                  <MenuItem
-                    key={(country)}
-                    value={(country)}
-                  >
-                    {(country)}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-        </Grid>
+        <Typography component="h1" variant="h6">
+          Current SalaryRange
+          </Typography>
         <CustomizedTable salaryrangeList={data} onUpdate={this.handleUpdateButtonClick} />
       </main>
     );

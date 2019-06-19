@@ -16,6 +16,7 @@ import { history } from "../../../store";
 import { Company } from "../../../interface/companyInterface";
 import { Country } from "../../../interface/countryInterface";
 import CustomizedTable from "./component/table";
+import { Typography } from "@material-ui/core";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -114,8 +115,11 @@ class SignonsPage extends React.Component<Props, State> {
     return (
       <main>
         <CustomButton onClick={this.handleNewGrade}>
-          Create New Sign Ons
+          Create
         </CustomButton>
+        <Typography component="h1" variant="h6">
+          Current Signons
+          </Typography>
         <CustomizedTable signonsList={this.props.signonsList} onUpdate={this.handleUpdateButtonClick} />
       </main>
     );

@@ -182,9 +182,7 @@ class JobGradePage extends React.Component<Props, State> {
         <Typography component="h1" variant="h6">
           Current Job Grade
           </Typography>
-        <Paper style={{ padding: "1em" }}>
-          <CustomizedTable jobgradeList={data} onUpdate={this.handleUpdate} />
-        </Paper>
+        <CustomizedTable jobgradeList={data} onUpdate={this.handleUpdate} />
       </main>
     );
   }
