@@ -12,7 +12,6 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import CustomButton from "../component/CustomButton";
 import { SharedDispatchProps } from "../../../interface/propsInterface";
 import { Company, Unit } from "../../../interface/companyInterface";
 import { RootState } from "../../../reducer";
@@ -24,6 +23,7 @@ import { history } from "../../../store";
 import UpdateIcon from "@material-ui/icons/PlaylistAddCheck";
 import ViewIcon from "@material-ui/icons/ZoomIn";
 import CompanyIcon from "@material-ui/icons/Business";
+import CustomButton from "../../../helper/components/CustomButton";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -151,7 +151,7 @@ class SubUnitPage extends React.Component<Props, State> {
             </TableRow>
           </Table>
         </div>
-        <CustomButton link="/unit/subunit/create">New Division</CustomButton>
+        <CustomButton onClick={()=> history.push("/unit/subunit/create")}>New Division</CustomButton>
         <Paper className={classes.root}>
           <Table className={classes.table}>
             <TableHead>

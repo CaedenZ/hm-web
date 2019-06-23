@@ -10,6 +10,8 @@ import ManualForm from "./form"
 import $axios from "../../../plugin/axios";
 import ReactDataGrid from "react-data-grid";
 import DeleteIcon from '@material-ui/icons/Delete';
+import CustomButton from "../../../helper/components/CustomButton";
+import { Toolbar, Data, Filters } from "react-data-grid-addons";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -61,6 +63,7 @@ interface State {
   listqueue: ListQueue[];
   listqueueitem: ListQueueItem[];
   listqueuelog: ListQueueLog[];
+  filters: any
 }
 
 interface ListData {
@@ -124,6 +127,7 @@ class MarketDataUploadPage extends React.Component<Props, State> {
     listqueue: [],
     listqueueitem: [],
     listqueuelog: [],
+    filters: {}
   }
 
   componentDidMount() {
@@ -256,6 +260,40 @@ class MarketDataUploadPage extends React.Component<Props, State> {
     const { classes } = this.props
     const that = this
 
+    const selectors = Data.Selectors;
+
+    const {
+      NumericFilter,
+      AutoCompleteFilter,
+      MultiSelectFilter,
+      SingleSelectFilter
+    } = Filters;
+
+    const handleFilterChange = filter => {
+      console.log(this.state.filters)
+      const newFilters = { ...this.state.filters };
+      if (filter.filterTerm) {
+        newFilters[filter.column.key] = filter;
+      } else {
+        delete newFilters[filter.column.key];
+      }
+      this.setState({ filters: newFilters });
+    };
+
+    function getValidFilterValues(rows, columnId) {
+      return rows
+        .map(r => r[columnId])
+        .filter((item, i, a) => {
+          return i === a.indexOf(item);
+        });
+    }
+
+    function getRows(rows, filters) {
+      return selectors.getRows({ rows, filters });
+    }
+
+    const filteredRows = getRows(this.state.listdata, this.state.filters);
+
     const columns: any = [
       { key: 'source_filepath', name: "source_filepath" },
       { key: 'type', name: "type" },
@@ -264,26 +302,26 @@ class MarketDataUploadPage extends React.Component<Props, State> {
       { key: 'action', name: "action" },
     ]
 
+    const defaultColumnProperties = {
+      filterable: true,
+      filterRenderer: AutoCompleteFilter
+    };
     const datacolumn: any = [
-      { key: 'id', name: "id" },
-      { key: 'company_id', name: "company_id" },
-      { key: 'user_id', name: "user_id" },
-      { key: 'year', name: "year" },
-      { key: 'country', name: "country" },
-      { key: 'survey_company', name: "survey_company" },
-      { key: 'employee_id', name: "employee_id" },
-      { key: 'company_grade', name: "company_grade" },
-      { key: 'survey_grade', name: "survey_grade" },
-      { key: 'jobfunction', name: "jobfunction" },
-      { key: 'sjobfunction', name: "sjobfunction" },
-      { key: 'annual_base_pay', name: "annual_base_pay" },
-      { key: 'annual_cash_allowance', name: "annual_cash_allowance" },
-      { key: 'annual_fixed_pay', name: "annual_fixed_pay" },
-      { key: 'target_total', name: "target_total" },
-      { key: 'target_direct_comp', name: "target_direct_comp" },
-      { key: 'target_total_rem', name: "target_total_rem" },
-      { key: 'uploaded_dt', name: "uploaded_dt" },
-    ]
+      { key: 'year', name: "Year" ,width: 150},
+      { key: 'country', name: "Country" ,width: 150},
+      { key: 'survey_company', name: "Survey" ,width: 150},
+      { key: 'employee_id', name: "Employee ID" ,width: 150},
+      { key: 'company_grade', name: "Grade" ,width: 150},
+      { key: 'survey_grade', name: "Survey Grade",width: 150},
+      { key: 'jobfunction', name: "Job Function",width: 150 },
+      { key: 'sjobfunction', name: "Sub Job Function", width: 200 },
+      { key: 'annual_base_pay', name: "Annual Base Pay" ,width: 150},
+      { key: 'annual_cash_allowance', name: "Annual Cash Allowance" ,width: 150},
+      { key: 'annual_fixed_pay', name: "Annual Fixed Pay" ,width: 150},
+      { key: 'target_total', name: "Target Total" ,width: 150},
+      { key: 'target_direct_comp', name: "Target Direct Comp",width: 150 },
+      { key: 'target_total_rem', name: "Target Total Rem",width: 150 },
+    ].map(c => ({ ...c, ...defaultColumnProperties }));
 
     function actions(row) {
       return [
@@ -317,133 +355,127 @@ class MarketDataUploadPage extends React.Component<Props, State> {
 
     return (
       <main>
-        <Grid
-          container
-          direction="row"
-          justify="center"
-          alignItems="center"
-        >
-          <input
-            accept="*"
-            id="contained-button-file"
-            type="file"
-            onChange={this.readFile}
-            name="file"
-            style={{ display: "none" }}
-          />
-          <label htmlFor="contained-button-file" style={{ margin: "auto" }}>
-            <Button color="primary" variant="contained" component="span">
-              Upload
-              </Button>
-          </label>
+        <input
+          accept="*"
+          id="contained-button-file"
+          type="file"
+          onChange={this.readFile}
+          name="file"
+          style={{ display: "none" }}
+        />
+        <label htmlFor="contained-button-file">
+          <CustomButton component="span">
+            Upload
+              </CustomButton>
+        </label>
 
-          <Button color="primary" onClick={this.listqueue} variant="contained" component="span">
+        {/* <Button color="primary" onClick={this.listqueue} variant="contained" component="span">
             List Queue
               </Button>
           <Button color="primary" onClick={this.handleManualEntry} variant="contained" component="span">
             Manual Entry
-              </Button>
+              </Button> */}
 
-        </Grid>
         {this.state.data && <Grid container>
           <Paper className={classes.paper}>
-            <Typography component="h1" variant="h6">
-              List Data
-          </Typography>
             <ReactDataGrid
               columns={datacolumn}
-              rowGetter={i => this.state.listdata[i]}
+              rowGetter={i => filteredRows[i]}
               rowsCount={this.state.listdata.length}
+              toolbar={<Toolbar enableFilter={true} />}
+              onAddFilter={filter => handleFilterChange(filter)}
+              onClearFilters={() => this.setState({ filters: {} })}
+              getValidFilterValues={columnKey => getValidFilterValues(this.state.listdata, columnKey)}
               enableCellSelect={true} />
             <Divider />
           </Paper>
         </Grid>}
 
-          <Dialog open={this.state.queue} onClose={this.handleClose} scroll='paper'>
-            <div style={{width:'800px'}}>
+        <Dialog open={this.state.queue} onClose={this.handleClose} scroll='paper'>
+          <div style={{ width: '800px' }}>
             <ReactDataGrid
               columns={columns}
               rowGetter={i => this.state.listqueue[i]}
               rowsCount={this.state.listqueue.length}
               getCellActions={getCellActions}
               enableCellSelect={true} />
-            </div>
-          </Dialog>
+          </div>
+        </Dialog>
 
-          <Dialog open={this.state.queueitem} onClose={this.handleClose} scroll='paper'>
-            <Table className={classes.table}>
-              <TableHead>
-                <TableRow>
-                  <CustomTableCell align="left">source_filepath</CustomTableCell>
-                  <CustomTableCell align="left">uploaded</CustomTableCell>
-                  <CustomTableCell align="left">user</CustomTableCell>
-                  <CustomTableCell align="left">customer_id</CustomTableCell>
-                  <CustomTableCell align="left">status</CustomTableCell>
-                  <CustomTableCell align="left">process_dt</CustomTableCell>
-                </TableRow>
-              </TableHead>
-              {this.state.listqueueitem.length > 0 && (
-                <TableBody>
-                  {this.state.listqueueitem.map((row, index) => (
-                    <TableRow className={classes.row} key={row.source_filepath}>
-                      <CustomTableCell component="th" scope="row">
-                        {row.source_filepath}
-                      </CustomTableCell>
-                      <CustomTableCell align="left">{row.uploaded}</CustomTableCell>
-                      <CustomTableCell align="left">{row.user}</CustomTableCell>
-                      <CustomTableCell align="left">{row.customer_id}</CustomTableCell>
-                      <CustomTableCell align="left">{this.getstatus(row.status)}</CustomTableCell>
-                      <CustomTableCell align="left">{row.process_dt}</CustomTableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              )}
-            </Table>
-          </Dialog>
+        <Dialog open={this.state.queueitem} onClose={this.handleClose} scroll='paper'>
+          <Table className={classes.table}>
+            <TableHead>
+              <TableRow>
+                <CustomTableCell align="left">source_filepath</CustomTableCell>
+                <CustomTableCell align="left">uploaded</CustomTableCell>
+                <CustomTableCell align="left">user</CustomTableCell>
+                <CustomTableCell align="left">customer_id</CustomTableCell>
+                <CustomTableCell align="left">status</CustomTableCell>
+                <CustomTableCell align="left">process_dt</CustomTableCell>
+              </TableRow>
+            </TableHead>
+            {this.state.listqueueitem.length > 0 && (
+              <TableBody>
+                {this.state.listqueueitem.map((row, index) => (
+                  <TableRow className={classes.row} key={row.source_filepath}>
+                    <CustomTableCell component="th" scope="row">
+                      {row.source_filepath}
+                    </CustomTableCell>
+                    <CustomTableCell align="left">{row.uploaded}</CustomTableCell>
+                    <CustomTableCell align="left">{row.user}</CustomTableCell>
+                    <CustomTableCell align="left">{row.customer_id}</CustomTableCell>
+                    <CustomTableCell align="left">{this.getstatus(row.status)}</CustomTableCell>
+                    <CustomTableCell align="left">{row.process_dt}</CustomTableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            )}
+          </Table>
+        </Dialog>
 
-          <Dialog open={this.state.queuelog} onClose={this.handleClose} scroll='paper'>
-            <Table className={classes.table}>
-              <TableHead>
-                <TableRow>
-                  <CustomTableCell align="left">record_no</CustomTableCell>
-                  <CustomTableCell align="left">status</CustomTableCell>
-                  <CustomTableCell align="left">message</CustomTableCell>
-                </TableRow>
-              </TableHead>
-              {this.state.listqueuelog.length > 0 && (
-                <TableBody>
-                  {this.state.listqueuelog.map((row, index) => (
-                    <TableRow className={classes.row} key={row.record_no}>
-                      <CustomTableCell component="th" scope="row">{row.record_no}</CustomTableCell>
-                      <CustomTableCell align="left">{row.status}</CustomTableCell>
-                      <CustomTableCell align="left">{row.message}</CustomTableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              )}
-            </Table>
-          </Dialog>
+        <Dialog open={this.state.queuelog} onClose={this.handleClose} scroll='paper'>
+          <Table className={classes.table}>
+            <TableHead>
+              <TableRow>
+                <CustomTableCell align="left">record_no</CustomTableCell>
+                <CustomTableCell align="left">status</CustomTableCell>
+                <CustomTableCell align="left">message</CustomTableCell>
+              </TableRow>
+            </TableHead>
+            {this.state.listqueuelog.length > 0 && (
+              <TableBody>
+                {this.state.listqueuelog.map((row, index) => (
+                  <TableRow className={classes.row} key={row.record_no}>
+                    <CustomTableCell component="th" scope="row">{row.record_no}</CustomTableCell>
+                    <CustomTableCell align="left">{row.status}</CustomTableCell>
+                    <CustomTableCell align="left">{row.message}</CustomTableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            )}
+          </Table>
+        </Dialog>
 
-          <Dialog open={this.state.manual} onClose={this.handleClose} scroll='paper'>
-            <ManualForm />
-          </Dialog>
+        <Dialog open={this.state.manual} onClose={this.handleClose} scroll='paper'>
+          <ManualForm />
+        </Dialog>
       </main>
     );
-      }
-    }
-    
+  }
+}
+
 (MarketDataUploadPage as React.ComponentClass<Props>).propTypes = {
-          classes: PropTypes.object.isRequired
-        } as any;
-        
+  classes: PropTypes.object.isRequired
+} as any;
+
 function mapStateToProps(state: RootState) {
   return {
-            sessionkey: state.authenticationReducer.token,
-          companyid: state.companyReducer.selectedCompany.company_id,
-        };
-      }
-      
-      export default connect(
-        mapStateToProps,
-        mapDispatchToProps
-      )(withStyles(styles)(MarketDataUploadPage));
+    sessionkey: state.authenticationReducer.token,
+    companyid: state.companyReducer.selectedCompany.company_id,
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(MarketDataUploadPage));

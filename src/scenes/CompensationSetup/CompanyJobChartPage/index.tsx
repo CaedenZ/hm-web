@@ -6,7 +6,6 @@ import {
   withStyles,
   WithStyles
 } from "@material-ui/core/styles";
-import CustomButton from "./component/CustomButton";
 import { RootState } from "../../../reducer";
 import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
@@ -24,13 +23,14 @@ import {
 import { Company } from "../../../interface/companyInterface";
 import CustomizedTable from "./component/table";
 import { getJobChartByID } from "../../../api/jobchartAPI";
+import CustomButton from "../../../helper/components/CustomButton";
 
 const styles = (theme: Theme) => createStyles({});
 
 export interface Props
   extends WithStyles<typeof styles>,
-    SharedDispatchProps,
-    InState {}
+  SharedDispatchProps,
+  InState { }
 
 interface State {
   data: JobChart[];

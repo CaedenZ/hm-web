@@ -13,7 +13,7 @@ export const getAllowancesList = async (token, payload): Promise<Allowances[]> =
     if (response.data.error) {
         return [];
     } else {
-        return sortRows(response.data.data,"jobgrade_name","ASC")
+        return sortRows(response.data.data, "country", "ASC")
     }
 }
 
@@ -36,7 +36,7 @@ export const updateAllowances = async (token, payload: UPDATEALLOWANCESCRED, com
     let data = {
         ...payload,
         session_key: token,
-        company_id:companyid,
+        company_id: companyid,
     }
 
     const response = await $axios.post('/company/updateAllowance', data)

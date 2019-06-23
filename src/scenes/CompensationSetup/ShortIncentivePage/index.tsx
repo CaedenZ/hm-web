@@ -6,7 +6,6 @@ import {
   withStyles,
   WithStyles
 } from "@material-ui/core/styles";
-import CustomButton from "./component/CustomButton";
 import { RootState } from "../../../reducer";
 import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
@@ -25,6 +24,7 @@ import {
 import { Company } from "../../../interface/companyInterface";
 import { Country } from "../../../interface/countryInterface";
 import CustomizedTable from "./component/table";
+import CustomButton from "../../../helper/components/CustomButton";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -102,10 +102,11 @@ class ShortIncentivePage extends React.Component<Props, State> {
         jobgrade_name: ' ',
         jobgrade_global: ' ',
         type: ' ',
-        country: ' ',
+        country: 'Global',
         value: ' ',
         isOptional: ' ',
-        value_type: ' ',
+        value_type: 'Percent',
+        percent_type: 'Annual Base'
       }
       this.props.createShortIncentive(data)
     }
@@ -151,9 +152,6 @@ class ShortIncentivePage extends React.Component<Props, State> {
         <CustomButton onClick={this.handleNewGrade}>
           Create
         </CustomButton>
-        <Typography component="h1" variant="h6">
-          Current Short Term Incentive
-          </Typography>
         <CustomizedTable shortincentiveList={data} onUpdate={this.handleUpdateButtonClick} />
       </main>
     );

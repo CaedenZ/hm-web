@@ -25,6 +25,7 @@ import { connect } from "react-redux";
 import ReactDataGrid from "react-data-grid";
 import { Editors, Toolbar, Data, Filters } from "react-data-grid-addons";
 import { JobGrade } from "../../../../interface/jobgradeInterface";
+import { arrayUnique } from "../../../../helper/uniqeArray";
 
 const { DropDownEditor } = Editors;
 
@@ -109,10 +110,11 @@ class CustomizedTable extends React.Component<Props, State> {
     history.push("/shortincentive/" + path);
   };
 
-  typeEditor = <DropDownEditor options={[...this.props.selectedCompany.country, '']} />;
+  typeEditor = <DropDownEditor options={[...this.props.selectedCompany.country, 'Global']} />;
   globalEditor = <DropDownEditor options={['Y', 'N']} />;
-  jobgradeEditor = <DropDownEditor options={[...this.props.jobgradeList.map(a => a.jobgrade_name)]} />;
+  jobgradeEditor = <DropDownEditor options={[...arrayUnique(this.props.jobgradeList.map(a => a.jobgrade_name))]} />;
   valueEditor = <DropDownEditor options={['Percent', 'Fixed']} />;
+  percentEditor = <DropDownEditor options={['Annual Base']} />;
 
   onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
     const row = this.props.shortincentiveList.slice();
@@ -171,6 +173,7 @@ class CustomizedTable extends React.Component<Props, State> {
       { key: 'jobgrade_name', name: "Job Grade", filterRenderer: AutoCompleteFilter, editor: this.jobgradeEditor },
       { key: 'value_type', name: "Value Type", filterRenderer: AutoCompleteFilter, editor: this.valueEditor },
       { key: 'value', name: "Value", filterRenderer: AutoCompleteFilter, editable: true },
+      { key: 'percent_type', name: "Percent Type", filterRenderer: AutoCompleteFilter, editor: this.percentEditor },
       { key: 'isOptional', name: "isOptional", filterRenderer: AutoCompleteFilter, editor: this.globalEditor },
       { key: 'action', name: "Action" },
     ].map(c => ({ ...c, ...defaultColumnProperties }));

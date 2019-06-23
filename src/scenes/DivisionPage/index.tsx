@@ -7,7 +7,6 @@ import {
   WithStyles
 } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
-import CustomButton from "./component/CustomButton";
 import { SharedDispatchProps } from "../../interface/propsInterface";
 import { Company, Division } from "../../interface/companyInterface";
 import { RootState } from "../../reducer";
@@ -30,13 +29,14 @@ import UpdateIcon from "@material-ui/icons/PlaylistAddCheck";
 import CompanyIcon from "@material-ui/icons/Business";
 import AddIcon from "@material-ui/icons/Add";
 import { isUserHR, isUserPowerOrHR } from "../../function/checkRole";
+import CustomButton from "../../helper/components/CustomButton";
 
 const styles = (theme: Theme) => createStyles({});
 
 export interface Props
   extends WithStyles<typeof styles>,
-    SharedDispatchProps,
-    InState {}
+  SharedDispatchProps,
+  InState { }
 
 interface State {
   anchorEl: any;
@@ -186,7 +186,7 @@ class UnitPage extends React.Component<Props, State> {
     return (
       <main>
         {!isUserHR(this.props.role) && (
-          <CustomButton link="/unit/create">New Division</CustomButton>
+          <CustomButton onClick={() => { history.push("/unit/create") }}>New Division</CustomButton>
         )}
         {this.props.divisionList.length > 0 && (
           <Grid style={{ marginTop: "2rem" }} container spacing={24}>
@@ -221,10 +221,10 @@ class UnitPage extends React.Component<Props, State> {
                               );
                             })
                           ) : (
-                            <MenuItem onClick={this.handleClose}>
-                              No exist entity
+                              <MenuItem onClick={this.handleClose}>
+                                No exist entity
                             </MenuItem>
-                          )}
+                            )}
                         </Menu>
                       </div>
                     </Grid>

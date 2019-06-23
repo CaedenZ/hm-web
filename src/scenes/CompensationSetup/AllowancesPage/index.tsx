@@ -6,7 +6,6 @@ import {
   withStyles,
   WithStyles
 } from "@material-ui/core/styles";
-import CustomButton from "./component/CustomButton";
 import { RootState } from "../../../reducer";
 import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
@@ -18,6 +17,7 @@ import { Company } from "../../../interface/companyInterface";
 import { Country } from "../../../interface/countryInterface";
 import CustomizedTable from './component/table'
 import { JobGrade } from "../../../interface/jobgradeInterface";
+import CustomButton from "../../../helper/components/CustomButton";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -139,16 +139,17 @@ class AllowancesPage extends React.Component<Props, State> {
   handleCreateAllowance = () => {
     if (!this.state.created) {
       const data = {
-        country: "country",
-        isBonus: "Y",
-        isOptional: "Y",
-        jobgrade_country: "jobgrade_country",
-        jobgrade_global: "Y",
-        jobgrade_id: "jobgrade_id",
-        jobgrade_name: "jobgrade_name",
-        type: "test",
-        value: "0",
-        value_type: 1
+        country: "Global",
+        isBonus: "N",
+        isOptional: "N",
+        jobgrade_country: "",
+        jobgrade_global: "",
+        jobgrade_id: "",
+        jobgrade_name: "",
+        type: "",
+        value: "",
+        value_type: "Percent",
+        percent_type: "Annual Base"
       }
       this.props.createAllowances(data)
     }
@@ -169,10 +170,6 @@ class AllowancesPage extends React.Component<Props, State> {
 
         <CustomButton onClick={this.handleCreateAllowance}>Create</CustomButton>
         <Divider />
-
-        <Typography component="h1" variant="h6">
-          Current Allowances
-          </Typography>
         <Paper>
           <CustomizedTable allowancesList={data} onUpdate={this.handleUpdateButtonClick} />
         </Paper>

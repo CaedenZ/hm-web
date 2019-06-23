@@ -10,8 +10,8 @@ export const getJobGradeList = async (token, payload): Promise<JobGrade[]> => {
     }
     const response = await $axios.post('/company/getJobGrade', data)
     console.log(response.data.data)
-    
-    return sortRows(response.data.data,"jobgrade_name","ASC")
+
+    return sortRows(response.data.data, "country", "ASC")
 }
 
 export const createJobGrade = async (token, payload: CREATEJOBGRADECRED, companyid): Promise<JobGrade[]> => {

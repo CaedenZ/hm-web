@@ -12,7 +12,6 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import CustomButton from "./component/CustomButton";
 import { mapDispatchToProps } from "../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../interface/propsInterface";
@@ -24,6 +23,7 @@ import classnames from "classnames";
 import { history } from "../../store";
 import { Sector } from "../../interface/sectorInterface";
 import { isMaster, isTechnical, isSales } from "../../function/checkRole";
+import CustomButton from "../../helper/components/CustomButton";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -126,7 +126,7 @@ class CustomizedTable extends React.Component<Props, any> {
     return (
       <main>
         {!isTechnical(this.props.role) && !isSales(this.props.role) && (
-          <CustomButton link="/sector/create">New Sector</CustomButton>
+          <CustomButton onClick={()=> history.push("/sector/create")}>New Sector</CustomButton>
         )}
         <Paper className={classes.root}>
           <Table className={classes.table}>

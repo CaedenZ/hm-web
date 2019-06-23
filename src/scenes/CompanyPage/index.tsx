@@ -12,7 +12,6 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import CustomButton from "./component/CustomButton";
 import { SharedDispatchProps } from "../../interface/propsInterface";
 import { Company } from "../../interface/companyInterface";
 import { mapDispatchToProps } from "../../helper/dispachProps";
@@ -38,6 +37,7 @@ import { User } from "../../interface/userInterface";
 import $axios from "../../plugin/axios";
 import SearchIcon from "@material-ui/icons/Search";
 import { fade } from "@material-ui/core/styles/colorManipulator";
+import CustomButton from "../../helper/components/CustomButton";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -107,8 +107,8 @@ const styles = (theme: Theme) =>
 
 export interface Props
   extends WithStyles<typeof styles>,
-    SharedDispatchProps,
-    InState {}
+  SharedDispatchProps,
+  InState { }
 
 interface State {
   detail: boolean;
@@ -235,7 +235,7 @@ class CustomizedTable extends React.Component<Props, State> {
         <Grid container>
           {!isTechnical(this.props.role) && (
             <Grid container item xs={2}>
-              <CustomButton link="/company/create">New Company</CustomButton>
+              <CustomButton onClick={() => history.push("/company/create")}>New Company</CustomButton>
             </Grid>
           )}
           <Grid container item xs={6}>

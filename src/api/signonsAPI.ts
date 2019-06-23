@@ -1,5 +1,6 @@
 import $axios from "../plugin/axios";
 import { Signons, CREATESIGNONSCRED, UPDATESIGNONSCRED } from "../interface/signonsInterface";
+import { sortRows } from "../helper/sort";
 
 export const getSignonsList = async (token, payload): Promise<Signons[]> => {
 
@@ -9,7 +10,7 @@ export const getSignonsList = async (token, payload): Promise<Signons[]> => {
     }
     const response = await $axios.post('/company/getSignons', data)
     console.log(response.data.data)
-    return response.data.data
+    return sortRows(response.data.data, "type", "ASC")
 }
 
 export const createSignons = async (token, payload: CREATESIGNONSCRED, companyid): Promise<Signons[]> => {

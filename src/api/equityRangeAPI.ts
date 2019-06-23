@@ -1,5 +1,6 @@
 import $axios from "../plugin/axios";
 import { EquityRange, CREATEEQUITYRANGECRED, UPDATEEQUITYRANGECRED } from "../interface/equityRangeInterface";
+import { sortRows } from "../helper/sort";
 
 export const getEquityRangeList = async (token, payload): Promise<EquityRange[]> => {
 
@@ -9,7 +10,7 @@ export const getEquityRangeList = async (token, payload): Promise<EquityRange[]>
     }
     const response = await $axios.post('/company/getEquityRange', data)
     console.log(response.data.data)
-    return response.data.data
+    return sortRows(response.data.data, "country", "ASC")
 }
 
 export const createEquityRange = async (token, payload: CREATEEQUITYRANGECRED, ltiid): Promise<EquityRange[]> => {

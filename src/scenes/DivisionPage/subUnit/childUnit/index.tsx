@@ -12,7 +12,6 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import CustomButton from "../../component/CustomButton";
 import { SharedDispatchProps } from "../../../../interface/propsInterface";
 import { Company, Unit } from "../../../../interface/companyInterface";
 import { RootState } from "../../../../reducer";
@@ -23,6 +22,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { history } from "../../../../store";
 import UpdateIcon from "@material-ui/icons/PlaylistAddCheck";
 import CompanyIcon from "@material-ui/icons/Business";
+import CustomButton from "../../../../helper/components/CustomButton";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -62,10 +62,10 @@ const styles = (theme: Theme) =>
 
 export interface Props
   extends WithStyles<typeof styles>,
-    SharedDispatchProps,
-    InState {}
+  SharedDispatchProps,
+  InState { }
 
-interface State {}
+interface State { }
 
 interface InState {
   subUnitList: Unit[];
@@ -153,7 +153,7 @@ class ChildUnitPage extends React.Component<Props, State> {
             </TableRow>
           </Table>
         </div>
-        <CustomButton link="/unit/subunit/childunit/create">
+        <CustomButton onClick={() => history.push("/unit/subunit/childunit/create")}>
           New Division
         </CustomButton>
         <Paper className={classes.root}>
@@ -196,10 +196,10 @@ class ChildUnitPage extends React.Component<Props, State> {
                           );
                         })
                       ) : (
-                        <MenuItem onClick={this.handleClose}>
-                          No exist entity
+                          <MenuItem onClick={this.handleClose}>
+                            No exist entity
                         </MenuItem>
-                      )}
+                        )}
                     </Menu>
                   </CustomTableCell>
                   <CustomTableCell align="right">

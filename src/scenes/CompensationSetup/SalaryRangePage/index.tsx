@@ -6,7 +6,6 @@ import {
   withStyles,
   WithStyles
 } from "@material-ui/core/styles";
-import CustomButton from "./component/CustomButton";
 import { RootState } from "../../../reducer";
 import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
@@ -26,6 +25,7 @@ import { history } from "../../../store";
 import { Company } from "../../../interface/companyInterface";
 import { Country } from "../../../interface/countryInterface";
 import CustomizedTable from "./component/table";
+import CustomButton from "../../../helper/components/CustomButton";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -99,15 +99,15 @@ class SalaryRangePage extends React.Component<Props, State> {
   handleNewGrade = () => {
     if (!this.state.created) {
       const data: any = {
-        country: "country",
-        jobgrade_country: "jobgrade_country",
-        jobgrade_global: "0",
-        jobgrade_id: "jobgrade_id",
-        jobgrade_name: "jobgrade_name",
-        max: "3",
-        mid: "2",
-        min: "1",
-        type: "0",
+        country: "Global",
+        jobgrade_country: "",
+        jobgrade_global: "",
+        jobgrade_id: "",
+        jobgrade_name: "",
+        max: "",
+        mid: "",
+        min: "",
+        type: "",
       }
       this.props.createSalaryRange(data)
     }
@@ -153,9 +153,6 @@ class SalaryRangePage extends React.Component<Props, State> {
         <CustomButton onClick={this.handleNewGrade}>
           Create
         </CustomButton>
-        <Typography component="h1" variant="h6">
-          Current SalaryRange
-          </Typography>
         <CustomizedTable salaryrangeList={data} onUpdate={this.handleUpdateButtonClick} />
       </main>
     );

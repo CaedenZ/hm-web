@@ -25,6 +25,7 @@ import { connect } from "react-redux";
 import ReactDataGrid from "react-data-grid";
 import { Editors, Filters, Data, Toolbar } from "react-data-grid-addons";
 import { JobGrade } from "../../../../interface/jobgradeInterface";
+import { arrayUnique } from "../../../../helper/uniqeArray";
 
 const { DropDownEditor } = Editors;
 
@@ -94,9 +95,9 @@ class CustomizedTable extends React.Component<Props, State> {
   };
 
 
-  typeEditor = <DropDownEditor options={[...this.props.selectedCompany.country, '']} />;
+  typeEditor = <DropDownEditor options={[...this.props.selectedCompany.country, 'Global']} />;
   globalEditor = <DropDownEditor options={['Y', 'N']} />;
-  jobgradeEditor = <DropDownEditor options={[...this.props.jobgradeList.map(a => a.jobgrade_name)]} />;
+  jobgradeEditor = <DropDownEditor options={[...arrayUnique(this.props.jobgradeList.map(a => a.jobgrade_name))]} />;
 
 
   onGridRowsUpdated = ({ fromRow, toRow, updated }) => {

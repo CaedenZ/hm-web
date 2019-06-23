@@ -6,7 +6,6 @@ import {
   WithStyles
 } from "@material-ui/core/styles";
 import { Button } from "@material-ui/core";
-import { Link } from "react-router-dom";
 
 const styles = () =>
   createStyles({
@@ -23,21 +22,20 @@ const styles = () =>
   });
 
 export interface Props extends WithStyles<typeof styles> {
-  link: string;
+  onClick?: Function;
+  component?: any;
 }
 
-interface State {}
+interface State { }
 
 class CustomButton extends React.Component<Props, State> {
   state: State = {};
 
   render() {
-    const { classes, children, link } = this.props;
+    const { classes, children } = this.props;
 
     return (
-      <Link to={link} style={{ textDecoration: "none" }}>
-        <Button className={classes.button}>{children || "New Button"}</Button>
-      </Link>
+      <Button onClick={this.props.onClick && (() => this.props.onClick())} component={this.props.component && (this.props.component)} className={classes.button}>{children || "New Button"}</Button>
     );
   }
 }

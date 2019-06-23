@@ -12,7 +12,6 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import CustomButton from "./component/CustomButton";
 import { RootState } from "../../reducer";
 import { mapDispatchToProps } from "../../helper/dispachProps";
 import { connect } from "react-redux";
@@ -28,6 +27,7 @@ import ResetPassword from "./component/resetPassword";
 import { Company } from "../../interface/companyInterface";
 import { isUserHR, isUserPowerOrHR } from "../../function/checkRole";
 import FormPage from "./component/form";
+import CustomButton from "../../helper/components/CustomButton";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -64,8 +64,8 @@ const styles = (theme: Theme) =>
 
 export interface Props
   extends WithStyles<typeof styles>,
-    SharedDispatchProps,
-    InState {}
+  SharedDispatchProps,
+  InState { }
 
 interface State {
   resetPassword: boolean;
@@ -108,7 +108,7 @@ class CustomizedTable extends React.Component<Props, State> {
     this.setState({ isModalOpen: false });
   };
 
-  handleViewUser = (e, data) => {};
+  handleViewUser = (e, data) => { };
 
   handleUpdateButtonClick = user => {
     this.props.selectUser(user);

@@ -6,7 +6,6 @@ import {
   withStyles,
   WithStyles
 } from "@material-ui/core/styles";
-import CustomButton from "./component/CustomButton";
 import { RootState } from "../../../reducer";
 import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
@@ -17,6 +16,7 @@ import { Company } from "../../../interface/companyInterface";
 import { Country } from "../../../interface/countryInterface";
 import CustomizedTable from "./component/table";
 import { Typography } from "@material-ui/core";
+import CustomButton from "../../../helper/components/CustomButton";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -117,9 +117,6 @@ class SignonsPage extends React.Component<Props, State> {
         <CustomButton onClick={this.handleNewGrade}>
           Create
         </CustomButton>
-        <Typography component="h1" variant="h6">
-          Current Signons
-          </Typography>
         <CustomizedTable signonsList={this.props.signonsList} onUpdate={this.handleUpdateButtonClick} />
       </main>
     );

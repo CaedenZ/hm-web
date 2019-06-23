@@ -6,7 +6,6 @@ import {
   withStyles,
   WithStyles
 } from "@material-ui/core/styles";
-import CustomButton from "./component/CustomButton";
 import { RootState } from "../../../reducer";
 import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
@@ -25,6 +24,7 @@ import { history } from "../../../store";
 import { Company } from "../../../interface/companyInterface";
 import { Country } from "../../../interface/countryInterface";
 import CustomizedTable from "./component/table";
+import CustomButton from "../../../helper/components/CustomButton";
 
 const styles = (theme: Theme) =>
   createStyles({

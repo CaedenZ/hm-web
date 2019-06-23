@@ -8,7 +8,7 @@ export interface Allowances {
     value: string,
     isBonus: string,
     isOptional: string,
-    value_type: number,
+    value_type: string,
 }
 
 
@@ -26,7 +26,7 @@ export interface CREATEALLOWANCESCRED {
     value: string,
     isBonus: string,
     isOptional: string,
-    value_type: number,
+    value_type: string,
 }
 
 export interface UPDATEALLOWANCESCRED {
@@ -39,5 +39,5 @@ export interface UPDATEALLOWANCESCRED {
     value: string,
     isBonus: string,
     isOptional: string,
-    value_type: number,
+    value_type: string,
 }

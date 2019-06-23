@@ -12,7 +12,6 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import CustomButton from "./component/CustomButton";
 import { SharedDispatchProps } from "../../interface/propsInterface";
 import { Company, Entity } from "../../interface/companyInterface";
 import { mapDispatchToProps } from "../../helper/dispachProps";
@@ -22,6 +21,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { history } from "../../store";
 import UpdateIcon from "@material-ui/icons/PlaylistAddCheck";
 import { isUserHR, isUserPowerOrHR } from "../../function/checkRole";
+import CustomButton from "../../helper/components/CustomButton";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -101,7 +101,7 @@ class CustomizedTable extends React.Component<Props, State> {
     return (
       <main>
         {!isUserHR(this.props.role) && (
-          <CustomButton link="/entity/create">New Entity</CustomButton>
+          <CustomButton onClick={()=> history.push("/entity/create")}>New Entity</CustomButton>
         )}
         <Paper className={classes.root}>
           <Table className={classes.table}>

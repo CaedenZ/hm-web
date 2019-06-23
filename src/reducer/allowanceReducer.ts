@@ -24,7 +24,7 @@ export function allowancesReducer(state: AllowancesState = {
         value: '',
         isBonus: '',
         isOptional: '',
-        value_type: 0,
+        value_type: '',
     },
 }, action) {
     switch (action.type) {

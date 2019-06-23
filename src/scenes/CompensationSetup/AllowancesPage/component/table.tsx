@@ -26,6 +26,7 @@ import CheckIcon from "@material-ui/icons/Check";
 import ReactDataGrid from "react-data-grid";
 import { Editors, Filters, Data, Toolbar } from "react-data-grid-addons";
 import { JobGrade } from "../../../../interface/jobgradeInterface";
+import { arrayUnique } from "../../../../helper/uniqeArray";
 
 const { DropDownEditor } = Editors;
 
@@ -59,6 +60,8 @@ const styles = (theme: Theme) =>
         },
     });
 
+
+
 export interface Props extends WithStyles<typeof styles>, SharedDispatchProps, InState { }
 
 interface State {
@@ -70,6 +73,8 @@ interface InState {
     onUpdate: Function,
     jobgradeList: JobGrade[]
 }
+
+
 class CustomizedTable extends React.Component<Props, State> {
 
     state = {
@@ -121,10 +126,12 @@ class CustomizedTable extends React.Component<Props, State> {
         history.push('/allowances/' + path)
     }
 
-    typeEditor = <DropDownEditor options={[...this.props.selectedCompany.country, '']} />;
+
+    typeEditor = <DropDownEditor options={[...this.props.selectedCompany.country, 'Global']} />;
     globalEditor = <DropDownEditor options={['Y', 'N']} />;
     valueEditor = <DropDownEditor options={['Percent', 'Fixed']} />;
-    jobgradeEditor = <DropDownEditor options={[...this.props.jobgradeList.map(a => a.jobgrade_name)]} />;
+    jobgradeEditor = <DropDownEditor options={[...arrayUnique(this.props.jobgradeList.map(a => a.jobgrade_name))]} />;
+    percentEditor = <DropDownEditor options={['Annual Base']} />;
 
 
     onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
@@ -179,12 +186,14 @@ class CustomizedTable extends React.Component<Props, State> {
             filterable: true,
         };
 
+
         const columns: any = [
             { key: 'country', name: "Country", filterRenderer: AutoCompleteFilter, editor: this.typeEditor },
             { key: 'type', name: "Name", filterRenderer: AutoCompleteFilter, editable: true },
             { key: 'jobgrade_name', name: "Job Grade", filterRenderer: AutoCompleteFilter, editor: this.jobgradeEditor },
             { key: 'value_type', name: "Value Type", filterRenderer: AutoCompleteFilter, editor: this.valueEditor },
             { key: 'value', name: "Value", filterRenderer: AutoCompleteFilter, editable: true },
+            { key: 'percent_type', name: "Percent Type", filterRenderer: AutoCompleteFilter, editor: this.percentEditor },
             { key: 'isBonus', name: "isBonus", filterRenderer: AutoCompleteFilter, editor: this.globalEditor },
             { key: 'isOptional', name: "isOptional", filterRenderer: AutoCompleteFilter, editor: this.globalEditor },
             { key: 'action', name: "Action" },

@@ -10,7 +10,7 @@ export const getSalaryRangeList = async (token, payload): Promise<SalaryRange[]>
     }
     const response = await $axios.post('/company/getSalaryRange', data)
     console.log(response.data.data)
-    return sortRows(response.data.data,"jobgrade_name","ASC")
+    return sortRows(response.data.data, "country", "ASC")
 }
 
 export const createSalaryRange = async (token, payload: CREATESALARYRANGECRED, companyid): Promise<SalaryRange[]> => {

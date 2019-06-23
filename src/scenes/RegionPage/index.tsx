@@ -12,7 +12,6 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import CustomButton from "./component/CustomButton";
 import { RootState } from "../../reducer";
 import { mapDispatchToProps } from "../../helper/dispachProps";
 import { connect } from "react-redux";
@@ -24,6 +23,7 @@ import { history } from "../../store";
 import UpdateIcon from "@material-ui/icons/PlaylistAddCheck";
 import { Company } from "../../interface/companyInterface";
 import { isUserHR, isUserPowerOrHR } from "../../function/checkRole";
+import CustomButton from "../../helper/components/CustomButton";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -97,7 +97,7 @@ class RegionPage extends React.Component<Props, State> {
     return (
       <main>
         {!isUserHR(this.props.role) && (
-          <CustomButton link="/region/create">New Region</CustomButton>
+          <CustomButton onClick={()=> history.push("/region/create")}>New Region</CustomButton>
         )}
         <Paper className={classes.root}>
           <Table className={classes.table}>

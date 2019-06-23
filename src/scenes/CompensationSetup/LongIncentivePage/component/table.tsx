@@ -173,19 +173,19 @@ class CustomizedTable extends React.Component<Props, State> {
     };
 
     const columns: any = [
-      { key: 'value', name: "value", filterRenderer: AutoCompleteFilter, editable: true },
-      { key: 'type', name: "type", filterRenderer: AutoCompleteFilter, editable: true },
-      { key: 'investing_type', name: "investing_type", filterRenderer: AutoCompleteFilter, editor: this.investingEditor },
-      { key: 'share_symbol', name: "share_symbol", filterRenderer: AutoCompleteFilter, editable: true },
-      { key: 'share_exchange', name: "share_exchange", filterRenderer: AutoCompleteFilter, editor: this.typeEditor },
-      { key: 'currency', name: "currency", filterRenderer: AutoCompleteFilter, editor: this.currencyEditor },
+      { key: 'type', name: "Type", filterRenderer: AutoCompleteFilter, editable: true },
+      { key: 'value', name: "Value", filterRenderer: AutoCompleteFilter, editable: true },
+      { key: 'investing_type', name: "Investing Type", filterRenderer: AutoCompleteFilter, editor: this.investingEditor },
+      { key: 'share_symbol', name: "Share Symbol", filterRenderer: AutoCompleteFilter, editable: true },
+      { key: 'share_exchange', name: "Share Exchange", filterRenderer: AutoCompleteFilter, editor: this.typeEditor },
+      { key: 'currency', name: "Currency", filterRenderer: AutoCompleteFilter, editor: this.currencyEditor },
       { key: 'isOptional', name: "isOptional", filterRenderer: AutoCompleteFilter, editor: this.globalEditor },
-      { key: 'year1', name: "year1", filterRenderer: NumericFilter, editable: true },
-      { key: 'year2', name: "year2", filterRenderer: NumericFilter, editable: true },
-      { key: 'year3', name: "year3", filterRenderer: NumericFilter, editable: true },
-      { key: 'year4', name: "year4", filterRenderer: NumericFilter, editable: true },
-      { key: 'year5', name: "year5", filterRenderer: NumericFilter, editable: true },
-      { key: 'year6', name: "year6", filterRenderer: NumericFilter, editable: true },
+      { key: 'year1', name: "Year 1", filterRenderer: NumericFilter, editable: true },
+      { key: 'year2', name: "Year 2", filterRenderer: NumericFilter, editable: true },
+      { key: 'year3', name: "Year 3", filterRenderer: NumericFilter, editable: true },
+      { key: 'year4', name: "Year 4", filterRenderer: NumericFilter, editable: true },
+      { key: 'year5', name: "Year 5", filterRenderer: NumericFilter, editable: true },
+      { key: 'year6', name: "Year 6", filterRenderer: NumericFilter, editable: true },
       { key: 'action', name: "action" },
     ].map(c => ({ ...c, ...defaultColumnProperties }));
 

@@ -6,7 +6,6 @@ import {
   withStyles,
   WithStyles
 } from "@material-ui/core/styles";
-import CustomButton from "./component/CustomButton";
 import { RootState } from "../../../reducer";
 import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
@@ -17,6 +16,7 @@ import { Company } from "../../../interface/companyInterface";
 import { Country } from "../../../interface/countryInterface";
 import CustomizedTable from "./component/table";
 import { Typography } from "@material-ui/core";
+import CustomButton from "../../../helper/components/CustomButton";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -47,6 +47,7 @@ interface State {
   country: string;
   global: boolean;
   created: boolean;
+  equityrange: boolean;
 }
 
 interface InState {
@@ -59,6 +60,7 @@ class LongIncentivePage extends React.Component<Props, State> {
     country: "",
     global: true,
     created: false,
+    equityrange: false,
   };
 
   componentDidMount() {
@@ -97,12 +99,12 @@ class LongIncentivePage extends React.Component<Props, State> {
         share_exchange: ' ',
         currency: ' ',
         isOptional: ' ',
-        year1: 1,
-        year2: 2,
-        year3: 3,
-        year4: 4,
-        year5: 5,
-        year6: 6,
+        year1: 0,
+        year2: 0,
+        year3: 0,
+        year4: 0,
+        year5: 0,
+        year6: 0,
       }
       this.props.createLongIncentive(data)
     }
@@ -121,10 +123,9 @@ class LongIncentivePage extends React.Component<Props, State> {
         <CustomButton onClick={this.handleNewGrade}>
           Create
         </CustomButton>
-        <Typography component="h1" variant="h6">
-          Current Long Term Incentive
-          </Typography>
         <CustomizedTable longincentiveList={this.props.longincentiveList} onUpdate={this.handleUpdateButtonClick} />
+
+        
       </main>
     );
   }

@@ -1,5 +1,6 @@
 import $axios from "../plugin/axios";
 import { ShortIncentive, CREATESHORTINCENTIVECRED, UPDATESHORTINCENTIVECRED } from "../interface/shortIncentiveInterface";
+import { sortRows } from "../helper/sort";
 
 export const getShortIncentiveList = async (token, payload): Promise<ShortIncentive[]> => {
 
@@ -9,7 +10,7 @@ export const getShortIncentiveList = async (token, payload): Promise<ShortIncent
     }
     const response = await $axios.post('/company/getShortIncentive', data)
     console.log(response.data.data)
-    return response.data.data
+    return sortRows(response.data.data, "country", "ASC")
 }
 
 export const createShortIncentive = async (token, payload: CREATESHORTINCENTIVECRED, companyid): Promise<ShortIncentive[]> => {
@@ -26,7 +27,7 @@ export const createShortIncentive = async (token, payload: CREATESHORTINCENTIVEC
     return response.data.data
 }
 
-export const updateShortIncentive = async (token, payload: UPDATESHORTINCENTIVECRED,companyid): Promise<ShortIncentive[]> => {
+export const updateShortIncentive = async (token, payload: UPDATESHORTINCENTIVECRED, companyid): Promise<ShortIncentive[]> => {
 
     let data = {
         ...payload,

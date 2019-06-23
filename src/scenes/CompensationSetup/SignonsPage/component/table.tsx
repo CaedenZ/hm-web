@@ -24,7 +24,7 @@ import { mapDispatchToProps } from "../../../../helper/dispachProps";
 import { connect } from "react-redux";
 import CheckIcon from "@material-ui/icons/Check"
 import ReactDataGrid from "react-data-grid";
-import { Editors,Data,Filters,Toolbar } from "react-data-grid-addons";
+import { Editors, Data, Filters, Toolbar } from "react-data-grid-addons";
 
 const { DropDownEditor } = Editors;
 
@@ -109,7 +109,7 @@ class CustomizedTable extends React.Component<Props, State> {
     history.push("/signons/" + path);
   };
 
-  typeEditor = <DropDownEditor options={[...this.props.selectedCompany.country, '']} />;
+  typeEditor = <DropDownEditor options={[...this.props.selectedCompany.country, 'Global']} />;
   globalEditor = <DropDownEditor options={['Y', 'N']} />;
 
 
@@ -169,8 +169,8 @@ class CustomizedTable extends React.Component<Props, State> {
     };
 
     const columns: any = [
-      { key: 'type', name: "type", filterRenderer: AutoCompleteFilter, editable: true },
-      { key: 'value', name: "value", filterRenderer: AutoCompleteFilter, editable: true },
+      { key: 'type', name: "Type", filterRenderer: AutoCompleteFilter, editable: true },
+      { key: 'value', name: "Value", filterRenderer: AutoCompleteFilter, editable: true },
       { key: 'isOptional', name: "isOptional", filterRenderer: AutoCompleteFilter, editor: this.globalEditor },
       { key: 'month1', name: "month1", filterRenderer: NumericFilter, editable: true },
       { key: 'month2', name: "month2", filterRenderer: NumericFilter, editable: true },

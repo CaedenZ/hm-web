@@ -1,5 +1,6 @@
 import $axios from "../plugin/axios";
 import { LongIncentive, CREATELONGINCENTIVECRED, UPDATELONGINCENTIVECRED } from "../interface/longIncentiveInterface";
+import { sortRows } from "../helper/sort";
 
 export const getLongIncentiveList = async (token, payload): Promise<LongIncentive[]> => {
 
@@ -9,7 +10,7 @@ export const getLongIncentiveList = async (token, payload): Promise<LongIncentiv
     }
     const response = await $axios.post('/company/getLongIncentive', data)
     console.log(response.data.data)
-    return response.data.data
+    return sortRows(response.data.data, "type", "ASC")
 }
 
 export const createLongIncentive = async (token, payload: CREATELONGINCENTIVECRED, companyid): Promise<LongIncentive[]> => {

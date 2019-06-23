@@ -99,9 +99,9 @@ import MarketDataUploadPage from "../scenes/CompensationSetup/MarketDataUploadPa
 
 import JobChartPage from "../scenes/ConfigurationPage/JobChartPage";
 
-export interface Props extends InState {}
+export interface Props extends InState { }
 
-interface State {}
+interface State { }
 
 interface InState {
   init: boolean;

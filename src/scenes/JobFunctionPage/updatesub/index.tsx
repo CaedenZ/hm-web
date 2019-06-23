@@ -15,7 +15,6 @@ import {
   FormControlLabel,
   Button
 } from "@material-ui/core";
-import CustomButton from "../component/CustomButton";
 import Avatar from "react-avatar-edit";
 import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
@@ -45,8 +44,8 @@ export interface CreateSubJobFunctionState {
 }
 export interface Props
   extends WithStyles<typeof styles>,
-    SharedDispatchProps,
-    InState {}
+  SharedDispatchProps,
+  InState { }
 
 interface InState {
   parentJobFunction: string;
@@ -54,7 +53,7 @@ interface InState {
 class CreateSubJobFunctionPage extends Component<
   Props,
   CreateSubJobFunctionState
-> {
+  > {
   constructor(props) {
     super(props);
     this.handleCreateSubJobFunction = this.handleCreateSubJobFunction.bind(
