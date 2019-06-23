@@ -62,7 +62,8 @@ interface State { }
 interface InState {
   selectedCompany: Company;
   equityrangeList: EquityRange[];
-  onUpdate: Function
+  onUpdate: Function;
+  onDelete: Function;
 }
 class CustomizedTable extends React.Component<Props, State> {
   state = {
@@ -102,20 +103,13 @@ class CustomizedTable extends React.Component<Props, State> {
       object: "equityrange",
       id: id
     };
-    this.props.showDialog(payload);
+    this.props.onDelete(payload);
   };
 
   typeEditor = <DropDownEditor options={[...this.props.selectedCompany.country, 'Global']} />;
   globalEditor = <DropDownEditor options={['Y', 'N']} />;
 
-  onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
-    const row = this.props.equityrangeList.slice();
-    for (let i = fromRow; i <= toRow; i++) {
-      row[i] = { ...row[i], ...updated };
-      this.props.onUpdate(row[i])
-    }
-    return { row };
-  };
+
 
 
   render() {
@@ -156,6 +150,15 @@ class CustomizedTable extends React.Component<Props, State> {
 
     const filteredRows = getRows(this.props.equityrangeList, this.state.filters);
 
+    function onGridRowsUpdated({ fromRow, toRow, updated }) {
+      const row = filteredRows.slice();
+      for (let i = fromRow; i <= toRow; i++) {
+        row[i] = { ...row[i], ...updated };
+        that.props.onUpdate(row[i])
+      }
+      return { row };
+    };
+
     const defaultColumnProperties = {
       filterable: true,
     };
@@ -173,7 +176,7 @@ class CustomizedTable extends React.Component<Props, State> {
         {
           icon: <DeleteIcon />,
           callback: () => {
-            that.handleDelete(row.equityrange_id);
+            that.handleDelete(row.equity_range_id);
           }
         },
 
@@ -200,7 +203,7 @@ class CustomizedTable extends React.Component<Props, State> {
           onClearFilters={() => this.setState({ filters: {} })}
           getValidFilterValues={columnKey => getValidFilterValues(this.props.equityrangeList, columnKey)}
           getCellActions={getCellActions}
-          onGridRowsUpdated={this.onGridRowsUpdated}
+          onGridRowsUpdated={onGridRowsUpdated}
           enableCellSelect={true} />
       </Paper>
     );

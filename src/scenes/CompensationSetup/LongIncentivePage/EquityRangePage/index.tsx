@@ -92,13 +92,9 @@ class EquityRangePage extends React.Component<Props, State> {
     this.setState({ created: false })
   };
 
-  handleDelete = id => {
-    const payload = {
-      type: "delete",
-      object: "jobgrade",
-      id: id
-    };
+  handleDelete = payload => {
     this.props.showDialog(payload);
+    this.setState({ created: false })
   };
 
   handleCreateEquityRange = () => {
@@ -126,18 +122,11 @@ class EquityRangePage extends React.Component<Props, State> {
   }
 
   render() {
-
-    let { classes } = this.props
     return (
       <main>
         <CustomButton onClick={this.handleCreateEquityRange}>Create</CustomButton>
         <Divider />
-        <Typography component="h1" variant="h6">
-          Current EquityRange
-          </Typography>
-        <Paper style={{ padding: "1em" }}>
-          <CustomizedTable equityrangeList={this.props.equityrangeList} onUpdate={this.handleUpdate} />
-        </Paper>
+        <CustomizedTable equityrangeList={this.props.equityrangeList} onUpdate={this.handleUpdate} onDelete={this.handleDelete} />
       </main>
     );
   }
@@ -151,7 +140,7 @@ function mapStateToProps(state: RootState) {
   return {
     countryList: state.countryReducer.countryList,
     selectedCompany: state.companyReducer.selectedCompany,
-    equityrangeList: state.jobgradeReducer.equityrangeList
+    equityrangeList: state.equityrangeReducer.equityrangeList
   };
 }
 

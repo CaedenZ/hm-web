@@ -17,6 +17,7 @@ import { Country } from "../../../interface/countryInterface";
 import CustomizedTable from "./component/table";
 import { Typography } from "@material-ui/core";
 import CustomButton from "../../../helper/components/CustomButton";
+import EquityrangePage from "./EquityRangePage"
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -80,6 +81,12 @@ class LongIncentivePage extends React.Component<Props, State> {
     this.setState({ created: false })
   };
 
+  handleEquityRangeClick = equityrange => {
+    this.props.selectLongIncentive(equityrange);
+    this.props.getEquityRangeList()
+    this.setState({ equityrange: true })
+  }
+
   handleDelete = id => {
     const payload = {
       type: "delete",
@@ -123,9 +130,12 @@ class LongIncentivePage extends React.Component<Props, State> {
         <CustomButton onClick={this.handleNewGrade}>
           Create
         </CustomButton>
-        <CustomizedTable longincentiveList={this.props.longincentiveList} onUpdate={this.handleUpdateButtonClick} />
+        <CustomizedTable longincentiveList={this.props.longincentiveList} onUpdate={this.handleUpdateButtonClick} onEquityRange={this.handleEquityRangeClick} />
 
-        
+        {this.state.equityrange &&
+          <EquityrangePage />
+        }
+
       </main>
     );
   }

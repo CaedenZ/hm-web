@@ -23,11 +23,11 @@ const styles = theme => ({
 
 export interface Props
   extends InState,
-    SharedDispatchProps,
-    WithStyles<typeof styles>,
-    InState {}
+  SharedDispatchProps,
+  WithStyles<typeof styles>,
+  InState { }
 
-interface State {}
+interface State { }
 
 interface InState {
   deleteDialog: DialogState;

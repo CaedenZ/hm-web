@@ -3,12 +3,6 @@ export interface Signons {
     type: string,
     value: string,
     isOptional: string,
-    month1: string,
-    month2: string,
-    month3: string,
-    month4: string,
-    month5: string,
-    month6: string,
 }
 
 
@@ -21,12 +15,6 @@ export interface CREATESIGNONSCRED {
     type: string,
     value: string,
     isOptional: string,
-    month1: string,
-    month2: string,
-    month3: string,
-    month4: string,
-    month5: string,
-    month6: string,
 }
 
 export interface UPDATESIGNONSCRED {
@@ -34,10 +22,4 @@ export interface UPDATESIGNONSCRED {
     type: string,
     value: string,
     isOptional: string,
-    month1: string,
-    month2: string,
-    month3: string,
-    month4: string,
-    month5: string,
-    month6: string,
 }

@@ -134,15 +134,7 @@ class CustomizedTable extends React.Component<Props, State> {
     percentEditor = <DropDownEditor options={['Annual Base']} />;
 
 
-    onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
-        const row = this.props.allowancesList.slice();
-        for (let i = fromRow; i <= toRow; i++) {
-            row[i] = { ...row[i], ...updated };
-            console.log(row[i])
-            this.props.onUpdate(row[i])
-        }
-        return { row };
-    };
+
 
     render() {
         const { classes } = this.props;
@@ -181,6 +173,16 @@ class CustomizedTable extends React.Component<Props, State> {
         }
 
         const filteredRows = getRows(this.props.allowancesList, this.state.filters);
+
+        function onGridRowsUpdated({ fromRow, toRow, updated }) {
+            const row = filteredRows.slice();
+            for (let i = fromRow; i <= toRow; i++) {
+                row[i] = { ...row[i], ...updated };
+                console.log(row[i])
+                that.props.onUpdate(row[i])
+            }
+            return { row };
+        };
 
         const defaultColumnProperties = {
             filterable: true,
@@ -229,7 +231,7 @@ class CustomizedTable extends React.Component<Props, State> {
                     onClearFilters={() => this.setState({ filters: {} })}
                     getValidFilterValues={columnKey => getValidFilterValues(this.props.allowancesList, columnKey)}
                     getCellActions={getCellActions}
-                    onGridRowsUpdated={this.onGridRowsUpdated}
+                    onGridRowsUpdated={onGridRowsUpdated}
                     enableCellSelect={true} />
             </Paper>
         );

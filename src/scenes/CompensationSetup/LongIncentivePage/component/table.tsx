@@ -60,6 +60,7 @@ interface InState {
   selectedCompany: Company;
   longincentiveList: LongIncentive[];
   onUpdate: Function;
+  onEquityRange: Function;
 }
 class CustomizedTable extends React.Component<Props, State> {
   state = {
@@ -102,8 +103,7 @@ class CustomizedTable extends React.Component<Props, State> {
   };
 
   handleEquityRangeButtonClick = row => {
-    this.props.selectLongIncentive(row);
-    history.push("/longincentive/equityrange");
+    this.props.onEquityRange(row);
   };
 
   handleClose = () => {
@@ -120,15 +120,7 @@ class CustomizedTable extends React.Component<Props, State> {
   investingEditor = <DropDownEditor options={['Cliff', 'Fixed']} />;
 
 
-  onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
-    const row = this.props.longincentiveList.slice();
-    for (let i = fromRow; i <= toRow; i++) {
-      row[i] = { ...row[i], ...updated };
-      console.log(row[i])
-      this.props.onUpdate(row[i])
-    }
-    return { row };
-  };
+
 
   render() {
     const { classes } = this.props;
@@ -167,6 +159,16 @@ class CustomizedTable extends React.Component<Props, State> {
     }
 
     const filteredRows = getRows(this.props.longincentiveList, this.state.filters);
+
+    function onGridRowsUpdated({ fromRow, toRow, updated }) {
+      const row = filteredRows.slice();
+      for (let i = fromRow; i <= toRow; i++) {
+        row[i] = { ...row[i], ...updated };
+        console.log(row[i])
+        that.props.onUpdate(row[i])
+      }
+      return { row };
+    };
 
     const defaultColumnProperties = {
       filterable: true,
@@ -225,7 +227,7 @@ class CustomizedTable extends React.Component<Props, State> {
           onClearFilters={() => this.setState({ filters: {} })}
           getValidFilterValues={columnKey => getValidFilterValues(this.props.longincentiveList, columnKey)}
           getCellActions={getCellActions}
-          onGridRowsUpdated={this.onGridRowsUpdated}
+          onGridRowsUpdated={onGridRowsUpdated}
           enableCellSelect={true} />
       </Paper>
     );

@@ -18,16 +18,17 @@ import { history } from "../../../../store";
 import UpdateIcon from "@material-ui/icons/PlaylistAddCheck";
 import { SharedDispatchProps } from "../../../../interface/propsInterface";
 import { Company } from "../../../../interface/companyInterface";
-import { ShortIncentive } from "../../../../interface/shortIncentiveInterface";
+import { Signons } from "../../../../interface/signonsInterface";
 import { RootState } from "../../../../reducer";
 import { mapDispatchToProps } from "../../../../helper/dispachProps";
 import { connect } from "react-redux";
+import CheckIcon from "@material-ui/icons/Check"
 import ReactDataGrid from "react-data-grid";
-import { Editors, Toolbar, Data, Filters } from "react-data-grid-addons";
-import { JobGrade } from "../../../../interface/jobgradeInterface";
-import { arrayUnique } from "../../../../helper/uniqeArray";
+import { Editors, Data, Filters, Toolbar } from "react-data-grid-addons";
+import CustomButton from "../../../../helper/components/CustomButton";
 
 const { DropDownEditor } = Editors;
+
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -58,11 +59,12 @@ interface State { }
 
 interface InState {
   selectedCompany: Company;
-  shortincentiveList: ShortIncentive[];
+  breakdownList: any[];
+  onCreate: Function;
   onUpdate: Function;
-  jobgradeList: JobGrade[]
+  onDelete: Function;
 }
-class CustomizedTable extends React.Component<Props, State> {
+class Breakdown extends React.Component<Props, State> {
   state = {
     country: "",
     global: false,
@@ -70,57 +72,31 @@ class CustomizedTable extends React.Component<Props, State> {
     filters: {}
   };
 
-  componentDidMount() {
-    console.log("ShortIncentivePage MOunt");
-    if (this.props.selectedCompany.company_id === "") {
-      let data = {
-        type: "warning",
-        object: "Please Select a Company first",
-        id: "1"
-      };
-      this.props.showDialog(data);
-    } else this.props.getShortIncentiveList();
-  }
-
-  handleUpdateButtonClick = shortincentive => {
-    this.props.selectShortIncentive(shortincentive);
-    history.push("/shortincentive/update");
-    console.log("clicked");
-  };
-
   handleDelete = (id) => {
-    const payload = {
-      type: "delete",
-      object: "shortincentive",
-      id: id
-    };
-    this.props.showDialog(payload);
+    this.props.onDelete(id);
   };
 
-  handleListButtonClick = (event, row) => {
-    this.setState({ anchorEl: event.currentTarget });
-    this.props.selectShortIncentive(row);
-  };
 
   handleClose = () => {
     this.setState({ anchorEl: null });
   };
 
   handleRedirect = path => {
-    history.push("/shortincentive/" + path);
+    history.push("/signons/" + path);
   };
 
   typeEditor = <DropDownEditor options={[...this.props.selectedCompany.country, 'Global']} />;
   globalEditor = <DropDownEditor options={['Y', 'N']} />;
-  jobgradeEditor = <DropDownEditor options={[...arrayUnique(this.props.jobgradeList.map(a => a.jobgrade_name))]} />;
-  valueEditor = <DropDownEditor options={['Percent', 'Fixed']} />;
-  percentEditor = <DropDownEditor options={['Annual Base']} />;
+
+
+
 
 
 
   render() {
     const { classes } = this.props;
     const that = this;
+
 
     const selectors = Data.Selectors;
 
@@ -154,7 +130,7 @@ class CustomizedTable extends React.Component<Props, State> {
       return selectors.getRows({ rows, filters });
     }
 
-    const filteredRows = getRows(this.props.shortincentiveList, this.state.filters);
+    const filteredRows = getRows(this.props.breakdownList, this.state.filters);
 
     function onGridRowsUpdated({ fromRow, toRow, updated }) {
       const row = filteredRows.slice();
@@ -169,15 +145,11 @@ class CustomizedTable extends React.Component<Props, State> {
     const defaultColumnProperties = {
       filterable: true,
     };
+
     const columns: any = [
-      { key: 'country', name: "Country", filterRenderer: AutoCompleteFilter, editor: this.typeEditor },
-      { key: 'type', name: "Name", filterRenderer: AutoCompleteFilter, editable: true },
-      { key: 'jobgrade_name', name: "Job Grade", filterRenderer: AutoCompleteFilter, editor: this.jobgradeEditor },
-      { key: 'value_type', name: "Value Type", filterRenderer: AutoCompleteFilter, editor: this.valueEditor },
+      { key: 'Month', name: "Month", filterRenderer: NumericFilter, editable: true },
       { key: 'value', name: "Value", filterRenderer: AutoCompleteFilter, editable: true },
-      { key: 'percent_type', name: "Percent Type", filterRenderer: AutoCompleteFilter, editor: this.percentEditor },
-      { key: 'isOptional', name: "isOptional", filterRenderer: AutoCompleteFilter, editor: this.globalEditor },
-      { key: 'action', name: "Action" },
+      { key: 'action', name: "action" },
     ].map(c => ({ ...c, ...defaultColumnProperties }));
 
     function actions(row) {
@@ -185,9 +157,10 @@ class CustomizedTable extends React.Component<Props, State> {
         {
           icon: <DeleteIcon />,
           callback: () => {
-            that.handleDelete(row.shortterm_incentive_id);
+            that.handleDelete(row.breakdown_id);
           }
         },
+
       ];
     }
 
@@ -200,6 +173,7 @@ class CustomizedTable extends React.Component<Props, State> {
 
     return (
       <Paper className={classes.root}>
+        <CustomButton onClick={this.props.onCreate} />
         <ReactDataGrid
           columns={columns}
           rowGetter={i => filteredRows[i]}
@@ -207,7 +181,7 @@ class CustomizedTable extends React.Component<Props, State> {
           toolbar={<Toolbar enableFilter={true} />}
           onAddFilter={filter => handleFilterChange(filter)}
           onClearFilters={() => this.setState({ filters: {} })}
-          getValidFilterValues={columnKey => getValidFilterValues(this.props.shortincentiveList, columnKey)}
+          getValidFilterValues={columnKey => getValidFilterValues(this.props.breakdownList, columnKey)}
           getCellActions={getCellActions}
           onGridRowsUpdated={onGridRowsUpdated}
           enableCellSelect={true} />
@@ -216,18 +190,17 @@ class CustomizedTable extends React.Component<Props, State> {
   }
 }
 
-(CustomizedTable as React.ComponentClass<Props>).propTypes = {
+(Breakdown as React.ComponentClass<Props>).propTypes = {
   classes: PropTypes.object.isRequired
 } as any;
 
 function mapStateToProps(state: RootState) {
   return {
-    selectedCompany: state.companyReducer.selectedCompany,
-    jobgradeList: state.jobgradeReducer.jobgradeList,
+    selectedCompany: state.companyReducer.selectedCompany
   };
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(CustomizedTable));
+)(withStyles(styles)(Breakdown));

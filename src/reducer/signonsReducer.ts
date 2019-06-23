@@ -19,12 +19,6 @@ export function signonsReducer(state: SignonsState = {
         type: '',
         value: '',
         isOptional: '',
-        month1: '',
-        month2: '',
-        month3: '',
-        month4: '',
-        month5: '',
-        month6: '',
     },
 }, action) {
     switch (action.type) {

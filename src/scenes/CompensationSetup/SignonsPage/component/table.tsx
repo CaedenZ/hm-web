@@ -25,6 +25,7 @@ import { connect } from "react-redux";
 import CheckIcon from "@material-ui/icons/Check"
 import ReactDataGrid from "react-data-grid";
 import { Editors, Data, Filters, Toolbar } from "react-data-grid-addons";
+import BreakdownIcon from "@material-ui/icons/ZoomIn"
 
 const { DropDownEditor } = Editors;
 
@@ -60,6 +61,7 @@ interface InState {
   selectedCompany: Company;
   signonsList: Signons[];
   onUpdate: Function;
+  onBreakdown: Function;
 }
 class CustomizedTable extends React.Component<Props, State> {
   state = {
@@ -115,15 +117,7 @@ class CustomizedTable extends React.Component<Props, State> {
 
 
 
-  onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
-    const row = this.props.signonsList.slice();
-    for (let i = fromRow; i <= toRow; i++) {
-      row[i] = { ...row[i], ...updated };
-      console.log(row[i])
-      this.props.onUpdate(row[i])
-    }
-    return { row };
-  };
+  
 
   render() {
     const { classes } = this.props;
@@ -164,6 +158,16 @@ class CustomizedTable extends React.Component<Props, State> {
 
     const filteredRows = getRows(this.props.signonsList, this.state.filters);
 
+    function onGridRowsUpdated ({ fromRow, toRow, updated })  {
+      const row = filteredRows.slice();
+      for (let i = fromRow; i <= toRow; i++) {
+        row[i] = { ...row[i], ...updated };
+        console.log(row[i])
+        that.props.onUpdate(row[i])
+      }
+      return { row };
+    };
+
     const defaultColumnProperties = {
       filterable: true,
     };
@@ -172,12 +176,6 @@ class CustomizedTable extends React.Component<Props, State> {
       { key: 'type', name: "Type", filterRenderer: AutoCompleteFilter, editable: true },
       { key: 'value', name: "Value", filterRenderer: AutoCompleteFilter, editable: true },
       { key: 'isOptional', name: "isOptional", filterRenderer: AutoCompleteFilter, editor: this.globalEditor },
-      { key: 'month1', name: "month1", filterRenderer: NumericFilter, editable: true },
-      { key: 'month2', name: "month2", filterRenderer: NumericFilter, editable: true },
-      { key: 'month3', name: "month3", filterRenderer: NumericFilter, editable: true },
-      { key: 'month4', name: "month4", filterRenderer: NumericFilter, editable: true },
-      { key: 'month5', name: "month5", filterRenderer: NumericFilter, editable: true },
-      { key: 'month6', name: "month6", filterRenderer: NumericFilter, editable: true },
       { key: 'action', name: "action" },
     ].map(c => ({ ...c, ...defaultColumnProperties }));
 
@@ -189,7 +187,12 @@ class CustomizedTable extends React.Component<Props, State> {
             that.handleDelete(row.signons_id);
           }
         },
-
+        {
+          icon: <BreakdownIcon />,
+          callback: () => {
+            that.props.onBreakdown(row);
+          }
+        },
       ];
     }
 
@@ -211,7 +214,7 @@ class CustomizedTable extends React.Component<Props, State> {
           onClearFilters={() => this.setState({ filters: {} })}
           getValidFilterValues={columnKey => getValidFilterValues(this.props.signonsList, columnKey)}
           getCellActions={getCellActions}
-          onGridRowsUpdated={this.onGridRowsUpdated}
+          onGridRowsUpdated={onGridRowsUpdated}
           enableCellSelect={true} />
       </Paper>
     );

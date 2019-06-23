@@ -100,15 +100,7 @@ class CustomizedTable extends React.Component<Props, State> {
   jobgradeEditor = <DropDownEditor options={[...arrayUnique(this.props.jobgradeList.map(a => a.jobgrade_name))]} />;
 
 
-  onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
-    const row = this.props.salaryrangeList.slice();
-    for (let i = fromRow; i <= toRow; i++) {
-      row[i] = { ...row[i], ...updated };
-      console.log(row[i])
-      this.props.onUpdate(row[i])
-    }
-    return { row };
-  };
+
 
   render() {
     const { classes } = this.props;
@@ -148,6 +140,15 @@ class CustomizedTable extends React.Component<Props, State> {
 
     const filteredRows = getRows(this.props.salaryrangeList, this.state.filters);
 
+    function onGridRowsUpdated({ fromRow, toRow, updated }) {
+      const row = filteredRows.slice();
+      for (let i = fromRow; i <= toRow; i++) {
+        row[i] = { ...row[i], ...updated };
+        console.log(row[i])
+        that.props.onUpdate(row[i])
+      }
+      return { row };
+    };
     const defaultColumnProperties = {
       filterable: true,
     };
@@ -192,7 +193,7 @@ class CustomizedTable extends React.Component<Props, State> {
           onClearFilters={() => this.setState({ filters: {} })}
           getValidFilterValues={columnKey => getValidFilterValues(this.props.salaryrangeList, columnKey)}
           getCellActions={getCellActions}
-          onGridRowsUpdated={this.onGridRowsUpdated}
+          onGridRowsUpdated={onGridRowsUpdated}
           enableCellSelect={true} />
       </Paper>
     );

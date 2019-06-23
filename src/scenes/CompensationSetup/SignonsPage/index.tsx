@@ -17,6 +17,8 @@ import { Country } from "../../../interface/countryInterface";
 import CustomizedTable from "./component/table";
 import { Typography } from "@material-ui/core";
 import CustomButton from "../../../helper/components/CustomButton";
+import Breakdown from "./component/breakdown"
+import { getBreakdownList, updateBreakdown, createBreakdown, deleteBreakdown } from "../../../api/signonbreakdownAPI";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -47,18 +49,25 @@ interface State {
   country: string;
   global: boolean;
   created: boolean;
+  breakdownList: any[];
+  breakdown: boolean;
+  selectsignonid: string;
 }
 
 interface InState {
   countryList: Country[];
   selectedCompany: Company;
   signonsList: Signons[];
+  sessionkey: string;
 }
 class SignonsPage extends React.Component<Props, State> {
   state = {
     country: "",
     global: true,
     created: false,
+    breakdownList: [],
+    breakdown: false,
+    selectsignonid: '',
   };
 
   componentDidMount() {
@@ -75,8 +84,33 @@ class SignonsPage extends React.Component<Props, State> {
 
   handleUpdateButtonClick = signons => {
     this.props.updateSignons(signons);
-    this.setState({ created: false })
   };
+
+  handleUpdateBreakdownButtonClick = async breakdown => {
+    await updateBreakdown(this.props.sessionkey, breakdown, this.state.selectsignonid)
+    const data = await getBreakdownList(this.props.sessionkey, this.state.selectsignonid)
+    this.setState({ breakdownList: data })
+  }
+
+  handleBreakdownClick = async row => {
+    this.setState({ selectsignonid: row.signons_id })
+    const data = await getBreakdownList(this.props.sessionkey, row.signons_id)
+    this.setState({ breakdown: true })
+    this.setState({ breakdownList: data })
+  }
+
+  handleCreateBreakdown = async () => {
+    const createdata = {
+      month: '',
+      value: ''
+    }
+
+    await createBreakdown(this.props.sessionkey, createdata, this.state.selectsignonid)
+
+    const data = await getBreakdownList(this.props.sessionkey, this.state.selectsignonid)
+    this.setState({ breakdownList: data })
+
+  }
 
   handleDelete = id => {
     const payload = {
@@ -87,18 +121,18 @@ class SignonsPage extends React.Component<Props, State> {
     this.props.showDialog(payload);
   };
 
+  handleDeleteBreakdown = async id => {
+    await deleteBreakdown(this.props.sessionkey, id)
+    const data = await getBreakdownList(this.props.sessionkey, this.state.selectsignonid)
+    this.setState({ breakdownList: data })
+  }
+
   handleNewGrade = () => {
     if (!this.state.created) {
       const data = {
         value: ' ',
         type: ' ',
         isOptional: 'N',
-        month1: '0',
-        month2: '0',
-        month3: '0',
-        month4: '0',
-        month5: '0',
-        month6: '0',
       }
       this.props.createSignons(data)
     }
@@ -117,7 +151,8 @@ class SignonsPage extends React.Component<Props, State> {
         <CustomButton onClick={this.handleNewGrade}>
           Create
         </CustomButton>
-        <CustomizedTable signonsList={this.props.signonsList} onUpdate={this.handleUpdateButtonClick} />
+        <CustomizedTable signonsList={this.props.signonsList} onUpdate={this.handleUpdateButtonClick} onBreakdown={this.handleBreakdownClick} />
+        {this.state.breakdown && <Breakdown breakdownList={this.state.breakdownList} onCreate={this.handleCreateBreakdown} onUpdate={this.handleUpdateBreakdownButtonClick} onDelete={this.handleDeleteBreakdown} />}
       </main>
     );
   }
@@ -131,7 +166,8 @@ function mapStateToProps(state: RootState) {
   return {
     countryList: state.countryReducer.countryList,
     selectedCompany: state.companyReducer.selectedCompany,
-    signonsList: state.signonsReducer.signonsList
+    signonsList: state.signonsReducer.signonsList,
+    sessionkey: state.authenticationReducer.token,
   };
 }
 
