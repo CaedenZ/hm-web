@@ -202,7 +202,8 @@ class CustomizedTable extends React.Component<Props, State> {
         {
           icon: <EquityRangeIcon />,
           callback: () => {
-            that.handleEquityRangeButtonClick(row.longterm_incentive_id);
+            console.log(row)
+            that.handleEquityRangeButtonClick(row);
           }
         },
 

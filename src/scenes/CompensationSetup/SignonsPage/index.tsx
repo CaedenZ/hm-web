@@ -15,7 +15,7 @@ import { history } from "../../../store";
 import { Company } from "../../../interface/companyInterface";
 import { Country } from "../../../interface/countryInterface";
 import CustomizedTable from "./component/table";
-import { Typography } from "@material-ui/core";
+import { Typography, Divider } from "@material-ui/core";
 import CustomButton from "../../../helper/components/CustomButton";
 import Breakdown from "./component/breakdown"
 import { getBreakdownList, updateBreakdown, createBreakdown, deleteBreakdown } from "../../../api/signonbreakdownAPI";
@@ -52,6 +52,7 @@ interface State {
   breakdownList: any[];
   breakdown: boolean;
   selectsignonid: string;
+  selectedsignons: string;
 }
 
 interface InState {
@@ -68,6 +69,7 @@ class SignonsPage extends React.Component<Props, State> {
     breakdownList: [],
     breakdown: false,
     selectsignonid: '',
+    selectedsignons: '',
   };
 
   componentDidMount() {
@@ -94,6 +96,7 @@ class SignonsPage extends React.Component<Props, State> {
 
   handleBreakdownClick = async row => {
     this.setState({ selectsignonid: row.signons_id })
+    this.setState({ selectedsignons: row.type })
     const data = await getBreakdownList(this.props.sessionkey, row.signons_id)
     this.setState({ breakdown: true })
     this.setState({ breakdownList: data })
@@ -152,6 +155,8 @@ class SignonsPage extends React.Component<Props, State> {
           Create
         </CustomButton>
         <CustomizedTable signonsList={this.props.signonsList} onUpdate={this.handleUpdateButtonClick} onBreakdown={this.handleBreakdownClick} />
+        <Divider style={{marginTop:50}}/>
+        <Typography>{this.state.selectedsignons}</Typography>
         {this.state.breakdown && <Breakdown breakdownList={this.state.breakdownList} onCreate={this.handleCreateBreakdown} onUpdate={this.handleUpdateBreakdownButtonClick} onDelete={this.handleDeleteBreakdown} />}
       </main>
     );

@@ -15,7 +15,7 @@ import { history } from "../../../store";
 import { Company } from "../../../interface/companyInterface";
 import { Country } from "../../../interface/countryInterface";
 import CustomizedTable from "./component/table";
-import { Typography } from "@material-ui/core";
+import { Typography, Divider } from "@material-ui/core";
 import CustomButton from "../../../helper/components/CustomButton";
 import EquityrangePage from "./EquityRangePage"
 
@@ -49,6 +49,7 @@ interface State {
   global: boolean;
   created: boolean;
   equityrange: boolean;
+  selectedlti: string;
 }
 
 interface InState {
@@ -62,6 +63,7 @@ class LongIncentivePage extends React.Component<Props, State> {
     global: true,
     created: false,
     equityrange: false,
+    selectedlti: ""
   };
 
   componentDidMount() {
@@ -82,7 +84,9 @@ class LongIncentivePage extends React.Component<Props, State> {
   };
 
   handleEquityRangeClick = equityrange => {
-    this.props.selectLongIncentive(equityrange);
+    console.log(equityrange)
+    this.setState({ selectedlti: equityrange.type })
+    this.props.selectLongIncentive(equityrange.longterm_incentive_id);
     this.props.getEquityRangeList()
     this.setState({ equityrange: true })
   }
@@ -131,7 +135,9 @@ class LongIncentivePage extends React.Component<Props, State> {
           Create
         </CustomButton>
         <CustomizedTable longincentiveList={this.props.longincentiveList} onUpdate={this.handleUpdateButtonClick} onEquityRange={this.handleEquityRangeClick} />
-
+        <Divider style={{ marginTop: 50 }} />
+        <Typography>{this.state.selectedlti}</Typography>
+        <Divider style={{ marginTop: 50 }} />
         {this.state.equityrange &&
           <EquityrangePage />
         }

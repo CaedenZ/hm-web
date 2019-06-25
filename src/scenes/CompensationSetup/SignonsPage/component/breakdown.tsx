@@ -173,7 +173,7 @@ class Breakdown extends React.Component<Props, State> {
 
     return (
       <Paper className={classes.root}>
-        <CustomButton onClick={this.props.onCreate} />
+        <CustomButton onClick={this.props.onCreate} >Create</CustomButton>
         <ReactDataGrid
           columns={columns}
           rowGetter={i => filteredRows[i]}
