@@ -25,6 +25,7 @@ import { connect } from "react-redux";
 import ReactDataGrid from "react-data-grid";
 import { Editors, Toolbar, Data, Filters } from "react-data-grid-addons";
 import { EquityRange } from "../../../../../interface/equityRangeInterface";
+import { arrayUnique } from "../../../../../helper/uniqeArray";
 
 
 
@@ -64,6 +65,7 @@ interface InState {
   equityrangeList: EquityRange[];
   onUpdate: Function;
   onDelete: Function;
+  jobgradeList: JobGrade[]
 }
 class CustomizedTable extends React.Component<Props, State> {
   state = {
@@ -107,6 +109,7 @@ class CustomizedTable extends React.Component<Props, State> {
   };
 
   typeEditor = <DropDownEditor options={[...this.props.selectedCompany.country, 'Global']} />;
+  jobgradeEditor = <DropDownEditor options={[...arrayUnique(this.props.jobgradeList.map(a => a.jobgrade_name))]} />;
   globalEditor = <DropDownEditor options={['Y', 'N']} />;
 
 
@@ -166,7 +169,7 @@ class CustomizedTable extends React.Component<Props, State> {
     const columns: any = [
       { key: 'country', name: "Country", filterRenderer: AutoCompleteFilter, editor: this.typeEditor },
       { key: 'type', name: "Type", filterRenderer: AutoCompleteFilter, editable: true },
-      { key: 'equityrange_name', name: "Job Grade", filterRenderer: AutoCompleteFilter, editable: true },
+      { key: 'jobgrade_name', name: "Job Grade", filterRenderer: AutoCompleteFilter, editor: this.jobgradeEditor },
       // { key: 'global', name: "global", editor: this.globalEditor },
       { key: 'action', name: "Action" },
     ].map(c => ({ ...c, ...defaultColumnProperties }));
@@ -214,7 +217,8 @@ class CustomizedTable extends React.Component<Props, State> {
 
 function mapStateToProps(state: RootState) {
   return {
-    selectedCompany: state.companyReducer.selectedCompany
+    selectedCompany: state.companyReducer.selectedCompany,
+    jobgradeList: state.jobgradeReducer.jobgradeList,
   };
 }
 
