@@ -193,19 +193,17 @@ class CustomizedTable extends React.Component<Props, State> {
 
     return (
 
-      <Paper className={classes.root}>
-        <ReactDataGrid
-          columns={columns}
-          rowGetter={i => filteredRows[i]}
-          rowsCount={filteredRows.length}
-          toolbar={<Toolbar enableFilter={true} />}
-          onAddFilter={filter => handleFilterChange(filter)}
-          onClearFilters={() => this.setState({ filters: {} })}
-          getValidFilterValues={columnKey => getValidFilterValues(this.props.equityrangeList, columnKey)}
-          getCellActions={getCellActions}
-          onGridRowsUpdated={onGridRowsUpdated}
-          enableCellSelect={true} />
-      </Paper>
+      <ReactDataGrid
+        columns={columns}
+        rowGetter={i => filteredRows[i]}
+        rowsCount={filteredRows.length}
+        toolbar={<Toolbar enableFilter={true} />}
+        onAddFilter={filter => handleFilterChange(filter)}
+        onClearFilters={() => this.setState({ filters: {} })}
+        getValidFilterValues={columnKey => getValidFilterValues(this.props.equityrangeList, columnKey)}
+        getCellActions={getCellActions}
+        onGridRowsUpdated={onGridRowsUpdated}
+        enableCellSelect={true} />
     );
   }
 }

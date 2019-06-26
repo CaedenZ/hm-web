@@ -91,7 +91,6 @@ class CustomizedTable extends React.Component<Props, State> {
       this.props.showDialog(data);
     } else {
       this.props.getJobGradeList();
-      // this.setState({row:this.props.jobgradeList})
     }
   }
 

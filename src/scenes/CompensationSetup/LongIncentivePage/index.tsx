@@ -137,7 +137,6 @@ class LongIncentivePage extends React.Component<Props, State> {
         <CustomizedTable longincentiveList={this.props.longincentiveList} onUpdate={this.handleUpdateButtonClick} onEquityRange={this.handleEquityRangeClick} />
         <Divider style={{ marginTop: 50 }} />
         <Typography>{this.state.selectedlti}</Typography>
-        <Divider style={{ marginTop: 50 }} />
         {this.state.equityrange &&
           <EquityrangePage />
         }

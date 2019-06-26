@@ -124,8 +124,8 @@ class EquityRangePage extends React.Component<Props, State> {
   render() {
     return (
       <main>
+        <div style={{ marginTop: 20 }} />
         <CustomButton onClick={this.handleCreateEquityRange}>Create</CustomButton>
-        <Divider />
         <CustomizedTable equityrangeList={this.props.equityrangeList} onUpdate={this.handleUpdate} onDelete={this.handleDelete} />
       </main>
     );
