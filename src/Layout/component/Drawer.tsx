@@ -41,6 +41,7 @@ import { Company } from "../../interface/companyInterface";
 import { Collapse } from "@material-ui/core";
 import packageJson from "../../../package.json";
 import { isMaster } from "../../function/checkRole";
+import { history } from "../../store";
 
 const drawerWidth = "15vw";
 
@@ -138,6 +139,10 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
       selectedIndex: index
     }));
   };
+
+  handleOfferModel = () => {
+    history.push('/offermodel')
+  }
 
   render() {
     const { classes } = this.props;
@@ -484,6 +489,15 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
               ))}
             </List>
           </Collapse>
+          <Divider />
+          <List>
+            <ListItem button onClick={this.handleOfferModel}>
+              <ListItemIcon>
+                <MenuIcon />
+              </ListItemIcon>
+              <ListItemText primary="OfferModel" />
+            </ListItem>
+          </List>
           <Divider />
           <List>
             <ListItem button onClick={() => this.props.showSnackBar()}>
