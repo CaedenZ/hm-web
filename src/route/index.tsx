@@ -99,6 +99,8 @@ import MarketDataUploadPage from "../scenes/CompensationSetup/MarketDataUploadPa
 
 import JobChartPage from "../scenes/ConfigurationPage/JobChartPage";
 
+import OfferModelPage from "../scenes/OfferModelPage"
+
 export interface Props extends InState { }
 
 interface State { }
@@ -745,6 +747,16 @@ class RootRoute extends React.Component<Props, State> {
               render={() => (
                 <PrimaryLayout>
                   <JobChartPage />
+                </PrimaryLayout>
+              )}
+            />
+            
+            <Route
+              exact
+              path="/offermodel"
+              render={() => (
+                <PrimaryLayout>
+                  <OfferModelPage />
                 </PrimaryLayout>
               )}
             />
