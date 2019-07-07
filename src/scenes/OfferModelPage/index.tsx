@@ -207,8 +207,8 @@ class OfferModelPage extends React.Component<Props, State> {
                         <ExpansionPanelDetails>
                             <Divider />
                             <Grid container alignItems="center">
-                                <Grid item xs={6}>
-                                    <Paper>
+                                <Grid item xs={6} style={{ height: "100%" }}>
+                                    <Paper style={{ height: "100%", position: "relative" }}>
                                         <p className={classes.subtitle}>Current</p>
                                         <Grid container justify="space-evenly">
                                             <Grid item xs={3}>Currency</Grid>
@@ -244,7 +244,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                             </Grid>)}
 
                                         <div className={classes.spacediv} />
-                                        <Grid container justify="space-evenly" alignItems="center">
+                                        <Grid container style={{ position: "absolute", bottom: 10 }} justify="space-evenly" alignItems="center">
                                             <Grid item xs={3}>Sub</Grid>
                                             <Grid item xs={2}>679,000</Grid>
                                             <Grid item xs={2}>101,850</Grid>
@@ -252,8 +252,8 @@ class OfferModelPage extends React.Component<Props, State> {
                                         </Grid>
                                     </Paper>
                                 </Grid>
-                                <Grid item xs={6}>
-                                    <Paper>
+                                <Grid item xs={6} style={{ height: "100%" }}>
+                                    <Paper style={{ height: "100%", position: "relative" }}>
                                         <p className={classes.subtitle}>Propose</p>
                                         <Grid container justify="space-evenly">
                                             <Grid item xs={3}>Currency</Grid>
@@ -295,7 +295,7 @@ class OfferModelPage extends React.Component<Props, State> {
 
                                         <div className={classes.spacediv} />
 
-                                        <Grid container justify="space-evenly" alignItems="center">
+                                        <Grid container style={{ position: "absolute", bottom: 10 }} justify="space-evenly" alignItems="center">
                                             <Grid item xs={3}>Sub</Grid>
                                             <Grid item xs={2}>679,000</Grid>
                                             <Grid item xs={2}>101,850</Grid>
@@ -321,8 +321,8 @@ class OfferModelPage extends React.Component<Props, State> {
                         <ExpansionPanelDetails>
                             <Divider />
                             <Grid container alignItems="center">
-                                <Grid item xs={6}>
-                                    <Paper>
+                                <Grid item xs={6} style={{ height: "100%" }}>
+                                    <Paper style={{ height: "100%", position: "relative" }}>
                                         <p className={classes.subtitle}>Current</p>
                                         <Grid container justify="space-evenly">
                                             <Grid item xs={3}>Currency</Grid>
@@ -358,7 +358,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                             </Grid>)}
 
                                         <div className={classes.spacediv} />
-                                        <Grid container justify="space-evenly" alignItems="center">
+                                        <Grid container style={{ position: "absolute", bottom: 10 }} justify="space-evenly" alignItems="center">
                                             <Grid item xs={3}>Sub</Grid>
                                             <Grid item xs={2}>679,000</Grid>
                                             <Grid item xs={2}>101,850</Grid>
@@ -366,8 +366,8 @@ class OfferModelPage extends React.Component<Props, State> {
                                         </Grid>
                                     </Paper>
                                 </Grid>
-                                <Grid item xs={6}>
-                                    <Paper>
+                                <Grid item xs={6} style={{ height: "100%" }}>
+                                    <Paper style={{ height: "100%", position: "relative" }}>
                                         <p className={classes.subtitle}>Propose</p>
                                         <Grid container justify="space-evenly">
                                             <Grid item xs={3}>Currency</Grid>
@@ -409,7 +409,7 @@ class OfferModelPage extends React.Component<Props, State> {
 
                                         <div className={classes.spacediv} />
 
-                                        <Grid container justify="space-evenly" alignItems="center">
+                                        <Grid container style={{ position: "absolute", bottom: 10 }} justify="space-evenly" alignItems="center">
                                             <Grid item xs={3}>Sub</Grid>
                                             <Grid item xs={2}>679,000</Grid>
                                             <Grid item xs={2}>101,850</Grid>
@@ -455,8 +455,8 @@ class OfferModelPage extends React.Component<Props, State> {
 
                             <Divider />
                             <Grid container alignItems="center" justify="space-evenly">
-                                <Grid item xs={6}>
-                                    <Paper>
+                                <Grid item xs={6} style={{ height: "100%" }}>
+                                    <Paper style={{ height: "100%", position: "relative" }}>
                                         <p className={classes.subtitle}>Current</p>
                                         <Grid container justify="space-evenly">
                                             <Grid item xs={3}>Currency</Grid>
@@ -492,7 +492,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                             </Grid>)}
 
                                         <div className={classes.spacediv} />
-                                        <Grid container justify="space-evenly" alignItems="center">
+                                        <Grid container style={{ position: "absolute", bottom: 10 }} justify="space-evenly" alignItems="center">
                                             <Grid item xs={3}>Sub</Grid>
                                             <Grid item xs={2}>679,000</Grid>
                                             <Grid item xs={2}>101,850</Grid>
@@ -500,8 +500,8 @@ class OfferModelPage extends React.Component<Props, State> {
                                         </Grid>
                                     </Paper>
                                 </Grid>
-                                <Grid item xs={6}>
-                                    <Paper>
+                                <Grid item xs={6} style={{ height: "100%" }}>
+                                    <Paper style={{ height: "100%", position: "relative" }}>
                                         <p className={classes.subtitle}>Propose</p>
                                         <Grid container justify="space-evenly">
                                             <Grid item xs={3}>Currency</Grid>
@@ -543,7 +543,7 @@ class OfferModelPage extends React.Component<Props, State> {
 
                                         <div className={classes.spacediv} />
 
-                                        <Grid container justify="space-evenly" alignItems="center">
+                                        <Grid container style={{ position: "absolute", bottom: 10 }} justify="space-evenly" alignItems="center">
                                             <Grid item xs={3}>Sub</Grid>
                                             <Grid item xs={2}>679,000</Grid>
                                             <Grid item xs={2}>101,850</Grid>
@@ -570,8 +570,8 @@ class OfferModelPage extends React.Component<Props, State> {
 
                             <Divider />
                             <Grid container alignItems="center">
-                                <Grid item xs={6}>
-                                    <Paper>
+                                <Grid item xs={6} style={{ height: "100%" }}>
+                                    <Paper style={{ height: "100%", position: "relative" }}>
                                         <p className={classes.subtitle}>Current</p>
                                         <Grid container justify="space-evenly">
                                             <Grid item xs={3}>Currency</Grid>
@@ -607,7 +607,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                             </Grid>)}
 
                                         <div className={classes.spacediv} />
-                                        <Grid container justify="space-evenly" alignItems="center">
+                                        <Grid container style={{ position: "absolute", bottom: 10 }} justify="space-evenly" alignItems="center">
                                             <Grid item xs={3}>Sub</Grid>
                                             <Grid item xs={2}>679,000</Grid>
                                             <Grid item xs={2}>101,850</Grid>
@@ -615,8 +615,8 @@ class OfferModelPage extends React.Component<Props, State> {
                                         </Grid>
                                     </Paper>
                                 </Grid>
-                                <Grid item xs={6}>
-                                    <Paper>
+                                <Grid item xs={6} style={{ height: "100%" }}>
+                                    <Paper style={{ height: "100%", position: "relative" }}>
                                         <p className={classes.subtitle}>Propose</p>
                                         <Grid container justify="space-evenly">
                                             <Grid item xs={3}>Currency</Grid>
@@ -658,7 +658,7 @@ class OfferModelPage extends React.Component<Props, State> {
 
                                         <div className={classes.spacediv} />
 
-                                        <Grid container justify="space-evenly" alignItems="center">
+                                        <Grid container style={{ position: "absolute", bottom: 10 }} justify="space-evenly" alignItems="center">
                                             <Grid item xs={3}>Sub</Grid>
                                             <Grid item xs={2}>679,000</Grid>
                                             <Grid item xs={2}>101,850</Grid>
