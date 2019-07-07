@@ -1,10 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Grid, Theme, createStyles, Paper, WithStyles, withStyles, Divider, TextField, Typography, IconButton } from "@material-ui/core";
+import { Grid, Theme, createStyles, Paper, WithStyles, withStyles, Divider, TextField, Typography, IconButton, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails } from "@material-ui/core";
 import { mapDispatchToProps } from "../../helper/dispachProps";
 import { connect } from "react-redux";
 import DeleteIcon from "@material-ui/icons/Delete";
 import AddIcon from "@material-ui/icons/Add";
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 const styles = (theme: Theme) =>
     createStyles({
@@ -25,7 +26,7 @@ const styles = (theme: Theme) =>
             color: theme.palette.text.secondary,
         },
         spacediv: {
-            height: 50
+            height: 20
         },
         container: {
             borderRadius: 4,
@@ -33,10 +34,7 @@ const styles = (theme: Theme) =>
             borderStyle: "solid"
         },
         colorcontainer: {
-            background: 'teal',
-            borderRadius: 4,
-            borderWidth: 0.5,
-            borderStyle: "solid"
+            background: '#e6d5c5',
         },
         verticaltext: {
             transform: 'rotate(0.5turn)'
@@ -55,6 +53,8 @@ interface State {
     shortterm_propose: Bonus[];
     longterm_current: Bonus[];
     longterm_propose: Bonus[];
+    signons_current: Bonus[];
+    signons_propose: Bonus[];
 }
 
 class OfferModelPage extends React.Component<Props, State> {
@@ -65,43 +65,29 @@ class OfferModelPage extends React.Component<Props, State> {
         shortterm_propose: [],
         longterm_current: [],
         longterm_propose: [],
+        signons_current: [],
+        signons_propose: [],
     }
 
-    handleDeleteGC = (index) => {
-        this.setState(state => {
-            const guaranteedcash_current = state.guaranteedcash_current.filter((item, j) => index !== j);
-            return {
-                guaranteedcash_current,
-            };
-        });
-    }
+    handleDeleteGC = (index) => { this.setState(state => { const guaranteedcash_current = state.guaranteedcash_current.filter((item, j) => index !== j); return { guaranteedcash_current, }; }); }
+    handleAddGC = () => { this.setState(state => { const guaranteedcash_current = state.guaranteedcash_current.concat({ name: '', CNY: '' }); return { guaranteedcash_current }; }); };
+    handleDeleteGP = (index) => { this.setState(state => { const guaranteedcash_propose = state.guaranteedcash_propose.filter((item, j) => index !== j); return { guaranteedcash_propose, }; }); }
+    handleAddGP = () => { this.setState(state => { const guaranteedcash_propose = state.guaranteedcash_propose.concat({ name: '', CNY: '' }); return { guaranteedcash_propose }; }); };
 
-    handleAddGC = () => {
-        this.setState(state => {
-            const guaranteedcash_current = state.guaranteedcash_current.concat({ name: '', CNY: '' });
-            return {
-                guaranteedcash_current
-            };
-        });
-    };
+    handleDeleteSC = (index) => { this.setState(state => { const shortterm_current = state.shortterm_current.filter((item, j) => index !== j); return { shortterm_current, }; }); }
+    handleAddSC = () => { this.setState(state => { const shortterm_current = state.shortterm_current.concat({ name: '', CNY: '' }); return { shortterm_current }; }); };
+    handleDeleteSP = (index) => { this.setState(state => { const shortterm_propose = state.shortterm_propose.filter((item, j) => index !== j); return { shortterm_propose, }; }); }
+    handleAddSP = () => { this.setState(state => { const shortterm_propose = state.shortterm_propose.concat({ name: '', CNY: '' }); return { shortterm_propose }; }); };
 
-    handleDeleteGP = (index) => {
-        this.setState(state => {
-            const guaranteedcash_propose = state.guaranteedcash_propose.filter((item, j) => index !== j);
-            return {
-                guaranteedcash_propose,
-            };
-        });
-    }
+    handleDeleteLC = (index) => { this.setState(state => { const longterm_current = state.longterm_current.filter((item, j) => index !== j); return { longterm_current, }; }); }
+    handleAddLC = () => { this.setState(state => { const longterm_current = state.longterm_current.concat({ name: '', CNY: '' }); return { longterm_current }; }); };
+    handleDeleteLP = (index) => { this.setState(state => { const longterm_propose = state.longterm_propose.filter((item, j) => index !== j); return { longterm_propose, }; }); }
+    handleAddLP = () => { this.setState(state => { const longterm_propose = state.longterm_propose.concat({ name: '', CNY: '' }); return { longterm_propose }; }); };
 
-    handleAddGP = () => {
-        this.setState(state => {
-            const guaranteedcash_propose = state.guaranteedcash_propose.concat({ name: '', CNY: '' });
-            return {
-                guaranteedcash_propose
-            };
-        });
-    };
+    handleDeleteSOC = (index) => { this.setState(state => { const signons_current = state.signons_current.filter((item, j) => index !== j); return { signons_current, }; }); }
+    handleAddSOC = () => { this.setState(state => { const signons_current = state.signons_current.concat({ name: '', CNY: '' }); return { signons_current }; }); };
+    handleDeleteSOP = (index) => { this.setState(state => { const signons_propose = state.signons_propose.filter((item, j) => index !== j); return { signons_propose, }; }); }
+    handleAddSOP = () => { this.setState(state => { const signons_propose = state.signons_propose.concat({ name: '', CNY: '' }); return { signons_propose }; }); };
 
     render() {
         const { classes } = this.props;
@@ -112,305 +98,333 @@ class OfferModelPage extends React.Component<Props, State> {
         return (
             <Grid container alignItems="center" justify="space-evenly" direction="row" className={classes.root}>
                 <Grid item xs={8}>
-                    <Paper className={classes.paper}>
-                        <Grid container>
-                            <Grid item xs={4}><p className={classes.subtitle}>Name</p></Grid>
-                            <Grid item xs={4}><TextField
-                                inputProps={{
-                                    style: { textAlign: "center" }
-                                }} /></Grid>
-                        </Grid>
-                        <Divider />
-                        <Grid container>
-                            <Grid item xs={4}><p className={classes.subtitle}>Status</p></Grid>
-                            <Grid item xs={4}><p className={classes.subtitle}>Current</p></Grid>
-                            <Grid item xs={4}><p className={classes.subtitle}>Propose</p></Grid>
-                        </Grid>
-                        <Grid container>
-                            <Grid item xs={4}><p className={classes.subtitle}>Title</p></Grid>
-                            <Grid item xs={4}>
-                                <TextField
+                    <ExpansionPanel>
+                        <ExpansionPanelSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+                        >
+                            <Grid container>
+                                <Grid item xs={4}><p className={classes.subtitle}>Name</p></Grid>
+                                <Grid item xs={4}><TextField
                                     inputProps={{
                                         style: { textAlign: "center" }
-                                    }} />
+                                    }} /></Grid>
                             </Grid>
-                            <Grid item xs={4}>
-                                <TextField
-                                    inputProps={{
-                                        style: { textAlign: "center" }
-                                    }} />
+                        </ExpansionPanelSummary>
+                        <ExpansionPanelDetails>
+                            <Divider />
+                            <Grid style={{ width: '100%' }} alignItems="center" justify="space-evenly" direction="row">
+                                <Grid container>
+                                    <Grid item xs={4}><p className={classes.subtitle}>Status</p></Grid>
+                                    <Grid item xs={4}><p className={classes.subtitle}>Current</p></Grid>
+                                    <Grid item xs={4}><p className={classes.subtitle}>Propose</p></Grid>
+                                </Grid>
+                                <Grid container>
+                                    <Grid item xs={4}><p className={classes.subtitle}>Title</p></Grid>
+                                    <Grid item xs={4}>
+                                        <TextField
+                                            inputProps={{
+                                                style: { textAlign: "center" }
+                                            }} />
+                                    </Grid>
+                                    <Grid item xs={4}>
+                                        <TextField
+                                            inputProps={{
+                                                style: { textAlign: "center" }
+                                            }} />
+                                    </Grid>
+                                </Grid>
+                                <Grid container>
+                                    <Grid item xs={4}><p className={classes.subtitle}>Country</p></Grid>
+                                    <Grid item xs={4}><TextField
+                                        inputProps={{
+                                            style: { textAlign: "center" }
+                                        }} /></Grid>
+                                    <Grid item xs={4}><TextField
+                                        inputProps={{
+                                            style: { textAlign: "center" }
+                                        }} /></Grid>
+                                </Grid>
+                                <Grid container>
+                                    <Grid item xs={4}><p className={classes.subtitle}>Location</p></Grid>
+                                    <Grid item xs={4}><TextField
+                                        inputProps={{
+                                            style: { textAlign: "center" }
+                                        }} /></Grid>
+                                    <Grid item xs={4}><TextField
+                                        inputProps={{
+                                            style: { textAlign: "center" }
+                                        }} /></Grid>
+                                </Grid>
+                                <Grid container>
+                                    <Grid item xs={4}><p className={classes.subtitle}>Grade</p></Grid>
+                                    <Grid item xs={4}><TextField
+                                        inputProps={{
+                                            style: { textAlign: "center" }
+                                        }} /></Grid>
+                                    <Grid item xs={4}><TextField
+                                        inputProps={{
+                                            style: { textAlign: "center" }
+                                        }} /></Grid>
+                                </Grid>
+                                <Grid container>
+                                    <Grid item xs={4}><p className={classes.subtitle}>Datestart</p></Grid>
+                                    <Grid item xs={4}><TextField
+                                        inputProps={{
+                                            style: { textAlign: "center" }
+                                        }} /></Grid>
+                                    <Grid item xs={4}><TextField
+                                        inputProps={{
+                                            style: { textAlign: "center" }
+                                        }} /></Grid>
+                                </Grid>
+                                <Grid container>
+                                    <Grid item xs={4}><p className={classes.subtitle}>Jobfunction</p></Grid>
+                                    <Grid item xs={4}><TextField
+                                        inputProps={{
+                                            style: { textAlign: "center" }
+                                        }} /></Grid>
+                                    <Grid item xs={4}><TextField
+                                        inputProps={{
+                                            style: { textAlign: "center" }
+                                        }} /></Grid>
+                                </Grid>
                             </Grid>
-                        </Grid>
-                        <Grid container>
-                            <Grid item xs={4}><p className={classes.subtitle}>Country</p></Grid>
-                            <Grid item xs={4}><TextField
-                                inputProps={{
-                                    style: { textAlign: "center" }
-                                }} /></Grid>
-                            <Grid item xs={4}><TextField
-                                inputProps={{
-                                    style: { textAlign: "center" }
-                                }} /></Grid>
-                        </Grid>
-                        <Grid container>
-                            <Grid item xs={4}><p className={classes.subtitle}>Location</p></Grid>
-                            <Grid item xs={4}><TextField
-                                inputProps={{
-                                    style: { textAlign: "center" }
-                                }} /></Grid>
-                            <Grid item xs={4}><TextField
-                                inputProps={{
-                                    style: { textAlign: "center" }
-                                }} /></Grid>
-                        </Grid>
-                        <Grid container>
-                            <Grid item xs={4}><p className={classes.subtitle}>Grade</p></Grid>
-                            <Grid item xs={4}><TextField
-                                inputProps={{
-                                    style: { textAlign: "center" }
-                                }} /></Grid>
-                            <Grid item xs={4}><TextField
-                                inputProps={{
-                                    style: { textAlign: "center" }
-                                }} /></Grid>
-                        </Grid>
-                        <Grid container>
-                            <Grid item xs={4}><p className={classes.subtitle}>Datestart</p></Grid>
-                            <Grid item xs={4}><TextField
-                                inputProps={{
-                                    style: { textAlign: "center" }
-                                }} /></Grid>
-                            <Grid item xs={4}><TextField
-                                inputProps={{
-                                    style: { textAlign: "center" }
-                                }} /></Grid>
-                        </Grid>
-                        <Grid container>
-                            <Grid item xs={4}><p className={classes.subtitle}>Jobfunction</p></Grid>
-                            <Grid item xs={4}><TextField
-                                inputProps={{
-                                    style: { textAlign: "center" }
-                                }} /></Grid>
-                            <Grid item xs={4}><TextField
-                                inputProps={{
-                                    style: { textAlign: "center" }
-                                }} /></Grid>
-                        </Grid>
-                    </Paper>
-                    <div className={classes.spacediv} />
-                    <Paper className={classes.paper}>
-                        <Typography>Guaranteed Cash</Typography>
+                        </ExpansionPanelDetails>
+                    </ExpansionPanel>
 
-                        <Grid container alignItems="center">
-                            <Grid item xs={6}>
-                                <div className={classes.container}>
-                                    <Typography>Current</Typography>
-                                    <Grid container justify="space-evenly">
-                                        <Grid item xs={3}>Currency</Grid>
-                                        <Grid item xs={2}>CNY</Grid>
-                                        <Grid item xs={2}>USD</Grid>
-                                        <Grid item xs={1}><IconButton onClick={this.handleAddGC}><AddIcon /></IconButton></Grid>
-                                    </Grid>
-                                    <Grid container justify="space-evenly" alignItems="center">
-                                        <Grid item xs={3}>Annual Base</Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={1} />
-                                    </Grid>
-                                    <Grid container justify="space-evenly" alignItems="center">
-                                        <Grid item xs={3}>Compa Ratio</Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={1} />
-                                    </Grid>
-                                    <Grid container justify="space-evenly" alignItems="center">
-                                        <Grid item xs={3}>Market Ratio</Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={1} />
-                                    </Grid>
-
-                                    {this.state.guaranteedcash_current.map((item: Bonus, index) =>
-                                        <Grid container justify="space-evenly" alignItems="center">
-                                            <Grid item xs={3}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                            <Grid item xs={1}><IconButton onClick={() => this.handleDeleteGC(index)}><DeleteIcon /></IconButton></Grid>
-                                        </Grid>)}
-
-                                    <div className={classes.spacediv} />
-                                    <Grid container justify="space-evenly" alignItems="center">
-                                        <Grid item xs={3}>Sub</Grid>
-                                        <Grid item xs={2}>679,000</Grid>
-                                        <Grid item xs={2}>101,850</Grid>
-                                        <Grid item xs={1} />
-                                    </Grid>
-                                </div>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <div className={classes.container}>
-                                    <Typography>Propose</Typography>
-                                    <Grid container justify="space-evenly">
-                                        <Grid item xs={3}>Currency</Grid>
-                                        <Grid item xs={2}>CNY</Grid>
-                                        <Grid item xs={2}>USD</Grid>
-                                        <Grid item xs={2}>Difference</Grid>
-                                        <Grid item xs={1}><IconButton onClick={this.handleAddGP}><AddIcon /></IconButton></Grid>
-                                    </Grid>
-                                    <Grid container justify="space-evenly" alignItems="center">
-                                        <Grid item xs={3}>Annual Base</Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={1} />
-                                    </Grid>
-                                    <Grid container justify="space-evenly" alignItems="center">
-                                        <Grid item xs={3}>Compa Ratio</Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={1} />
-                                    </Grid>
-                                    <Grid container justify="space-evenly" alignItems="center">
-                                        <Grid item xs={3}>Market Ratio</Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={1} />
-                                    </Grid>
-
-                                    {this.state.guaranteedcash_propose.map((item: Bonus, index) =>
-                                        <Grid container justify="space-evenly" alignItems="center">
-                                            <Grid item xs={3}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                            <Grid item xs={1}><IconButton onClick={() => this.handleDeleteGP(index)}><DeleteIcon /></IconButton></Grid>
-                                        </Grid>)}
-
-                                    <div className={classes.spacediv} />
-
-                                    <Grid container justify="space-evenly" alignItems="center">
-                                        <Grid item xs={3}>Sub</Grid>
-                                        <Grid item xs={2}>679,000</Grid>
-                                        <Grid item xs={2}>101,850</Grid>
-                                        <Grid item xs={2}>133%</Grid>
-                                        <Grid item xs={1} />
-                                    </Grid>
-                                </div>
-                            </Grid>
-                        </Grid>
-                    </Paper>
 
                     <div className={classes.spacediv} />
-
-                    <Paper className={classes.paper}>
-                        <Typography>Short Term</Typography>
-
-                        <Grid container alignItems="center">
-                            <Grid item xs={6}>
-                                <div className={classes.container}>
-                                    <Typography>Current</Typography>
-                                    <Grid container justify="space-evenly">
-                                        <Grid item xs={3}>Currency</Grid>
-                                        <Grid item xs={2}>CNY</Grid>
-                                        <Grid item xs={2}>USD</Grid>
-                                        <Grid item xs={1}><IconButton onClick={this.handleAddGC}><AddIcon /></IconButton></Grid>
-                                    </Grid>
-                                    <Grid container justify="space-evenly" alignItems="center">
-                                        <Grid item xs={3}>Annual Base</Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={1} />
-                                    </Grid>
-                                    <Grid container justify="space-evenly" alignItems="center">
-                                        <Grid item xs={3}>Compa Ratio</Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={1} />
-                                    </Grid>
-                                    <Grid container justify="space-evenly" alignItems="center">
-                                        <Grid item xs={3}>Market Ratio</Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={1} />
-                                    </Grid>
-
-                                    {this.state.guaranteedcash_current.map((item: Bonus, index) =>
+                    <ExpansionPanel>
+                        <ExpansionPanelSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+                        >
+                            <p className={classes.subtitle}>Guaranteed Cash</p>
+                        </ExpansionPanelSummary>
+                        <ExpansionPanelDetails>
+                            <Divider />
+                            <Grid container alignItems="center">
+                                <Grid item xs={6}>
+                                    <Paper>
+                                        <p className={classes.subtitle}>Current</p>
+                                        <Grid container justify="space-evenly">
+                                            <Grid item xs={3}>Currency</Grid>
+                                            <Grid item xs={2}>CNY</Grid>
+                                            <Grid item xs={2}>USD</Grid>
+                                            <Grid item xs={1}><IconButton onClick={this.handleAddGC}><AddIcon /></IconButton></Grid>
+                                        </Grid>
                                         <Grid container justify="space-evenly" alignItems="center">
-                                            <Grid item xs={3}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={3}>Annual Base</Grid>
                                             <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                             <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                            <Grid item xs={1}><IconButton onClick={() => this.handleDeleteGC(index)}><DeleteIcon /></IconButton></Grid>
-                                        </Grid>)}
-
-                                    <div className={classes.spacediv} />
-                                    <Grid container justify="space-evenly" alignItems="center">
-                                        <Grid item xs={3}>Sub</Grid>
-                                        <Grid item xs={2}>679,000</Grid>
-                                        <Grid item xs={2}>101,850</Grid>
-                                        <Grid item xs={1} />
-                                    </Grid>
-                                </div>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <div className={classes.container}>
-                                    <Typography>Propose</Typography>
-                                    <Grid container justify="space-evenly">
-                                        <Grid item xs={3}>Currency</Grid>
-                                        <Grid item xs={2}>CNY</Grid>
-                                        <Grid item xs={2}>USD</Grid>
-                                        <Grid item xs={2}>Difference</Grid>
-                                        <Grid item xs={1}><IconButton onClick={this.handleAddGP}><AddIcon /></IconButton></Grid>
-                                    </Grid>
-                                    <Grid container justify="space-evenly" alignItems="center">
-                                        <Grid item xs={3}>Annual Base</Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={1} />
-                                    </Grid>
-                                    <Grid container justify="space-evenly" alignItems="center">
-                                        <Grid item xs={3}>Compa Ratio</Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={1} />
-                                    </Grid>
-                                    <Grid container justify="space-evenly" alignItems="center">
-                                        <Grid item xs={3}>Market Ratio</Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={1} />
-                                    </Grid>
-
-                                    {this.state.guaranteedcash_propose.map((item: Bonus, index) =>
+                                            <Grid item xs={1} />
+                                        </Grid>
                                         <Grid container justify="space-evenly" alignItems="center">
-                                            <Grid item xs={3}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={3}>Compa Ratio</Grid>
                                             <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                             <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={1} />
+                                        </Grid>
+                                        <Grid container justify="space-evenly" alignItems="center">
+                                            <Grid item xs={3}>Market Ratio</Grid>
                                             <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                            <Grid item xs={1}><IconButton onClick={() => this.handleDeleteGP(index)}><DeleteIcon /></IconButton></Grid>
-                                        </Grid>)}
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={1} />
+                                        </Grid>
 
-                                    <div className={classes.spacediv} />
+                                        {this.state.guaranteedcash_current.map((item: Bonus, index) =>
+                                            <Grid container justify="space-evenly" alignItems="center">
+                                                <Grid item xs={3}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                                <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                                <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                                <Grid item xs={1}><IconButton onClick={() => this.handleDeleteGC(index)}><DeleteIcon /></IconButton></Grid>
+                                            </Grid>)}
 
-                                    <Grid container justify="space-evenly" alignItems="center">
-                                        <Grid item xs={3}>Sub</Grid>
-                                        <Grid item xs={2}>679,000</Grid>
-                                        <Grid item xs={2}>101,850</Grid>
-                                        <Grid item xs={2}>133%</Grid>
-                                        <Grid item xs={1} />
-                                    </Grid>
-                                </div>
+                                        <div className={classes.spacediv} />
+                                        <Grid container justify="space-evenly" alignItems="center">
+                                            <Grid item xs={3}>Sub</Grid>
+                                            <Grid item xs={2}>679,000</Grid>
+                                            <Grid item xs={2}>101,850</Grid>
+                                            <Grid item xs={1} />
+                                        </Grid>
+                                    </Paper>
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <Paper>
+                                        <p className={classes.subtitle}>Propose</p>
+                                        <Grid container justify="space-evenly">
+                                            <Grid item xs={3}>Currency</Grid>
+                                            <Grid item xs={2}>CNY</Grid>
+                                            <Grid item xs={2}>USD</Grid>
+                                            <Grid item xs={2}>Difference</Grid>
+                                            <Grid item xs={1}><IconButton onClick={this.handleAddGP}><AddIcon /></IconButton></Grid>
+                                        </Grid>
+                                        <Grid container justify="space-evenly" alignItems="center">
+                                            <Grid item xs={3}>Annual Base</Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={1} />
+                                        </Grid>
+                                        <Grid container justify="space-evenly" alignItems="center">
+                                            <Grid item xs={3}>Compa Ratio</Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={1} />
+                                        </Grid>
+                                        <Grid container justify="space-evenly" alignItems="center">
+                                            <Grid item xs={3}>Market Ratio</Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={1} />
+                                        </Grid>
+
+                                        {this.state.guaranteedcash_propose.map((item: Bonus, index) =>
+                                            <Grid container justify="space-evenly" alignItems="center">
+                                                <Grid item xs={3}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                                <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                                <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                                <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                                <Grid item xs={1}><IconButton onClick={() => this.handleDeleteGP(index)}><DeleteIcon /></IconButton></Grid>
+                                            </Grid>)}
+
+                                        <div className={classes.spacediv} />
+
+                                        <Grid container justify="space-evenly" alignItems="center">
+                                            <Grid item xs={3}>Sub</Grid>
+                                            <Grid item xs={2}>679,000</Grid>
+                                            <Grid item xs={2}>101,850</Grid>
+                                            <Grid item xs={2}>133%</Grid>
+                                            <Grid item xs={1} />
+                                        </Grid>
+                                    </Paper>
+                                </Grid>
                             </Grid>
-                        </Grid>
-                    </Paper>
+                        </ExpansionPanelDetails>
+                    </ExpansionPanel>
 
                     <div className={classes.spacediv} />
 
-                    <div className={classes.colorcontainer}>
+                    <ExpansionPanel>
+                        <ExpansionPanelSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+                        >
+                            <p className={classes.subtitle}>Short Term</p>
+                        </ExpansionPanelSummary>
+                        <ExpansionPanelDetails>
+                            <Divider />
+                            <Grid container alignItems="center">
+                                <Grid item xs={6}>
+                                    <Paper>
+                                        <p className={classes.subtitle}>Current</p>
+                                        <Grid container justify="space-evenly">
+                                            <Grid item xs={3}>Currency</Grid>
+                                            <Grid item xs={2}>CNY</Grid>
+                                            <Grid item xs={2}>USD</Grid>
+                                            <Grid item xs={1}><IconButton onClick={this.handleAddSC}><AddIcon /></IconButton></Grid>
+                                        </Grid>
+                                        <Grid container justify="space-evenly" alignItems="center">
+                                            <Grid item xs={3}>Annual Base</Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={1} />
+                                        </Grid>
+                                        <Grid container justify="space-evenly" alignItems="center">
+                                            <Grid item xs={3}>Compa Ratio</Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={1} />
+                                        </Grid>
+                                        <Grid container justify="space-evenly" alignItems="center">
+                                            <Grid item xs={3}>Market Ratio</Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={1} />
+                                        </Grid>
+
+                                        {this.state.shortterm_current.map((item: Bonus, index) =>
+                                            <Grid container justify="space-evenly" alignItems="center">
+                                                <Grid item xs={3}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                                <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                                <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                                <Grid item xs={1}><IconButton onClick={() => this.handleDeleteSC(index)}><DeleteIcon /></IconButton></Grid>
+                                            </Grid>)}
+
+                                        <div className={classes.spacediv} />
+                                        <Grid container justify="space-evenly" alignItems="center">
+                                            <Grid item xs={3}>Sub</Grid>
+                                            <Grid item xs={2}>679,000</Grid>
+                                            <Grid item xs={2}>101,850</Grid>
+                                            <Grid item xs={1} />
+                                        </Grid>
+                                    </Paper>
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <Paper>
+                                        <p className={classes.subtitle}>Propose</p>
+                                        <Grid container justify="space-evenly">
+                                            <Grid item xs={3}>Currency</Grid>
+                                            <Grid item xs={2}>CNY</Grid>
+                                            <Grid item xs={2}>USD</Grid>
+                                            <Grid item xs={2}>Difference</Grid>
+                                            <Grid item xs={1}><IconButton onClick={this.handleAddSP}><AddIcon /></IconButton></Grid>
+                                        </Grid>
+                                        <Grid container justify="space-evenly" alignItems="center">
+                                            <Grid item xs={3}>Annual Base</Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={1} />
+                                        </Grid>
+                                        <Grid container justify="space-evenly" alignItems="center">
+                                            <Grid item xs={3}>Compa Ratio</Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={1} />
+                                        </Grid>
+                                        <Grid container justify="space-evenly" alignItems="center">
+                                            <Grid item xs={3}>Market Ratio</Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={1} />
+                                        </Grid>
+
+                                        {this.state.shortterm_propose.map((item: Bonus, index) =>
+                                            <Grid container justify="space-evenly" alignItems="center">
+                                                <Grid item xs={3}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                                <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                                <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                                <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                                <Grid item xs={1}><IconButton onClick={() => this.handleDeleteSP(index)}><DeleteIcon /></IconButton></Grid>
+                                            </Grid>)}
+
+                                        <div className={classes.spacediv} />
+
+                                        <Grid container justify="space-evenly" alignItems="center">
+                                            <Grid item xs={3}>Sub</Grid>
+                                            <Grid item xs={2}>679,000</Grid>
+                                            <Grid item xs={2}>101,850</Grid>
+                                            <Grid item xs={2}>133%</Grid>
+                                            <Grid item xs={1} />
+                                        </Grid>
+                                    </Paper>
+                                </Grid>
+                            </Grid>
+                        </ExpansionPanelDetails>
+                    </ExpansionPanel>
+
+                    <div className={classes.spacediv} />
+
+                    <Paper className={classes.colorcontainer}>
                         <Grid container alignItems="center">
                             <Grid item xs={1} />
                             <Grid item xs={11}>
@@ -424,225 +438,242 @@ class OfferModelPage extends React.Component<Props, State> {
                                 </Grid>
                             </Grid>
                         </Grid>
-                    </div>
-
-                    <div className={classes.spacediv} />
-
-
-
-                    <Paper className={classes.paper}>
-                        <Typography>Long Term</Typography>
-
-                        <Grid container alignItems="center">
-                            <Grid item xs={6}>
-                                <div className={classes.container}>
-                                    <Typography>Current</Typography>
-                                    <Grid container justify="space-evenly">
-                                        <Grid item xs={3}>Currency</Grid>
-                                        <Grid item xs={2}>CNY</Grid>
-                                        <Grid item xs={2}>USD</Grid>
-                                        <Grid item xs={1}><IconButton onClick={this.handleAddGC}><AddIcon /></IconButton></Grid>
-                                    </Grid>
-                                    <Grid container justify="space-evenly" alignItems="center">
-                                        <Grid item xs={3}>Annual Base</Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={1} />
-                                    </Grid>
-                                    <Grid container justify="space-evenly" alignItems="center">
-                                        <Grid item xs={3}>Compa Ratio</Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={1} />
-                                    </Grid>
-                                    <Grid container justify="space-evenly" alignItems="center">
-                                        <Grid item xs={3}>Market Ratio</Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={1} />
-                                    </Grid>
-
-                                    {this.state.guaranteedcash_current.map((item: Bonus, index) =>
-                                        <Grid container justify="space-evenly" alignItems="center">
-                                            <Grid item xs={3}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                            <Grid item xs={1}><IconButton onClick={() => this.handleDeleteGC(index)}><DeleteIcon /></IconButton></Grid>
-                                        </Grid>)}
-
-                                    <div className={classes.spacediv} />
-                                    <Grid container justify="space-evenly" alignItems="center">
-                                        <Grid item xs={3}>Sub</Grid>
-                                        <Grid item xs={2}>679,000</Grid>
-                                        <Grid item xs={2}>101,850</Grid>
-                                        <Grid item xs={1} />
-                                    </Grid>
-                                </div>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <div className={classes.container}>
-                                    <Typography>Propose</Typography>
-                                    <Grid container justify="space-evenly">
-                                        <Grid item xs={3}>Currency</Grid>
-                                        <Grid item xs={2}>CNY</Grid>
-                                        <Grid item xs={2}>USD</Grid>
-                                        <Grid item xs={2}>Difference</Grid>
-                                        <Grid item xs={1}><IconButton onClick={this.handleAddGP}><AddIcon /></IconButton></Grid>
-                                    </Grid>
-                                    <Grid container justify="space-evenly" alignItems="center">
-                                        <Grid item xs={3}>Annual Base</Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={1} />
-                                    </Grid>
-                                    <Grid container justify="space-evenly" alignItems="center">
-                                        <Grid item xs={3}>Compa Ratio</Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={1} />
-                                    </Grid>
-                                    <Grid container justify="space-evenly" alignItems="center">
-                                        <Grid item xs={3}>Market Ratio</Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={1} />
-                                    </Grid>
-
-                                    {this.state.guaranteedcash_propose.map((item: Bonus, index) =>
-                                        <Grid container justify="space-evenly" alignItems="center">
-                                            <Grid item xs={3}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                            <Grid item xs={1}><IconButton onClick={() => this.handleDeleteGP(index)}><DeleteIcon /></IconButton></Grid>
-                                        </Grid>)}
-
-                                    <div className={classes.spacediv} />
-
-                                    <Grid container justify="space-evenly" alignItems="center">
-                                        <Grid item xs={3}>Sub</Grid>
-                                        <Grid item xs={2}>679,000</Grid>
-                                        <Grid item xs={2}>101,850</Grid>
-                                        <Grid item xs={2}>133%</Grid>
-                                        <Grid item xs={1} />
-                                    </Grid>
-                                </div>
-                            </Grid>
-                        </Grid>
                     </Paper>
 
                     <div className={classes.spacediv} />
 
-                    <Paper className={classes.paper}>
-                        <Typography>Sign Ons</Typography>
 
-                        <Grid container alignItems="center">
-                            <Grid item xs={6}>
-                                <div className={classes.container}>
-                                    <Typography>Current</Typography>
-                                    <Grid container justify="space-evenly">
-                                        <Grid item xs={3}>Currency</Grid>
-                                        <Grid item xs={2}>CNY</Grid>
-                                        <Grid item xs={2}>USD</Grid>
-                                        <Grid item xs={1}><IconButton onClick={this.handleAddGC}><AddIcon /></IconButton></Grid>
-                                    </Grid>
-                                    <Grid container justify="space-evenly" alignItems="center">
-                                        <Grid item xs={3}>Annual Base</Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={1} />
-                                    </Grid>
-                                    <Grid container justify="space-evenly" alignItems="center">
-                                        <Grid item xs={3}>Compa Ratio</Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={1} />
-                                    </Grid>
-                                    <Grid container justify="space-evenly" alignItems="center">
-                                        <Grid item xs={3}>Market Ratio</Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={1} />
-                                    </Grid>
+                    <ExpansionPanel>
+                        <ExpansionPanelSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+                        >
+                            <p className={classes.subtitle}>Long Term</p>
+                        </ExpansionPanelSummary>
+                        <ExpansionPanelDetails>
 
-                                    {this.state.guaranteedcash_current.map((item: Bonus, index) =>
+                            <Divider />
+                            <Grid container alignItems="center" justify="space-evenly">
+                                <Grid item xs={6}>
+                                    <Paper>
+                                        <p className={classes.subtitle}>Current</p>
+                                        <Grid container justify="space-evenly">
+                                            <Grid item xs={3}>Currency</Grid>
+                                            <Grid item xs={2}>CNY</Grid>
+                                            <Grid item xs={2}>USD</Grid>
+                                            <Grid item xs={1}><IconButton onClick={this.handleAddLC}><AddIcon /></IconButton></Grid>
+                                        </Grid>
                                         <Grid container justify="space-evenly" alignItems="center">
-                                            <Grid item xs={3}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={3}>Annual Base</Grid>
                                             <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                             <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                            <Grid item xs={1}><IconButton onClick={() => this.handleDeleteGC(index)}><DeleteIcon /></IconButton></Grid>
-                                        </Grid>)}
-
-                                    <div className={classes.spacediv} />
-                                    <Grid container justify="space-evenly" alignItems="center">
-                                        <Grid item xs={3}>Sub</Grid>
-                                        <Grid item xs={2}>679,000</Grid>
-                                        <Grid item xs={2}>101,850</Grid>
-                                        <Grid item xs={1} />
-                                    </Grid>
-                                </div>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <div className={classes.container}>
-                                    <Typography>Propose</Typography>
-                                    <Grid container justify="space-evenly">
-                                        <Grid item xs={3}>Currency</Grid>
-                                        <Grid item xs={2}>CNY</Grid>
-                                        <Grid item xs={2}>USD</Grid>
-                                        <Grid item xs={2}>Difference</Grid>
-                                        <Grid item xs={1}><IconButton onClick={this.handleAddGP}><AddIcon /></IconButton></Grid>
-                                    </Grid>
-                                    <Grid container justify="space-evenly" alignItems="center">
-                                        <Grid item xs={3}>Annual Base</Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={1} />
-                                    </Grid>
-                                    <Grid container justify="space-evenly" alignItems="center">
-                                        <Grid item xs={3}>Compa Ratio</Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={1} />
-                                    </Grid>
-                                    <Grid container justify="space-evenly" alignItems="center">
-                                        <Grid item xs={3}>Market Ratio</Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                        <Grid item xs={1} />
-                                    </Grid>
-
-                                    {this.state.guaranteedcash_propose.map((item: Bonus, index) =>
+                                            <Grid item xs={1} />
+                                        </Grid>
                                         <Grid container justify="space-evenly" alignItems="center">
-                                            <Grid item xs={3}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={3}>Compa Ratio</Grid>
                                             <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                             <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={1} />
+                                        </Grid>
+                                        <Grid container justify="space-evenly" alignItems="center">
+                                            <Grid item xs={3}>Market Ratio</Grid>
                                             <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                            <Grid item xs={1}><IconButton onClick={() => this.handleDeleteGP(index)}><DeleteIcon /></IconButton></Grid>
-                                        </Grid>)}
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={1} />
+                                        </Grid>
 
-                                    <div className={classes.spacediv} />
+                                        {this.state.longterm_current.map((item: Bonus, index) =>
+                                            <Grid container justify="space-evenly" alignItems="center">
+                                                <Grid item xs={3}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                                <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                                <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                                <Grid item xs={1}><IconButton onClick={() => this.handleDeleteLC(index)}><DeleteIcon /></IconButton></Grid>
+                                            </Grid>)}
 
-                                    <Grid container justify="space-evenly" alignItems="center">
-                                        <Grid item xs={3}>Sub</Grid>
-                                        <Grid item xs={2}>679,000</Grid>
-                                        <Grid item xs={2}>101,850</Grid>
-                                        <Grid item xs={2}>133%</Grid>
-                                        <Grid item xs={1} />
-                                    </Grid>
-                                </div>
+                                        <div className={classes.spacediv} />
+                                        <Grid container justify="space-evenly" alignItems="center">
+                                            <Grid item xs={3}>Sub</Grid>
+                                            <Grid item xs={2}>679,000</Grid>
+                                            <Grid item xs={2}>101,850</Grid>
+                                            <Grid item xs={1} />
+                                        </Grid>
+                                    </Paper>
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <Paper>
+                                        <p className={classes.subtitle}>Propose</p>
+                                        <Grid container justify="space-evenly">
+                                            <Grid item xs={3}>Currency</Grid>
+                                            <Grid item xs={2}>CNY</Grid>
+                                            <Grid item xs={2}>USD</Grid>
+                                            <Grid item xs={2}>Difference</Grid>
+                                            <Grid item xs={1}><IconButton onClick={this.handleAddLP}><AddIcon /></IconButton></Grid>
+                                        </Grid>
+                                        <Grid container justify="space-evenly" alignItems="center">
+                                            <Grid item xs={3}>Annual Base</Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={1} />
+                                        </Grid>
+                                        <Grid container justify="space-evenly" alignItems="center">
+                                            <Grid item xs={3}>Compa Ratio</Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={1} />
+                                        </Grid>
+                                        <Grid container justify="space-evenly" alignItems="center">
+                                            <Grid item xs={3}>Market Ratio</Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={1} />
+                                        </Grid>
+
+                                        {this.state.longterm_propose.map((item: Bonus, index) =>
+                                            <Grid container justify="space-evenly" alignItems="center">
+                                                <Grid item xs={3}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                                <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                                <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                                <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                                <Grid item xs={1}><IconButton onClick={() => this.handleDeleteLP(index)}><DeleteIcon /></IconButton></Grid>
+                                            </Grid>)}
+
+                                        <div className={classes.spacediv} />
+
+                                        <Grid container justify="space-evenly" alignItems="center">
+                                            <Grid item xs={3}>Sub</Grid>
+                                            <Grid item xs={2}>679,000</Grid>
+                                            <Grid item xs={2}>101,850</Grid>
+                                            <Grid item xs={2}>133%</Grid>
+                                            <Grid item xs={1} />
+                                        </Grid>
+                                    </Paper>
+                                </Grid>
                             </Grid>
-                        </Grid>
-                    </Paper>
+                        </ExpansionPanelDetails>
+                    </ExpansionPanel>
 
                     <div className={classes.spacediv} />
 
-                    <div className={classes.colorcontainer}>
+                    <ExpansionPanel>
+                        <ExpansionPanelSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+                        >
+                            <p className={classes.subtitle}>Sign Ons</p>
+                        </ExpansionPanelSummary>
+                        <ExpansionPanelDetails>
+
+                            <Divider />
+                            <Grid container alignItems="center">
+                                <Grid item xs={6}>
+                                    <Paper>
+                                        <p className={classes.subtitle}>Current</p>
+                                        <Grid container justify="space-evenly">
+                                            <Grid item xs={3}>Currency</Grid>
+                                            <Grid item xs={2}>CNY</Grid>
+                                            <Grid item xs={2}>USD</Grid>
+                                            <Grid item xs={1}><IconButton onClick={this.handleAddSOC}><AddIcon /></IconButton></Grid>
+                                        </Grid>
+                                        <Grid container justify="space-evenly" alignItems="center">
+                                            <Grid item xs={3}>Annual Base</Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={1} />
+                                        </Grid>
+                                        <Grid container justify="space-evenly" alignItems="center">
+                                            <Grid item xs={3}>Compa Ratio</Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={1} />
+                                        </Grid>
+                                        <Grid container justify="space-evenly" alignItems="center">
+                                            <Grid item xs={3}>Market Ratio</Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={1} />
+                                        </Grid>
+
+                                        {this.state.signons_current.map((item: Bonus, index) =>
+                                            <Grid container justify="space-evenly" alignItems="center">
+                                                <Grid item xs={3}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                                <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                                <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                                <Grid item xs={1}><IconButton onClick={() => this.handleDeleteSOC(index)}><DeleteIcon /></IconButton></Grid>
+                                            </Grid>)}
+
+                                        <div className={classes.spacediv} />
+                                        <Grid container justify="space-evenly" alignItems="center">
+                                            <Grid item xs={3}>Sub</Grid>
+                                            <Grid item xs={2}>679,000</Grid>
+                                            <Grid item xs={2}>101,850</Grid>
+                                            <Grid item xs={1} />
+                                        </Grid>
+                                    </Paper>
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <Paper>
+                                        <p className={classes.subtitle}>Propose</p>
+                                        <Grid container justify="space-evenly">
+                                            <Grid item xs={3}>Currency</Grid>
+                                            <Grid item xs={2}>CNY</Grid>
+                                            <Grid item xs={2}>USD</Grid>
+                                            <Grid item xs={2}>Difference</Grid>
+                                            <Grid item xs={1}><IconButton onClick={this.handleAddSOP}><AddIcon /></IconButton></Grid>
+                                        </Grid>
+                                        <Grid container justify="space-evenly" alignItems="center">
+                                            <Grid item xs={3}>Annual Base</Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={1} />
+                                        </Grid>
+                                        <Grid container justify="space-evenly" alignItems="center">
+                                            <Grid item xs={3}>Compa Ratio</Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={1} />
+                                        </Grid>
+                                        <Grid container justify="space-evenly" alignItems="center">
+                                            <Grid item xs={3}>Market Ratio</Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={1} />
+                                        </Grid>
+
+                                        {this.state.signons_propose.map((item: Bonus, index) =>
+                                            <Grid container justify="space-evenly" alignItems="center">
+                                                <Grid item xs={3}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                                <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                                <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                                <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                                <Grid item xs={1}><IconButton onClick={() => this.handleDeleteSOP(index)}><DeleteIcon /></IconButton></Grid>
+                                            </Grid>)}
+
+                                        <div className={classes.spacediv} />
+
+                                        <Grid container justify="space-evenly" alignItems="center">
+                                            <Grid item xs={3}>Sub</Grid>
+                                            <Grid item xs={2}>679,000</Grid>
+                                            <Grid item xs={2}>101,850</Grid>
+                                            <Grid item xs={2}>133%</Grid>
+                                            <Grid item xs={1} />
+                                        </Grid>
+                                    </Paper>
+                                </Grid>
+                            </Grid>
+                        </ExpansionPanelDetails>
+                    </ExpansionPanel>
+
+                    <div className={classes.spacediv} />
+
+                    <Paper className={classes.colorcontainer}>
                         <Grid container alignItems="center">
                             <Grid item xs={1} />
                             <Grid item xs={11}>
@@ -656,7 +687,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                 </Grid>
                             </Grid>
                         </Grid>
-                    </div>
+                    </Paper>
                 </Grid>
                 <Grid item xs={4}>
                     <Paper className={classes.paper}>
