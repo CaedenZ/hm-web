@@ -108,7 +108,7 @@ class EquityRangePage extends React.Component<Props, State> {
         mid: ' ',
         max: ' ',
         country: ' ',
-        value_type: 0,
+        value_type: 'Fixed',
       }
       this.props.createEquityRange(data)
       this.setState({ created: true })

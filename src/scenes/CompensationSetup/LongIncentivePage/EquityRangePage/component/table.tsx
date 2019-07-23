@@ -111,7 +111,7 @@ class CustomizedTable extends React.Component<Props, State> {
   typeEditor = <DropDownEditor options={[...this.props.selectedCompany.country, 'Global']} />;
   jobgradeEditor = <DropDownEditor options={[...arrayUnique(this.props.jobgradeList.map(a => a.jobgrade_name))]} />;
   globalEditor = <DropDownEditor options={['Y', 'N']} />;
-
+  valuetypeEditor = <DropDownEditor options={['Cliff', 'Fixed']} />;
 
 
 
@@ -170,6 +170,10 @@ class CustomizedTable extends React.Component<Props, State> {
       { key: 'country', name: "Country", filterRenderer: AutoCompleteFilter, editor: this.typeEditor },
       { key: 'type', name: "Type", filterRenderer: AutoCompleteFilter, editable: true },
       { key: 'jobgrade_name', name: "Job Grade", filterRenderer: AutoCompleteFilter, editor: this.jobgradeEditor },
+      { key: 'min', name: "Min", filterRenderer: NumericFilter, editable: true },
+      { key: 'mid', name: "Mid", filterRenderer: NumericFilter, editable: true },
+      { key: 'max', name: "Max", filterRenderer: NumericFilter, editable: true },
+      { key: 'value_type', name: "value_type", filterRenderer: AutoCompleteFilter, editor: this.valuetypeEditor },
       // { key: 'global', name: "global", editor: this.globalEditor },
       { key: 'action', name: "Action" },
     ].map(c => ({ ...c, ...defaultColumnProperties }));

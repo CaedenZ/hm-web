@@ -20,6 +20,7 @@ import { selectEquityRangeAction, createEquityRangeAction, updateEquityRangeActi
 import { getJobChartListAction, updateCellAction } from "../actions/jobchartAction";
 import { selectLocationAction, createLocationAction, updateLocationAction, deleteLocationAction, getLocationListAction } from "../actions/locationAction";
 import { insertDataAction } from "../actions/dataInsertAction";
+import { selectJobPositionAction, createJobPositionAction, updateJobPositionAction, deleteJobPositionAction, getJobPositionListAction } from "../actions/jobPositionAction";
 
 
 
@@ -170,5 +171,15 @@ export function mapDispatchToProps(dispatch): SharedDispatchProps {
         updateCell: (payload) => { dispatch(updateCellAction.request(payload)) },
 
         insertData: (payload) => { dispatch(insertDataAction.request(payload)) },
+
+
+
+        // phrase 3
+
+        selectJobPosition: (payload) => { dispatch(selectJobPositionAction(payload)) },
+        createJobPosition: (payload) => { dispatch(createJobPositionAction.request(payload)) },
+        updateJobPosition: (payload) => { dispatch(updateJobPositionAction.request(payload)) },
+        deleteJobPosition: (payload) => { dispatch(deleteJobPositionAction.request(payload)) },
+        getJobPositionList: () => { dispatch(getJobPositionListAction.request()) },
     }
 }

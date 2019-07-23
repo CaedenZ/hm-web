@@ -40,6 +40,10 @@ import LocationPage from "../scenes/LocationPage";
 import CreateLocationPage from "../scenes/LocationPage/create";
 import UpdateLocationPage from "../scenes/LocationPage/update";
 
+import JobPositionPage from "../scenes/JobPositionPage";
+import CreateJobPositionPage from "../scenes/JobPositionPage/create";
+import UpdateJobPositionPage from "../scenes/JobPositionPage/update";
+
 import RolePage from "../scenes/RolePage";
 import CreateRolePage from "../scenes/RolePage/create";
 import UpdateRolePage from "../scenes/RolePage/update";
@@ -117,117 +121,21 @@ class RootRoute extends React.Component<Props, State> {
           <Switch>
             {/* <Route exact path="/" component={Home} /> */}
             {/* both /roster and /roster/:number begin with /roster */}
-            <Route
-              exact
-              path="/login"
-              render={() => (
-                <SecondaryLayout>
-                  <LoginPage />
-                </SecondaryLayout>
-              )}
-            />
-            <Route
-              exact
-              path="/forgetpassword"
-              render={() => (
-                <SecondaryLayout>
-                  <ForgetPasswordPage />
-                </SecondaryLayout>
-              )}
-            />
-            <Route
-              exact
-              path="/resetpassword"
-              render={() => (
-                <SecondaryLayout>
-                  <ResetPasswordPage />
-                </SecondaryLayout>
-              )}
-            />
+            <Route exact path="/login" render={() => (<SecondaryLayout><LoginPage /></SecondaryLayout>)}/>
+            <Route exact path="/forgetpassword" render={() => (<SecondaryLayout><ForgetPasswordPage /></SecondaryLayout>)}/>
+            <Route exact path="/resetpassword" render={() => (<SecondaryLayout><ResetPasswordPage /></SecondaryLayout>)}/>
             {/* <Route exact path="/" component={PrimaryLayout} /> */}
-            <Route
-              exact
-              path="/"
-              render={() => (
-                <PrimaryLayout>
-                  <HomePage />
-                </PrimaryLayout>
-              )}
-            />
-            <Route
-              exact
-              path="/profile"
-              render={() => (
-                <PrimaryLayout>
-                  <ProfilePage />
-                </PrimaryLayout>
-              )}
-            />
-            <Route
-              exact
-              path="/setting"
-              render={() => (
-                <PrimaryLayout>
-                  <SettingPage />
-                </PrimaryLayout>
-              )}
-            />
+            <Route exact path="/" render={() => (<PrimaryLayout><HomePage /></PrimaryLayout>)}/>
+            <Route exact path="/profile" render={() => (<PrimaryLayout><ProfilePage /></PrimaryLayout>)}/>
+            <Route exact path="/setting" render={() => (<PrimaryLayout><SettingPage /></PrimaryLayout>)}/>
 
-            <Route
-              exact
-              path="/user"
-              render={() => (
-                <PrimaryLayout>
-                  <UserPage />
-                </PrimaryLayout>
-              )}
-            />
-            <Route
-              exact
-              path="/user/create"
-              render={() => (
-                <PrimaryLayout>
-                  <CreateUserPage />
-                </PrimaryLayout>
-              )}
-            />
-            <Route
-              exact
-              path="/user/update"
-              render={() => (
-                <PrimaryLayout>
-                  <UpdateUserPage />
-                </PrimaryLayout>
-              )}
-            />
+            <Route exact path="/user" render={() => (<PrimaryLayout><UserPage /></PrimaryLayout>)}/>
+            <Route exact path="/user/create" render={() => (<PrimaryLayout><CreateUserPage /></PrimaryLayout>)}/>
+            <Route exact path="/user/update" render={() => ( <PrimaryLayout> <UpdateUserPage /></PrimaryLayout>)}/>
 
-            <Route
-              exact
-              path="/company"
-              render={() => (
-                <PrimaryLayout>
-                  <CompanyPage />
-                </PrimaryLayout>
-              )}
-            />
-            <Route
-              exact
-              path="/company/create"
-              render={() => (
-                <PrimaryLayout>
-                  <CreateCompanyPage />
-                </PrimaryLayout>
-              )}
-            />
-            <Route
-              exact
-              path="/company/update"
-              render={() => (
-                <PrimaryLayout>
-                  <UpdateCompanyPage />
-                </PrimaryLayout>
-              )}
-            />
+            <Route exact path="/company" render={() => (<PrimaryLayout><CompanyPage /></PrimaryLayout>)}/>
+            <Route exact path="/company/create" render={() => (<PrimaryLayout><CreateCompanyPage /></PrimaryLayout>)}/>
+            <Route exact path="/company/update" render={() => (<PrimaryLayout><UpdateCompanyPage /></PrimaryLayout>)}/>
             <Route
               exact
               path="/company/updateself"
@@ -760,7 +668,10 @@ class RootRoute extends React.Component<Props, State> {
                 </PrimaryLayout>
               )}
             />
-          </Switch>
+            
+            <Route exact path="/jobposition" render={() => (<PrimaryLayout><JobPositionPage /></PrimaryLayout>)}/>
+            <Route exact path="/jobposition/create" render={() => (<PrimaryLayout><CreateJobPositionPage /></PrimaryLayout>)}/>
+            <Route exact path="/jobposition/update" render={() => ( <PrimaryLayout> <UpdateJobPositionPage /></PrimaryLayout>)}/></Switch>
         </ConnectedRouter>
       );
     } else {

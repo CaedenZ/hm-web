@@ -70,6 +70,7 @@ import {
   UPDATELOCATIONCRED
 } from "./locationInterface";
 import { UPDATEPROFILECRED } from "./authInterface";
+import { CREATEJOBPOSITIONCRED, UPDATEJOBPOSITIONCRED, JobPosition } from "./jobpositionInterface";
 
 export interface SharedDispatchProps {
   showSnackBar: () => void;
@@ -218,4 +219,12 @@ export interface SharedDispatchProps {
   updateCell: (cred: UPDATECELL) => void;
 
   insertData: (cred: any) => void;
+
+// phrase 3
+
+  getJobPositionList: () => void;
+  selectJobPosition: (JobPosition: JobPosition) => void;
+  createJobPosition: (cred: CREATEJOBPOSITIONCRED) => void;
+  updateJobPosition: (cred: UPDATEJOBPOSITIONCRED) => void;
+  deleteJobPosition: (cred: string) => void;
 }

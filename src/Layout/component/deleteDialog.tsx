@@ -116,8 +116,11 @@ class AlertDialog extends React.Component<Props, State> {
       case "shortincentive":
         this.props.deleteShortIncentive(this.props.deleteDialog.id);
         break;
-      case "longincentive":
-        this.props.deleteLongIncentive(this.props.deleteDialog.id);
+        case "longincentive":
+          this.props.deleteLongIncentive(this.props.deleteDialog.id);
+          break;
+          case "jobposition":
+        this.props.deleteJobPosition(this.props.deleteDialog.id);
         break;
       default:
         break;

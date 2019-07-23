@@ -55,6 +55,7 @@ import { getLongIncentiveListAction } from "../actions/longIncentiveAction";
 import { getShortIncentiveListAction } from "../actions/shortIncentiveAction";
 import { getSignonsListAction } from "../actions/signonsAction";
 import { getLocationListAction } from "../actions/locationAction";
+import { getJobPositionListAction } from "../actions/jobPositionAction";
 
 export function companyReducer(
   state: CompanyState = {
@@ -161,6 +162,7 @@ export function companyReducer(
       action.asyncDispatch(getShortIncentiveListAction.request());
       action.asyncDispatch(getSignonsListAction.request());
       action.asyncDispatch(getLocationListAction.request());
+      action.asyncDispatch(getJobPositionListAction.request());
       return {
         ...state,
         selectedCompany: action.payload

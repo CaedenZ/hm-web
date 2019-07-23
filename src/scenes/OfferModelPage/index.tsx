@@ -97,20 +97,36 @@ class OfferModelPage extends React.Component<Props, State> {
         }];
         return (
             <Grid container alignItems="center" justify="space-evenly" direction="row" className={classes.root}>
-                <Grid item xs={8}>
+                <Grid item xs={10}>
+
+                <p className={classes.subtitle}>TOM Modeller</p>
+
+                    <Grid container justify="space-evenly" alignItems="center">
+                        <Grid item xs={1}>Candidate</Grid>
+                        <Grid item xs={3}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                        <Grid item xs={1}>Offer Modeller Type</Grid>
+                        <Grid item xs={3}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                        <Grid item xs={1}>Offer Reference</Grid>
+                        <Grid item xs={3}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                    </Grid>
+                    <Grid container justify="space-evenly" alignItems="center">
+                        <Grid item xs={1}>Job Flag</Grid>
+                        <Grid item xs={3}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                        <Grid item xs={1}>Year of Birth</Grid>
+                        <Grid item xs={3}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                        <Grid item xs={1}>Job Grade</Grid>
+                        <Grid item xs={3}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                    </Grid>
+
+                    <div className={classes.spacediv} />
+
                     <ExpansionPanel>
                         <ExpansionPanelSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-controls="panel1a-content"
                             id="panel1a-header"
                         >
-                            <Grid container>
-                                <Grid item xs={4}><p className={classes.subtitle}>Name</p></Grid>
-                                <Grid item xs={4}><TextField
-                                    inputProps={{
-                                        style: { textAlign: "center" }
-                                    }} /></Grid>
-                            </Grid>
+                            <p className={classes.subtitle}>Position</p>
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails>
                             <Divider />
@@ -229,7 +245,13 @@ class OfferModelPage extends React.Component<Props, State> {
                                             <Grid item xs={1} />
                                         </Grid>
                                         <Grid container justify="space-evenly" alignItems="center">
-                                            <Grid item xs={3}>Market Ratio</Grid>
+                                            <Grid item xs={3}>Market Ratio Grade</Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={1} />
+                                        </Grid>
+                                        <Grid container justify="space-evenly" alignItems="center">
+                                            <Grid item xs={3}>Market Ratio Function</Grid>
                                             <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                             <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                             <Grid item xs={1} />
@@ -277,7 +299,14 @@ class OfferModelPage extends React.Component<Props, State> {
                                             <Grid item xs={1} />
                                         </Grid>
                                         <Grid container justify="space-evenly" alignItems="center">
-                                            <Grid item xs={3}>Market Ratio</Grid>
+                                            <Grid item xs={3}>Market Ratio Grade</Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={1} />
+                                        </Grid>
+                                        <Grid container justify="space-evenly" alignItems="center">
+                                            <Grid item xs={3}>Market Ratio Function</Grid>
                                             <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                             <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                             <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
@@ -464,24 +493,6 @@ class OfferModelPage extends React.Component<Props, State> {
                                             <Grid item xs={2}>USD</Grid>
                                             <Grid item xs={1}><IconButton onClick={this.handleAddLC}><AddIcon /></IconButton></Grid>
                                         </Grid>
-                                        <Grid container justify="space-evenly" alignItems="center">
-                                            <Grid item xs={3}>Annual Base</Grid>
-                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                            <Grid item xs={1} />
-                                        </Grid>
-                                        <Grid container justify="space-evenly" alignItems="center">
-                                            <Grid item xs={3}>Compa Ratio</Grid>
-                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                            <Grid item xs={1} />
-                                        </Grid>
-                                        <Grid container justify="space-evenly" alignItems="center">
-                                            <Grid item xs={3}>Market Ratio</Grid>
-                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                            <Grid item xs={1} />
-                                        </Grid>
 
                                         {this.state.longterm_current.map((item: Bonus, index) =>
                                             <Grid container justify="space-evenly" alignItems="center">
@@ -509,27 +520,6 @@ class OfferModelPage extends React.Component<Props, State> {
                                             <Grid item xs={2}>USD</Grid>
                                             <Grid item xs={2}>Difference</Grid>
                                             <Grid item xs={1}><IconButton onClick={this.handleAddLP}><AddIcon /></IconButton></Grid>
-                                        </Grid>
-                                        <Grid container justify="space-evenly" alignItems="center">
-                                            <Grid item xs={3}>Annual Base</Grid>
-                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                            <Grid item xs={1} />
-                                        </Grid>
-                                        <Grid container justify="space-evenly" alignItems="center">
-                                            <Grid item xs={3}>Compa Ratio</Grid>
-                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                            <Grid item xs={1} />
-                                        </Grid>
-                                        <Grid container justify="space-evenly" alignItems="center">
-                                            <Grid item xs={3}>Market Ratio</Grid>
-                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                            <Grid item xs={2}><TextField inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                            <Grid item xs={1} />
                                         </Grid>
 
                                         {this.state.longterm_propose.map((item: Bonus, index) =>
@@ -688,8 +678,10 @@ class OfferModelPage extends React.Component<Props, State> {
                             </Grid>
                         </Grid>
                     </Paper>
-                </Grid>
-                <Grid item xs={4}>
+
+                    <div className={classes.spacediv} />
+                    <div className={classes.spacediv} />
+                    
                     <Paper className={classes.paper}>
                         <Grid container alignItems="center" justify="center">
                             <Grid item xs={4}>Internal Promotion</Grid>
@@ -772,15 +764,7 @@ class OfferModelPage extends React.Component<Props, State> {
                         </Grid>
 
                         <div className={classes.spacediv} />
-                        <div className={classes.spacediv} />
-                        <div className={classes.spacediv} />
-                        <div className={classes.spacediv} />
-                        <div className={classes.spacediv} />
-                        <div className={classes.spacediv} />
-                        <div className={classes.spacediv} />
-                        <div className={classes.spacediv} />
-                        <div className={classes.spacediv} />
-                        <div className={classes.spacediv} />
+
                         <Grid container alignItems="center">
                             <Grid item xs={1}>
                             </Grid>
@@ -807,8 +791,8 @@ class OfferModelPage extends React.Component<Props, State> {
                         </Grid>
 
                     </Paper>
-                </Grid>
 
+</Grid>
             </Grid>
         );
     }

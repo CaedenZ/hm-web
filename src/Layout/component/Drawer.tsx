@@ -90,6 +90,7 @@ interface State {
   expended1: boolean;
   expended2: boolean;
   expended3: boolean;
+  expended4: boolean;
   selectedIndex: number | null;
 }
 
@@ -103,6 +104,7 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
     expended1: false,
     expended2: false,
     expended3: false,
+    expended4: false,
     selectedIndex: null
   };
 
@@ -112,23 +114,34 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
         this.setState(state => ({
           expended1: !state.expended1,
           expended2: false,
-          expended3: false
+          expended3: false,
+          expended4: false
         }));
         break;
       case 2:
         this.setState(state => ({
           expended1: false,
           expended2: !state.expended2,
-          expended3: false
+          expended3: false,
+          expended4: false
         }));
         break;
-      case 3:
-        this.setState(state => ({
-          expended1: false,
-          expended2: false,
-          expended3: !state.expended3
-        }));
-        break;
+        case 3:
+          this.setState(state => ({
+            expended1: false,
+            expended2: false,
+            expended3: !state.expended3,
+            expended4: false
+          }));
+          break;
+        case 4:
+          this.setState(state => ({
+            expended1: false,
+            expended2: false,
+            expended3: false,
+            expended4: !state.expended4
+          }));
+          break;
       default:
         break;
     }
@@ -376,6 +389,17 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
       return adm;
     };
 
+    const offermodelfunction = (): any => {
+      let adm = [
+        {
+          title: "Job Position",
+          path: "/jobposition",
+          icon: <JobGradeIcon />,
+          index: 21
+        },
+      ];
+      return adm;
+    };
     return (
       <div className={classes.root}>
         <CssBaseline />
@@ -490,14 +514,35 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
             </List>
           </Collapse>
           <Divider />
-          <List>
-            <ListItem button onClick={this.handleOfferModel}>
-              <ListItemIcon>
-                <MenuIcon />
-              </ListItemIcon>
-              <ListItemText primary="OfferModel" />
-            </ListItem>
-          </List>
+          <ListItem
+            className={classes.menubar}
+            button
+            onClick={() => this.handleExpand(4)}
+          >
+            <ListItemIcon>
+              <MenuIcon />
+            </ListItemIcon>
+            <ListItemText primary="Offer Modeler" />
+          </ListItem>
+          <Collapse in={this.state.expended4} timeout="auto" unmountOnExit>
+            <List className={classes.navlist}>
+              {offermodelfunction().map(item => (
+                <Link
+                  key={item.title}
+                  to={item.path}
+                  style={{ textDecoration: "none" }}
+                >
+                  <ListItem
+                    button
+                    selected={this.state.selectedIndex === item.index}
+                    onClick={() => this.handleListItemClick(item.index)}
+                  >
+                    <ListItemText primary={item.title} />
+                  </ListItem>
+                </Link>
+              ))}
+            </List>
+          </Collapse>
           <Divider />
           <List>
             <ListItem button onClick={() => this.props.showSnackBar()}>

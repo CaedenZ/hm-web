@@ -9,7 +9,7 @@ export interface EquityRange {
     mid: string,
     max: string,
     country: string,
-    value_type: number,
+    value_type: string,
 }
 
 
@@ -27,7 +27,7 @@ export interface CREATEEQUITYRANGECRED {
     mid: string,
     max: string,
     country: string,
-    value_type: number,
+    value_type: string,
 }
 
 export interface UPDATEEQUITYRANGECRED {
@@ -41,5 +41,5 @@ export interface UPDATEEQUITYRANGECRED {
     mid: string,
     max: string,
     country: string,
-    value_type: number,
+    value_type: string,
 }
