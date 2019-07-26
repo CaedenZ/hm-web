@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Grid, Theme, createStyles, Paper, WithStyles, withStyles, Divider, TextField, Typography, IconButton, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails } from "@material-ui/core";
+import { Grid, Theme, createStyles, Paper, WithStyles, withStyles, Divider, TextField, Typography, IconButton, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Button } from "@material-ui/core";
 import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -791,8 +791,31 @@ class OfferModelPage extends React.Component<Props, State> {
                         </Grid>
 
                     </Paper>
+                    <Divider />
+                <Divider />
+                <div
+                    style={{
+                        display: "flex",
+                        paddingTop: "1rem"
+                    }}
+                >
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        style={{ marginLeft: "auto" }}
+                    >
+                        Save
+            </Button>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                    >
+                        Submit
+            </Button>
+                </div>
 
                 </Grid>
+                
             </Grid>
         );
     }
