@@ -12,7 +12,7 @@ import {
   DialogActions
 } from "@material-ui/core";
 
-export interface Props extends SharedDispatchProps, InState {}
+export interface Props extends SharedDispatchProps, InState { }
 
 interface InState {
   open: boolean;
@@ -80,33 +80,6 @@ class ResetPassword extends Component<Props, State> {
           </Button>
         </DialogActions>
       </Dialog>
-      // <main className={classes.main}>
-      //   <CssBaseline />
-      //   <Paper className={classes.paper}>
-      //     <Typography component="h1" variant="h5">
-      //       Set your new password
-      //   </Typography>
-      //     <form className={classes.form} onSubmit={this.handleReset}>
-      //       <FormControl margin="normal" required fullWidth>
-      //         <InputLabel htmlFor="password">New Password</InputLabel>
-      //         <Input name="password" type="password" id="password" autoComplete="current-password" value={this.state.password} onChange={this.handleChange} />
-      //       </FormControl>
-      //       <FormControl margin="normal" required fullWidth>
-      //         <InputLabel htmlFor="confirmPassword">Confirm Password</InputLabel>
-      //         <Input name="confirmPassword" type="password" id="confirmPassword" autoComplete="current-password" value={this.state.confirmPassword} onChange={this.handleChange} />
-      //       </FormControl>
-      //       <Button
-      //         type="submit"
-      //         fullWidth
-      //         variant="contained"
-      //         color="primary"
-      //         className={classes.submit}
-      //       >
-      //         Confirm
-      //     </Button>
-      //     </form>
-      //   </Paper>
-      // </main>
     );
   }
 }

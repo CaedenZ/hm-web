@@ -104,6 +104,9 @@ import MarketDataUploadPage from "../scenes/CompensationSetup/MarketDataUploadPa
 import JobChartPage from "../scenes/ConfigurationPage/JobChartPage";
 
 import OfferModelPage from "../scenes/OfferModelPage"
+import CreateOfferModelPage from "../scenes/OfferModelPage/create"
+import UpdateOfferModelPage from "../scenes/OfferModelPage/update"
+
 
 export interface Props extends InState { }
 
@@ -659,7 +662,9 @@ class RootRoute extends React.Component<Props, State> {
               )}
             />
 
-            <Route exact path="/offermodel" render={() => ( <PrimaryLayout><OfferModelPage /></PrimaryLayout>)}/>
+            <Route exact path="/offermodel" render={() => (<PrimaryLayout><OfferModelPage /></PrimaryLayout>)} />
+            <Route exact path="/offermodel/create" render={() => (<PrimaryLayout><CreateOfferModelPage /></PrimaryLayout>)} />
+            <Route exact path="/offermodel/update" render={() => (<PrimaryLayout><UpdateOfferModelPage /></PrimaryLayout>)} />
 
             <Route exact path="/jobposition" render={() => (<PrimaryLayout><JobPositionPage /></PrimaryLayout>)} />
             <Route exact path="/jobposition/create" render={() => (<PrimaryLayout><CreateJobPositionPage /></PrimaryLayout>)} />

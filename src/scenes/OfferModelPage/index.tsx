@@ -18,13 +18,14 @@ import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../interface/propsInterface";
 import { IconButton } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
-import OfferIcon from "@material-ui/icons/More";
+import OfferIcon from "@material-ui/icons/Beenhere";
 import { OfferModel } from "../../interface/offerModelInterface";
 import { history } from "../../store";
 import UpdateIcon from "@material-ui/icons/PlaylistAddCheck";
 import { Company } from "../../interface/companyInterface";
 import { isUserHR, isUserPowerOrHR } from "../../function/checkRole";
 import CustomButton from "../../helper/components/CustomButton";
+import ChangeStatus from "./Component/changeStatus"
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -58,14 +59,19 @@ export interface Props
   SharedDispatchProps,
   InState { }
 
-interface State { }
+interface State {
+  changeStatus: boolean;
+}
 
 interface InState {
   selectedCompany: Company;
-  jobPositionList: OfferModel[];
+  offerModelList: OfferModel[];
   role;
 }
 class OfferModelPage extends React.Component<Props, State> {
+  state = {
+    changeStatus: false,
+  }
   componentDidMount() {
     console.log("OfferModel Page Mounted");
     if (this.props.selectedCompany.company_id === "") {
@@ -83,9 +89,9 @@ class OfferModelPage extends React.Component<Props, State> {
     history.push("/offermodel/update");
   };
 
-  handleOfferButtonClick = offermodel => {
+  handleStatesButtonClick = offermodel => {
     this.props.selectOfferModel(offermodel);
-    history.push("/offermodel")
+    this.setState({ changeStatus: true })
   }
 
   handleDelete = id => {
@@ -95,6 +101,10 @@ class OfferModelPage extends React.Component<Props, State> {
       id: id
     };
     this.props.showDialog(payload);
+  };
+
+  handleClose = () => {
+    this.setState({ changeStatus: false });
   };
 
   render() {
@@ -109,32 +119,32 @@ class OfferModelPage extends React.Component<Props, State> {
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
-                <CustomTableCell align="left">Country</CustomTableCell>
-                <CustomTableCell align="left">Job Grade</CustomTableCell>
-                <CustomTableCell align="left">Business Title</CustomTableCell>
-                <CustomTableCell align="left">Job Function</CustomTableCell>
+                <CustomTableCell align="left">candidate_name</CustomTableCell>
+                <CustomTableCell align="left">model_type</CustomTableCell>
+                <CustomTableCell align="left">job_flag</CustomTableCell>
+                <CustomTableCell align="left">status</CustomTableCell>
                 <CustomTableCell align="right">Action</CustomTableCell>
               </TableRow>
             </TableHead>
-            {this.props.jobPositionList.length > 0 && (
+            {this.props.offerModelList.length > 0 && (
               <TableBody>
-                {this.props.jobPositionList.map(row => (
+                {this.props.offerModelList.map(row => (
                   <TableRow className={classes.row} key={row.offermodel_id}>
                     <CustomTableCell component="th" scope="row">
-                      {row.country}
+                      {row.candidate_name}
                     </CustomTableCell>
                     <CustomTableCell component="th" scope="row">
-                      {row.jobgrade_name}
+                      {row.model_type}
                     </CustomTableCell>
                     <CustomTableCell component="th" scope="row">
-                      {row.business_title}
+                      {row.job_flag}
                     </CustomTableCell>
                     <CustomTableCell component="th" scope="row">
-                      {row.jobfunction}
+                      {row.status}
                     </CustomTableCell>
                     <CustomTableCell align="right">
                       <IconButton
-                        onClick={() => this.handleOfferButtonClick(row)}
+                        onClick={() => this.handleStatesButtonClick(row)}
                       >
                         <OfferIcon />
                       </IconButton>
@@ -160,6 +170,10 @@ class OfferModelPage extends React.Component<Props, State> {
             )}
           </Table>
         </Paper>
+        <ChangeStatus
+          open={this.state.changeStatus}
+          handleClose={this.handleClose}
+        />
       </main>
     );
   }
@@ -172,7 +186,7 @@ class OfferModelPage extends React.Component<Props, State> {
 function mapStateToProps(state: RootState) {
   return {
     selectedCompany: state.companyReducer.selectedCompany,
-    jobPositionList: state.jobPositionReducer.offermodelList,
+    offerModelList: state.offerModelReducer.offerModelList,
     role: state.authenticationReducer.profile.info.role_name
   };
 }

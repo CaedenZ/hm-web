@@ -6,17 +6,17 @@ import { getOfferModelListAction, createOfferModelAction, updateOfferModelAction
 import { from, of } from "rxjs";
 import { getOfferModelList, createOfferModel, updateOfferModel, deleteOfferModel } from "../api/offerModelApi";
 
-export function jobPositionReducer(state: OfferModelState = {
-    offermodelList: [],
+export function offerModelReducer(state: OfferModelState = {
+    offerModelList: [],
 }, action) {
     switch (action.type) {
         case 'LOG_IN_SUCCESS':
             return {
-                offermodelList: [],
+                offerModelList: [],
             }
         case 'LOG_OUT':
             return {
-                offermodelList: [],
+                offerModelList: [],
             }
         case 'SELECT_OFFERMODEL':
             return {
@@ -26,7 +26,7 @@ export function jobPositionReducer(state: OfferModelState = {
         case 'GET_OFFERMODEL_LIST_SUCCESS':
             return {
                 ...state,
-                offermodelList: action.payload
+                offerModelList: action.payload
             }
         case 'CREATE_OFFERMODEL_SUCCESS':
             action.asyncDispatch(getOfferModelListAction.request())
@@ -52,7 +52,7 @@ export const getOfferModelListEpic: Epic<any, any, any, any> = (action$, state$)
     action$.pipe(
         filter(isActionOf(getOfferModelListAction.request)),
         switchMap((action) =>
-            from(getOfferModelList(state$.value.authenticationReducer.token, state$.value.companyReducer.selectedCompany.company_id)).pipe(
+            from(getOfferModelList(state$.value.authenticationReducer.token, state$.value.jobPositionReducer.selectedJobPosition.jobposition_id)).pipe(
                 map((OfferModelList: OfferModel[]) => getOfferModelListAction.success(OfferModelList)),
                 catchError(error => of(getOfferModelListAction.failure(error.message)))
             )

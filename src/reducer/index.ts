@@ -162,7 +162,8 @@ import {
   deleteLocationEpic
 } from "./locationReducer";
 import { insertDataEpic } from "./dataInsertReducer";
-import {jobPositionReducer, createJobPositionEpic, getJobPositionListEpic, updateJobPositionEpic, deleteJobPositionEpic } from "./jobPositionReducer";
+import { jobPositionReducer, createJobPositionEpic, getJobPositionListEpic, updateJobPositionEpic, deleteJobPositionEpic } from "./jobPositionReducer";
+import { offerModelReducer, createOfferModelEpic, getOfferModelListEpic, updateOfferModelEpic, deleteOfferModelEpic } from "./offerModelReducer"
 
 export const history = createBrowserHistory();
 
@@ -189,6 +190,7 @@ export const rootReducer = combineReducers({
   equityrangeReducer,
   jobchartReducer,
   jobPositionReducer,
+  offerModelReducer,
   router: connectRouter(history)
   //   userDetail,
   //   currentReport,
@@ -323,6 +325,11 @@ export const rootEpic = combineEpics(
   getJobPositionListEpic,
   updateJobPositionEpic,
   deleteJobPositionEpic,
+
+  createOfferModelEpic,
+  getOfferModelListEpic,
+  updateOfferModelEpic,
+  deleteOfferModelEpic,
 );
 
 // export type DetailState = DetailState

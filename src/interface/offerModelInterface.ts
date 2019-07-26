@@ -1,43 +1,63 @@
 
 export interface OfferModel {
-    offermodel_id:string;
-    business_title: string;
-    country: string;
+    offermodel_id: string;
+    jobposition_id: string;
+    candidate_name: string;
+    job_flag: string;
+    model_type: string;
+    offer_reference: string;
     jobgrade_id: string;
-    jobgrade_name: string;
-    location: string;
-    jobfunction: string;
-    sjobfunction: string;
-    description: string;
-    remarks: string;
+    current_position_title: string;
+    current_position_country: string;
+    current_position_location: string;
+    current_position_grade: string;
+    current_position_datestart: string;
+    current_position_jobfunction: string;
+    current_position_sjobfunction: string;
+    propose_position_datestart: string;
+    status: string;
+    current_data: any[];
 }
 
 export interface OfferModelState {
-    offermodelList: OfferModel[],
+    offerModelList: OfferModel[],
     selectedOfferModel?: OfferModel,
 }
 
 export interface CREATEOFFERMODELCRED {
-    business_title: string;
-    country: string;
+    jobposition_id: string;
+    candidate_name: string;
+    job_flag: string;
+    model_type: string;
+    offer_reference: string;
     jobgrade_id: string;
-    jobgrade_name: string;
-    location: string;
-    jobfunction: string;
-    sjobfunction: string;
-    description: string;
-    remarks: string;
+    current_position_title: string;
+    current_position_country: string;
+    current_position_location: string;
+    current_position_grade: string;
+    current_position_datestart: string;
+    current_position_jobfunction: string;
+    current_position_sjobfunction: string;
+    propose_position_datestart: string;
+    status: string;
+    current_data: any[];
 }
 
 export interface UPDATEOFFERMODELCRED {
-    offermodel_id:string;
-    business_title: string;
-    country: string;
+    jobposition_id: string;
+    candidate_name: string;
+    job_flag: string;
+    model_type: string;
+    offer_reference: string;
     jobgrade_id: string;
-    jobgrade_name: string;
-    location: string;
-    jobfunction: string;
-    sjobfunction: string;
-    description: string;
-    remarks: string;
+    current_position_title: string;
+    current_position_country: string;
+    current_position_location: string;
+    current_position_grade: string;
+    current_position_datestart: string;
+    current_position_jobfunction: string;
+    current_position_sjobfunction: string;
+    propose_position_datestart: string;
+    status: string;
+    current_data: any[];
 }

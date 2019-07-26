@@ -4,7 +4,7 @@ import { OfferModel, CREATEOFFERMODELCRED, UPDATEOFFERMODELCRED } from "../inter
 export const getOfferModelList = async (payload, id): Promise<OfferModel[]> => {
 
 
-    const response = await $axios.post('job/getjob', { session_key: payload, customer_id: id })
+    const response = await $axios.post('job/getOfferModel', { session_key: payload, jobposition_id: id })
     console.log(response.data.data)
     return response.data.data
 }
@@ -17,7 +17,7 @@ export const createOfferModel = async (token, payload: CREATEOFFERMODELCRED, com
         customer_id: companyId
     }
 
-    const response = await $axios.post('/job/createjob', data)
+    const response = await $axios.post('/job/createOfferModel', data)
     console.log(response.data.data)
     return response.data.data
 }
@@ -30,7 +30,7 @@ export const updateOfferModel = async (token, payload: UPDATEOFFERMODELCRED, com
         company_id: companyId
     }
 
-    const response = await $axios.post('/job/updatejob', data)
+    const response = await $axios.post('/job/updateOfferModel', data)
     console.log(response.data.data)
     return response.data.data
 }
@@ -43,6 +43,6 @@ export const deleteOfferModel = async (token, payload: string) => {
     }
 
     console.log(data)
-    const response = await $axios.post('job/deletejob', data)
+    const response = await $axios.post('job/deleteOfferModel', data)
     return response.data.data
 }
