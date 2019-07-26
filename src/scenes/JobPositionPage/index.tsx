@@ -18,6 +18,7 @@ import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../interface/propsInterface";
 import { IconButton } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
+import OfferIcon from "@material-ui/icons/More";
 import { JobPosition } from "../../interface/jobpositionInterface";
 import { history } from "../../store";
 import UpdateIcon from "@material-ui/icons/PlaylistAddCheck";
@@ -54,10 +55,10 @@ const styles = (theme: Theme) =>
 
 export interface Props
   extends WithStyles<typeof styles>,
-    SharedDispatchProps,
-    InState {}
+  SharedDispatchProps,
+  InState { }
 
-interface State {}
+interface State { }
 
 interface InState {
   selectedCompany: Company;
@@ -82,7 +83,8 @@ class JobPositionPage extends React.Component<Props, State> {
     history.push("/jobposition/update");
   };
 
-  handleOfferButtonClick = () =>{
+  handleOfferButtonClick = jobposition => {
+    this.props.selectJobPosition(jobposition);
     history.push("/offermodel")
   }
 
@@ -101,14 +103,14 @@ class JobPositionPage extends React.Component<Props, State> {
     return (
       <main>
         {!isUserHR(this.props.role) && (
-          <CustomButton onClick={()=> history.push("/jobposition/create")}>New JobPosition</CustomButton>
+          <CustomButton onClick={() => history.push("/jobposition/create")}>New JobPosition</CustomButton>
         )}
         <Paper className={classes.root}>
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
-              <CustomTableCell align="left">Country</CustomTableCell>
-              <CustomTableCell align="left">Job Grade</CustomTableCell>
+                <CustomTableCell align="left">Country</CustomTableCell>
+                <CustomTableCell align="left">Job Grade</CustomTableCell>
                 <CustomTableCell align="left">Business Title</CustomTableCell>
                 <CustomTableCell align="left">Job Function</CustomTableCell>
                 <CustomTableCell align="right">Action</CustomTableCell>
@@ -122,7 +124,7 @@ class JobPositionPage extends React.Component<Props, State> {
                       {row.country}
                     </CustomTableCell>
                     <CustomTableCell component="th" scope="row">
-                      {row.jobgrade_id}
+                      {row.jobgrade_name}
                     </CustomTableCell>
                     <CustomTableCell component="th" scope="row">
                       {row.business_title}
@@ -131,6 +133,11 @@ class JobPositionPage extends React.Component<Props, State> {
                       {row.jobfunction}
                     </CustomTableCell>
                     <CustomTableCell align="right">
+                      <IconButton
+                        onClick={() => this.handleOfferButtonClick(row)}
+                      >
+                        <OfferIcon />
+                      </IconButton>
                       {!isUserHR(this.props.role) && (
                         <IconButton
                           onClick={() => this.handleUpdateButtonClick(row)}
