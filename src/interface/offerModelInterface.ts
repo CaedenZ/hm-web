@@ -1,6 +1,6 @@
 
-export interface JobPosition {
-    jobposition_id:string;
+export interface OfferModel {
+    offermodel_id:string;
     business_title: string;
     country: string;
     jobgrade_id: string;
@@ -12,12 +12,12 @@ export interface JobPosition {
     remarks: string;
 }
 
-export interface JobPositionState {
-    jobpositionList: JobPosition[],
-    selectedJobPosition?: JobPosition,
+export interface OfferModelState {
+    offermodelList: OfferModel[],
+    selectedOfferModel?: OfferModel,
 }
 
-export interface CREATEJOBPOSITIONCRED {
+export interface CREATEOFFERMODELCRED {
     business_title: string;
     country: string;
     jobgrade_id: string;
@@ -29,8 +29,8 @@ export interface CREATEJOBPOSITIONCRED {
     remarks: string;
 }
 
-export interface UPDATEJOBPOSITIONCRED {
-    jobposition_id:string;
+export interface UPDATEOFFERMODELCRED {
+    offermodel_id:string;
     business_title: string;
     country: string;
     jobgrade_id: string;

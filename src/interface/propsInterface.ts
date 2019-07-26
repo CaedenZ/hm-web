@@ -71,6 +71,7 @@ import {
 } from "./locationInterface";
 import { UPDATEPROFILECRED } from "./authInterface";
 import { CREATEJOBPOSITIONCRED, UPDATEJOBPOSITIONCRED, JobPosition } from "./jobpositionInterface";
+import { OfferModel, CREATEOFFERMODELCRED, UPDATEOFFERMODELCRED } from "./offerModelInterface";
 
 export interface SharedDispatchProps {
   showSnackBar: () => void;
@@ -220,11 +221,17 @@ export interface SharedDispatchProps {
 
   insertData: (cred: any) => void;
 
-// phrase 3
+  // phrase 3
 
   getJobPositionList: () => void;
   selectJobPosition: (JobPosition: JobPosition) => void;
   createJobPosition: (cred: CREATEJOBPOSITIONCRED) => void;
   updateJobPosition: (cred: UPDATEJOBPOSITIONCRED) => void;
   deleteJobPosition: (cred: string) => void;
+
+  getOfferModelList: () => void;
+  selectOfferModel: (off: OfferModel) => void;
+  createOfferModel: (cred: CREATEOFFERMODELCRED) => void;
+  updateOfferModel: (cred: UPDATEOFFERMODELCRED) => void;
+  deleteOfferModel: (cred: string) => void;
 }

@@ -1,45 +1,45 @@
-import { JobPositionState, JobPosition } from "../interface/jobpositionInterface";
+import { OfferModelState, OfferModel } from "../interface/offerModelInterface";
 import { Epic } from "redux-observable";
 import { filter, switchMap, map, catchError } from "rxjs/operators";
 import { isActionOf } from "typesafe-actions";
-import { getJobPositionListAction, createJobPositionAction, updateJobPositionAction, deleteJobPositionAction } from "../actions/jobPositionAction";
+import { getOfferModelListAction, createOfferModelAction, updateOfferModelAction, deleteOfferModelAction } from "../actions/offerModelAction";
 import { from, of } from "rxjs";
-import { getJobPositionList, createJobPosition, updateJobPosition, deleteJobPosition } from "../api/jobPositionApi";
+import { getOfferModelList, createOfferModel, updateOfferModel, deleteOfferModel } from "../api/offerModelApi";
 
-export function jobPositionReducer(state: JobPositionState = {
-    jobpositionList: [],
+export function jobPositionReducer(state: OfferModelState = {
+    offermodelList: [],
 }, action) {
     switch (action.type) {
         case 'LOG_IN_SUCCESS':
             return {
-                jobpositionList: [],
+                offermodelList: [],
             }
         case 'LOG_OUT':
             return {
-                jobpositionList: [],
+                offermodelList: [],
             }
-        case 'SELECT_JOBPOSITION':
+        case 'SELECT_OFFERMODEL':
             return {
                 ...state,
-                selectedJobPosition: action.payload
+                selectedOfferModel: action.payload
             }
-        case 'GET_JOBPOSITION_LIST_SUCCESS':
+        case 'GET_OFFERMODEL_LIST_SUCCESS':
             return {
                 ...state,
-                jobpositionList: action.payload
+                offermodelList: action.payload
             }
-        case 'CREATE_JOBPOSITION_SUCCESS':
-            action.asyncDispatch(getJobPositionListAction.request())
-            return {
-                ...state,
-            }
-        case 'UPDATE_JOBPOSITION_SUCCESS':
-            action.asyncDispatch(getJobPositionListAction.request())
+        case 'CREATE_OFFERMODEL_SUCCESS':
+            action.asyncDispatch(getOfferModelListAction.request())
             return {
                 ...state,
             }
-        case 'DELETE_JOBPOSITION_SUCCESS':
-            action.asyncDispatch(getJobPositionListAction.request())
+        case 'UPDATE_OFFERMODEL_SUCCESS':
+            action.asyncDispatch(getOfferModelListAction.request())
+            return {
+                ...state,
+            }
+        case 'DELETE_OFFERMODEL_SUCCESS':
+            action.asyncDispatch(getOfferModelListAction.request())
             return {
                 ...state,
             }
@@ -48,46 +48,46 @@ export function jobPositionReducer(state: JobPositionState = {
     }
 }
 
-export const getJobPositionListEpic: Epic<any, any, any, any> = (action$, state$) =>
+export const getOfferModelListEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
-        filter(isActionOf(getJobPositionListAction.request)),
+        filter(isActionOf(getOfferModelListAction.request)),
         switchMap((action) =>
-            from(getJobPositionList(state$.value.authenticationReducer.token, state$.value.companyReducer.selectedCompany.company_id)).pipe(
-                map((JobPositionList: JobPosition[]) => getJobPositionListAction.success(JobPositionList)),
-                catchError(error => of(getJobPositionListAction.failure(error.message)))
+            from(getOfferModelList(state$.value.authenticationReducer.token, state$.value.companyReducer.selectedCompany.company_id)).pipe(
+                map((OfferModelList: OfferModel[]) => getOfferModelListAction.success(OfferModelList)),
+                catchError(error => of(getOfferModelListAction.failure(error.message)))
             )
         )
     )
 
-export const createJobPositionEpic: Epic<any, any, any, any> = (action$, state$) =>
+export const createOfferModelEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
-        filter(isActionOf(createJobPositionAction.request)),
+        filter(isActionOf(createOfferModelAction.request)),
         switchMap((action) =>
-            from(createJobPosition(state$.value.authenticationReducer.token, action.payload, state$.value.companyReducer.selectedCompany.company_id)).pipe(
-                map(() => createJobPositionAction.success()),
-                catchError(error => of(createJobPositionAction.failure(error.message)))
+            from(createOfferModel(state$.value.authenticationReducer.token, action.payload, state$.value.companyReducer.selectedCompany.company_id)).pipe(
+                map(() => createOfferModelAction.success()),
+                catchError(error => of(createOfferModelAction.failure(error.message)))
             )
         )
     )
 
-export const updateJobPositionEpic: Epic<any, any, any, any> = (action$, state$) =>
+export const updateOfferModelEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
-        filter(isActionOf(updateJobPositionAction.request)),
+        filter(isActionOf(updateOfferModelAction.request)),
         switchMap((action) =>
-            from(updateJobPosition(state$.value.authenticationReducer.token, action.payload, state$.value.companyReducer.selectedCompany.company_id)).pipe(
-                map(() => updateJobPositionAction.success()),
-                catchError(error => of(updateJobPositionAction.failure(error.message)))
+            from(updateOfferModel(state$.value.authenticationReducer.token, action.payload, state$.value.companyReducer.selectedCompany.company_id)).pipe(
+                map(() => updateOfferModelAction.success()),
+                catchError(error => of(updateOfferModelAction.failure(error.message)))
             )
         )
     )
 
-export const deleteJobPositionEpic: Epic<any, any, any, any> = (action$, state$) =>
+export const deleteOfferModelEpic: Epic<any, any, any, any> = (action$, state$) =>
     action$.pipe(
-        filter(isActionOf(deleteJobPositionAction.request)),
+        filter(isActionOf(deleteOfferModelAction.request)),
         switchMap((action) =>
-            from(deleteJobPosition(state$.value.authenticationReducer.token, action.payload)).pipe(
-                map(() => deleteJobPositionAction.success()),
-                catchError(error => of(deleteJobPositionAction.failure(error.message)))
+            from(deleteOfferModel(state$.value.authenticationReducer.token, action.payload)).pipe(
+                map(() => deleteOfferModelAction.success()),
+                catchError(error => of(deleteOfferModelAction.failure(error.message)))
             )
         )
     )

@@ -21,6 +21,7 @@ import { getJobChartListAction, updateCellAction } from "../actions/jobchartActi
 import { selectLocationAction, createLocationAction, updateLocationAction, deleteLocationAction, getLocationListAction } from "../actions/locationAction";
 import { insertDataAction } from "../actions/dataInsertAction";
 import { selectJobPositionAction, createJobPositionAction, updateJobPositionAction, deleteJobPositionAction, getJobPositionListAction } from "../actions/jobPositionAction";
+import { selectOfferModelAction, createOfferModelAction, updateOfferModelAction, deleteOfferModelAction, getOfferModelListAction } from "../actions/offerModelAction";
 
 
 
@@ -181,5 +182,11 @@ export function mapDispatchToProps(dispatch): SharedDispatchProps {
         updateJobPosition: (payload) => { dispatch(updateJobPositionAction.request(payload)) },
         deleteJobPosition: (payload) => { dispatch(deleteJobPositionAction.request(payload)) },
         getJobPositionList: () => { dispatch(getJobPositionListAction.request()) },
+
+        selectOfferModel: (payload) => { dispatch(selectOfferModelAction(payload)) },
+        createOfferModel: (payload) => { dispatch(createOfferModelAction.request(payload)) },
+        updateOfferModel: (payload) => { dispatch(updateOfferModelAction.request(payload)) },
+        deleteOfferModel: (payload) => { dispatch(deleteOfferModelAction.request(payload)) },
+        getOfferModelList: () => { dispatch(getOfferModelListAction.request()) },
     }
 }

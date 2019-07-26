@@ -10,7 +10,7 @@ import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../interface/propsInterface";
 import { history } from "../../../store";
-import FormPage from "../Component"
+import OfferModel from "../Component"
 
 const styles = () =>
   createStyles({
@@ -19,19 +19,19 @@ const styles = () =>
     }
   });
 
-export interface CreateJobPositionState {}
+export interface CreateOfferModelState {}
 export interface Props extends WithStyles<typeof styles>, SharedDispatchProps {}
 
-class CreateJobPositionPage extends Component<Props, CreateJobPositionState> {
+class CreateOfferModelPage extends Component<Props, CreateOfferModelState> {
   constructor(props) {
     super(props);
-    this.handleCreateJobPosition = this.handleCreateJobPosition.bind(this);
+    this.handleCreateOfferModel = this.handleCreateOfferModel.bind(this);
   }
 
 
-  handleCreateJobPosition = (e, data) => {
+  handleCreateOfferModel = (e, data) => {
     e.preventDefault();
-    this.props.createJobPosition(data);
+    this.props.createOfferModel(data);
     history.goBack();
   };
 
@@ -39,24 +39,17 @@ class CreateJobPositionPage extends Component<Props, CreateJobPositionState> {
     const { classes } = this.props;
     return (
       <div className={classes.root}>
-        <Typography component="h1" variant="h5">
-          New JobPosition
-        </Typography>
-        <FormPage
-          create={true}
-          updateData=""
-          onSubmit={(e, data) => this.handleCreateJobPosition(e, data)}
-        />
+        <OfferModel/>
       </div>
     );
   }
 }
 
-(CreateJobPositionPage as React.ComponentClass<Props>).propTypes = {
+(CreateOfferModelPage as React.ComponentClass<Props>).propTypes = {
   classes: PropTypes.object.isRequired
 } as any;
 
 export default connect(
   null,
   mapDispatchToProps
-)(withStyles(styles)(CreateJobPositionPage));
+)(withStyles(styles)(CreateOfferModelPage));

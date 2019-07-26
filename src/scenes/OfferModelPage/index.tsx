@@ -19,7 +19,7 @@ import { SharedDispatchProps } from "../../interface/propsInterface";
 import { IconButton } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import OfferIcon from "@material-ui/icons/More";
-import { JobPosition } from "../../interface/jobpositionInterface";
+import { OfferModel } from "../../interface/offerModelInterface";
 import { history } from "../../store";
 import UpdateIcon from "@material-ui/icons/PlaylistAddCheck";
 import { Company } from "../../interface/companyInterface";
@@ -62,12 +62,12 @@ interface State { }
 
 interface InState {
   selectedCompany: Company;
-  jobPositionList: JobPosition[];
+  jobPositionList: OfferModel[];
   role;
 }
-class JobPositionPage extends React.Component<Props, State> {
+class OfferModelPage extends React.Component<Props, State> {
   componentDidMount() {
-    console.log("JobPosition Page Mounted");
+    console.log("OfferModel Page Mounted");
     if (this.props.selectedCompany.company_id === "") {
       let data = {
         type: "warning",
@@ -75,23 +75,23 @@ class JobPositionPage extends React.Component<Props, State> {
         id: "1"
       };
       this.props.showDialog(data);
-    } else this.props.getJobPositionList();
+    } else this.props.getOfferModelList();
   }
 
-  handleUpdateButtonClick = jobposition => {
-    this.props.selectJobPosition(jobposition);
-    history.push("/jobposition/update");
+  handleUpdateButtonClick = offermodel => {
+    this.props.selectOfferModel(offermodel);
+    history.push("/offermodel/update");
   };
 
-  handleOfferButtonClick = jobposition => {
-    this.props.selectJobPosition(jobposition);
+  handleOfferButtonClick = offermodel => {
+    this.props.selectOfferModel(offermodel);
     history.push("/offermodel")
   }
 
   handleDelete = id => {
     const payload = {
       type: "delete",
-      object: "jobposition",
+      object: "offermodel",
       id: id
     };
     this.props.showDialog(payload);
@@ -103,7 +103,7 @@ class JobPositionPage extends React.Component<Props, State> {
     return (
       <main>
         {!isUserHR(this.props.role) && (
-          <CustomButton onClick={() => history.push("/jobposition/create")}>New JobPosition</CustomButton>
+          <CustomButton onClick={() => history.push("/offermodel/create")}>New OfferModel</CustomButton>
         )}
         <Paper className={classes.root}>
           <Table className={classes.table}>
@@ -119,7 +119,7 @@ class JobPositionPage extends React.Component<Props, State> {
             {this.props.jobPositionList.length > 0 && (
               <TableBody>
                 {this.props.jobPositionList.map(row => (
-                  <TableRow className={classes.row} key={row.jobposition_id}>
+                  <TableRow className={classes.row} key={row.offermodel_id}>
                     <CustomTableCell component="th" scope="row">
                       {row.country}
                     </CustomTableCell>
@@ -148,7 +148,7 @@ class JobPositionPage extends React.Component<Props, State> {
                       {/* <Button color="primary" variant="contained" onClick={() => this.handleUpdateButtonClick(row)}>view</Button> */}
                       {!isUserPowerOrHR(this.props.role) && (
                         <IconButton
-                          onClick={() => this.handleDelete(row.jobposition_id)}
+                          onClick={() => this.handleDelete(row.offermodel_id)}
                         >
                           <DeleteIcon />
                         </IconButton>
@@ -165,14 +165,14 @@ class JobPositionPage extends React.Component<Props, State> {
   }
 }
 
-(JobPositionPage as React.ComponentClass<Props>).propTypes = {
+(OfferModelPage as React.ComponentClass<Props>).propTypes = {
   classes: PropTypes.object.isRequired
 } as any;
 
 function mapStateToProps(state: RootState) {
   return {
     selectedCompany: state.companyReducer.selectedCompany,
-    jobPositionList: state.jobPositionReducer.jobpositionList,
+    jobPositionList: state.jobPositionReducer.offermodelList,
     role: state.authenticationReducer.profile.info.role_name
   };
 }
@@ -180,4 +180,4 @@ function mapStateToProps(state: RootState) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(JobPositionPage));
+)(withStyles(styles)(OfferModelPage));

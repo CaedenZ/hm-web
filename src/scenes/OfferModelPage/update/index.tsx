@@ -10,8 +10,8 @@ import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../interface/propsInterface";
 import { history } from "../../../store";
-import { JobPosition } from "../../../interface/jobpositionInterface";
-import FormPage from "../Component";
+import { OfferModel } from "../../../interface/offerModelInterface";
+import OfferModelPage from "../Component";
 
 const styles = () =>
   createStyles({
@@ -20,8 +20,8 @@ const styles = () =>
     }
   });
 
-export interface UpdateJobPositionState {
-  jobposition_name: string;
+export interface UpdateOfferModelState {
+  offermodel_name: string;
   address: string;
   postal_code: string;
 }
@@ -31,24 +31,24 @@ export interface Props
   SharedDispatchProps { }
 
 interface InState {
-  selectedJobPosition: JobPosition;
+  selectedOfferModel: OfferModel;
 }
 
-class UpdateJobPositionPage extends Component<Props, UpdateJobPositionState> {
+class UpdateOfferModelPage extends Component<Props, UpdateOfferModelState> {
   constructor(props) {
     super(props);
-    this.handleUpdateJobPosition = this.handleUpdateJobPosition.bind(this);
+    this.handleUpdateOfferModel = this.handleUpdateOfferModel.bind(this);
   }
 
-  state: UpdateJobPositionState = {
-    jobposition_name: "",
+  state: UpdateOfferModelState = {
+    offermodel_name: "",
     address: "",
     postal_code: ""
   };
 
-  handleUpdateJobPosition = (e, data) => {
+  handleUpdateOfferModel = (e, data) => {
     e.preventDefault();
-    this.props.updateJobPosition(data);
+    this.props.updateOfferModel(data);
     history.goBack();
   };
 
@@ -57,29 +57,25 @@ class UpdateJobPositionPage extends Component<Props, UpdateJobPositionState> {
     return (
       <div className={classes.root}>
         <Typography component="h1" variant="h5">
-          New JobPosition
+          New OfferModel
         </Typography>
-        <FormPage
-          create={false}
-          updateData={this.props.selectedJobPosition}
-          onSubmit={(e, data) => this.handleUpdateJobPosition(e, data)}
-        />
+        <OfferModelPage/>
       </div>
     );
   }
 }
 
-(UpdateJobPositionPage as React.ComponentClass<Props>).propTypes = {
+(UpdateOfferModelPage as React.ComponentClass<Props>).propTypes = {
   classes: PropTypes.object.isRequired
 } as any;
 
 function mapStateToProps(state: any) {
   return {
-    selectedJobPosition: state.jobPositionReducer.selectedJobPosition
+    selectedOfferModel: state.jobPositionReducer.selectedOfferModel
   };
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(UpdateJobPositionPage));
+)(withStyles(styles)(UpdateOfferModelPage));

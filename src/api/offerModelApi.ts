@@ -1,7 +1,7 @@
 import $axios from "../plugin/axios";
-import { JobPosition, CREATEJOBPOSITIONCRED, UPDATEJOBPOSITIONCRED } from "../interface/jobpositionInterface";
+import { OfferModel, CREATEOFFERMODELCRED, UPDATEOFFERMODELCRED } from "../interface/offerModelInterface";
 
-export const getJobPositionList = async (payload, id): Promise<JobPosition[]> => {
+export const getOfferModelList = async (payload, id): Promise<OfferModel[]> => {
 
 
     const response = await $axios.post('job/getjob', { session_key: payload, customer_id: id })
@@ -9,7 +9,7 @@ export const getJobPositionList = async (payload, id): Promise<JobPosition[]> =>
     return response.data.data
 }
 
-export const createJobPosition = async (token, payload: CREATEJOBPOSITIONCRED, companyId: string) => {
+export const createOfferModel = async (token, payload: CREATEOFFERMODELCRED, companyId: string) => {
     console.log(payload)
     let data = {
         ...payload,
@@ -22,7 +22,7 @@ export const createJobPosition = async (token, payload: CREATEJOBPOSITIONCRED, c
     return response.data.data
 }
 
-export const updateJobPosition = async (token, payload: UPDATEJOBPOSITIONCRED, companyId: string) => {
+export const updateOfferModel = async (token, payload: UPDATEOFFERMODELCRED, companyId: string) => {
     console.log(payload)
     let data = {
         ...payload,
@@ -35,10 +35,10 @@ export const updateJobPosition = async (token, payload: UPDATEJOBPOSITIONCRED, c
     return response.data.data
 }
 
-export const deleteJobPosition = async (token, payload: string) => {
+export const deleteOfferModel = async (token, payload: string) => {
     console.log(payload)
     let data = {
-        jobposition_id: payload,
+        offermodel_id: payload,
         session_key: token,
     }
 
