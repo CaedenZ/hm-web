@@ -26,6 +26,7 @@ import { Company } from "../../interface/companyInterface";
 import { isUserHR, isUserPowerOrHR } from "../../function/checkRole";
 import CustomButton from "../../helper/components/CustomButton";
 import ChangeStatus from "./Component/changeStatus"
+import SetCurrency from "./Component/currency"
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -61,6 +62,7 @@ export interface Props
 
 interface State {
   changeStatus: boolean;
+  setcurrency:boolean;
 }
 
 interface InState {
@@ -71,6 +73,7 @@ interface InState {
 class OfferModelPage extends React.Component<Props, State> {
   state = {
     changeStatus: false,
+    setcurrency:false,
   }
   componentDidMount() {
     console.log("OfferModel Page Mounted");
@@ -104,7 +107,7 @@ class OfferModelPage extends React.Component<Props, State> {
   };
 
   handleClose = () => {
-    this.setState({ changeStatus: false });
+    this.setState({ changeStatus: false ,setcurrency:false});
   };
 
   render() {
@@ -113,7 +116,7 @@ class OfferModelPage extends React.Component<Props, State> {
     return (
       <main>
         {!isUserHR(this.props.role) && (
-          <CustomButton onClick={() => history.push("/offermodel/create")}>New OfferModel</CustomButton>
+          <CustomButton onClick={() => this.setState({setcurrency:true})}>New OfferModel</CustomButton>
         )}
         <Paper className={classes.root}>
           <Table className={classes.table}>
@@ -172,6 +175,10 @@ class OfferModelPage extends React.Component<Props, State> {
         </Paper>
         <ChangeStatus
           open={this.state.changeStatus}
+          handleClose={this.handleClose}
+        />
+        <SetCurrency
+          open={this.state.setcurrency}
           handleClose={this.handleClose}
         />
       </main>

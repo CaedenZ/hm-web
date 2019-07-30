@@ -59,7 +59,11 @@ class UpdateOfferModelPage extends Component<Props, UpdateOfferModelState> {
         <Typography component="h1" variant="h5">
           New OfferModel
         </Typography>
-        <OfferModelPage/>
+        <OfferModelPage
+        create={false}
+        updateData={this.props.selectedOfferModel}
+        onSubmit={(e, data) => this.handleUpdateOfferModel(e, data)}
+      />
       </div>
     );
   }
@@ -71,7 +75,7 @@ class UpdateOfferModelPage extends Component<Props, UpdateOfferModelState> {
 
 function mapStateToProps(state: any) {
   return {
-    selectedOfferModel: state.jobPositionReducer.selectedOfferModel
+    selectedOfferModel: state.offerModelReducer.selectedOfferModel
   };
 }
 

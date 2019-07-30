@@ -92,7 +92,7 @@ class JobPositionPage extends React.Component<Props, State> {
     const payload = {
       type: "delete",
       object: "jobposition",
-      id: id
+      id: id 
     };
     this.props.showDialog(payload);
   };
@@ -130,7 +130,7 @@ class JobPositionPage extends React.Component<Props, State> {
                       {row.business_title}
                     </CustomTableCell>
                     <CustomTableCell component="th" scope="row">
-                      {row.jobfunction}
+                      {row.job_name}
                     </CustomTableCell>
                     <CustomTableCell align="right">
                       <IconButton

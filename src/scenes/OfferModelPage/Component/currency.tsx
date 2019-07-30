@@ -14,25 +14,29 @@ import {
   MenuItem
 } from "@material-ui/core";
 import classes from "*.module.css";
+import { RootState } from "../../../reducer";
+import { Currency } from "../../../interface/countryInterface";
+import { history } from "../../../store";
 
 export interface Props extends SharedDispatchProps, InState { }
 
 interface InState {
   open: boolean;
   handleClose: any;
+  currencyList:Currency[];
 }
 export interface State {
   status: string;
 }
 
-class ChangeStatus extends Component<Props, State> {
+class SetCurrency extends Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
       status: "Draft"
     };
 
-    this.handleReset = this.handleReset.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.dynSetState = this.dynSetState.bind(this);
   }
@@ -48,8 +52,9 @@ class ChangeStatus extends Component<Props, State> {
     // console.dir(event.target)
   }
 
-  handleReset = event => {
+  handleSubmit = event => {
     event.preventDefault();
+    history.push("/offermodel/create?currency="+this.state.status)
   };
   render() {
     return (
@@ -58,9 +63,9 @@ class ChangeStatus extends Component<Props, State> {
         onClose={this.props.handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">ChangeStatus</DialogTitle>
+        <DialogTitle id="form-dialog-title">SetCurrency</DialogTitle>
         <DialogContent>
-          <DialogContentText>ChangeStatus</DialogContentText>
+          <DialogContentText>SetCurrency</DialogContentText>
           <Select
             value={this.state.status}
             onChange={this.handleChange}
@@ -69,16 +74,14 @@ class ChangeStatus extends Component<Props, State> {
               id: "status-simple"
             }}
           >
-            <MenuItem value="Generated" >Generated</MenuItem>
-            <MenuItem value="Confirmed" >Confirmed</MenuItem>
-            <MenuItem value="Rejected" >Rejected</MenuItem>
+            {this.props.currencyList.map( item => <MenuItem value={item.code} >{item.code}</MenuItem>)}
           </Select>
         </DialogContent>
         <DialogActions>
           <Button onClick={this.props.handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={this.handleReset} color="primary">
+          <Button onClick={this.handleSubmit} color="primary">
             Confirm
           </Button>
         </DialogActions>
@@ -89,7 +92,7 @@ class ChangeStatus extends Component<Props, State> {
       //     <Typography component="h1" variant="h5">
       //       Set your new password
       //   </Typography>
-      //     <form className={classes.form} onSubmit={this.handleReset}>
+      //     <form className={classes.form} onSubmit={this.handleSubmit}>
       //       <FormControl margin="normal" required fullWidth>
       //         <InputLabel htmlFor="password">New Password</InputLabel>
       //         <Input name="password" type="password" id="password" autoComplete="current-password" value={this.state.password} onChange={this.handleChange} />
@@ -114,7 +117,13 @@ class ChangeStatus extends Component<Props, State> {
   }
 }
 
+function mapStateToProps(state: RootState) {
+  return {
+    currencyList: state.countryReducer.currencyList,
+  };
+}
+
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
-)(ChangeStatus);
+)(SetCurrency);

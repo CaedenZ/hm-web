@@ -7,7 +7,9 @@ export interface JobPosition {
     jobgrade_name: string;
     location: string;
     jobfunction: string;
+    job_name:string;
     sjobfunction: string;
+    subjob_name:string;
     description: string;
     remarks: string;
 }

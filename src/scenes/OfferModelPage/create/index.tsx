@@ -39,7 +39,11 @@ class CreateOfferModelPage extends Component<Props, CreateOfferModelState> {
     const { classes } = this.props;
     return (
       <div className={classes.root}>
-        <OfferModel/>
+        <OfferModel
+        create={true}
+        updateData=""
+        onSubmit={(e, data) => this.handleCreateOfferModel(e, data)}
+        />
       </div>
     );
   }

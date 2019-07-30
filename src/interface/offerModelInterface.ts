@@ -16,7 +16,26 @@ export interface OfferModel {
     current_position_sjobfunction: string;
     propose_position_datestart: string;
     status: string;
-    current_data: any[];
+    current_data: Data;
+    propose_data:Data;
+}
+
+interface Data{
+    guaranteed_cash:NameValue[];
+    sti:NameValueType[];
+    lti:NameValue[];
+    sign_on:NameValue[];
+}
+
+export interface NameValue{
+    name:string;
+    value:string;
+}
+
+export interface NameValueType{
+    name:string;
+    value:string;
+    type:string;
 }
 
 export interface OfferModelState {
