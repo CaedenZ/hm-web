@@ -62,7 +62,7 @@ export interface Props
 
 interface State {
   changeStatus: boolean;
-  setcurrency:boolean;
+  setcurrency: boolean;
 }
 
 interface InState {
@@ -73,7 +73,7 @@ interface InState {
 class OfferModelPage extends React.Component<Props, State> {
   state = {
     changeStatus: false,
-    setcurrency:false,
+    setcurrency: false,
   }
   componentDidMount() {
     console.log("OfferModel Page Mounted");
@@ -107,7 +107,7 @@ class OfferModelPage extends React.Component<Props, State> {
   };
 
   handleClose = () => {
-    this.setState({ changeStatus: false ,setcurrency:false});
+    this.setState({ changeStatus: false, setcurrency: false });
   };
 
   render() {
@@ -116,7 +116,7 @@ class OfferModelPage extends React.Component<Props, State> {
     return (
       <main>
         {!isUserHR(this.props.role) && (
-          <CustomButton onClick={() => this.setState({setcurrency:true})}>New OfferModel</CustomButton>
+          <CustomButton onClick={() => history.push("/offermodel/create")}>New OfferModel</CustomButton>
         )}
         <Paper className={classes.root}>
           <Table className={classes.table}>
@@ -175,10 +175,6 @@ class OfferModelPage extends React.Component<Props, State> {
         </Paper>
         <ChangeStatus
           open={this.state.changeStatus}
-          handleClose={this.handleClose}
-        />
-        <SetCurrency
-          open={this.state.setcurrency}
           handleClose={this.handleClose}
         />
       </main>

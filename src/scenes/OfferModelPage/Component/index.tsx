@@ -181,8 +181,8 @@ class OfferModelPage extends React.Component<Props, State> {
 
         console.dir(this.props.updateData)
         // this.setState(this.props.updateData)
-    
-        this.setState({jobgrade_id:this.props.selectedJobPosition.jobgrade_name})
+
+        this.setState({ jobgrade_id: this.props.selectedJobPosition.jobgrade_name })
         const data = {
             session_key: this.props.session_key,
             jobgrade_id: this.props.selectedJobPosition.jobgrade_id,
@@ -549,7 +549,7 @@ class OfferModelPage extends React.Component<Props, State> {
                         <Grid item xs={1}>Year of Birth</Grid>
                         <Grid item xs={3}><TextField value={this.state.year_of_birth} onChange={this.handleChange('year_of_birth')} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                         <Grid item xs={1}>Job Grade</Grid>
-                        <Grid item xs={3}><TextField value={this.state.jobgrade_id} onChange={this.handleChange('jobgrade_id')} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                        <Grid item xs={3}><TextField disabled value={this.state.jobgrade_id} onChange={this.handleChange('jobgrade_id')} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                     </Grid>
 
                     <div className={classes.spacediv} />
@@ -579,11 +579,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                             }} />
                                     </Grid>
                                     <Grid item xs={4}>
-                                        <TextField
-                                            inputProps={{
-                                                style: { textAlign: "center" }
-                                            }} />
-                                    </Grid>
+                                        <TextField disabled value={this.props.selectedJobPosition.business_title} inputProps={{ style: { textAlign: "center" } }} /></Grid>
                                 </Grid>
                                 <Grid container>
                                     <Grid item xs={4}><p className={classes.subtitle}>Country</p></Grid>
@@ -591,10 +587,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                         inputProps={{
                                             style: { textAlign: "center" }
                                         }} /></Grid>
-                                    <Grid item xs={4}><TextField
-                                        inputProps={{
-                                            style: { textAlign: "center" }
-                                        }} /></Grid>
+                                    <Grid item xs={4}><TextField disabled value={this.props.selectedJobPosition.country} inputProps={{ style: { textAlign: "center" } }} /></Grid>
                                 </Grid>
                                 <Grid container>
                                     <Grid item xs={4}><p className={classes.subtitle}>Location</p></Grid>
@@ -602,10 +595,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                         inputProps={{
                                             style: { textAlign: "center" }
                                         }} /></Grid>
-                                    <Grid item xs={4}><TextField
-                                        inputProps={{
-                                            style: { textAlign: "center" }
-                                        }} /></Grid>
+                                    <Grid item xs={4}><TextField disabled value={this.props.selectedJobPosition.location} inputProps={{ style: { textAlign: "center" } }} /></Grid>
                                 </Grid>
                                 <Grid container>
                                     <Grid item xs={4}><p className={classes.subtitle}>Grade</p></Grid>
@@ -613,10 +603,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                         inputProps={{
                                             style: { textAlign: "center" }
                                         }} /></Grid>
-                                    <Grid item xs={4}><TextField
-                                        inputProps={{
-                                            style: { textAlign: "center" }
-                                        }} /></Grid>
+                                    <Grid item xs={4}><TextField disabled value={this.props.selectedJobPosition.jobgrade_name} inputProps={{ style: { textAlign: "center" } }} /></Grid>
                                 </Grid>
                                 <Grid container>
                                     <Grid item xs={4}><p className={classes.subtitle}>Datestart</p></Grid>
@@ -635,10 +622,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                         inputProps={{
                                             style: { textAlign: "center" }
                                         }} /></Grid>
-                                    <Grid item xs={4}><TextField
-                                        inputProps={{
-                                            style: { textAlign: "center" }
-                                        }} /></Grid>
+                                    <Grid item xs={4}><TextField disabled value={this.props.selectedJobPosition.job_name} inputProps={{ style: { textAlign: "center" } }} /></Grid>
                                 </Grid>
                             </Grid>
                         </ExpansionPanelDetails>
@@ -880,9 +864,9 @@ class OfferModelPage extends React.Component<Props, State> {
                             <Grid item xs={11}>
                                 <Grid container justify="space-evenly" alignItems="center">
                                     <Grid item xs={3}>Cash Total</Grid>
-                                    <Grid item xs={1}>{this.getsubtotalGC()+this.getsubtotalSC()}</Grid>
+                                    <Grid item xs={1}>{this.getsubtotalGC() + this.getsubtotalSC()}</Grid>
                                     <Grid item xs={1}>118,850</Grid>
-                                    <Grid item xs={1}>{this.getsubtotalGP()+this.getsubtotalSP()}</Grid>
+                                    <Grid item xs={1}>{this.getsubtotalGP() + this.getsubtotalSP()}</Grid>
                                     <Grid item xs={1}>159,000</Grid>
                                     <Grid item xs={2}>135%</Grid>
                                 </Grid>
@@ -1065,9 +1049,9 @@ class OfferModelPage extends React.Component<Props, State> {
                             <Grid item xs={11}>
                                 <Grid container justify="space-evenly" alignItems="center">
                                     <Grid item xs={3}>Cash Total</Grid>
-                                    <Grid item xs={1}>{this.getsubtotalGC()+this.getsubtotalSC()+this.getsubtotalLC()+this.getsubtotalSOC()}</Grid>
+                                    <Grid item xs={1}>{this.getsubtotalGC() + this.getsubtotalSC() + this.getsubtotalLC() + this.getsubtotalSOC()}</Grid>
                                     <Grid item xs={1}>118,850</Grid>
-                                    <Grid item xs={1}>{this.getsubtotalGP()+this.getsubtotalSP()+this.getsubtotalLP()+this.getsubtotalSOP()}</Grid>
+                                    <Grid item xs={1}>{this.getsubtotalGP() + this.getsubtotalSP() + this.getsubtotalLP() + this.getsubtotalSOP()}</Grid>
                                     <Grid item xs={1}>159,000</Grid>
                                     <Grid item xs={2}>135%</Grid>
                                 </Grid>
@@ -1223,12 +1207,16 @@ class OfferModelPage extends React.Component<Props, State> {
 
 function mapStateToProps(state: RootState) {
     return {
-      selectedCompany: state.companyReducer.selectedCompany,
-      selectedJobPosition: state.jobPositionReducer.selectedJobPosition,
-      session_key: state.authenticationReducer.token
+        selectedCompany: state.companyReducer.selectedCompany,
+        selectedJobPosition: state.jobPositionReducer.selectedJobPosition,
+        session_key: state.authenticationReducer.token,
+        stiList:state.shortIncentiveReducer.shortincentiveList,
+        ltiList:state.longIncentiveReducer.longincentiveList,
+        signonList:state.signonsReducer.signonsList,
+        targetbonusList:state.targetBonusReducer.targetbonusList,
     };
-  }
-  
+}
+
 export default connect(
     mapStateToProps,
     mapDispatchToProps
