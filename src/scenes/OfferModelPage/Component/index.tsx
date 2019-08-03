@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Grid, Theme, createStyles, Paper, WithStyles, withStyles, Divider, TextField, Typography, IconButton, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Button, InputAdornment } from "@material-ui/core";
+import { Grid, Theme, createStyles, Paper, WithStyles, withStyles, Divider, TextField, Typography, IconButton, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Button, InputAdornment, NativeSelect } from "@material-ui/core";
 import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -11,6 +11,13 @@ import $axios from "../../../plugin/axios";
 import { RootState } from "../../../reducer";
 import { Company } from "../../../interface/companyInterface";
 import { JobPosition } from "../../../interface/jobpositionInterface";
+import { ShortIncentive } from "../../../interface/shortIncentiveInterface";
+import { LongIncentive } from "../../../interface/longIncentiveInterface";
+import { Signons } from "../../../interface/signonsInterface";
+import { TargetBonus } from "../../../interface/targetBonusInterface";
+import { Allowances } from "../../../interface/allowanceInterface";
+import theme from "../../../assets/theme";
+import "../../../css/hideicon.css"
 
 const styles = (theme: Theme) =>
     createStyles({
@@ -43,7 +50,9 @@ const styles = (theme: Theme) =>
         },
         verticaltext: {
             transform: 'rotate(0.5turn)'
-        }
+        },
+        textField: {
+        },
     });
 
 interface Props extends InState, WithStyles<typeof styles> { }
@@ -55,6 +64,10 @@ interface InState {
     session_key: string;
     selectedCompany: Company;
     selectedJobPosition: JobPosition;
+    stiList: ShortIncentive[];
+    ltiList: LongIncentive[];
+    signonList: Signons[];
+    allowancesList: Allowances[];
 }
 
 interface State {
@@ -72,7 +85,16 @@ interface State {
     status: string;
     current_data: any;
     propose_data: any;
-    comparator_data: any;
+    comparator_data: ComparatorData;
+}
+
+interface ComparatorData {
+    company_id: string,
+    company_name: string,
+    intSalaryRange: any,
+    intPayrollSpread: any,
+    extMarketData: any,
+    equityRange: any[]
 }
 
 class OfferModelPage extends React.Component<Props, State> {
@@ -136,12 +158,14 @@ class OfferModelPage extends React.Component<Props, State> {
                 grade: {
                     min: 46700,
                     max: 65000,
-                    median: 57800
+                    median: 57800,
+                    data_points: 6
                 },
                 function: {
                     min: 46700,
                     max: 65000,
-                    median: 52150
+                    median: 52150,
+                    data_points: 2
                 }
             },
             extMarketData: {
@@ -156,18 +180,22 @@ class OfferModelPage extends React.Component<Props, State> {
                     p75: null
                 }
             },
-            equityRange: {
-                annualGrant: {
-                    min: 20000,
-                    mid: 50000,
-                    max: 100000
+            equityRange: [
+                {
+                    equity_range_id: 22,
+                    type: "Annual Grant",
+                    min: "20000",
+                    mid: "50000",
+                    max: "100000"
                 },
-                newHire: {
-                    min: 80000,
-                    mid: 90000,
-                    max: 100000
+                {
+                    equity_range_id: 30,
+                    type: "New Hire",
+                    min: "80000",
+                    mid: "90000",
+                    max: " 100000"
                 }
-            }
+            ]
         },
     }
 
@@ -184,15 +212,16 @@ class OfferModelPage extends React.Component<Props, State> {
 
         this.setState({ jobgrade_id: this.props.selectedJobPosition.jobgrade_name })
         const data = {
+            country: this.props.selectedJobPosition.country,
             session_key: this.props.session_key,
             jobgrade_id: this.props.selectedJobPosition.jobgrade_id,
             jobfunction_id: this.props.selectedJobPosition.jobfunction,
-            ccompany_id: this.props.selectedCompany.company_id
+            company_id: this.props.selectedCompany.company_id
         }
 
         const response = await $axios.post('/job/getComparatorData', data)
-
-        // this.setState({comparator_data:response.data.data})
+        console.dir(response)
+        this.setState({ comparator_data: response.data.data })
 
     }
 
@@ -294,6 +323,12 @@ class OfferModelPage extends React.Component<Props, State> {
 
     handleChange = (statekay: keyof State) => (
         event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        this.setState({ [statekay]: event.target.value } as any);
+    };
+
+    handleChangeSelect = (statekay: keyof State) => (
+        event: React.ChangeEvent<HTMLSelectElement>
     ) => {
         this.setState({ [statekay]: event.target.value } as any);
     };
@@ -529,6 +564,15 @@ class OfferModelPage extends React.Component<Props, State> {
 
     render() {
         const { classes } = this.props;
+        const selectStyles = {
+            input: base => ({
+                ...base,
+                color: theme.palette.text.primary,
+                '& input': {
+                    font: 'inherit',
+                },
+            }),
+        };
         return (
             <Grid container alignItems="center" justify="space-evenly" direction="row" className={classes.root}>
                 <Grid item xs={10}>
@@ -539,13 +583,43 @@ class OfferModelPage extends React.Component<Props, State> {
                         <Grid item xs={1}>Candidate</Grid>
                         <Grid item xs={3}><TextField value={this.state.candidate_name} onChange={this.handleChange('candidate_name')} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                         <Grid item xs={1}>Offer Modeller Type</Grid>
-                        <Grid item xs={3}><TextField value={this.state.model_type} onChange={this.handleChange('model_type')} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                        <Grid item xs={3}>
+                        <NativeSelect
+                                id="type"
+                                value={this.state.model_type}
+                                onChange={this.handleChangeSelect('model_type')}
+                                inputProps={{
+                                    name: "type",
+                                    id: "type-simple"
+                                }}
+                            >
+                                <option value={undefined} />
+                                <option value={'Promotion'} >Promotion</option>
+                                <option value={'Transfer'} >Transfer</option>
+                                <option value={'New'} >New</option>
+                            </NativeSelect>
+                            </Grid>
                         <Grid item xs={1}>Offer Reference</Grid>
                         <Grid item xs={3}><TextField value={this.state.offer_reference} onChange={this.handleChange('offer_reference')} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                     </Grid>
                     <Grid container justify="space-evenly" alignItems="center">
                         <Grid item xs={1}>Job Flag</Grid>
-                        <Grid item xs={3}><TextField value={this.state.job_flag} onChange={this.handleChange('job_flag')} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+
+                        <Grid item xs={3}>
+                            <NativeSelect
+                                id="flag"
+                                value={this.state.job_flag}
+                                onChange={this.handleChangeSelect('job_flag')}
+                                inputProps={{
+                                    name: "flag",
+                                    id: "flag-simple"
+                                }}
+                            >
+                                <option value={undefined} />
+                                <option value={'Critical'} >Critical</option>
+                                <option value={'Business Driver'} >Business Driver</option>
+                            </NativeSelect>
+                        </Grid>
                         <Grid item xs={1}>Year of Birth</Grid>
                         <Grid item xs={3}><TextField value={this.state.year_of_birth} onChange={this.handleChange('year_of_birth')} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                         <Grid item xs={1}>Job Grade</Grid>
@@ -687,7 +761,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                         <Grid container style={{ position: "absolute", bottom: 10 }} justify="space-evenly" alignItems="center">
                                             <Grid item xs={3}>Sub</Grid>
                                             <Grid item xs={2}>{this.getsubtotalGC()}</Grid>
-                                            <Grid item xs={2}>101,850</Grid>
+                                            <Grid item xs={2}>0</Grid>
                                             <Grid item xs={1} />
                                         </Grid>
                                     </Paper>
@@ -733,7 +807,27 @@ class OfferModelPage extends React.Component<Props, State> {
 
                                         {this.state.propose_data.guaranteed_cash.optional.map((item: NameValue, index) =>
                                             <Grid key={"gp" + index} container justify="space-evenly" alignItems="center">
-                                                <Grid item xs={3}><TextField value={this.state.propose_data.guaranteed_cash.optional[index].name} onChange={this.handleChangeGCOptionalNameProposed(index)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                                <Grid item xs={3}>
+                                                    <NativeSelect
+                                                        id="allowance"
+                                                        value={this.state.propose_data.guaranteed_cash.optional[index].name}
+                                                        onChange={this.handleChangeGCOptionalNameProposed(index)}
+                                                        inputProps={{
+                                                            name: "allowance",
+                                                            id: "allowance-simple"
+                                                        }}
+                                                    >
+                                                        <option value={undefined} />
+                                                        {this.props.allowancesList.filter(al => (al.country === this.props.selectedJobPosition.country && al.jobgrade_name === this.props.selectedJobPosition.jobgrade_name)).map(allowances => (
+                                                            <option
+                                                                value={allowances.type}
+                                                                key={allowances.allowance_id}
+                                                            >
+                                                                {allowances.type}
+                                                            </option>
+                                                        ))}
+                                                    </NativeSelect>
+                                                </Grid>
                                                 <Grid item xs={2}><TextField value={this.state.propose_data.guaranteed_cash.optional[index].value} onChange={this.handleChangeGCOptionalValueProposed(index)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                                 <Grid item xs={2}><TextField disabled inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                                 <Grid item xs={2}><TextField disabled inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
@@ -745,8 +839,8 @@ class OfferModelPage extends React.Component<Props, State> {
                                         <Grid container style={{ position: "absolute", bottom: 10 }} justify="space-evenly" alignItems="center">
                                             <Grid item xs={3}>Sub</Grid>
                                             <Grid item xs={2}>{this.getsubtotalGP()}</Grid>
-                                            <Grid item xs={2}>101,850</Grid>
-                                            <Grid item xs={2}>133%</Grid>
+                                            <Grid item xs={2}>0</Grid>
+                                            <Grid item xs={2}>0%</Grid>
                                             <Grid item xs={1} />
                                         </Grid>
                                     </Paper>
@@ -802,7 +896,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                         <Grid container style={{ position: "absolute", bottom: 10 }} justify="space-evenly" alignItems="center">
                                             <Grid item xs={3}>Sub</Grid>
                                             <Grid item xs={2}>{this.getsubtotalSC()}</Grid>
-                                            <Grid item xs={2}>101,850</Grid>
+                                            <Grid item xs={2}>0</Grid>
                                             <Grid item xs={1} />
                                         </Grid>
                                     </Paper>
@@ -834,7 +928,28 @@ class OfferModelPage extends React.Component<Props, State> {
 
                                         {this.state.propose_data.sti.optional.map((item: NameValueType, index) =>
                                             <Grid key={"sp" + index} container justify="space-evenly" alignItems="center">
-                                                <Grid item xs={3}><TextField value={this.state.propose_data.sti.optional[index].name} onChange={this.handleChangeSTIOptionalNameProposed(index)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+
+                                                <Grid item xs={3}>
+                                                    <NativeSelect
+                                                        id="sti"
+                                                        value={this.state.propose_data.sti.optional[index].name}
+                                                        onChange={this.handleChangeSTIOptionalNameProposed(index)}
+                                                        inputProps={{
+                                                            name: "sti",
+                                                            id: "sti-simple"
+                                                        }}
+                                                    >
+                                                        <option value={undefined} />
+                                                        {this.props.stiList.filter(sti => (sti.country === this.props.selectedJobPosition.country && sti.jobgrade_name === this.props.selectedJobPosition.jobgrade_name)).map(sti => (
+                                                            <option
+                                                                value={sti.type}
+                                                                key={sti.shortterm_incentive_id}
+                                                            >
+                                                                {sti.type}
+                                                            </option>
+                                                        ))}
+                                                    </NativeSelect>
+                                                </Grid>
                                                 <Grid item xs={2}><TextField value={this.state.propose_data.sti.optional[index].value} onChange={this.handleChangeSTIOptionalValueProposed(index)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                                 <Grid item xs={2}><TextField disabled inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                                 <Grid item xs={2}><TextField disabled inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
@@ -846,8 +961,8 @@ class OfferModelPage extends React.Component<Props, State> {
                                         <Grid container style={{ position: "absolute", bottom: 10 }} justify="space-evenly" alignItems="center">
                                             <Grid item xs={3}>Sub</Grid>
                                             <Grid item xs={2}>{this.getsubtotalSP()}</Grid>
-                                            <Grid item xs={2}>101,850</Grid>
-                                            <Grid item xs={2}>133%</Grid>
+                                            <Grid item xs={2}>0</Grid>
+                                            <Grid item xs={2}>0%</Grid>
                                             <Grid item xs={1} />
                                         </Grid>
                                     </Paper>
@@ -865,10 +980,10 @@ class OfferModelPage extends React.Component<Props, State> {
                                 <Grid container justify="space-evenly" alignItems="center">
                                     <Grid item xs={3}>Cash Total</Grid>
                                     <Grid item xs={1}>{this.getsubtotalGC() + this.getsubtotalSC()}</Grid>
-                                    <Grid item xs={1}>118,850</Grid>
+                                    <Grid item xs={1}>0</Grid>
                                     <Grid item xs={1}>{this.getsubtotalGP() + this.getsubtotalSP()}</Grid>
-                                    <Grid item xs={1}>159,000</Grid>
-                                    <Grid item xs={2}>135%</Grid>
+                                    <Grid item xs={1}>0</Grid>
+                                    <Grid item xs={2}>0%</Grid>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -913,7 +1028,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                         </Grid>
 
                                         {this.state.current_data.lti.optional.map((item: NameValue, index) =>
-                                            <Grid container justify="space-evenly" alignItems="center">
+                                            <Grid container key={'lc' + index} justify="space-evenly" alignItems="center">
                                                 <Grid item xs={3}><TextField value={this.state.current_data.lti.optional[index].name} onChange={this.handleChangeLTIOptionalNameCurrent(index)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                                 <Grid item xs={2}><TextField value={this.state.current_data.lti.optional[index].value} onChange={this.handleChangeLTIOptionalValueCurrent(index)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                                 <Grid item xs={2}><TextField disabled inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
@@ -924,7 +1039,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                         <Grid container style={{ position: "absolute", bottom: 10 }} justify="space-evenly" alignItems="center">
                                             <Grid item xs={3}>Sub</Grid>
                                             <Grid item xs={2}>{this.getsubtotalLC()}</Grid>
-                                            <Grid item xs={2}>101,850</Grid>
+                                            <Grid item xs={2}>0</Grid>
                                             <Grid item xs={1} />
                                         </Grid>
                                     </Paper>
@@ -942,8 +1057,28 @@ class OfferModelPage extends React.Component<Props, State> {
 
 
                                         {this.state.propose_data.lti.optional.map((item: NameValue, index) =>
-                                            <Grid container justify="space-evenly" alignItems="center">
-                                                <Grid item xs={3}><TextField value={this.state.propose_data.lti.optional[index].name} onChange={this.handleChangeLTIOptionalNameProposed(index)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid container key={'lp' + index} justify="space-evenly" alignItems="center">
+                                                <Grid item xs={3}>
+                                                    <NativeSelect
+                                                        id="lti"
+                                                        value={this.state.propose_data.lti.optional[index].name}
+                                                        onChange={this.handleChangeLTIOptionalNameProposed(index)}
+                                                        inputProps={{
+                                                            name: "lti",
+                                                            id: "lti-simple"
+                                                        }}
+                                                    >
+                                                        <option value={undefined} />
+                                                        {this.props.ltiList.map(lti => (
+                                                            <option
+                                                                value={lti.type}
+                                                                key={lti.longterm_incentive_id}
+                                                            >
+                                                                {lti.type}
+                                                            </option>
+                                                        ))}
+                                                    </NativeSelect>
+                                                </Grid>
                                                 <Grid item xs={2}><TextField value={this.state.propose_data.lti.optional[index].value} onChange={this.handleChangeLTIOptionalValueProposed(index)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                                 <Grid item xs={2}><TextField disabled inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                                 <Grid item xs={2}><TextField disabled inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
@@ -955,8 +1090,8 @@ class OfferModelPage extends React.Component<Props, State> {
                                         <Grid container style={{ position: "absolute", bottom: 10 }} justify="space-evenly" alignItems="center">
                                             <Grid item xs={3}>Sub</Grid>
                                             <Grid item xs={2}>{this.getsubtotalLP()}</Grid>
-                                            <Grid item xs={2}>101,850</Grid>
-                                            <Grid item xs={2}>133%</Grid>
+                                            <Grid item xs={2}>0</Grid>
+                                            <Grid item xs={2}>0%</Grid>
                                             <Grid item xs={1} />
                                         </Grid>
                                     </Paper>
@@ -990,7 +1125,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                         </Grid>
 
                                         {this.state.current_data.sign_on.optional.map((item: NameValue, index) =>
-                                            <Grid container justify="space-evenly" alignItems="center">
+                                            <Grid container key={'soc' + index} justify="space-evenly" alignItems="center">
                                                 <Grid item xs={3}><TextField value={this.state.current_data.sign_on.optional[index].name} onChange={this.handleChangeSignOnOptionalNameCurrent(index)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                                 <Grid item xs={2}><TextField value={this.state.current_data.sign_on.optional[index].value} onChange={this.handleChangeSignOnOptionalValueCurrent(index)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                                 <Grid item xs={2}><TextField disabled inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
@@ -1001,7 +1136,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                         <Grid container style={{ position: "absolute", bottom: 10 }} justify="space-evenly" alignItems="center">
                                             <Grid item xs={3}>Sub</Grid>
                                             <Grid item xs={2}>{this.getsubtotalSOC()}</Grid>
-                                            <Grid item xs={2}>101,850</Grid>
+                                            <Grid item xs={2}>0</Grid>
                                             <Grid item xs={1} />
                                         </Grid>
                                     </Paper>
@@ -1018,8 +1153,28 @@ class OfferModelPage extends React.Component<Props, State> {
                                         </Grid>
 
                                         {this.state.propose_data.sign_on.optional.map((item: NameValue, index) =>
-                                            <Grid container justify="space-evenly" alignItems="center">
-                                                <Grid item xs={3}><TextField value={this.state.propose_data.sign_on.optional[index].name} onChange={this.handleChangeSignOnOptionalNameProposed(index)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid container key={'sop' + index} justify="space-evenly" alignItems="center">
+                                                <Grid item xs={3}>
+                                                    <NativeSelect
+                                                        id="signon"
+                                                        value={this.state.propose_data.sign_on.optional[index].name}
+                                                        onChange={this.handleChangeSignOnOptionalNameProposed(index)}
+                                                        inputProps={{
+                                                            name: "signon",
+                                                            id: "signon-simple"
+                                                        }}
+                                                    >
+                                                        <option value={undefined} />
+                                                        {this.props.signonList.map(signon => (
+                                                            <option
+                                                                value={signon.type}
+                                                                key={signon.signons_id}
+                                                            >
+                                                                {signon.type}
+                                                            </option>
+                                                        ))}
+                                                    </NativeSelect>
+                                                </Grid>
                                                 <Grid item xs={2}><TextField value={this.state.propose_data.sign_on.optional[index].value} onChange={this.handleChangeSignOnOptionalValueProposed(index)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                                 <Grid item xs={2}><TextField disabled inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                                 <Grid item xs={2}><TextField disabled inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
@@ -1031,8 +1186,8 @@ class OfferModelPage extends React.Component<Props, State> {
                                         <Grid container style={{ position: "absolute", bottom: 10 }} justify="space-evenly" alignItems="center">
                                             <Grid item xs={3}>Sub</Grid>
                                             <Grid item xs={2}>{this.getsubtotalSOP}</Grid>
-                                            <Grid item xs={2}>101,850</Grid>
-                                            <Grid item xs={2}>133%</Grid>
+                                            <Grid item xs={2}>0</Grid>
+                                            <Grid item xs={2}>0%</Grid>
                                             <Grid item xs={1} />
                                         </Grid>
                                     </Paper>
@@ -1050,10 +1205,10 @@ class OfferModelPage extends React.Component<Props, State> {
                                 <Grid container justify="space-evenly" alignItems="center">
                                     <Grid item xs={3}>Cash Total</Grid>
                                     <Grid item xs={1}>{this.getsubtotalGC() + this.getsubtotalSC() + this.getsubtotalLC() + this.getsubtotalSOC()}</Grid>
-                                    <Grid item xs={1}>118,850</Grid>
+                                    <Grid item xs={1}>0</Grid>
                                     <Grid item xs={1}>{this.getsubtotalGP() + this.getsubtotalSP() + this.getsubtotalLP() + this.getsubtotalSOP()}</Grid>
-                                    <Grid item xs={1}>159,000</Grid>
-                                    <Grid item xs={2}>135%</Grid>
+                                    <Grid item xs={1}>0</Grid>
+                                    <Grid item xs={2}>0%</Grid>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -1063,17 +1218,6 @@ class OfferModelPage extends React.Component<Props, State> {
                     <div className={classes.spacediv} />
 
                     <Paper className={classes.paper}>
-                        <Grid container alignItems="center" justify="center">
-                            <Grid item xs={4}>Internal Promotion</Grid>
-                            <Grid item xs={2}>Buy {this.state.currency}</Grid>
-                            <Grid item xs={2}>0.15</Grid>
-                        </Grid>
-                        <Grid container alignItems="center" justify="center">
-                            <Grid item xs={4}>Comparator Data</Grid>
-                            <Grid item xs={2}>27</Grid>
-                        </Grid>
-                        <Divider />
-                        <div className={classes.spacediv} />
 
                         <Grid container alignItems="center">
                             <Grid item xs={1}>
@@ -1099,14 +1243,14 @@ class OfferModelPage extends React.Component<Props, State> {
                                     <Grid item xs={2}>{this.state.comparator_data.intPayrollSpread.grade.min}</Grid>
                                     <Grid item xs={2}>{this.state.comparator_data.intPayrollSpread.grade.median}</Grid>
                                     <Grid item xs={2}>{this.state.comparator_data.intPayrollSpread.grade.max}</Grid>
-                                    <Grid item xs={2}>32</Grid>
+                                    <Grid item xs={2}>{this.state.comparator_data.intPayrollSpread.grade.data_points}</Grid>
                                 </Grid>
                                 <Grid container justify="space-evenly" alignItems="center">
                                     <Grid item xs={3}>Payroll Spread Functional</Grid>
                                     <Grid item xs={2}>{this.state.comparator_data.intPayrollSpread.function.min}</Grid>
                                     <Grid item xs={2}>{this.state.comparator_data.intPayrollSpread.function.median}</Grid>
                                     <Grid item xs={2}>{this.state.comparator_data.intPayrollSpread.function.max}</Grid>
-                                    <Grid item xs={2}> </Grid>
+                                    <Grid item xs={2}>{this.state.comparator_data.intPayrollSpread.function.data_points}</Grid>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -1138,7 +1282,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                     <Grid item xs={2}>{this.state.comparator_data.extMarketData.function.p25}</Grid>
                                     <Grid item xs={2}>{this.state.comparator_data.extMarketData.function.p50}</Grid>
                                     <Grid item xs={2}>{this.state.comparator_data.extMarketData.function.p75}</Grid>
-                                    <Grid item xs={2}>32</Grid>
+                                    <Grid item xs={2}></Grid>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -1155,18 +1299,13 @@ class OfferModelPage extends React.Component<Props, State> {
                                     <Grid item xs={2}>Median</Grid>
                                     <Grid item xs={2}>Max</Grid>
                                 </Grid>
-                                <Grid container justify="space-evenly" alignItems="center">
-                                    <Grid item xs={3}>Annual</Grid>
-                                    <Grid item xs={2}>{this.state.comparator_data.equityRange.annualGrant.min}</Grid>
-                                    <Grid item xs={2}>{this.state.comparator_data.equityRange.annualGrant.mid}</Grid>
-                                    <Grid item xs={2}>{this.state.comparator_data.equityRange.annualGrant.max}</Grid>
-                                </Grid>
-                                <Grid container justify="space-evenly" alignItems="center">
-                                    <Grid item xs={3}>New Hire</Grid>
-                                    <Grid item xs={2}>36,000</Grid>
-                                    <Grid item xs={2}>70,000</Grid>
-                                    <Grid item xs={2}>105,000</Grid>
-                                </Grid>
+                                {this.state.comparator_data.equityRange.map((item: any, index) =>
+                                    <Grid container justify="space-evenly" alignItems="center">
+                                        <Grid item xs={3}>{item.type}</Grid>
+                                        <Grid item xs={2}>{item.min}</Grid>
+                                        <Grid item xs={2}>{item.mid}</Grid>
+                                        <Grid item xs={2}>{item.max}</Grid>
+                                    </Grid>)}
                             </Grid>
                         </Grid>
 
@@ -1210,10 +1349,10 @@ function mapStateToProps(state: RootState) {
         selectedCompany: state.companyReducer.selectedCompany,
         selectedJobPosition: state.jobPositionReducer.selectedJobPosition,
         session_key: state.authenticationReducer.token,
-        stiList:state.shortIncentiveReducer.shortincentiveList,
-        ltiList:state.longIncentiveReducer.longincentiveList,
-        signonList:state.signonsReducer.signonsList,
-        targetbonusList:state.targetBonusReducer.targetbonusList,
+        stiList: state.shortIncentiveReducer.shortincentiveList,
+        ltiList: state.longIncentiveReducer.longincentiveList,
+        signonList: state.signonsReducer.signonsList,
+        allowancesList: state.allowancesReducer.allowancesList,
     };
 }
 
