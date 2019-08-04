@@ -29,8 +29,8 @@ class CreateOfferModelPage extends Component<Props, CreateOfferModelState> {
   }
 
 
-  handleCreateOfferModel = (e, data) => {
-    e.preventDefault();
+  handleCreateOfferModel = (data) => {
+    delete data.comparator_data
     this.props.createOfferModel(data);
     history.goBack();
   };
@@ -42,7 +42,7 @@ class CreateOfferModelPage extends Component<Props, CreateOfferModelState> {
         <OfferModel
         create={true}
         updateData=""
-        onSubmit={(e, data) => this.handleCreateOfferModel(e, data)}
+        onSubmit={(data) => this.handleCreateOfferModel(data)}
         />
       </div>
     );

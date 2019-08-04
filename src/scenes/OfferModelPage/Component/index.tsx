@@ -74,7 +74,7 @@ interface State {
     currency: string;
     currency1: string;
     currency2: string;
-    jobposition_id: number;
+    jobposition_id: string;
     created_by: string;
     candidate_name: string;
     job_flag: string;
@@ -83,6 +83,14 @@ interface State {
     offer_reference: string;
     jobgrade_id: string;
     status: string;
+    current_position_title: string,
+    current_position_country: string,
+    current_position_location: string,
+    current_position_grade: string,
+    current_position_datestart: string,
+    current_position_jobfunction: string,
+    current_position_sjobfunction: string,
+    propose_position_datestart: string,
     current_data: any;
     propose_data: any;
     comparator_data: ComparatorData;
@@ -99,7 +107,7 @@ interface ComparatorData {
 
 class OfferModelPage extends React.Component<Props, State> {
     state = {
-        jobposition_id: 1,
+        jobposition_id: "",
         created_by: "user.master@mail.com",
         candidate_name: "",
         job_flag: "",
@@ -108,9 +116,17 @@ class OfferModelPage extends React.Component<Props, State> {
         offer_reference: "",
         jobgrade_id: "",
         status: "Draft",
-        currency: "",
-        currency1: "",
+        currency: "USD",
+        currency1: "CNY",
         currency2: "",
+        current_position_title: "",
+        current_position_country: "",
+        current_position_location: "",
+        current_position_grade: "",
+        current_position_datestart: "",
+        current_position_jobfunction: "",
+        current_position_sjobfunction: "",
+        propose_position_datestart: "",
         current_data: {
             guaranteed_cash: {
                 annual_base: '0',
@@ -210,7 +226,13 @@ class OfferModelPage extends React.Component<Props, State> {
         console.dir(this.props.updateData)
         // this.setState(this.props.updateData)
 
-        this.setState({ jobgrade_id: this.props.selectedJobPosition.jobgrade_name })
+        if(this.props.create){
+            this.setState({ jobgrade_id: this.props.selectedJobPosition.jobgrade_name,
+                            jobposition_id: this.props.selectedJobPosition.jobposition_id })
+        }
+        else{
+            this.setState(this.props.updateData)
+        }
         const data = {
             country: this.props.selectedJobPosition.country,
             session_key: this.props.session_key,
@@ -542,6 +564,11 @@ class OfferModelPage extends React.Component<Props, State> {
         });
         return a
     }
+
+    handleSubmit = () =>{
+        this.setState({status: "Generated"})
+        this.props.onSubmit(this.state)
+    }
     // handleDeleteGC = (index) => { this.setState(state => { const guaranteedcash_current = state.guaranteedcash_current.filter((item, j) => index !== j); return { guaranteedcash_current, }; }); }
     // handleAddGC = () => { this.setState(state => { const guaranteedcash_current = state.guaranteedcash_current.concat({ name: '', value: '' }); return { guaranteedcash_current }; }); };
     // handleDeleteGP = (index) => { this.setState(state => { const guaranteedcash_propose = state.guaranteedcash_propose.filter((item, j) => index !== j); return { guaranteedcash_propose, }; }); }
@@ -584,7 +611,7 @@ class OfferModelPage extends React.Component<Props, State> {
                         <Grid item xs={3}><TextField value={this.state.candidate_name} onChange={this.handleChange('candidate_name')} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                         <Grid item xs={1}>Offer Modeller Type</Grid>
                         <Grid item xs={3}>
-                        <NativeSelect
+                            <NativeSelect
                                 id="type"
                                 value={this.state.model_type}
                                 onChange={this.handleChangeSelect('model_type')}
@@ -598,7 +625,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                 <option value={'Transfer'} >Transfer</option>
                                 <option value={'New'} >New</option>
                             </NativeSelect>
-                            </Grid>
+                        </Grid>
                         <Grid item xs={1}>Offer Reference</Grid>
                         <Grid item xs={3}><TextField value={this.state.offer_reference} onChange={this.handleChange('offer_reference')} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                     </Grid>
@@ -621,7 +648,7 @@ class OfferModelPage extends React.Component<Props, State> {
                             </NativeSelect>
                         </Grid>
                         <Grid item xs={1}>Year of Birth</Grid>
-                        <Grid item xs={3}><TextField value={this.state.year_of_birth} onChange={this.handleChange('year_of_birth')} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                        <Grid item xs={3}><TextField type="date" value={this.state.year_of_birth} onChange={this.handleChange('year_of_birth')} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                         <Grid item xs={1}>Job Grade</Grid>
                         <Grid item xs={3}><TextField disabled value={this.state.jobgrade_id} onChange={this.handleChange('jobgrade_id')} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                     </Grid>
@@ -648,6 +675,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                     <Grid item xs={4}><p className={classes.subtitle}>Title</p></Grid>
                                     <Grid item xs={4}>
                                         <TextField
+                                        value={this.state.current_position_title} onChange={this.handleChange('current_position_title')}
                                             inputProps={{
                                                 style: { textAlign: "center" }
                                             }} />
@@ -658,6 +686,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                 <Grid container>
                                     <Grid item xs={4}><p className={classes.subtitle}>Country</p></Grid>
                                     <Grid item xs={4}><TextField
+                                    value={this.state.current_position_country} onChange={this.handleChange('current_position_country')}
                                         inputProps={{
                                             style: { textAlign: "center" }
                                         }} /></Grid>
@@ -666,6 +695,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                 <Grid container>
                                     <Grid item xs={4}><p className={classes.subtitle}>Location</p></Grid>
                                     <Grid item xs={4}><TextField
+                                    value={this.state.current_position_location} onChange={this.handleChange('current_position_location')}
                                         inputProps={{
                                             style: { textAlign: "center" }
                                         }} /></Grid>
@@ -674,6 +704,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                 <Grid container>
                                     <Grid item xs={4}><p className={classes.subtitle}>Grade</p></Grid>
                                     <Grid item xs={4}><TextField
+                                    value={this.state.current_position_grade} onChange={this.handleChange('current_position_grade')}
                                         inputProps={{
                                             style: { textAlign: "center" }
                                         }} /></Grid>
@@ -682,10 +713,14 @@ class OfferModelPage extends React.Component<Props, State> {
                                 <Grid container>
                                     <Grid item xs={4}><p className={classes.subtitle}>Datestart</p></Grid>
                                     <Grid item xs={4}><TextField
+                                        type="date"
+                                        value={this.state.current_position_datestart} onChange={this.handleChange('current_position_datestart')}
                                         inputProps={{
                                             style: { textAlign: "center" }
                                         }} /></Grid>
                                     <Grid item xs={4}><TextField
+                                        type="date"
+                                        value={this.state.propose_position_datestart} onChange={this.handleChange('propose_position_datestart')}
                                         inputProps={{
                                             style: { textAlign: "center" }
                                         }} /></Grid>
@@ -693,6 +728,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                 <Grid container>
                                     <Grid item xs={4}><p className={classes.subtitle}>Jobfunction</p></Grid>
                                     <Grid item xs={4}><TextField
+                                    value={this.state.current_position_jobfunction} onChange={this.handleChange('current_position_jobfunction')}
                                         inputProps={{
                                             style: { textAlign: "center" }
                                         }} /></Grid>
@@ -978,7 +1014,7 @@ class OfferModelPage extends React.Component<Props, State> {
                             <Grid item xs={1} />
                             <Grid item xs={11}>
                                 <Grid container justify="space-evenly" alignItems="center">
-                                    <Grid item xs={3}>Cash Total</Grid>
+                                    <Grid item xs={3}>Target Total Cash</Grid>
                                     <Grid item xs={1}>{this.getsubtotalGC() + this.getsubtotalSC()}</Grid>
                                     <Grid item xs={1}>0</Grid>
                                     <Grid item xs={1}>{this.getsubtotalGP() + this.getsubtotalSP()}</Grid>
@@ -1102,6 +1138,24 @@ class OfferModelPage extends React.Component<Props, State> {
 
                     <div className={classes.spacediv} />
 
+                    <Paper className={classes.colorcontainer}>
+                        <Grid container alignItems="center">
+                            <Grid item xs={1} />
+                            <Grid item xs={11}>
+                                <Grid container justify="space-evenly" alignItems="center">
+                                    <Grid item xs={3}>Total Direct Compensation</Grid>
+                                    <Grid item xs={1}>{this.getsubtotalGC() + this.getsubtotalSC() + this.getsubtotalLC()}</Grid>
+                                    <Grid item xs={1}>0</Grid>
+                                    <Grid item xs={1}>{this.getsubtotalGP() + this.getsubtotalSP() + this.getsubtotalLP()}</Grid>
+                                    <Grid item xs={1}>0</Grid>
+                                    <Grid item xs={2}>0%</Grid>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </Paper>
+
+                    <div className={classes.spacediv} />
+
                     <ExpansionPanel>
                         <ExpansionPanelSummary
                             expandIcon={<ExpandMoreIcon />}
@@ -1203,7 +1257,7 @@ class OfferModelPage extends React.Component<Props, State> {
                             <Grid item xs={1} />
                             <Grid item xs={11}>
                                 <Grid container justify="space-evenly" alignItems="center">
-                                    <Grid item xs={3}>Cash Total</Grid>
+                                    <Grid item xs={3}>Total Compensation Package</Grid>
                                     <Grid item xs={1}>{this.getsubtotalGC() + this.getsubtotalSC() + this.getsubtotalLC() + this.getsubtotalSOC()}</Grid>
                                     <Grid item xs={1}>0</Grid>
                                     <Grid item xs={1}>{this.getsubtotalGP() + this.getsubtotalSP() + this.getsubtotalLP() + this.getsubtotalSOP()}</Grid>
@@ -1322,12 +1376,14 @@ class OfferModelPage extends React.Component<Props, State> {
                             variant="contained"
                             color="primary"
                             style={{ marginLeft: "auto" }}
+                            onClick={() => this.props.onSubmit(this.state)}
                         >
                             Save
             </Button>
                         <Button
                             variant="contained"
                             color="primary"
+                            onClick={() => this.handleSubmit}
                         >
                             Submit
             </Button>

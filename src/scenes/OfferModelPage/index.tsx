@@ -18,6 +18,8 @@ import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../interface/propsInterface";
 import { IconButton } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
+import ConfirmIcon from "@material-ui/icons/Done";
+import RejectIcon from "@material-ui/icons/Close";
 import OfferIcon from "@material-ui/icons/Beenhere";
 import { OfferModel } from "../../interface/offerModelInterface";
 import { history } from "../../store";
@@ -26,7 +28,6 @@ import { Company } from "../../interface/companyInterface";
 import { isUserHR, isUserPowerOrHR } from "../../function/checkRole";
 import CustomButton from "../../helper/components/CustomButton";
 import ChangeStatus from "./Component/changeStatus"
-import SetCurrency from "./Component/currency"
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -110,8 +111,67 @@ class OfferModelPage extends React.Component<Props, State> {
     this.setState({ changeStatus: false, setcurrency: false });
   };
 
+  handleAcceptButtonClick = (row) => {
+    return
+  }
+
+  handleRejectButtonClick = (row) => {
+    return
+  }
+
   render() {
     const { classes } = this.props;
+
+    const getActionButton = (row) => {
+      switch (row.status) {
+        case "Draft":
+          return (
+            <CustomTableCell align="right">
+              <IconButton
+                onClick={() => this.handleUpdateButtonClick(row)}
+              >
+                <UpdateIcon />
+              </IconButton>
+              <IconButton
+                onClick={() => this.handleDelete(row.offermodel_id)}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </CustomTableCell>
+          )
+        case "Generated":
+          return (
+            <CustomTableCell align="right">
+              <IconButton
+                onClick={() => this.handleAcceptButtonClick(row)}
+              >
+                <ConfirmIcon />
+              </IconButton>
+              <IconButton
+                onClick={() => this.handleRejectButtonClick(row)}
+              >
+                <RejectIcon />
+              </IconButton>
+              <IconButton
+                onClick={() => this.handleDelete(row.offermodel_id)}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </CustomTableCell>
+          )
+        default:
+          return (
+            <CustomTableCell align="right">
+              <IconButton
+                onClick={() => this.handleDelete(row.offermodel_id)}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </CustomTableCell>
+          )
+
+      }
+    }
 
     return (
       <main>
@@ -145,28 +205,7 @@ class OfferModelPage extends React.Component<Props, State> {
                     <CustomTableCell component="th" scope="row">
                       {row.status}
                     </CustomTableCell>
-                    <CustomTableCell align="right">
-                      <IconButton
-                        onClick={() => this.handleStatesButtonClick(row)}
-                      >
-                        <OfferIcon />
-                      </IconButton>
-                      {!isUserHR(this.props.role) && (
-                        <IconButton
-                          onClick={() => this.handleUpdateButtonClick(row)}
-                        >
-                          <UpdateIcon />
-                        </IconButton>
-                      )}
-                      {/* <Button color="primary" variant="contained" onClick={() => this.handleUpdateButtonClick(row)}>view</Button> */}
-                      {!isUserPowerOrHR(this.props.role) && (
-                        <IconButton
-                          onClick={() => this.handleDelete(row.offermodel_id)}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                      )}
-                    </CustomTableCell>
+                    {getActionButton(row)}
                   </TableRow>
                 ))}
               </TableBody>

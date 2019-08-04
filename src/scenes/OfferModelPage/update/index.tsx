@@ -46,8 +46,7 @@ class UpdateOfferModelPage extends Component<Props, UpdateOfferModelState> {
     postal_code: ""
   };
 
-  handleUpdateOfferModel = (e, data) => {
-    e.preventDefault();
+  handleUpdateOfferModel = (data) => {
     this.props.updateOfferModel(data);
     history.goBack();
   };
@@ -62,7 +61,7 @@ class UpdateOfferModelPage extends Component<Props, UpdateOfferModelState> {
         <OfferModelPage
         create={false}
         updateData={this.props.selectedOfferModel}
-        onSubmit={(e, data) => this.handleUpdateOfferModel(e, data)}
+        onSubmit={(data) => this.handleUpdateOfferModel(data)}
       />
       </div>
     );
