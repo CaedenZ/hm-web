@@ -306,19 +306,19 @@ class PayrollUploadPage extends React.Component<Props, State> {
       filterable: true,
     };
     const datacolumn: any = [
-      { key: 'year', name: "Year", filterRenderer: AutoCompleteFilter ,width: 150},
-      { key: 'country', name: "Country", filterRenderer: AutoCompleteFilter ,width: 150},
-      { key: 'employee_id', name: "Employee ID", filterRenderer: AutoCompleteFilter ,width: 150},
-      { key: 'gender', name: "Gender", filterRenderer: AutoCompleteFilter ,width: 150},
-      { key: 'jobfunction', name: "Job Function", filterRenderer: AutoCompleteFilter ,width: 150},
+      { key: 'year', name: "Year", filterRenderer: AutoCompleteFilter, width: 150 },
+      { key: 'country', name: "Country", filterRenderer: AutoCompleteFilter, width: 150 },
+      { key: 'employee_id', name: "Employee ID", filterRenderer: AutoCompleteFilter, width: 150 },
+      { key: 'gender', name: "Gender", filterRenderer: AutoCompleteFilter, width: 150 },
+      { key: 'jobfunction', name: "Job Function", filterRenderer: AutoCompleteFilter, width: 150 },
       { key: 'sjobfunction', name: "Sub Job Function", filterRenderer: AutoCompleteFilter, width: 200 },
-      { key: 'annual_base_pay', name: "Annual Base Pay", filterRenderer: AutoCompleteFilter ,width: 150},
-      { key: 'annual_cash_allowance', name: "Annual Cash Allowance", filterRenderer: AutoCompleteFilter,width: 150 },
-      { key: 'annual_fixed_pay', name: "Annual Fixed Pay", filterRenderer: AutoCompleteFilter,width: 150 },
+      { key: 'annual_base_pay', name: "Annual Base Pay", filterRenderer: AutoCompleteFilter, width: 150 },
+      { key: 'annual_cash_allowance', name: "Annual Cash Allowance", filterRenderer: AutoCompleteFilter, width: 150 },
+      { key: 'annual_fixed_pay', name: "Annual Fixed Pay", filterRenderer: AutoCompleteFilter, width: 150 },
       { key: 'business_title', name: "Business Title", filterRenderer: AutoCompleteFilter, width: 250 },
-      { key: 'grade', name: "Grade", filterRenderer: AutoCompleteFilter ,width: 150},
+      { key: 'grade', name: "Grade", filterRenderer: AutoCompleteFilter, width: 150 },
       { key: 'department', name: "Department", filterRenderer: AutoCompleteFilter, width: 200 },
-      { key: 'currency', name: "Currency", filterRenderer: AutoCompleteFilter ,width: 150},
+      { key: 'currency', name: "Currency", filterRenderer: AutoCompleteFilter, width: 150 },
     ].map(c => ({ ...c, ...defaultColumnProperties }));
 
     function actions(row) {

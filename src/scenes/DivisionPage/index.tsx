@@ -183,6 +183,7 @@ class UnitPage extends React.Component<Props, State> {
           return null;
       }
     };
+
     return (
       <main>
         {!isUserHR(this.props.role) && (
