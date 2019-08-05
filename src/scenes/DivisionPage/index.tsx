@@ -164,7 +164,7 @@ class UnitPage extends React.Component<Props, State> {
         case "region":
           return (
             <Typography>
-              {JSON.parse(unit.unit_data).region_name}
+              {unit.unit_data !== '' ? JSON.parse(unit.unit_data).region_name : unit.unit_data}
               <IconButton onClick={e => this.handleEntity(unit, e)}>
                 <CompanyIcon />
               </IconButton>
@@ -183,6 +183,7 @@ class UnitPage extends React.Component<Props, State> {
           return null;
       }
     };
+
     return (
       <main>
         {!isUserHR(this.props.role) && (

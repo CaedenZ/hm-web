@@ -478,7 +478,7 @@ class OfferModelPage extends React.Component<Props, State> {
 
     getsubtotalLC = () => {
         let a = parseInt(this.state.current_data.lti.unvested_equity)
-        this.state.current_data.sti.optional.forEach(element => {
+        this.state.current_data.lti.optional.forEach(element => {
             a += parseInt(element.value)
         });
         return a
@@ -486,7 +486,7 @@ class OfferModelPage extends React.Component<Props, State> {
 
     getsubtotalLP = () => {
         let a = 0
-        this.state.propose_data.sti.optional.forEach(element => {
+        this.state.propose_data.lti.optional.forEach(element => {
             a += parseInt(element.value)
         });
         return a
@@ -507,25 +507,6 @@ class OfferModelPage extends React.Component<Props, State> {
         });
         return a
     }
-    // handleDeleteGC = (index) => { this.setState(state => { const guaranteedcash_current = state.guaranteedcash_current.filter((item, j) => index !== j); return { guaranteedcash_current, }; }); }
-    // handleAddGC = () => { this.setState(state => { const guaranteedcash_current = state.guaranteedcash_current.concat({ name: '', value: '' }); return { guaranteedcash_current }; }); };
-    // handleDeleteGP = (index) => { this.setState(state => { const guaranteedcash_propose = state.guaranteedcash_propose.filter((item, j) => index !== j); return { guaranteedcash_propose, }; }); }
-    // handleAddGP = () => { this.setState(state => { const guaranteedcash_propose = state.guaranteedcash_propose.concat({ name: '', value: '' }); return { guaranteedcash_propose }; }); };
-
-    // handleDeleteSC = (index) => { this.setState(state => { const shortterm_current = state.shortterm_current.filter((item, j) => index !== j); return { shortterm_current, }; }); }
-    // handleAddSC = () => { this.setState(state => { const shortterm_current = state.shortterm_current.concat({ name: '', value: '', type: '' }); return { shortterm_current }; }); };
-    // handleDeleteSP = (index) => { this.setState(state => { const shortterm_propose = state.shortterm_propose.filter((item, j) => index !== j); return { shortterm_propose, }; }); }
-    // handleAddSP = () => { this.setState(state => { const shortterm_propose = state.shortterm_propose.concat({ name: '', value: '', type: '' }); return { shortterm_propose }; }); };
-
-    // handleDeleteLC = (index) => { this.setState(state => { const longterm_current = state.longterm_current.filter((item, j) => index !== j); return { longterm_current, }; }); }
-    // handleAddLC = () => { this.setState(state => { const longterm_current = state.longterm_current.concat({ name: '', value: '' }); return { longterm_current }; }); };
-    // handleDeleteLP = (index) => { this.setState(state => { const longterm_propose = state.longterm_propose.filter((item, j) => index !== j); return { longterm_propose, }; }); }
-    // handleAddLP = () => { this.setState(state => { const longterm_propose = state.longterm_propose.concat({ name: '', value: '' }); return { longterm_propose }; }); };
-
-    // handleDeleteSOC = (index) => { this.setState(state => { const signons_current = state.signons_current.filter((item, j) => index !== j); return { signons_current, }; }); }
-    // handleAddSOC = () => { this.setState(state => { const signons_current = state.signons_current.concat({ name: '', value: '' }); return { signons_current }; }); };
-    // handleDeleteSOP = (index) => { this.setState(state => { const signons_propose = state.signons_propose.filter((item, j) => index !== j); return { signons_propose, }; }); }
-    // handleAddSOP = () => { this.setState(state => { const signons_propose = state.signons_propose.concat({ name: '', value: '' }); return { signons_propose }; }); };
 
     render() {
         const { classes } = this.props;
@@ -706,7 +687,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                             <Grid item xs={3}>Annual Base</Grid>
                                             <Grid item xs={2}><TextField type="number" value={this.state.propose_data.guaranteed_cash.annual_base} onChange={this.handleChangeAnnualBaseProposed} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                             <Grid item xs={2}><TextField disabled inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                            <Grid item xs={2}><TextField disabled inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={2}><TextField value={(parseInt(this.state.propose_data.guaranteed_cash.annual_base) * 100 / parseInt(this.state.current_data.guaranteed_cash.annual_base)).toFixed(2) + "%"} disabled inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                             <Grid item xs={1} />
                                         </Grid>
                                         <Grid container justify="space-evenly" alignItems="center">
@@ -746,7 +727,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                             <Grid item xs={3}>Sub</Grid>
                                             <Grid item xs={2}>{this.getsubtotalGP()}</Grid>
                                             <Grid item xs={2}>101,850</Grid>
-                                            <Grid item xs={2}>133%</Grid>
+                                            <Grid item xs={2}>{(this.getsubtotalGP() * 100 / this.getsubtotalGC()).toFixed(2)}%</Grid>
                                             <Grid item xs={1} />
                                         </Grid>
                                     </Paper>
@@ -847,7 +828,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                             <Grid item xs={3}>Sub</Grid>
                                             <Grid item xs={2}>{this.getsubtotalSP()}</Grid>
                                             <Grid item xs={2}>101,850</Grid>
-                                            <Grid item xs={2}>133%</Grid>
+                                            <Grid item xs={2}>{(this.getsubtotalSP() * 100 / this.getsubtotalSC()).toFixed(2)}%</Grid>
                                             <Grid item xs={1} />
                                         </Grid>
                                     </Paper>
@@ -863,12 +844,12 @@ class OfferModelPage extends React.Component<Props, State> {
                             <Grid item xs={1} />
                             <Grid item xs={11}>
                                 <Grid container justify="space-evenly" alignItems="center">
-                                    <Grid item xs={3}>Cash Total</Grid>
+                                    <Grid item xs={3}>Target Total Cash</Grid>
                                     <Grid item xs={1}>{this.getsubtotalGC() + this.getsubtotalSC()}</Grid>
                                     <Grid item xs={1}>118,850</Grid>
                                     <Grid item xs={1}>{this.getsubtotalGP() + this.getsubtotalSP()}</Grid>
                                     <Grid item xs={1}>159,000</Grid>
-                                    <Grid item xs={2}>135%</Grid>
+                                    <Grid item xs={2}>{((this.getsubtotalGP() + this.getsubtotalSP()) * 100 / (this.getsubtotalGC() + this.getsubtotalSC())).toFixed(2)}%</Grid>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -956,7 +937,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                             <Grid item xs={3}>Sub</Grid>
                                             <Grid item xs={2}>{this.getsubtotalLP()}</Grid>
                                             <Grid item xs={2}>101,850</Grid>
-                                            <Grid item xs={2}>133%</Grid>
+                                            <Grid item xs={2}>{(this.getsubtotalLP() * 100 / this.getsubtotalLC()).toFixed(2)}%</Grid>
                                             <Grid item xs={1} />
                                         </Grid>
                                     </Paper>
@@ -964,6 +945,24 @@ class OfferModelPage extends React.Component<Props, State> {
                             </Grid>
                         </ExpansionPanelDetails>
                     </ExpansionPanel>
+
+                    <div className={classes.spacediv} />
+
+                    <Paper className={classes.colorcontainer}>
+                        <Grid container alignItems="center">
+                            <Grid item xs={1} />
+                            <Grid item xs={11}>
+                                <Grid container justify="space-evenly" alignItems="center">
+                                    <Grid item xs={3}>Total Direct Compensation</Grid>
+                                    <Grid item xs={1}>{this.getsubtotalGC() + this.getsubtotalSC() + this.getsubtotalLC()}</Grid>
+                                    <Grid item xs={1}>118,850</Grid>
+                                    <Grid item xs={1}>{this.getsubtotalGP() + this.getsubtotalSP() + this.getsubtotalLP()}</Grid>
+                                    <Grid item xs={1}>159,000</Grid>
+                                    <Grid item xs={2}>{((this.getsubtotalGP() + this.getsubtotalSP() + this.getsubtotalLP()) * 100 / (this.getsubtotalGC() + this.getsubtotalSC() + this.getsubtotalLC()))}%</Grid>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </Paper>
 
                     <div className={classes.spacediv} />
 
@@ -1030,9 +1029,9 @@ class OfferModelPage extends React.Component<Props, State> {
 
                                         <Grid container style={{ position: "absolute", bottom: 10 }} justify="space-evenly" alignItems="center">
                                             <Grid item xs={3}>Sub</Grid>
-                                            <Grid item xs={2}>{this.getsubtotalSOP}</Grid>
+                                            <Grid item xs={2}>{this.getsubtotalSOP()}</Grid>
                                             <Grid item xs={2}>101,850</Grid>
-                                            <Grid item xs={2}>133%</Grid>
+                                            <Grid item xs={2}>{(this.getsubtotalSOP() * 100 / this.getsubtotalSOC()).toFixed(2)}%</Grid>
                                             <Grid item xs={1} />
                                         </Grid>
                                     </Paper>
@@ -1048,12 +1047,12 @@ class OfferModelPage extends React.Component<Props, State> {
                             <Grid item xs={1} />
                             <Grid item xs={11}>
                                 <Grid container justify="space-evenly" alignItems="center">
-                                    <Grid item xs={3}>Cash Total</Grid>
+                                    <Grid item xs={3}>Total Compensation Package</Grid>
                                     <Grid item xs={1}>{this.getsubtotalGC() + this.getsubtotalSC() + this.getsubtotalLC() + this.getsubtotalSOC()}</Grid>
                                     <Grid item xs={1}>118,850</Grid>
                                     <Grid item xs={1}>{this.getsubtotalGP() + this.getsubtotalSP() + this.getsubtotalLP() + this.getsubtotalSOP()}</Grid>
                                     <Grid item xs={1}>159,000</Grid>
-                                    <Grid item xs={2}>135%</Grid>
+                                    <Grid item xs={2}>{((this.getsubtotalGP() + this.getsubtotalSP() + this.getsubtotalLP() + this.getsubtotalSOP()) * 100 / (this.getsubtotalGC() + this.getsubtotalSC() + this.getsubtotalLC() + this.getsubtotalSOC())).toFixed(2)}%</Grid>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -1210,10 +1209,10 @@ function mapStateToProps(state: RootState) {
         selectedCompany: state.companyReducer.selectedCompany,
         selectedJobPosition: state.jobPositionReducer.selectedJobPosition,
         session_key: state.authenticationReducer.token,
-        stiList:state.shortIncentiveReducer.shortincentiveList,
-        ltiList:state.longIncentiveReducer.longincentiveList,
-        signonList:state.signonsReducer.signonsList,
-        targetbonusList:state.targetBonusReducer.targetbonusList,
+        stiList: state.shortIncentiveReducer.shortincentiveList,
+        ltiList: state.longIncentiveReducer.longincentiveList,
+        signonList: state.signonsReducer.signonsList,
+        targetbonusList: state.targetBonusReducer.targetbonusList,
     };
 }
 
