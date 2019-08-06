@@ -4,6 +4,7 @@ export interface Country {
 export interface Currency {
     country_name: string;
     code: string;
+    rate: string;
 }
 
 export interface DistintCurrency {

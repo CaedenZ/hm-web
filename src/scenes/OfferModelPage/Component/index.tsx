@@ -18,6 +18,7 @@ import { TargetBonus } from "../../../interface/targetBonusInterface";
 import { Allowances } from "../../../interface/allowanceInterface";
 import theme from "../../../assets/theme";
 import "../../../css/hideicon.css"
+import { Currency } from "../../../interface/countryInterface";
 
 const styles = (theme: Theme) =>
     createStyles({
@@ -68,6 +69,7 @@ interface InState {
     ltiList: LongIncentive[];
     signonList: Signons[];
     allowancesList: Allowances[];
+    currencyList: Currency[];
 }
 
 interface State {
@@ -117,7 +119,7 @@ class OfferModelPage extends React.Component<Props, State> {
         jobgrade_id: "",
         status: "Draft",
         currency: "USD",
-        currency1: "CNY",
+        currency1: "",
         currency2: "",
         current_position_title: "",
         current_position_country: "",
@@ -226,11 +228,15 @@ class OfferModelPage extends React.Component<Props, State> {
         console.dir(this.props.updateData)
         // this.setState(this.props.updateData)
 
-        if(this.props.create){
-            this.setState({ jobgrade_id: this.props.selectedJobPosition.jobgrade_name,
-                            jobposition_id: this.props.selectedJobPosition.jobposition_id })
+        let c = this.getCurrencyByCountry(this.props.selectedJobPosition.country)
+        if (this.props.create) {
+            this.setState({
+                jobgrade_id: this.props.selectedJobPosition.jobgrade_name,
+                jobposition_id: this.props.selectedJobPosition.jobposition_id,
+                currency: c
+            })
         }
-        else{
+        else {
             this.setState(this.props.updateData)
         }
         const data = {
@@ -245,6 +251,32 @@ class OfferModelPage extends React.Component<Props, State> {
         console.dir(response)
         this.setState({ comparator_data: response.data.data })
 
+    }
+
+    getCurrencyByCountry = (country) => {
+        let c = this.props.currencyList.find(e => { return e.country_name === country }
+        )
+
+        return c.code
+    }
+
+    getCurrencyRatio = (cu) => {
+
+        if (cu === "")
+            return '0'
+
+        let c = this.props.currencyList.find(e => {
+            return e.code === cu
+        })
+
+        return c.rate
+    }
+
+    getCurrency1 = (main) => {
+        let mainratio = this.getCurrencyRatio(this.state.currency)
+        let subratio = this.getCurrencyRatio(this.state.currency1)
+
+        return (main / parseFloat(mainratio) * parseFloat(subratio)).toFixed(2)
     }
 
     handleAddGC = () => {
@@ -425,6 +457,10 @@ class OfferModelPage extends React.Component<Props, State> {
     handleChangeGCOptionalNameProposed = (index) => (event) => {
         const gc = { ...this.state.propose_data }
         gc.guaranteed_cash.optional[index].name = event.target.value
+        let result = this.props.allowancesList.find(e => {
+            return e.type === event.target.value
+        })
+        gc.guaranteed_cash.optional[index].value = result.value
         this.setState({ propose_data: gc })
     }
 
@@ -449,6 +485,10 @@ class OfferModelPage extends React.Component<Props, State> {
     handleChangeSTIOptionalNameProposed = (index) => (event) => {
         const gc = { ...this.state.propose_data }
         gc.sti.optional[index].name = event.target.value
+        let result = this.props.stiList.find(e => {
+            return e.type === event.target.value
+        })
+        gc.sti.optional[index].value = result.value
         this.setState({ propose_data: gc })
     }
 
@@ -473,6 +513,10 @@ class OfferModelPage extends React.Component<Props, State> {
     handleChangeLTIOptionalNameProposed = (index) => (event) => {
         const gc = { ...this.state.propose_data }
         gc.lti.optional[index].name = event.target.value
+        let result = this.props.ltiList.find(e => {
+            return e.type === event.target.value
+        })
+        gc.lti.optional[index].value = result.value
         this.setState({ propose_data: gc })
     }
 
@@ -497,6 +541,10 @@ class OfferModelPage extends React.Component<Props, State> {
     handleChangeSignOnOptionalNameProposed = (index) => (event) => {
         const gc = { ...this.state.propose_data }
         gc.sign_on.optional[index].name = event.target.value
+        let result = this.props.signonList.find(e => {
+            return e.type === event.target.value
+        })
+        gc.sign_on.optional[index].value = result.value
         this.setState({ propose_data: gc })
     }
 
@@ -565,11 +613,11 @@ class OfferModelPage extends React.Component<Props, State> {
         return a
     }
 
-    handleSubmit = () =>{
-        this.setState({status: "Generated"})
+    handleSubmit = () => {
+        this.setState({ status: "Generated" })
         this.props.onSubmit(this.state)
     }
-    
+
     render() {
         const { classes } = this.props;
         const selectStyles = {
@@ -585,7 +633,49 @@ class OfferModelPage extends React.Component<Props, State> {
             <Grid container alignItems="center" justify="space-evenly" direction="row" className={classes.root}>
                 <Grid item xs={10}>
 
-                    <p className={classes.subtitle}>TOM Modeller</p>
+                    <Grid container justify="space-evenly" alignItems="center">
+                        <Grid item xs={4}>
+                            <p className={classes.subtitle}>TOM Modeller</p>
+                        </Grid>
+                        <Grid item xs={1}>
+                            <p>Currency 1</p>
+                        </Grid>
+                        <Grid item xs={3}>
+                            <NativeSelect
+                                id="type"
+                                value={this.state.currency1}
+                                onChange={this.handleChangeSelect('currency1')}
+                                inputProps={{
+                                    name: "type",
+                                    id: "type-simple"
+                                }}
+                            >
+                                <option value={undefined} />
+                                {this.props.currencyList.map(currency => (
+                                    <option value={currency.code}>{currency.code}</option>
+                                ))}
+                            </NativeSelect>
+                        </Grid>
+                        <Grid item xs={1}>
+                            <p>Currency 2</p>
+                        </Grid>
+                        <Grid item xs={3}>
+                            <NativeSelect
+                                id="type"
+                                value={this.state.currency2}
+                                onChange={this.handleChangeSelect('currency2')}
+                                inputProps={{
+                                    name: "type",
+                                    id: "type-simple"
+                                }}
+                            >
+                                <option value={undefined} />
+                                {this.props.currencyList.map(currency => (
+                                    <option value={currency.code}>{currency.code}</option>
+                                ))}
+                            </NativeSelect>
+                        </Grid>
+                    </Grid>
 
                     <Grid container justify="space-evenly" alignItems="center">
                         <Grid item xs={1}>Candidate</Grid>
@@ -656,7 +746,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                     <Grid item xs={4}><p className={classes.subtitle}>Title</p></Grid>
                                     <Grid item xs={4}>
                                         <TextField
-                                        value={this.state.current_position_title} onChange={this.handleChange('current_position_title')}
+                                            value={this.state.current_position_title} onChange={this.handleChange('current_position_title')}
                                             inputProps={{
                                                 style: { textAlign: "center" }
                                             }} />
@@ -667,7 +757,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                 <Grid container>
                                     <Grid item xs={4}><p className={classes.subtitle}>Country</p></Grid>
                                     <Grid item xs={4}><TextField
-                                    value={this.state.current_position_country} onChange={this.handleChange('current_position_country')}
+                                        value={this.state.current_position_country} onChange={this.handleChange('current_position_country')}
                                         inputProps={{
                                             style: { textAlign: "center" }
                                         }} /></Grid>
@@ -676,7 +766,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                 <Grid container>
                                     <Grid item xs={4}><p className={classes.subtitle}>Location</p></Grid>
                                     <Grid item xs={4}><TextField
-                                    value={this.state.current_position_location} onChange={this.handleChange('current_position_location')}
+                                        value={this.state.current_position_location} onChange={this.handleChange('current_position_location')}
                                         inputProps={{
                                             style: { textAlign: "center" }
                                         }} /></Grid>
@@ -685,7 +775,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                 <Grid container>
                                     <Grid item xs={4}><p className={classes.subtitle}>Grade</p></Grid>
                                     <Grid item xs={4}><TextField
-                                    value={this.state.current_position_grade} onChange={this.handleChange('current_position_grade')}
+                                        value={this.state.current_position_grade} onChange={this.handleChange('current_position_grade')}
                                         inputProps={{
                                             style: { textAlign: "center" }
                                         }} /></Grid>
@@ -709,7 +799,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                 <Grid container>
                                     <Grid item xs={4}><p className={classes.subtitle}>Jobfunction</p></Grid>
                                     <Grid item xs={4}><TextField
-                                    value={this.state.current_position_jobfunction} onChange={this.handleChange('current_position_jobfunction')}
+                                        value={this.state.current_position_jobfunction} onChange={this.handleChange('current_position_jobfunction')}
                                         inputProps={{
                                             style: { textAlign: "center" }
                                         }} /></Grid>
@@ -737,14 +827,15 @@ class OfferModelPage extends React.Component<Props, State> {
                                         <p className={classes.subtitle}>Current</p>
                                         <Grid container justify="space-evenly">
                                             <Grid item xs={3}>Currency</Grid>
-                                            <Grid item xs={2}>USD</Grid>
                                             <Grid item xs={2}>{this.state.currency}</Grid>
+                                            <Grid item xs={2}>{this.state.currency1}</Grid>
+                                            {/* <Grid item xs={2}>{this.state.currency2}</Grid> */}
                                             <Grid item xs={1}><IconButton onClick={this.handleAddGC}><AddIcon /></IconButton></Grid>
                                         </Grid>
                                         <Grid container justify="space-evenly" alignItems="center">
                                             <Grid item xs={3}>Annual Base</Grid>
                                             <Grid item xs={2}><TextField type="number" value={this.state.current_data.guaranteed_cash.annual_base} onChange={this.handleChangeAnnualBaseCurrent} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                            <Grid item xs={2}><TextField disabled inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={2}><TextField disabled value={this.getCurrency1(this.state.current_data.guaranteed_cash.annual_base)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                             <Grid item xs={1} />
                                         </Grid>
                                         <Grid container justify="space-evenly" alignItems="center">
@@ -770,7 +861,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                             <Grid key={'gc' + index} container justify="space-evenly" alignItems="center">
                                                 <Grid item xs={3}><TextField value={this.state.current_data.guaranteed_cash.optional[index].name} onChange={this.handleChangeGCOptionalNameCurrent(index)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                                 <Grid item xs={2}><TextField type="number" value={this.state.current_data.guaranteed_cash.optional[index].value} onChange={this.handleChangeGCOptionalValueCurrent(index)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                                <Grid item xs={2}><TextField disabled inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                                <Grid item xs={2}><TextField disabled value={this.getCurrency1(this.state.current_data.guaranteed_cash.optional[index].value)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                                 <Grid item xs={1}><IconButton onClick={() => this.handleDeleteGC(index)}><DeleteIcon /></IconButton></Grid>
                                             </Grid>)}
 
@@ -778,7 +869,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                         <Grid container style={{ position: "absolute", bottom: 10 }} justify="space-evenly" alignItems="center">
                                             <Grid item xs={3}>Sub</Grid>
                                             <Grid item xs={2}>{this.getsubtotalGC()}</Grid>
-                                            <Grid item xs={2}>0</Grid>
+                                            <Grid item xs={2}>{this.getCurrency1(this.getsubtotalGC())}</Grid>
                                             <Grid item xs={1} />
                                         </Grid>
                                     </Paper>
@@ -788,15 +879,15 @@ class OfferModelPage extends React.Component<Props, State> {
                                         <p className={classes.subtitle}>Propose</p>
                                         <Grid container justify="space-evenly">
                                             <Grid item xs={3}>Currency</Grid>
-                                            <Grid item xs={2}>USD</Grid>
                                             <Grid item xs={2}>{this.state.currency}</Grid>
+                                            <Grid item xs={2}>{this.state.currency1}</Grid>
                                             <Grid item xs={2}>Difference</Grid>
                                             <Grid item xs={1}><IconButton onClick={this.handleAddGP}><AddIcon /></IconButton></Grid>
                                         </Grid>
                                         <Grid container justify="space-evenly" alignItems="center">
                                             <Grid item xs={3}>Annual Base</Grid>
                                             <Grid item xs={2}><TextField type="number" value={this.state.propose_data.guaranteed_cash.annual_base} onChange={this.handleChangeAnnualBaseProposed} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                            <Grid item xs={2}><TextField disabled inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={2}><TextField disabled value={this.getCurrency1(this.state.propose_data.guaranteed_cash.annual_base)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                             <Grid item xs={2}><TextField value={(parseInt(this.state.propose_data.guaranteed_cash.annual_base) * 100 / parseInt(this.state.current_data.guaranteed_cash.annual_base)).toFixed(2) + "%"} disabled inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                             <Grid item xs={1} />
                                         </Grid>
@@ -846,7 +937,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                                     </NativeSelect>
                                                 </Grid>
                                                 <Grid item xs={2}><TextField value={this.state.propose_data.guaranteed_cash.optional[index].value} onChange={this.handleChangeGCOptionalValueProposed(index)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                                <Grid item xs={2}><TextField disabled inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                                <Grid item xs={2}><TextField disabled value={this.getCurrency1(this.state.propose_data.guaranteed_cash.optional[index].value)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                                 <Grid item xs={2}><TextField disabled inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                                 <Grid item xs={1}><IconButton onClick={() => this.handleDeleteGP(index)}><DeleteIcon /></IconButton></Grid>
                                             </Grid>)}
@@ -856,7 +947,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                         <Grid container style={{ position: "absolute", bottom: 10 }} justify="space-evenly" alignItems="center">
                                             <Grid item xs={3}>Sub</Grid>
                                             <Grid item xs={2}>{this.getsubtotalGP()}</Grid>
-                                            <Grid item xs={2}>0</Grid>
+                                            <Grid item xs={2}>{this.getCurrency1(this.getsubtotalGP())}</Grid>
                                             <Grid item xs={2}>{(this.getsubtotalGP() * 100 / this.getsubtotalGC()).toFixed(2)}%</Grid>
                                             <Grid item xs={1} />
                                         </Grid>
@@ -884,8 +975,8 @@ class OfferModelPage extends React.Component<Props, State> {
                                         <p className={classes.subtitle}>Current</p>
                                         <Grid container justify="space-evenly">
                                             <Grid item xs={3}>Currency</Grid>
-                                            <Grid item xs={2}>USD</Grid>
                                             <Grid item xs={2}>{this.state.currency}</Grid>
+                                            <Grid item xs={2}>{this.state.currency1}</Grid>
                                             <Grid item xs={1}><IconButton onClick={this.handleAddSC}><AddIcon /></IconButton></Grid>
                                         </Grid>
                                         <Grid container justify="space-evenly" alignItems="center">
@@ -897,7 +988,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                         <Grid container justify="space-evenly" alignItems="center">
                                             <Grid item xs={3}>Bonus Target Amount</Grid>
                                             <Grid item xs={2}><TextField value={this.state.current_data.sti.bonus_target_amount} onChange={this.handleChangeBonusTargetAmountCurrent} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                            <Grid item xs={2}><TextField disabled inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={2}><TextField disabled value={this.getCurrency1(this.state.current_data.sti.bonus_target_amount)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                             <Grid item xs={1} />
                                         </Grid>
 
@@ -905,7 +996,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                             <Grid key={'SC' + index} container justify="space-evenly" alignItems="center">
                                                 <Grid item xs={3}><TextField value={this.state.current_data.sti.optional[index].name} onChange={this.handleChangeSTIOptionalNameCurrent(index)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                                 <Grid item xs={2}><TextField value={this.state.current_data.sti.optional[index].value} onChange={this.handleChangeSTIOptionalValueCurrent(index)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                                <Grid item xs={2}><TextField disabled inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                                <Grid item xs={2}><TextField disabled value={this.getCurrency1(this.state.current_data.sti.optional[index].value)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                                 <Grid item xs={1}><IconButton onClick={() => this.handleDeleteSC(index)}><DeleteIcon /></IconButton></Grid>
                                             </Grid>)}
 
@@ -913,7 +1004,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                         <Grid container style={{ position: "absolute", bottom: 10 }} justify="space-evenly" alignItems="center">
                                             <Grid item xs={3}>Sub</Grid>
                                             <Grid item xs={2}>{this.getsubtotalSC()}</Grid>
-                                            <Grid item xs={2}>0</Grid>
+                                            <Grid item xs={2}>{this.getCurrency1(this.getsubtotalSC())}</Grid>
                                             <Grid item xs={1} />
                                         </Grid>
                                     </Paper>
@@ -923,8 +1014,8 @@ class OfferModelPage extends React.Component<Props, State> {
                                         <p className={classes.subtitle}>Propose</p>
                                         <Grid container justify="space-evenly">
                                             <Grid item xs={3}>Currency</Grid>
-                                            <Grid item xs={2}>USD</Grid>
                                             <Grid item xs={2}>{this.state.currency}</Grid>
+                                            <Grid item xs={2}>{this.state.currency1}</Grid>
                                             <Grid item xs={2}>Difference</Grid>
                                             <Grid item xs={1}><IconButton onClick={this.handleAddSP}><AddIcon /></IconButton></Grid>
                                         </Grid>
@@ -938,7 +1029,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                         <Grid container justify="space-evenly" alignItems="center">
                                             <Grid item xs={3}>Bonus Target Amount</Grid>
                                             <Grid item xs={2}><TextField value={this.state.propose_data.sti.bonus_target_amount} onChange={this.handleChangeBonusTargetAmountProposed} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                            <Grid item xs={2}><TextField disabled inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={2}><TextField disabled value={this.getCurrency1(this.state.propose_data.sti.bonus_target_amount)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                             <Grid item xs={2}><TextField disabled inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                             <Grid item xs={1} />
                                         </Grid>
@@ -968,7 +1059,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                                     </NativeSelect>
                                                 </Grid>
                                                 <Grid item xs={2}><TextField value={this.state.propose_data.sti.optional[index].value} onChange={this.handleChangeSTIOptionalValueProposed(index)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                                <Grid item xs={2}><TextField disabled inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                                <Grid item xs={2}><TextField disabled value={this.getCurrency1(this.state.propose_data.sti.optional[index].value)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                                 <Grid item xs={2}><TextField disabled inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                                 <Grid item xs={1}><IconButton onClick={() => this.handleDeleteSP(index)}><DeleteIcon /></IconButton></Grid>
                                             </Grid>)}
@@ -978,7 +1069,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                         <Grid container style={{ position: "absolute", bottom: 10 }} justify="space-evenly" alignItems="center">
                                             <Grid item xs={3}>Sub</Grid>
                                             <Grid item xs={2}>{this.getsubtotalSP()}</Grid>
-                                            <Grid item xs={2}>0</Grid>
+                                            <Grid item xs={2}>{this.getCurrency1(this.getsubtotalSP())}</Grid>
                                             <Grid item xs={2}>{(this.getsubtotalSP() * 100 / this.getsubtotalSC()).toFixed(2)}%</Grid>
                                             <Grid item xs={1} />
                                         </Grid>
@@ -997,9 +1088,9 @@ class OfferModelPage extends React.Component<Props, State> {
                                 <Grid container justify="space-evenly" alignItems="center">
                                     <Grid item xs={3}>Target Total Cash</Grid>
                                     <Grid item xs={1}>{this.getsubtotalGC() + this.getsubtotalSC()}</Grid>
-                                    <Grid item xs={1}>0</Grid>
+                                    <Grid item xs={1}>{this.getCurrency1(this.getsubtotalGC() + this.getsubtotalSC())}</Grid>
                                     <Grid item xs={1}>{this.getsubtotalGP() + this.getsubtotalSP()}</Grid>
-                                    <Grid item xs={1}>0</Grid>
+                                    <Grid item xs={1}>{this.getCurrency1(this.getsubtotalGP() + this.getsubtotalSP())}</Grid>
                                     <Grid item xs={2}>{((this.getsubtotalGP() + this.getsubtotalSP()) * 100 / (this.getsubtotalGC() + this.getsubtotalSC())).toFixed(2)}%</Grid>
                                 </Grid>
                             </Grid>
@@ -1026,15 +1117,15 @@ class OfferModelPage extends React.Component<Props, State> {
                                         <p className={classes.subtitle}>Current</p>
                                         <Grid container justify="space-evenly">
                                             <Grid item xs={3}>Currency</Grid>
-                                            <Grid item xs={2}>USD</Grid>
                                             <Grid item xs={2}>{this.state.currency}</Grid>
+                                            <Grid item xs={2}>{this.state.currency1}</Grid>
                                             <Grid item xs={1}><IconButton onClick={this.handleAddLC}><AddIcon /></IconButton></Grid>
                                         </Grid>
 
                                         <Grid container justify="space-evenly" alignItems="center">
                                             <Grid item xs={3}>Unvested Equity</Grid>
                                             <Grid item xs={2}><TextField value={this.state.current_data.lti.unvested_equity} onChange={this.handleChangeUnvestedEquity} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                            <Grid item xs={2}><TextField disabled inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={2}><TextField disabled value={this.getCurrency1(this.state.current_data.lti.unvested_equity)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                             <Grid item xs={1} />
                                         </Grid>
                                         <Grid container justify="space-evenly" alignItems="center">
@@ -1048,7 +1139,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                             <Grid container key={'lc' + index} justify="space-evenly" alignItems="center">
                                                 <Grid item xs={3}><TextField value={this.state.current_data.lti.optional[index].name} onChange={this.handleChangeLTIOptionalNameCurrent(index)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                                 <Grid item xs={2}><TextField value={this.state.current_data.lti.optional[index].value} onChange={this.handleChangeLTIOptionalValueCurrent(index)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                                <Grid item xs={2}><TextField disabled inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                                <Grid item xs={2}><TextField disabled value={this.getCurrency1(this.state.current_data.lti.optional[index].value)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                                 <Grid item xs={1}><IconButton onClick={() => this.handleDeleteLC(index)}><DeleteIcon /></IconButton></Grid>
                                             </Grid>)}
 
@@ -1056,7 +1147,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                         <Grid container style={{ position: "absolute", bottom: 10 }} justify="space-evenly" alignItems="center">
                                             <Grid item xs={3}>Sub</Grid>
                                             <Grid item xs={2}>{this.getsubtotalLC()}</Grid>
-                                            <Grid item xs={2}>0</Grid>
+                                            <Grid item xs={2}>{this.getCurrency1(this.getsubtotalLC())}</Grid>
                                             <Grid item xs={1} />
                                         </Grid>
                                     </Paper>
@@ -1066,8 +1157,8 @@ class OfferModelPage extends React.Component<Props, State> {
                                         <p className={classes.subtitle}>Propose</p>
                                         <Grid container justify="space-evenly">
                                             <Grid item xs={3}>Currency</Grid>
-                                            <Grid item xs={2}>USD</Grid>
                                             <Grid item xs={2}>{this.state.currency}</Grid>
+                                            <Grid item xs={2}>{this.state.currency1}</Grid>
                                             <Grid item xs={2}>Difference</Grid>
                                             <Grid item xs={1}><IconButton onClick={this.handleAddLP}><AddIcon /></IconButton></Grid>
                                         </Grid>
@@ -1097,7 +1188,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                                     </NativeSelect>
                                                 </Grid>
                                                 <Grid item xs={2}><TextField value={this.state.propose_data.lti.optional[index].value} onChange={this.handleChangeLTIOptionalValueProposed(index)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                                <Grid item xs={2}><TextField disabled inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                                <Grid item xs={2}><TextField disabled value={this.getCurrency1(this.state.propose_data.lti.optional[index].value)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                                 <Grid item xs={2}><TextField disabled inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                                 <Grid item xs={1}><IconButton onClick={() => this.handleDeleteLP(index)}><DeleteIcon /></IconButton></Grid>
                                             </Grid>)}
@@ -1107,7 +1198,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                         <Grid container style={{ position: "absolute", bottom: 10 }} justify="space-evenly" alignItems="center">
                                             <Grid item xs={3}>Sub</Grid>
                                             <Grid item xs={2}>{this.getsubtotalLP()}</Grid>
-                                            <Grid item xs={2}>0</Grid>
+                                            <Grid item xs={2}>{this.getCurrency1(this.getsubtotalLP())}</Grid>
                                             <Grid item xs={2}>{(this.getsubtotalLP() * 100 / this.getsubtotalLC()).toFixed(2)}%</Grid>
                                             <Grid item xs={1} />
                                         </Grid>
@@ -1126,9 +1217,9 @@ class OfferModelPage extends React.Component<Props, State> {
                                 <Grid container justify="space-evenly" alignItems="center">
                                     <Grid item xs={3}>Total Direct Compensation</Grid>
                                     <Grid item xs={1}>{this.getsubtotalGC() + this.getsubtotalSC() + this.getsubtotalLC()}</Grid>
-                                    <Grid item xs={1}>0</Grid>
+                                    <Grid item xs={1}>{this.getCurrency1(this.getsubtotalGC() + this.getsubtotalSC() + this.getsubtotalLC())}</Grid>
                                     <Grid item xs={1}>{this.getsubtotalGP() + this.getsubtotalSP() + this.getsubtotalLP()}</Grid>
-                                    <Grid item xs={1}>0</Grid>
+                                    <Grid item xs={1}>{this.getCurrency1(this.getsubtotalGP() + this.getsubtotalSP() + this.getsubtotalLP())}</Grid>
                                     <Grid item xs={2}>{((this.getsubtotalGP() + this.getsubtotalSP() + this.getsubtotalLP()) * 100 / (this.getsubtotalGC() + this.getsubtotalSC() + this.getsubtotalLC()))}%</Grid>
                                 </Grid>
                             </Grid>
@@ -1154,8 +1245,8 @@ class OfferModelPage extends React.Component<Props, State> {
                                         <p className={classes.subtitle}>Current</p>
                                         <Grid container justify="space-evenly">
                                             <Grid item xs={3}>Currency</Grid>
-                                            <Grid item xs={2}>USD</Grid>
                                             <Grid item xs={2}>{this.state.currency}</Grid>
+                                            <Grid item xs={2}>{this.state.currency1}</Grid>
                                             <Grid item xs={1}><IconButton onClick={this.handleAddSOC}><AddIcon /></IconButton></Grid>
                                         </Grid>
 
@@ -1163,7 +1254,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                             <Grid container key={'soc' + index} justify="space-evenly" alignItems="center">
                                                 <Grid item xs={3}><TextField value={this.state.current_data.sign_on.optional[index].name} onChange={this.handleChangeSignOnOptionalNameCurrent(index)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                                 <Grid item xs={2}><TextField value={this.state.current_data.sign_on.optional[index].value} onChange={this.handleChangeSignOnOptionalValueCurrent(index)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                                <Grid item xs={2}><TextField disabled inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                                <Grid item xs={2}><TextField disabled value={this.getCurrency1(this.state.current_data.sign_on.optional[index].value)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                                 <Grid item xs={1}><IconButton onClick={() => this.handleDeleteSOC(index)}><DeleteIcon /></IconButton></Grid>
                                             </Grid>)}
 
@@ -1171,7 +1262,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                         <Grid container style={{ position: "absolute", bottom: 10 }} justify="space-evenly" alignItems="center">
                                             <Grid item xs={3}>Sub</Grid>
                                             <Grid item xs={2}>{this.getsubtotalSOC()}</Grid>
-                                            <Grid item xs={2}>0</Grid>
+                                            <Grid item xs={2}>{this.getCurrency1(this.getsubtotalSOC())}</Grid>
                                             <Grid item xs={1} />
                                         </Grid>
                                     </Paper>
@@ -1181,8 +1272,8 @@ class OfferModelPage extends React.Component<Props, State> {
                                         <p className={classes.subtitle}>Propose</p>
                                         <Grid container justify="space-evenly">
                                             <Grid item xs={3}>Currency</Grid>
-                                            <Grid item xs={2}>USD</Grid>
                                             <Grid item xs={2}>{this.state.currency}</Grid>
+                                            <Grid item xs={2}>{this.state.currency1}</Grid>
                                             <Grid item xs={2}>Difference</Grid>
                                             <Grid item xs={1}><IconButton onClick={this.handleAddSOP}><AddIcon /></IconButton></Grid>
                                         </Grid>
@@ -1211,7 +1302,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                                     </NativeSelect>
                                                 </Grid>
                                                 <Grid item xs={2}><TextField value={this.state.propose_data.sign_on.optional[index].value} onChange={this.handleChangeSignOnOptionalValueProposed(index)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                                <Grid item xs={2}><TextField disabled inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                                <Grid item xs={2}><TextField disabled value={this.getCurrency1(this.state.propose_data.sign_on.optional[index].value)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                                 <Grid item xs={2}><TextField disabled inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                                 <Grid item xs={1}><IconButton onClick={() => this.handleDeleteSOP(index)}><DeleteIcon /></IconButton></Grid>
                                             </Grid>)}
@@ -1221,7 +1312,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                         <Grid container style={{ position: "absolute", bottom: 10 }} justify="space-evenly" alignItems="center">
                                             <Grid item xs={3}>Sub</Grid>
                                             <Grid item xs={2}>{this.getsubtotalSOP()}</Grid>
-                                            <Grid item xs={2}>0</Grid>
+                                            <Grid item xs={2}>{this.getCurrency1(this.getsubtotalSOP())}</Grid>
                                             <Grid item xs={2}>{(this.getsubtotalSOP() * 100 / this.getsubtotalSOC()).toFixed(2)}%</Grid>
                                             <Grid item xs={1} />
                                         </Grid>
@@ -1240,9 +1331,9 @@ class OfferModelPage extends React.Component<Props, State> {
                                 <Grid container justify="space-evenly" alignItems="center">
                                     <Grid item xs={3}>Total Compensation Package</Grid>
                                     <Grid item xs={1}>{this.getsubtotalGC() + this.getsubtotalSC() + this.getsubtotalLC() + this.getsubtotalSOC()}</Grid>
-                                    <Grid item xs={1}>0</Grid>
+                                    <Grid item xs={1}>{this.getCurrency1(this.getsubtotalGC() + this.getsubtotalSC() + this.getsubtotalLC() + this.getsubtotalSOC())}</Grid>
                                     <Grid item xs={1}>{this.getsubtotalGP() + this.getsubtotalSP() + this.getsubtotalLP() + this.getsubtotalSOP()}</Grid>
-                                    <Grid item xs={1}>0</Grid>
+                                    <Grid item xs={1}>{this.getCurrency1(this.getsubtotalGP() + this.getsubtotalSP() + this.getsubtotalLP() + this.getsubtotalSOP())}</Grid>
                                     <Grid item xs={2}>{((this.getsubtotalGP() + this.getsubtotalSP() + this.getsubtotalLP() + this.getsubtotalSOP()) * 100 / (this.getsubtotalGC() + this.getsubtotalSC() + this.getsubtotalLC() + this.getsubtotalSOC())).toFixed(2)}%</Grid>
                                 </Grid>
                             </Grid>
@@ -1370,9 +1461,9 @@ class OfferModelPage extends React.Component<Props, State> {
             </Button>
                     </div>
 
-                </Grid>
+                </Grid >
 
-            </Grid>
+            </Grid >
         );
     }
 }
@@ -1390,6 +1481,7 @@ function mapStateToProps(state: RootState) {
         ltiList: state.longIncentiveReducer.longincentiveList,
         signonList: state.signonsReducer.signonsList,
         allowancesList: state.allowancesReducer.allowancesList,
+        currencyList: state.countryReducer.currencyList,
     };
 }
 
