@@ -174,7 +174,8 @@ class PayrollUploadPage extends React.Component<Props, State> {
       session_key: this.props.sessionkey,
       company_id: this.props.companyid,
       type: 1,
-      file_name: fileToBeUploaded.name
+      file_name: key,
+      original_file_name: fileToBeUploaded.name,
     }
 
     await $axios.post("/company/uploadExceldata", data);
