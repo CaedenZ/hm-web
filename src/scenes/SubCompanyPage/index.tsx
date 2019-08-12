@@ -19,7 +19,7 @@ import { connect } from "react-redux";
 import { IconButton } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { history } from "../../store";
-import UpdateIcon from "@material-ui/icons/PlaylistAddCheck";
+import UpdateIcon from "@material-ui/icons/LibraryBooks";
 import { isUserHR, isUserPowerOrHR } from "../../function/checkRole";
 import CustomButton from "../../helper/components/CustomButton";
 
@@ -107,34 +107,34 @@ class CustomizedTable extends React.Component<Props, State> {
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
+                <CustomTableCell align="left">Country</CustomTableCell>
                 <CustomTableCell>Company Name</CustomTableCell>
-                <CustomTableCell align="right">Contact Person</CustomTableCell>
-                <CustomTableCell align="right">Contact Number</CustomTableCell>
-                <CustomTableCell align="right">Contact Email</CustomTableCell>
-                <CustomTableCell align="right">Country</CustomTableCell>
-                <CustomTableCell align="right">Action</CustomTableCell>
+                <CustomTableCell align="left">Contact Person</CustomTableCell>
+                <CustomTableCell align="left">Contact Number</CustomTableCell>
+                <CustomTableCell align="left">Contact Email</CustomTableCell>               
+                <CustomTableCell align="left">Action</CustomTableCell>
               </TableRow>
             </TableHead>
             {this.props.companyList.length > 0 && (
               <TableBody>
                 {this.props.companyList.map(row => (
                   <TableRow className={classes.row} key={row.company_id}>
+                    <CustomTableCell align="left">
+                      {row.country}
+                    </CustomTableCell>
                     <CustomTableCell component="th" scope="row">
                       {row.company_name}
                     </CustomTableCell>
-                    <CustomTableCell align="right">
+                    <CustomTableCell align="left">
                       {row.contact_person}
                     </CustomTableCell>
-                    <CustomTableCell align="right">
+                    <CustomTableCell align="left">
                       {row.contact_number}
                     </CustomTableCell>
-                    <CustomTableCell align="right">
+                    <CustomTableCell align="left">
                       {row.contact_email}
-                    </CustomTableCell>
-                    <CustomTableCell align="right">
-                      {row.country}
-                    </CustomTableCell>
-                    <CustomTableCell align="right">
+                    </CustomTableCell>                   
+                    <CustomTableCell align="left">
                       {/* <IconButton onClick={() => this.handleViewButtonClick(row)}><ViewIcon /></IconButton> */}
                       {!isUserHR(this.props.role) && (
                         <IconButton

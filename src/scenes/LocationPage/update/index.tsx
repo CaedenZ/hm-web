@@ -57,7 +57,7 @@ class UpdateLocationPage extends Component<Props, UpdateLocationState> {
     return (
       <div className={classes.root}>
         <Typography component="h1" variant="h5">
-          New Location
+          Update Location
         </Typography>
         <FormPage
           create={false}

@@ -66,15 +66,15 @@ class CreateSectorPage extends Component<Props, CreateSectorState> {
     return (
       <div className={classes.root}>
         <Typography component="h1" variant="h5">
-          New Sector
+          New Industry
         </Typography>
-        <Paper style={{ marginTop: "2rem" }}>
+        <Paper style={{ marginTop: "2rem", maxWidth:"50rem" }}>
           <form onSubmit={this.handleCreateSector} style={{ padding: "2rem" }}>
             <Grid container spacing={16}>
               <Grid item justify="center" container xs>
                 <TextField
                   id="name"
-                  label="Sector"
+                  label="Industry"
                   className={classes.textField}
                   value={this.state.name}
                   onChange={this.handleChange("name")}

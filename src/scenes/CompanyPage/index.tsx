@@ -28,9 +28,9 @@ import {
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { history } from "../../store";
-import UpdateIcon from "@material-ui/icons/PlaylistAddCheck";
-import ViewIcon from "@material-ui/icons/ZoomIn";
-import DetailIcon from "@material-ui/icons/Face";
+import UpdateIcon from "@material-ui/icons/LibraryBooks";
+import ViewIcon from "@material-ui/icons/Input";
+import DetailIcon from "@material-ui/icons/Assignment";
 import { isTechnical, isMaster } from "../../function/checkRole";
 import Detail from "./component/Detail";
 import { User } from "../../interface/userInterface";
@@ -272,16 +272,16 @@ class CustomizedTable extends React.Component<Props, State> {
                         {row.company_name}
                       </CustomTableCell>
                       <CustomTableCell align="left">
-                        <IconButton
-                          onClick={() => this.handleDetailButtonClick(row)}
-                        >
-                          <DetailIcon />
-                        </IconButton>
-                        <IconButton
+                      <IconButton
                           onClick={() => this.handleViewButtonClick(row)}
                         >
                           <ViewIcon />
                         </IconButton>
+                        <IconButton
+                          onClick={() => this.handleDetailButtonClick(row)}
+                        >
+                          <DetailIcon />
+                        </IconButton>                        
                         {!isTechnical(this.props.role) && (
                           <IconButton
                             onClick={() => this.handleUpdateButtonClick(row)}

@@ -8,7 +8,7 @@ import {
 } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import { SharedDispatchProps } from "../../interface/propsInterface";
-import { Company, Division } from "../../interface/companyInterface";
+import { Company, Division, Unit } from "../../interface/companyInterface";
 import { RootState } from "../../reducer";
 import { mapDispatchToProps } from "../../helper/dispachProps";
 import { connect } from "react-redux";
@@ -21,15 +21,18 @@ import {
   List,
   ListItem,
   ListItemText,
-  Divider
+  Divider,
+  Dialog,
+  DialogContent
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { history } from "../../store";
-import UpdateIcon from "@material-ui/icons/PlaylistAddCheck";
+import UpdateIcon from "@material-ui/icons/LibraryBooks";
 import CompanyIcon from "@material-ui/icons/Business";
 import AddIcon from "@material-ui/icons/Add";
 import { isUserHR, isUserPowerOrHR } from "../../function/checkRole";
 import CustomButton from "../../helper/components/CustomButton";
+import FormPage from "./component/form";
 
 const styles = (theme: Theme) => createStyles({});
 
@@ -40,18 +43,28 @@ export interface Props
 
 interface State {
   anchorEl: any;
+  isModalOpen: boolean;
+  isSubModalOpen: boolean;
+  isSubSubModalOpen: boolean;
+  isModalUpdateOpen: boolean;
 }
 
 interface InState {
+  selectedUnit: Unit;
   selectedCompany: Company;
   divisionList: Division[];
   entityList: Company[];
   role: string;
+  parentUnit: Unit;
 }
 
 class UnitPage extends React.Component<Props, State> {
   state = {
-    anchorEl: null
+    anchorEl: null,
+    isModalOpen: false,
+    isSubModalOpen: false,
+    isSubSubModalOpen: false,
+    isModalUpdateOpen: false,
   };
 
   constructor(props) {
@@ -73,26 +86,84 @@ class UnitPage extends React.Component<Props, State> {
     } else this.props.getDivisionList();
   }
 
-  handleAddButtonClick = div => {
-    this.props.selectUnit(div);
-    history.push("/unit/subunit/create");
+  //Create Main
+  handleModelCreateButtonClick = () => {
+    this.setState({ isModalOpen: true });
+    this.forceUpdate();
+    console.log(this.state);
   };
 
+  //Create Sub Unit
+  handleAddButtonClick = div => {
+    this.props.selectUnit(div);
+    this.setState({ isSubModalOpen: true });
+    //history.push("/unit/subunit/create");
+  };
+
+  //Create Sub/Sub Unit
   handleSubAddButtonClick = div => {
+    this.props.selectUnit(div);
+    this.setState({ isSubSubModalOpen: true });
+    //history.push("/unit/subunit/create");
+  };
+
+  //Save Create Main
+  handleCreateUnit = (e, data) => {
+    e.preventDefault();
+    this.props.createUnit(data);
+    this.setState({ isModalOpen: false });
+    //history.goBack();
+  };
+
+  //Save Create Sub Unit
+  handleCreateSubUnit = (e, data) => {
+    e.preventDefault();
+    this.props.createSubUnit(data);
+    this.setState({ isSubModalOpen: false });
+    //history.goBack();
+  };
+
+  //Save Create Sub/Sub Unit
+  handleCreateSubSubUnit = (e, data) => {
+    e.preventDefault();
+    this.props.createSubUnit(data);
+    this.setState({ isSubSubModalOpen: false });
+    //history.goBack();
+  };
+
+  //Handle Update
+  handleUpdateButtonClick = unit => {
+    this.props.selectUpdateUnit(unit);
+    this.setState({ isModalUpdateOpen: true });
+  };
+
+  //Update Main
+  handleUpdateUnit = (e, data) => {
+    e.preventDefault();
+    this.props.updateUnit(data);
+    this.setState({ isModalUpdateOpen: false });
+    //history.goBack();
+  };  
+
+  //General Handle Close
+  handleModalClose = () => {
+    this.setState({ isModalOpen: false });
+    this.setState({ isSubModalOpen: false });
+    this.setState({ isSubSubModalOpen: false });
+    this.setState({ isModalUpdateOpen: false });
+  };
+
+  /*handleSubAddButtonClick = div => {
     this.props.selectSubUnit(div);
     history.push("/unit/subunit/childunit/create");
-  };
+  };*/
 
   handleViewButtonClick = unit => {
     this.props.selectUnit(unit);
     history.push("/unit/subunit");
   };
 
-  handleUpdateButtonClick = unit => {
-    console.log("clicked");
-    this.props.selectUpdateUnit(unit);
-    history.push("/unit/update");
-  };
+
 
   handleSubUpdateButtonClick = unit => {
     console.log("clicked");
@@ -160,7 +231,7 @@ class UnitPage extends React.Component<Props, State> {
     let type = unit => {
       switch (unit.unit_type) {
         case "Division":
-          return <Typography>{unit.unit_data}</Typography>;
+          return <Typography style={{ marginTop: "1rem" }} >{unit.unit_data}</Typography>;
         case "region":
           return (
             <Typography>
@@ -187,13 +258,15 @@ class UnitPage extends React.Component<Props, State> {
     return (
       <main>
         {!isUserHR(this.props.role) && (
-          <CustomButton onClick={() => { history.push("/unit/create") }}>New Division</CustomButton>
+          <CustomButton /*onClick={() => { history.push("/unit/create") }}*/ onClick={() => this.handleModelCreateButtonClick()}>
+          New Division
+          </CustomButton>
         )}
         {this.props.divisionList.length > 0 && (
           <Grid style={{ marginTop: "2rem" }} container spacing={24}>
             {this.props.divisionList.map(row => (
               <Grid key={row.unit_id} item xs={6}>
-                <Paper style={{ height: "100%" }}>
+                <Paper style={{ height: "100%", backgroundColor:"#d9d9d9" }}>
                   <Grid container style={{ margin: "auto" }}>
                     <Grid item xs={8} style={{ margin: "auto" }}>
                       <Typography variant="h5" style={{ margin: "1rem" }}>
@@ -202,7 +275,10 @@ class UnitPage extends React.Component<Props, State> {
                     </Grid>
                     <Grid item xs={4} style={{ margin: "auto" }}>
                       <div style={{ textTransform: "capitalize" }}>
-                        {row.unit_type}:{type(row)}
+                      <Typography style={{ marginTop: "1rem" }} >
+                        {row.unit_type}{type(row)}
+                      </Typography>
+                        
                         {/* {row.unit_type !== 'Division' && <IconButton onClick={(e) => this.handleEntity(row, e)}><CompanyIcon /></IconButton>} */}
                         <Menu
                           id="simple-menu"
@@ -230,119 +306,6 @@ class UnitPage extends React.Component<Props, State> {
                       </div>
                     </Grid>
                   </Grid>
-                  {row.sub_unit.length > 0 && (
-                    <Grid container spacing={8} style={{ padding: "0.7rem" }}>
-                      {row.sub_unit.map(subrow => (
-                        <Grid key={subrow.unit_id} item xs={12}>
-                          <Paper style={{ height: "100%" }} elevation={2}>
-                            <Grid container style={{ margin: "auto" }}>
-                              <Grid item xs={8} style={{ margin: "auto" }}>
-                                <Typography
-                                  variant="h6"
-                                  style={{ margin: "1rem" }}
-                                >
-                                  {subrow.unit_name}
-                                </Typography>
-                              </Grid>
-                              <Grid item xs={4} style={{ margin: "auto" }}>
-                                <div style={{ marginTop: "1rem" }}>
-                                  <div style={{ textTransform: "capitalize" }}>
-                                    {subrow.unit_type}
-                                  </div>
-                                  {type(subrow)}
-                                  {/* {subrow.unit_type !== 'Division' && <IconButton onClick={(e) => this.handleEntity(subrow, e)}><CompanyIcon /></IconButton>} */}
-                                </div>
-                              </Grid>
-                            </Grid>
-                            <Divider />
-                            <Divider />
-                            {subrow.sub_sub_unit.length > 0 && (
-                              <Paper
-                                style={{ padding: "1rem", margin: "0.5rem" }}
-                                elevation={4}
-                              >
-                                <List dense={true}>
-                                  {subrow.sub_sub_unit.map(childrow => [
-                                    <ListItem key={childrow.unit_id}>
-                                      <ListItemText
-                                        primary={childrow.unit_name}
-                                        secondary={childrow.unit_type}
-                                      />
-                                      {/* {childrow.unit_type !== 'Division' && <IconButton onClick={(e) => this.handleEntity(subrow, e)}><CompanyIcon /></IconButton>} */}
-                                      {type(childrow)}
-                                      {!isUserHR(this.props.role) && (
-                                        <IconButton
-                                          onClick={() =>
-                                            this.handleChildUpdateButtonClick(
-                                              childrow
-                                            )
-                                          }
-                                        >
-                                          <UpdateIcon />
-                                        </IconButton>
-                                      )}
-                                      {!isUserPowerOrHR(this.props.role) && (
-                                        <IconButton
-                                          onClick={() =>
-                                            this.handleChildDelete(
-                                              childrow.unit_id
-                                            )
-                                          }
-                                        >
-                                          <DeleteIcon />
-                                        </IconButton>
-                                      )}
-                                    </ListItem>,
-                                    <Divider key={childrow.unit_id + "d"} />
-                                  ])}
-                                </List>
-                              </Paper>
-                            )}
-                            <Grid
-                              direction="row"
-                              justify="flex-end"
-                              alignItems="flex-end"
-                              container
-                            >
-                              <Grid item xs={1}>
-                                {!isUserHR(this.props.role) && (
-                                  <IconButton
-                                    onClick={() =>
-                                      this.handleSubAddButtonClick(subrow)
-                                    }
-                                  >
-                                    <AddIcon />
-                                  </IconButton>
-                                )}
-                              </Grid>
-                              <Grid item xs={1}>
-                                {!isUserHR(this.props.role) && (
-                                  <IconButton
-                                    onClick={() =>
-                                      this.handleSubUpdateButtonClick(subrow)
-                                    }
-                                  >
-                                    <UpdateIcon />
-                                  </IconButton>
-                                )}
-                              </Grid>
-                              <Grid item xs={1}>
-                                {!isUserPowerOrHR(this.props.role) && (
-                                  <IconButton
-                                    onClick={() =>
-                                      this.handleSubDelete(subrow.unit_id)
-                                    }
-                                  >
-                                    <DeleteIcon />
-                                  </IconButton>
-                                )}
-                              </Grid>
-                            </Grid>
-                          </Paper>
-                        </Grid>
-                      ))}
-                    </Grid>
-                  )}
                   <Grid justify="flex-end" alignItems="flex-end" container>
                     <Grid item xs={1}>
                       {!isUserHR(this.props.role) && (
@@ -372,11 +335,200 @@ class UnitPage extends React.Component<Props, State> {
                       )}
                     </Grid>
                   </Grid>
+                  {row.sub_unit.length > 0 && (
+                    <Grid container spacing={8} style={{ padding: "0.7rem" }}>
+                      {row.sub_unit.map(subrow => (
+                        <Grid key={subrow.unit_id} item xs={12}>
+                          <Paper style={{ height: "100%", backgroundColor: "#F2F3F4" }} elevation={2}>
+                            <Grid container style={{ margin: "auto" }}>
+                              <Grid item xs={8} style={{ margin: "auto" }}>
+                                <Typography
+                                  variant="h6"
+                                  style={{ margin: "1rem" }}
+                                >
+                                  {subrow.unit_name}
+                                </Typography>
+                              </Grid>
+                              <Grid item xs={4} style={{ margin: "auto" }}>
+                                <div style={{ marginTop: "1rem" }}>
+                                  <div style={{ textTransform: "capitalize" }}>
+                                    {subrow.unit_type}
+                                  </div>
+                                  {type(subrow)}
+                                  {/* {subrow.unit_type !== 'Division' && <IconButton onClick={(e) => this.handleEntity(subrow, e)}><CompanyIcon /></IconButton>} */}
+                                </div>
+                              </Grid>
+                            </Grid>
+                            <Grid
+                              direction="row"                             
+                              justify="flex-end"
+                              alignItems="flex-end"
+                              container
+                            >
+                              <Grid item xs={1}>
+                                {!isUserHR(this.props.role) && (
+                                  <IconButton
+                                    onClick={() =>
+                                      this.handleSubAddButtonClick(subrow)
+                                    }
+                                  >
+                                    <AddIcon />
+                                  </IconButton>
+                                )}
+                              </Grid>
+                              <Grid item xs={1}>
+                                {!isUserHR(this.props.role) && (
+                                  <IconButton
+                                    onClick={() =>
+                                      //this.handleSubUpdateButtonClick(subrow)
+                                      this.handleUpdateButtonClick(subrow)
+                                    }
+                                  >
+                                    <UpdateIcon />
+                                  </IconButton>
+                                )}
+                              </Grid>
+                              <Grid item xs={1}>
+                                {!isUserPowerOrHR(this.props.role) && (
+                                  <IconButton
+                                    onClick={() =>
+                                      this.handleSubDelete(subrow.unit_id)
+                                    }
+                                  >
+                                    <DeleteIcon />
+                                  </IconButton>
+                                )}
+                              </Grid>
+                            </Grid>
+                            <Divider />
+                            <Divider />
+                            {subrow.sub_sub_unit.length > 0 && (
+                              <Paper
+                                style={{ padding: "1rem", margin: "0.5rem", backgroundColor:"#FFF" }}
+                                elevation={4}
+                              >
+                                <List dense={true}>
+                                  {subrow.sub_sub_unit.map(childrow => [
+                                    <ListItem key={childrow.unit_id}>
+                                      <ListItemText
+                                        primary={childrow.unit_name}
+                                        secondary={childrow.unit_type}
+                                      />
+                                      {/* {childrow.unit_type !== 'Division' && <IconButton onClick={(e) => this.handleEntity(subrow, e)}><CompanyIcon /></IconButton>} */}
+                                      {type(childrow)}
+                                      {!isUserHR(this.props.role) && (
+                                        <IconButton
+                                          onClick={() =>
+                                            //this.handleChildUpdateButtonClick(childrow)
+                                            this.handleUpdateButtonClick(childrow)
+                                          }
+                                        >
+                                          <UpdateIcon />
+                                        </IconButton>
+                                      )}
+                                      {!isUserPowerOrHR(this.props.role) && (
+                                        <IconButton
+                                          onClick={() =>
+                                            this.handleChildDelete(
+                                              childrow.unit_id
+                                            )
+                                          }
+                                        >
+                                          <DeleteIcon />
+                                        </IconButton>
+                                      )}
+                                    </ListItem>,
+                                    <Divider key={childrow.unit_id + "d"} />
+                                  ])}
+                                </List>
+                              </Paper>
+                            )}
+                            
+                          </Paper>
+                        </Grid>
+                      ))}
+                    </Grid>
+                  )}
+
                 </Paper>
               </Grid>
             ))}
           </Grid>
+
         )}
+        <Dialog
+          open={this.state.isModalOpen}
+          onClose={this.handleModalClose}
+          maxWidth={false}
+        >
+          <DialogContent>
+            <Typography component="h1" variant="h5" style = {{margin:"1rem"}}>
+            Create Main Unit
+            </Typography>
+            <FormPage
+              create={true}
+              updateData={{ company_id: this.props.selectedCompany.company_id }}
+              onSubmit={(e, data) => this.handleCreateUnit(e, data)}
+            />
+          </DialogContent>
+        </Dialog>
+        <Dialog
+          open={this.state.isSubModalOpen}
+          onClose={this.handleModalClose}
+          maxWidth={false}
+        >
+          <DialogContent>
+            <Typography component="h1" variant="h5" style = {{margin:"1rem"}}>
+            Create Sub Unit
+            </Typography>
+            {this.props.parentUnit ? <FormPage
+              create={true}
+              updateData={{
+                parent_unit: this.props.parentUnit.unit_id,
+                main_unit: this.props.parentUnit.main_unit,
+                company_id: this.props.selectedCompany.company_id
+              }}
+              onSubmit={(e, data) => this.handleCreateSubUnit(e, data)}
+            />:null}
+          </DialogContent>
+        </Dialog>
+        <Dialog
+          open={this.state.isSubSubModalOpen}
+          onClose={this.handleModalClose}
+          maxWidth={false}
+        >
+          <DialogContent>
+            <Typography component="h1" variant="h5" style = {{margin:"1rem"}}>
+            Create Sub/Sub Unit
+            </Typography>
+            {this.props.parentUnit ? <FormPage
+              create={true}
+              updateData={{
+                parent_unit: this.props.parentUnit.unit_id,
+                main_unit: this.props.parentUnit.main_unit,
+                company_id: this.props.selectedCompany.company_id
+              }}
+              onSubmit={(e, data) => this.handleCreateSubSubUnit(e, data)}
+            />: null}
+          </DialogContent>
+        </Dialog>
+        {/*UPDATE*/}
+        <Dialog
+          open={this.state.isModalUpdateOpen}
+          onClose={this.handleModalClose}
+          maxWidth={false}
+        >
+          <DialogContent>
+            <Typography component="h1" variant="h5" style = {{margin:"1rem"}}>
+            Create Main Unit
+            </Typography>
+            <FormPage
+              create={false}
+              updateData={this.props.selectedUnit}
+              onSubmit={(e, data) => this.handleCreateUnit(e, data)}
+            />
+          </DialogContent>
+        </Dialog>
       </main>
     );
   }
@@ -391,7 +543,9 @@ function mapStateToProps(state: RootState) {
     selectedCompany: state.companyReducer.selectedCompany,
     divisionList: state.companyReducer.divisionList,
     entityList: state.companyReducer.unitEntity,
-    role: state.authenticationReducer.profile.info.role_name
+    role: state.authenticationReducer.profile.info.role_name,
+    parentUnit: state.companyReducer.selectedUnit,
+    selectedUnit: state.companyReducer.selectUpdateUnit,
   };
 }
 

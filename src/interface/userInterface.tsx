@@ -22,6 +22,7 @@ export interface User {
   status: string;
   remarks: string;
   role_id: string;
+  role_name: string;
   isCompanyContact: number;
 }
 

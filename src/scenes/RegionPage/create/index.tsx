@@ -87,14 +87,14 @@ class CreateRegionPage extends Component<Props, CreateRegionState> {
 
   handleCreateRegion = (e, data) => {
     e.preventDefault();
-    // const a: CREATEREGIONCRED = {
-    //   ...this.state,
-    //   country_list: [],
-    // }
+     //const a: CREATEREGIONCRED = {
+     //  ...this.state,
+     //  country_list: [],
+     //}
 
-    // this.state.country_list.forEach(element => {
-    //   a.country_list.push({ country_name: element })
-    // });
+     //this.state.country_list.forEach(element => {
+     //  a.country_list.push({ country_name: element })
+     //});
 
     this.props.createRegion(data);
     history.goBack();

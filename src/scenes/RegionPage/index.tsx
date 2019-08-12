@@ -20,7 +20,7 @@ import { IconButton } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { Region } from "../../interface/regionInterface";
 import { history } from "../../store";
-import UpdateIcon from "@material-ui/icons/PlaylistAddCheck";
+import UpdateIcon from "@material-ui/icons/LibraryBooks";
 import { Company } from "../../interface/companyInterface";
 import { isUserHR, isUserPowerOrHR } from "../../function/checkRole";
 import CustomButton from "../../helper/components/CustomButton";
@@ -103,9 +103,9 @@ class RegionPage extends React.Component<Props, State> {
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
-                <CustomTableCell>Name</CustomTableCell>
+                <CustomTableCell>Region</CustomTableCell>
                 <CustomTableCell align="left">Countries</CustomTableCell>
-                <CustomTableCell align="right">Action</CustomTableCell>
+                <CustomTableCell align="left">Action</CustomTableCell>
               </TableRow>
             </TableHead>
             {this.props.regionList.length > 0 && (
@@ -128,7 +128,7 @@ class RegionPage extends React.Component<Props, State> {
                     ) : (
                       <CustomTableCell />
                     )}
-                    <CustomTableCell align="right">
+                    <CustomTableCell align="left">
                       {!isUserHR(this.props.role) && (
                         <IconButton
                           onClick={() => this.handleUpdateButtonClick(row)}

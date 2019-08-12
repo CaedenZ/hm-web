@@ -11,7 +11,6 @@ import {
   Divider,
   FormControl,
   Button,
-  Select,
   MenuItem,
   InputLabel
 } from "@material-ui/core";
@@ -22,11 +21,17 @@ import { Country } from "../../../interface/countryInterface";
 import { history } from "../../../store";
 import { Company } from "../../../interface/companyInterface";
 import { CREATEREGIONCRED } from "../../../interface/regionInterface";
+import Select from "react-select";
+import components from "../../../function/react-select-components";
 
 const styles = (theme: Theme) =>
   createStyles({
     textField: {
       width: "20rem",
+      margin: "1rem"
+    },
+    selectField: {
+      width: "40rem",
       margin: "1rem"
     }
   });
@@ -34,6 +39,7 @@ const styles = (theme: Theme) =>
 interface FormState {
   region_name: string;
   country_list: string[];
+  displayCountry: object[];
 }
 export interface Props
   extends InState,
@@ -56,12 +62,23 @@ class CreateRegionPage extends Component<Props, FormState> {
 
   state: FormState = {
     region_name: "",
-    country_list: []
+    country_list: [],
+    displayCountry: []
   };
 
   componentDidMount() {
     if (!this.props.create) {
       this.setState(this.props.updateData);
+      let tmpListObject: any = null;
+      tmpListObject = [];
+      for (const country of this.props.updateData.country_list) {
+        tmpListObject.push({
+          value: country,
+          label: country
+        });
+      }
+
+      this.setState({ displayCountry: tmpListObject });
     }
   }
 
@@ -80,38 +97,79 @@ class CreateRegionPage extends Component<Props, FormState> {
     history.goBack();
   };
 
-  handleChangeSelect = (statekay: keyof FormState) => (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    this.setState(({ [statekay]: event.target.value } as unknown) as Pick<
-      FormState,
-      keyof FormState
-    >);
+  handleChangeSelect = (statekay: keyof FormState) => value => {
+    let tmpListObject: any = null;
+    tmpListObject = [];
+        for (const country of value) {
+          const tmpObject = country.value;
+          tmpListObject.push(tmpObject);
+        }
+        
+        const myData = value
+        .sort((a, b) => a.value.localeCompare(b.value))
+        .map(country => ({
+          value: country,
+          label: country
+        }));
+
+        console.log(tmpListObject);
+        //console.log(myData);
+        this.setState({ displayCountry: value });
+        this.setState(({ [statekay]: tmpListObject } as unknown) as Pick<
+        FormState,
+        keyof FormState
+      >);
+    //this.setState(({ [statekay]: event.target.value } as unknown) as Pick<
+      //FormState,
+      //keyof FormState
+    //>);
   };
 
   render() {
     const { classes } = this.props;
     return (
-      <Paper style={{ marginTop: "2rem" }}>
+      <Paper style={{ marginTop: "2rem", maxWidth:"50rem"}}>
         <form
           onSubmit={e => this.props.onSubmit(e, this.state)}
           style={{ padding: "2rem" }}
         >
-          <Grid item justify="center" container xs>
+          <Grid item container>
             <TextField
               id="region_name"
-              label="region_name"
+              label="Region"
               className={classes.textField}
               value={this.state.region_name}
               onChange={e => this.setState({ region_name: e.target.value })}
               margin="normal"
             />
           </Grid>
-          <Grid item justify="center" container xs>
+          <Grid item container xs>
             {this.props.selectedCompany.country.length > 0 && (
               <FormControl>
-                <InputLabel style={{ marginLeft: "20px" }}>Country</InputLabel>
+                {/*<InputLabel style={{ marginLeft: "20px" }}>Country</InputLabel>*/}
                 <Select
+                      fullWidth
+                      className={classes.selectField}
+                      classes={classes}
+                      textFieldProps={{
+                        label: "Country",
+                        InputLabelProps: {
+                          shrink: true
+                        }
+                      }}
+                      options={this.props.selectedCompany.country.map(
+                        country => ({
+                          value: country,
+                          label: country
+                        })
+                      )}
+                      components={components}
+                      value={this.state.displayCountry}
+                      onChange={this.handleChangeSelect("country_list")}
+                      placeholder="Select multiple countries"
+                      isMulti
+                    />
+              {/*<Select
                   id="country"
                   multiple
                   className={classes.textField}
@@ -127,7 +185,7 @@ class CreateRegionPage extends Component<Props, FormState> {
                       {country}
                     </MenuItem>
                   ))}
-                </Select>
+                  </Select>*/}
               </FormControl>
             )}
           </Grid>

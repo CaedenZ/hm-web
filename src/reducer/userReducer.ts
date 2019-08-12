@@ -34,6 +34,7 @@ export function userReducer(
       business_title: "",
       contact: "",
       role_id: "",
+      role_name: "",
       isCompanyContact: 0
     }
   },

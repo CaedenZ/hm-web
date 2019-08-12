@@ -122,7 +122,7 @@ class UpdateRegionPage extends Component<Props, UpdateRegionState> {
     return (
       <div className={classes.root}>
         <Typography component="h1" variant="h5">
-          New Region
+          Update Region
         </Typography>
         <FormPage
           create={false}

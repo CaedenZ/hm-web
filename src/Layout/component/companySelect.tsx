@@ -8,7 +8,7 @@ import {
 } from "@material-ui/core/styles";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-import { Grid } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import { mapDispatchToProps } from "../../helper/dispachProps";
 import { connect } from "react-redux";
 import { Company } from "../../interface/companyInterface";
@@ -68,8 +68,8 @@ class CompanySelectMenu extends React.Component<Props, State> {
                   />
                 )}
                 {this.props.selectedCompany.company_id !== "" ? (
-                  <ListItemText
-                    primary={this.props.selectedCompany.company_name}
+                  <ListItemText 
+                  disableTypography primary={<Typography variant="h5" style={{ color: '#607d8b', fontWeight:"bold" }}>{this.props.selectedCompany.company_name}</Typography>}
                   />
                 ) : (
                   <ListItemText primary="select a company" />

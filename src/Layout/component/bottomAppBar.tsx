@@ -121,7 +121,12 @@ class BottomAppBar extends React.Component<Props, State> {
         {pathnames.map((value, index) => {
           const last = index === pathnames.length - 1;
           const to = `/${pathnames.slice(0, index + 1).join("/")}`;
-          const displayTo = to.split("/")[to.split("/").length - 1];
+          var displayTo = to.split("/")[to.split("/").length - 1];
+          if(displayTo === "unit")
+            displayTo = "Division";
+          if(displayTo === "sector")
+            displayTo = "Industry/Sector";
+          displayTo = Capitalize(displayTo);
           const isUserHRAndPageIsCompany =
             isUserHR(this.props.role) && displayTo === "company";
           return last ? (
@@ -195,6 +200,10 @@ function mapStateToProps(state: any) {
     history: state.router
   };
 }
+
+function Capitalize(str){
+  return str.charAt(0).toUpperCase() + str.slice(1);
+  }
 
 export default connect(
   mapStateToProps,

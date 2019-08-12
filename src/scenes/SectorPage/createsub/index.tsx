@@ -75,9 +75,9 @@ class CreateIndustryPage extends Component<Props, CreateIndustryState> {
     return (
       <div className={classes.root}>
         <Typography component="h1" variant="h5">
-          New Industry
+          New Sector
         </Typography>
-        <Paper style={{ marginTop: "2rem" }}>
+        <Paper style={{ marginTop: "2rem", maxWidth:"50rem" }}>
           <form
             onSubmit={this.handleCreateIndustry}
             style={{ padding: "2rem" }}
@@ -87,7 +87,7 @@ class CreateIndustryPage extends Component<Props, CreateIndustryState> {
                 <div style={{ margin: 20 }}>
                   <TextField
                     id="name"
-                    label="Industry"
+                    label="Sector"
                     className={classes.textField}
                     value={this.state.name}
                     onChange={this.handleChange("name")}

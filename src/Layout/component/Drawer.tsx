@@ -13,8 +13,8 @@ import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
+import InboxIcon from "@material-ui/icons/Web";
+import MailIcon from "@material-ui/icons/Work";
 import UserIcon from "@material-ui/icons/Person";
 import CompanyIcon from "@material-ui/icons/Business";
 import UnitIcon from "@material-ui/icons/Group";
@@ -163,6 +163,10 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
       {
         title: "Dashboard",
         path: "/"
+      },
+      {
+        title: "Customer",
+        path: "/company"
       }
     ];
 
@@ -296,34 +300,34 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
       let adm: object[] = [];
       if (isMaster(this.props.role)) {
         // Only SuperAdmin is allowed to use the Setting
-        adm.push({
+        /*adm.push({
           title: "Setting",
           path: "/setting",
           icon: <SettingIcon />,
           index: 7
-        });
+        });*/
       }
       const remainingList = [
         {
-          title: "Job Function",
+          title: "Job Name",
           path: "/jobfunction",
           icon: <JobFunctionIcon />,
           index: 8
         },
         {
-          title: "Sector",
+          title: "Industry/Sector",
           path: "/sector",
           icon: <SectorIcon />,
           index: 9
         },
-        {
+        /*{
           title: "Customer",
           path: "/company",
           icon: <CompanyIcon />,
           index: 10
-        },
+        },*/
         {
-          title: "Job Chart",
+          title: "Rosetta Stone",
           path: "/jobchart",
           icon: <CompanyIcon />,
           index: 11

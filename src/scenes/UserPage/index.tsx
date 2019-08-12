@@ -20,9 +20,9 @@ import { User } from "../../interface/userInterface";
 import { IconButton, Dialog, DialogContent } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { history } from "../../store";
-import UpdateIcon from "@material-ui/icons/PlaylistAddCheck";
-import ResetIcon from "@material-ui/icons/BorderColor";
-import DetailIcon from "@material-ui/icons/Face";
+import UpdateIcon from "@material-ui/icons/LibraryBooks";
+import ResetIcon from "@material-ui/icons/Lock";
+import DetailIcon from "@material-ui/icons/RecentActors";
 import ResetPassword from "./component/resetPassword";
 import { Company } from "../../interface/companyInterface";
 import { isUserHR, isUserPowerOrHR } from "../../function/checkRole";
@@ -152,6 +152,7 @@ class CustomizedTable extends React.Component<Props, State> {
                 <CustomTableCell align="left">First Name</CustomTableCell>
                 <CustomTableCell align="left">Last Name</CustomTableCell>
                 <CustomTableCell align="left">Email</CustomTableCell>
+                <CustomTableCell align="left">Role</CustomTableCell>
                 <CustomTableCell align="left">Status</CustomTableCell>
                 <CustomTableCell align="left">Action</CustomTableCell>
               </TableRow>
@@ -159,12 +160,13 @@ class CustomizedTable extends React.Component<Props, State> {
             {this.props.userList.length > 0 && (
               <TableBody>
                 {this.props.userList.map((row, index) => (
-                  <TableRow className={classes.row} key={row.email}>
-                    <CustomTableCell component="th" scope="row">
-                      <img
+                  <TableRow className={classes.row} key={row.email} style={{height: "6rem"}}>
+                    <CustomTableCell component="th" scope="row" style={{height: "6rem"}}>
+                      <img 
                         className={classes.logo}
                         src={row.image}
-                        alt="user"
+                        alt=""
+                        style={{height: "5rem"}}
                       />
                     </CustomTableCell>
                     <CustomTableCell align="left">
@@ -174,6 +176,7 @@ class CustomizedTable extends React.Component<Props, State> {
                       {row.lastname}
                     </CustomTableCell>
                     <CustomTableCell align="left">{row.email}</CustomTableCell>
+                    <CustomTableCell align="left">{row.role_name}</CustomTableCell>
                     <CustomTableCell align="left">{row.status}</CustomTableCell>
                     <CustomTableCell align="left">
                       <IconButton

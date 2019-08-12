@@ -159,7 +159,7 @@ class PrimarySearchAppBar extends React.Component<Props, State> {
           <Toolbar style={{ padding: 0 }}>
             <Grid container direction="column" justify="center">
               <Grid container item justify="center" style={{ height: 80 }}>
-                <CompanySelect />
+              <CompanySelect />
                 <div className={classes.grow} />
                 <div className={classes.sectionDesktop}>
                   <IconButton

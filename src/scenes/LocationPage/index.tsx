@@ -20,7 +20,7 @@ import { IconButton } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { Location } from "../../interface/locationInterface";
 import { history } from "../../store";
-import UpdateIcon from "@material-ui/icons/PlaylistAddCheck";
+import UpdateIcon from "@material-ui/icons/LibraryBooks";
 import { Company } from "../../interface/companyInterface";
 import { isUserHR, isUserPowerOrHR } from "../../function/checkRole";
 import CustomButton from "../../helper/components/CustomButton";

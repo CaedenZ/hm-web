@@ -126,7 +126,7 @@ class CustomizedTable extends React.Component<Props, any> {
     return (
       <main>
         {!isTechnical(this.props.role) && !isSales(this.props.role) && (
-          <CustomButton onClick={()=> history.push("/sector/create")}>New Sector</CustomButton>
+          <CustomButton onClick={()=> history.push("/sector/create")}>New Industry</CustomButton>
         )}
         <Paper className={classes.root}>
           <Table className={classes.table}>
@@ -138,8 +138,8 @@ class CustomizedTable extends React.Component<Props, any> {
             </colgroup>
             <TableHead>
               <TableRow>
-                <CustomTableCell align="left">Sector</CustomTableCell>
                 <CustomTableCell align="left">Industry</CustomTableCell>
+                <CustomTableCell align="left">Sector</CustomTableCell>
                 <CustomTableCell align="center">Delete</CustomTableCell>
               </TableRow>
             </TableHead>

@@ -61,8 +61,10 @@ const styles = (theme: Theme) =>
       justifyContent: "center"
     },
     formControl: {
-      margin: theme.spacing.unit,
-      minWidth: 120
+      //margin: theme.spacing.unit,
+      //minWidth: 120
+      width: "20rem",
+      margin: "1rem"
     }
   });
 
@@ -161,7 +163,7 @@ class CreateMainUnitPage extends Component<Props, CreateUnitState> {
           return (
             <TextField
               id="unit_data"
-              label="unit_data"
+              label="Data"
               className={classes.textField}
               value={this.state.unit_data}
               onChange={this.handleChange("unit_data")}
@@ -176,7 +178,7 @@ class CreateMainUnitPage extends Component<Props, CreateUnitState> {
                 value={this.state.unit_data}
                 onChange={this.handleChangeSelectRegionData}
                 inputProps={{
-                  name: "unit_data",
+                  name: "Data",
                   id: "unit_data"
                 }}
               >
@@ -192,7 +194,7 @@ class CreateMainUnitPage extends Component<Props, CreateUnitState> {
                 value={this.state.unit_data}
                 onChange={this.handleChangeSelectCountryData}
                 inputProps={{
-                  name: "unit_data",
+                  name: "Data",
                   id: "unit_data"
                 }}
               >
@@ -215,7 +217,7 @@ class CreateMainUnitPage extends Component<Props, CreateUnitState> {
               <div style={{ display: "flex", flexDirection: "column" }}>
                 <TextField
                   id="unit_name"
-                  label="unit_name"
+                  label="Name"
                   className={classes.textField}
                   value={this.state.unit_name}
                   onChange={this.handleChange("unit_name")}
@@ -227,7 +229,7 @@ class CreateMainUnitPage extends Component<Props, CreateUnitState> {
                     value={this.state.unit_type}
                     onChange={this.handleChangeSelect("unit_type")}
                     inputProps={{
-                      name: "unit_type",
+                      name: "Type",
                       id: "unit_type"
                     }}
                   >

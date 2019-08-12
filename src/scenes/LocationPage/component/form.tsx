@@ -76,7 +76,7 @@ class CreateLocationPage extends Component<Props, FormState> {
   render() {
     const { classes } = this.props;
     return (
-      <Paper style={{ marginTop: "2rem" }}>
+      <Paper style={{ marginTop: "2rem", maxWidth:"50rem" }}>
         <ValidatorForm
           ref="form"
           onSubmit={e => this.props.onSubmit(e, this.state)}

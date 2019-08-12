@@ -148,13 +148,22 @@ class CreateCompanyPage extends Component<Props, FormState> {
     if (!this.props.create) {
       this.setState(this.props.updateData);
 
-      const tmpCountryList: object[] = [];
+      let tmpCountryList: any = null;
+      tmpCountryList = [];
       for (const country of this.props.updateData.country) {
         tmpCountryList.push({
           value: country,
           label: country
         });
       }
+
+      const myData = tmpCountryList
+        .sort((a, b) => a.value.localeCompare(b.value))
+        .map(country => ({
+          value: country,
+          label: country
+        }));
+
       this.setState({ displayCountry: tmpCountryList });
       this.setState({
         display_base_currency_id: {
@@ -220,6 +229,14 @@ class CreateCompanyPage extends Component<Props, FormState> {
           const tmpObject = country.value;
           tmpListObject.push(tmpObject);
         }
+
+        const myData = value
+        .sort((a, b) => a.value.localeCompare(b.value))
+        .map(country => ({
+          value: country,
+          label: country
+        }));
+
         console.log(tmpListObject);
         this.setState({ displayCountry: value });
         break;
