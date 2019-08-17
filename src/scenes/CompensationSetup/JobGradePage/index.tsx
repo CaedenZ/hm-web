@@ -30,11 +30,13 @@ import { Company } from "../../../interface/companyInterface";
 import { Country } from "../../../interface/countryInterface";
 import CustomizedTable from "./component/table";
 import CustomButton from "../../../helper/components/CustomButton";
+import CustomizedTable_v2 from "./component/stable";
 
 const styles = (theme: Theme) =>
   createStyles({
     root: {
       width: "100%",
+      height: "100%",
       marginTop: theme.spacing.unit * 3,
       overflowX: "auto"
     },
@@ -177,9 +179,9 @@ class JobGradePage extends React.Component<Props, State> {
     let { classes } = this.props
     return (
       <main>
-        <CustomButton onClick={this.handleCreateJobGrade}>Create</CustomButton>
-        <Divider />
-        <CustomizedTable jobgradeList={data} onUpdate={this.handleUpdate} />
+        {/*<CustomButton onClick={this.handleCreateJobGrade}>Create</CustomButton>*/}
+        {/*<CustomizedTable jobgradeList={data} onUpdate={this.handleUpdate} />*/}
+        <CustomizedTable_v2 jobgradeList={data} onUpdate={this.handleUpdate} />
       </main>
     );
   }

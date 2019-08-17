@@ -21,13 +21,13 @@ import { isUserHR } from "../../function/checkRole";
 const styles = (theme: Theme) =>
   createStyles({
     root: {
-      backgroundColor: "#f56000",
+      backgroundColor: "#edeae8",
       width: "100%"
     },
     link: {
-      color: "#FFF",
+      color: "#000",
       textDecoration: "none",
-      "&:visited": { color: "#FFF", textDecoration: "none" }
+      "&:visited": { color: "#000", textDecoration: "none" }
     },
     search: {
       position: "relative",
@@ -110,7 +110,7 @@ class BottomAppBar extends React.Component<Props, State> {
     return (
       <Breadcrumbs
         separator={
-          <NavigateNextIcon fontSize="small" style={{ color: "#FFF" }} />
+          <NavigateNextIcon fontSize="small" style={{ color: "#000" }} />
         }
         arial-label="Breadcrumb"
         style={{ marginLeft: "1rem" }}
@@ -130,7 +130,7 @@ class BottomAppBar extends React.Component<Props, State> {
           const isUserHRAndPageIsCompany =
             isUserHR(this.props.role) && displayTo === "company";
           return last ? (
-            <Typography key={to} style={{ color: "#FFF" }}>
+            <Typography key={to} style={{ color: "#000" }}>
               {displayTo}
             </Typography>
           ) : (
@@ -169,7 +169,7 @@ class BottomAppBar extends React.Component<Props, State> {
             alignContent="center"
             alignItems="center"
           >
-            <div className={classes.search}>
+            {/*<div className={classes.search}>
               <div className={classes.searchIcon}>
                 <SearchIcon />
               </div>
@@ -180,7 +180,7 @@ class BottomAppBar extends React.Component<Props, State> {
                   input: classes.inputInput
                 }}
               />
-            </div>
+              </div>*/}
           </Grid>
         </Grid>
       </div>

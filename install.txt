@@ -1,0 +1,1 @@
+npm install @syncfusion/ej2-react-grids

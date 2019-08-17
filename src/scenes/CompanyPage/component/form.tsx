@@ -268,11 +268,11 @@ class CreateCompanyPage extends Component<Props, FormState> {
           <img
             alt="company icon"
             src={this.state.logo_small}
-            style={{ width: 200, height: 150 }}
+            style={{ width: 200, height: 150, margin:"1rem" }}
           />
         );
       } else {
-        return <div style={{ width: 200, height: 150 }} />;
+        return <div style={{ width: 200, height: 150, margin:"1rem"  }} />;
       }
     } else {
       return (
@@ -293,11 +293,11 @@ class CreateCompanyPage extends Component<Props, FormState> {
           <img
             alt="company main"
             src={this.state.logo_main}
-            style={{ width: 200, height: 150 }}
+            style={{ width: 200, height: 150, margin:"1rem"  }}
           />
         );
       } else {
-        return <div style={{ width: 200, height: 150 }} />;
+        return <div style={{ width: 200, height: 150, margin:"1rem"  }} />;
       }
     } else {
       return (
@@ -307,6 +307,34 @@ class CreateCompanyPage extends Component<Props, FormState> {
           onCrop={this.onMainCrop}
           onClose={this.onMainClose}
         />
+      );
+    }
+  };
+
+  submitbutton = () => {
+    if (this.props.view) {
+        return (
+        <div>
+        </div>
+        );
+    } else {
+      return (
+        <div
+        style={{
+          display: "flex",
+          paddingTop: "1rem"
+        }}
+      >
+        <Button
+          disabled={this.props.view}
+          variant="contained"
+          color="primary"
+          type="submit"
+          style={{ marginLeft: "auto" }}
+        >
+          Submit
+        </Button>
+      </div>
       );
     }
   };
@@ -322,7 +350,7 @@ class CreateCompanyPage extends Component<Props, FormState> {
           <Grid justify="center" spacing={16} container>
             <Grid item direction="column" xs={3} container>
               <Grid item xs={6}>
-                <Typography variant="h6">Company Icon</Typography>
+                <Typography>Company Icon</Typography>
                 <div style={{ margin: "1rem 1rem", marginTop: 0 }}>
                   {/* {this.props.view ? (
                     <img
@@ -342,7 +370,7 @@ class CreateCompanyPage extends Component<Props, FormState> {
                 </div>
               </Grid>
               <Grid item xs={6}>
-                <Typography variant="h6">Main Logo</Typography>
+                <Typography>Company Logo</Typography>
                 <div style={{ margin: "1rem 1rem", marginTop: 0 }}>
                   {/* {this.props.view ? (
                     <img
@@ -401,31 +429,6 @@ class CreateCompanyPage extends Component<Props, FormState> {
             <Grid item direction="column" xs={3} container />
             <Grid container item xs>
               <Grid container>
-                <Grid container item xs={6}>
-                  {this.props.parameterList.distintCurrencyList.length > 0 && (
-                    <Select
-                      isDisabled={this.props.view}
-                      className={classes.textField}
-                      classes={classes}
-                      textFieldProps={{
-                        label: "Base Currency",
-                        InputLabelProps: {
-                          shrink: true
-                        }
-                      }}
-                      options={this.props.parameterList.distintCurrencyList.map(
-                        currency => ({
-                          value: currency.code,
-                          label: currency.code
-                        })
-                      )}
-                      components={components}
-                      value={this.state.display_base_currency_id}
-                      onChange={this.handleChangeSelect("base_currency_id")}
-                      placeholder="Base Currency"
-                    />
-                  )}
-                </Grid>
                 <Grid container item xs={6}>
                   {this.props.sectorList.length > 0 && (
                     <Select
@@ -504,26 +507,38 @@ class CreateCompanyPage extends Component<Props, FormState> {
                   )}
                 </Grid>
               </Grid>
+              <Grid container>
+                <Grid container item xs={6}>
+                  {this.props.parameterList.distintCurrencyList.length > 0 && (
+                    <Select
+                      isDisabled={this.props.view}
+                      className={classes.textField}
+                      classes={classes}
+                      textFieldProps={{
+                        label: "Base Currency",
+                        InputLabelProps: {
+                          shrink: true
+                        }
+                      }}
+                      options={this.props.parameterList.distintCurrencyList.map(
+                        currency => ({
+                          value: currency.code,
+                          label: currency.code
+                        })
+                      )}
+                      components={components}
+                      value={this.state.display_base_currency_id}
+                      onChange={this.handleChangeSelect("base_currency_id")}
+                      placeholder="Base Currency"
+                    />
+                  )}
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
           <Divider />
           <Divider />
-          <div
-            style={{
-              display: "flex",
-              paddingTop: "1rem"
-            }}
-          >
-            <Button
-              disabled={this.props.view}
-              variant="contained"
-              color="primary"
-              type="submit"
-              style={{ marginLeft: "auto" }}
-            >
-              Submit
-            </Button>
-          </div>
+          {this.submitbutton()}
         </form>
       </Paper>
     );

@@ -22,9 +22,8 @@ import { JobGrade } from "../../../../interface/jobgradeInterface";
 import { RootState } from "../../../../reducer";
 import { mapDispatchToProps } from "../../../../helper/dispachProps";
 import { connect } from "react-redux";
-import ReactDataGrid from "react-data-grid";
+import ReactDataGrid, { Row } from "react-data-grid";
 import { Editors, Toolbar, Data, Filters } from "react-data-grid-addons";
-
 
 
 
@@ -36,7 +35,8 @@ const styles = (theme: Theme) =>
     root: {
       width: "100%",
       marginTop: theme.spacing.unit * 3,
-      overflowX: "auto"
+      overflowX: "auto",
+      textAlign:"left"
     },
     table: {
       minWidth: 700
@@ -145,6 +145,7 @@ class CustomizedTable extends React.Component<Props, State> {
       return selectors.getRows({ rows, filters });
     }
 
+
     const filteredRows = getRows(this.props.jobgradeList, this.state.filters);
 
     function onGridRowsUpdated({ fromRow, toRow, updated }) {
@@ -158,6 +159,7 @@ class CustomizedTable extends React.Component<Props, State> {
 
     const defaultColumnProperties = {
       filterable: true,
+      resizable: true
     };
 
     const columns: any = [
@@ -195,13 +197,15 @@ class CustomizedTable extends React.Component<Props, State> {
           columns={columns}
           rowGetter={i => filteredRows[i]}
           rowsCount={filteredRows.length}
+          minHeight={this.props.jobgradeList.length*35 + 50}
           toolbar={<Toolbar enableFilter={true} />}
           onAddFilter={filter => handleFilterChange(filter)}
           onClearFilters={() => this.setState({ filters: {} })}
           getValidFilterValues={columnKey => getValidFilterValues(this.props.jobgradeList, columnKey)}
           getCellActions={getCellActions}
           onGridRowsUpdated={onGridRowsUpdated}
-          enableCellSelect={true} />
+          enableCellSelect={true} 
+          />
       </Paper>
     );
   }

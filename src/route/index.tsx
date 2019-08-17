@@ -1,7 +1,7 @@
 import React from "react";
 
 import { connect } from "react-redux";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import { ConnectedRouter } from "connected-react-router";
 import { history } from "../store";
 import { mapDispatchToProps } from "../helper/dispachProps";
@@ -107,6 +107,7 @@ import OfferModelPage from "../scenes/OfferModelPage"
 import CreateOfferModelPage from "../scenes/OfferModelPage/create"
 import UpdateOfferModelPage from "../scenes/OfferModelPage/update"
 
+import { Company } from "../interface/companyInterface";
 
 export interface Props extends InState { }
 
@@ -114,10 +115,29 @@ interface State { }
 
 interface InState {
   init: boolean;
+  companyList: Company[];
 }
 
 class RootRoute extends React.Component<Props, State> {
   render() {
+    const configurationfunctin = (): any => {
+      let adm = (
+        <Route exact path="/" render={() => (<PrimaryLayout><CompanyPage /></PrimaryLayout>)} />
+      );
+
+      let usr = (
+        <Route exact path="/" render={() => (<PrimaryLayout><UpdateSelfCompanyPage /></PrimaryLayout>)} />
+      );
+
+      if (this.props.companyList.length > 1) {
+        return adm;
+      } else if (this.props.companyList.length === 1) {
+        if (this.props.companyList[0].company_id === "5ZwOXIkeKuPhpFriTsmD") {
+          return adm;
+        } else return usr;
+      } else return usr;
+    };
+
     if (this.props.init) {
       return (
         <ConnectedRouter history={history}>
@@ -128,7 +148,8 @@ class RootRoute extends React.Component<Props, State> {
             <Route exact path="/forgetpassword" render={() => (<SecondaryLayout><ForgetPasswordPage /></SecondaryLayout>)} />
             <Route exact path="/resetpassword" render={() => (<SecondaryLayout><ResetPasswordPage /></SecondaryLayout>)} />
             {/* <Route exact path="/" component={PrimaryLayout} /> */}
-            <Route exact path="/" render={() => (<PrimaryLayout><HomePage /></PrimaryLayout>)} />
+            {/* <Route exact path="/" render={() => (<PrimaryLayout><HomePage /></PrimaryLayout>)} /> */}
+            <Route exact path="/" render={() => (<PrimaryLayout><CompanyPage /></PrimaryLayout>)} />
             <Route exact path="/profile" render={() => (<PrimaryLayout><ProfilePage /></PrimaryLayout>)} />
             <Route exact path="/setting" render={() => (<PrimaryLayout><SettingPage /></PrimaryLayout>)} />
 
@@ -141,7 +162,7 @@ class RootRoute extends React.Component<Props, State> {
             <Route exact path="/company/update" render={() => (<PrimaryLayout><UpdateCompanyPage /></PrimaryLayout>)} />
             <Route
               exact
-              path="/company/updateself"
+              path="/company/info"
               render={() => (
                 <PrimaryLayout>
                   <UpdateSelfCompanyPage />
@@ -679,7 +700,8 @@ class RootRoute extends React.Component<Props, State> {
 
 function mapStateToProps(state: any) {
   return {
-    init: state.initReducer.init
+    init: state.initReducer.init,
+    companyList: state.companyReducer.companyList
   };
 }
 

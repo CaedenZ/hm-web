@@ -159,19 +159,49 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
 
   render() {
     const { classes } = this.props;
-    const itemlist1 = [
-      {
-        title: "Dashboard",
-        path: "/"
-      },
-      {
-        title: "Customer",
-        path: "/company"
-      }
-    ];
+
+    const mainmenufunctin = (): any => {
+      let adm = [
+        {
+          title: "Customer",
+          path: "/company"
+        },
+        {
+          title: "Offer Modeller",
+          path: "/jobposition"
+        }
+      ]
+
+      let usr = [
+        {
+          title: "Company",
+          path: "/company/info"
+        },
+        {
+          title: "Offer Modeller",
+          path: "/jobposition"
+        }
+      ]     
+
+      if (this.props.companyList.length > 1) {
+        return adm;
+      } else if (this.props.companyList.length === 1) {
+        if (this.props.companyList[0].company_id === "5ZwOXIkeKuPhpFriTsmD") {
+          return adm;
+        } else return usr;
+      } else return usr;
+    };
+
+
 
     const companyfunction = (): any => {
       let adm = [
+        {
+          title: "User",
+          path: "/user",
+          icon: <UserIcon />,
+          index: 4
+        },
         {
           title: "Division",
           path: "/unit",
@@ -194,12 +224,6 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
           path: "/region",
           icon: <RegionIcon />,
           index: 3
-        },
-        {
-          title: "User",
-          path: "/user",
-          icon: <UserIcon />,
-          index: 4
         },
         {
           title: "Location",
@@ -217,6 +241,12 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
 
       let user = [
         {
+          title: "User",
+          path: "/user",
+          icon: <UserIcon />,
+          index: 4
+        },
+        {
           title: "Division",
           path: "/unit",
           icon: <UnitIcon />,
@@ -240,12 +270,6 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
           index: 3
         },
         {
-          title: "User",
-          path: "/user",
-          icon: <UserIcon />,
-          index: 4
-        },
-        {
           title: "Location",
           path: "/location",
           icon: <LocationOnIcon />,
@@ -257,12 +281,12 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
         //   icon: <RoleIcon />,
         //   index: 6
         // },
-        {
-          title: "Company",
-          path: "/company/updateself",
-          icon: <CompanyIcon />,
-          index: 7
-        }
+        //{
+        //  title: "Company",
+        //  path: "/company/updateself",
+        //  icon: <CompanyIcon />,
+        //  index: 7
+        //}
       ];
       if (this.props.companyList.length > 1) {
         return adm;
@@ -421,7 +445,7 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
           </div>
           <Divider className={classes.menudivider} />
           <List className={classes.menubar}>
-            {itemlist1.map((item, index) => (
+            {mainmenufunctin().map((item, index) => (
               <Link
                 key={item.title}
                 to={item.path}
@@ -447,7 +471,7 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
             </ListItemIcon>
             <ListItemText primary="Company Setup" />
           </ListItem>
-          <Collapse in={this.state.expended1} timeout="auto" unmountOnExit>
+          <Collapse in={this.state.expended1} timeout="auto" unmountOnExit collapsedHeight="auto">
             <List disablePadding className={classes.navlist}>
               {companyfunction().map(item => (
                 <Link
@@ -477,7 +501,7 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
             </ListItemIcon>
             <ListItemText primary="Compensation Setup" />
           </ListItem>
-          <Collapse in={this.state.expended3} timeout="auto" unmountOnExit>
+          <Collapse in={this.state.expended3} timeout="auto" unmountOnExit collapsedHeight="auto">
             <List className={classes.navlist}>
               {jobgradefunction().map(item => (
                 <Link
@@ -498,7 +522,7 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
           </Collapse>
           <Divider />
           {configurationfunctin()}
-          <Collapse in={this.state.expended2} timeout="auto" unmountOnExit>
+          <Collapse in={this.state.expended2} timeout="auto" unmountOnExit collapsedHeight="auto">
             <List className={classes.navlist}>
               {adminfunction().map(item => (
                 <Link
@@ -517,7 +541,7 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
               ))}
             </List>
           </Collapse>
-          <Divider />
+          {/* <Divider />
           <ListItem
             className={classes.menubar}
             button
@@ -528,7 +552,7 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
             </ListItemIcon>
             <ListItemText primary="Offer Modeler" />
           </ListItem>
-          <Collapse in={this.state.expended4} timeout="auto" unmountOnExit>
+          <Collapse in={this.state.expended4} timeout="auto" unmountOnExit collapsedHeight="auto">
             <List className={classes.navlist}>
               {offermodelfunction().map(item => (
                 <Link
@@ -546,7 +570,7 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
                 </Link>
               ))}
             </List>
-          </Collapse>
+              </Collapse> */}
           <Divider />
           <List>
             <ListItem button onClick={() => this.props.showSnackBar()}>

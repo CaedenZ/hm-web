@@ -198,6 +198,34 @@ class FormPage extends Component<Props, FormState> {
     this.setState({ isCompanyContact: !this.state.isCompanyContact } as any);
   };
 
+  submitbutton = () => {
+    if (this.props.view) {
+        return (
+        <div>
+        </div>
+        );
+    } else {
+      return (
+        <div
+        style={{
+          display: "flex",
+          paddingTop: "1rem"
+        }}
+      >
+        <Button
+          disabled={this.props.view}
+          variant="contained"
+          color="primary"
+          type="submit"
+          style={{ marginLeft: "auto" }}
+        >
+          Submit
+        </Button>
+      </div>
+      );
+    }
+  };
+
   render() {
     const { classes } = this.props;
     return (
@@ -532,22 +560,7 @@ class FormPage extends Component<Props, FormState> {
           </Grid>
           <Divider />
           <Divider />
-          <div
-            style={{
-              display: "flex",
-              paddingTop: "1rem"
-            }}
-          >
-            <Button
-              disabled={this.props.view}
-              variant="contained"
-              color="primary"
-              type="submit"
-              style={{ marginLeft: "auto" }}
-            >
-              Submit
-            </Button>
-          </div>
+          {this.submitbutton()}
         </ValidatorForm>
       </Paper>
     );

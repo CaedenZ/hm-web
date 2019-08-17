@@ -1,4 +1,5 @@
 import React from "react";
+import { Switch, Route, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 import {
   createStyles,
@@ -54,10 +55,10 @@ const styles = (theme: Theme) =>
     root: {
       width: "100%",
       marginTop: theme.spacing.unit * 3,
-      overflowX: "auto"
-    },
+      overflowX: "auto"     
+    },    
     table: {
-      minWidth: 700
+      minWidth: 700,
     },
     row: {
       "&:nth-of-type(odd)": {
@@ -67,14 +68,14 @@ const styles = (theme: Theme) =>
     search: {
       position: "relative",
       borderRadius: theme.shape.borderRadius,
-      color: "#FFF",
-      backgroundColor: fade("#f56000", 0.9),
+      color: "#000",
+      backgroundColor: fade("#d1cfcd", 0.9),
       "&:hover": {
-        backgroundColor: fade("#f56000", 1)
+        backgroundColor: fade("#d1cfcd", 1)
       },
       marginRight: theme.spacing.unit * 2,
       marginLeft: 0,
-      width: "100%",
+      width: "30rem",
       [theme.breakpoints.up("sm")]: {
         marginLeft: theme.spacing.unit * 3
       }
@@ -230,8 +231,15 @@ class CustomizedTable extends React.Component<Props, State> {
   render() {
     const { classes } = this.props;
 
+    const ProtectedComponent = () => {
+        if (this.props.companyList.length === 1) {
+          return <Redirect to='/company/info'  />
+        }
+     }
+
     return (
       <main>
+        {ProtectedComponent()}
         <Grid container>
           {!isTechnical(this.props.role) && (
             <Grid container item xs={2}>

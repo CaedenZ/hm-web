@@ -58,7 +58,7 @@ class ResetPassword extends Component<Props, State> {
         onClose={this.props.handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">ResetPassword</DialogTitle>
+        <DialogTitle id="form-dialog-title">Reset Password</DialogTitle>
         <DialogContent>
           <DialogContentText>New Password</DialogContentText>
           <TextField

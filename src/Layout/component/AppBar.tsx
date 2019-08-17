@@ -175,8 +175,8 @@ class PrimarySearchAppBar extends React.Component<Props, State> {
                     >
                       {this.props.profile.image === "" && <UserIcon />}
                     </Avatar>
-                    <Typography variant="subtitle1">
-                      {this.props.profile.email}
+                    <Typography variant="subtitle1" style={{ color: '#607d8b', fontWeight:"bold" }}>
+                      {this.props.profile.firstname} {this.props.profile.lastname}
                     </Typography>
                   </IconButton>
                 </div>

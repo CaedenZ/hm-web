@@ -106,7 +106,7 @@ class LocationPage extends React.Component<Props, State> {
                 <CustomTableCell align="left">Name</CustomTableCell>
                 <CustomTableCell align="left">Address</CustomTableCell>
                 <CustomTableCell align="left">Postal Code</CustomTableCell>
-                <CustomTableCell align="right">Action</CustomTableCell>
+                <CustomTableCell align="left">Action</CustomTableCell>
               </TableRow>
             </TableHead>
             {this.props.locationList.length > 0 && (
@@ -122,7 +122,7 @@ class LocationPage extends React.Component<Props, State> {
                     <CustomTableCell component="th" scope="row">
                       {row.postal_code}
                     </CustomTableCell>
-                    <CustomTableCell align="right">
+                    <CustomTableCell align="left">
                       {!isUserHR(this.props.role) && (
                         <IconButton
                           onClick={() => this.handleUpdateButtonClick(row)}
