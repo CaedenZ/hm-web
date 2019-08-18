@@ -85,7 +85,7 @@ class JobPositionPage extends React.Component<Props, State> {
 
   handleOfferButtonClick = jobposition => {
     this.props.selectJobPosition(jobposition);
-    history.push("/offermodel")
+    history.push("/jobposition/offermodel")
   }
 
   handleDelete = id => {
