@@ -1,1 +1,3 @@
 npm install @syncfusion/ej2-react-grids
+npm install @syncfusion/ej2-react-dropdowns
+npm install @syncfusion/ej2-react-inputs

@@ -26,6 +26,7 @@ import { Company } from "../../../interface/companyInterface";
 import { Country } from "../../../interface/countryInterface";
 import CustomizedTable from "./component/table";
 import CustomButton from "../../../helper/components/CustomButton";
+import CustomizedTable_v2 from "./component/stable";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -150,10 +151,7 @@ class SalaryRangePage extends React.Component<Props, State> {
 
     return (
       <main>
-        <CustomButton onClick={this.handleNewGrade}>
-          Create
-        </CustomButton>
-        <CustomizedTable salaryrangeList={data} onUpdate={this.handleUpdateButtonClick} />
+        <CustomizedTable_v2 salaryrangeList={data} onUpdate={this.handleUpdateButtonClick} />
       </main>
     );
   }
