@@ -18,6 +18,7 @@ import { Country } from "../../../interface/countryInterface";
 import CustomizedTable from './component/table'
 import { JobGrade } from "../../../interface/jobgradeInterface";
 import CustomButton from "../../../helper/components/CustomButton";
+import CustomizedTable_v2 from "./component/stable";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -167,12 +168,7 @@ class AllowancesPage extends React.Component<Props, State> {
     const { classes } = this.props
     return (
       <main>
-
-        <CustomButton onClick={this.handleCreateAllowance}>Create</CustomButton>
-        <Divider />
-        <Paper>
-          <CustomizedTable allowancesList={data} onUpdate={this.handleUpdateButtonClick} />
-        </Paper>
+          <CustomizedTable_v2 allowancesList={data} onUpdate={this.handleUpdateButtonClick} />
       </main >
     );
   }

@@ -19,6 +19,7 @@ import { Typography, Divider } from "@material-ui/core";
 import CustomButton from "../../../helper/components/CustomButton";
 import Breakdown from "./component/breakdown"
 import { getBreakdownList, updateBreakdown, createBreakdown, deleteBreakdown } from "../../../api/signonbreakdownAPI";
+import CustomizedTable_v2 from "./component/stable";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -151,13 +152,10 @@ class SignonsPage extends React.Component<Props, State> {
   render() {
     return (
       <main>
-        <CustomButton onClick={this.handleNewGrade}>
-          Create
-        </CustomButton>
-        <CustomizedTable signonsList={this.props.signonsList} onUpdate={this.handleUpdateButtonClick} onBreakdown={this.handleBreakdownClick} />
-        <Divider style={{marginTop:50}}/>
+        <CustomizedTable_v2 signonsList={this.props.signonsList} onUpdate={this.handleUpdateButtonClick} onBreakdown={this.handleBreakdownClick} />
+        {/*<Divider style={{marginTop:50}}/>
         <Typography>{this.state.selectedsignons}</Typography>
-        {this.state.breakdown && <Breakdown breakdownList={this.state.breakdownList} onCreate={this.handleCreateBreakdown} onUpdate={this.handleUpdateBreakdownButtonClick} onDelete={this.handleDeleteBreakdown} />}
+    {this.state.breakdown && <Breakdown breakdownList={this.state.breakdownList} onCreate={this.handleCreateBreakdown} onUpdate={this.handleUpdateBreakdownButtonClick} onDelete={this.handleDeleteBreakdown} />}*/}
       </main>
     );
   }

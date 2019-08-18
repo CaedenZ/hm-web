@@ -190,9 +190,9 @@ class CustomizedTable extends React.Component<Props, State> {
 
 
         const columns: any = [
-            { key: 'country', name: "Country", filterRenderer: AutoCompleteFilter, editor: this.typeEditor },
-            { key: 'type', name: "Name", filterRenderer: AutoCompleteFilter, editable: true },
+            { key: 'country', name: "Country", filterRenderer: AutoCompleteFilter, editor: this.typeEditor },           
             { key: 'jobgrade_name', name: "Job Grade", filterRenderer: AutoCompleteFilter, editor: this.jobgradeEditor },
+            { key: 'type', name: "Name", filterRenderer: AutoCompleteFilter, editable: true },
             { key: 'value_type', name: "Value Type", filterRenderer: AutoCompleteFilter, editor: this.valueEditor },
             { key: 'value', name: "Value", filterRenderer: AutoCompleteFilter, editable: true },
             { key: 'percent_type', name: "Percent Type", filterRenderer: AutoCompleteFilter, editor: this.percentEditor },
