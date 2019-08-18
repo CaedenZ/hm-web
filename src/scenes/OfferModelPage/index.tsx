@@ -20,6 +20,8 @@ import { IconButton } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ConfirmIcon from "@material-ui/icons/Done";
 import RejectIcon from "@material-ui/icons/Close";
+import ReportIcon from "@material-ui/icons/Assignment";
+import ContractIcon from "@material-ui/icons/Email";
 import OfferIcon from "@material-ui/icons/Beenhere";
 import { OfferModel } from "../../interface/offerModelInterface";
 import { history } from "../../store";
@@ -27,7 +29,8 @@ import UpdateIcon from "@material-ui/icons/PlaylistAddCheck";
 import { Company } from "../../interface/companyInterface";
 import { isUserHR, isUserPowerOrHR } from "../../function/checkRole";
 import CustomButton from "../../helper/components/CustomButton";
-import ChangeStatus from "./Component/changeStatus"
+import ChangeStatus from "./Component/changeStatus";
+
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -90,7 +93,7 @@ class OfferModelPage extends React.Component<Props, State> {
 
   handleUpdateButtonClick = offermodel => {
     this.props.selectOfferModel(offermodel);
-    history.push("/offermodel/update");
+    history.push("/jobposition/offermodel/update");
   };
 
   handleStatesButtonClick = offermodel => {
@@ -110,6 +113,16 @@ class OfferModelPage extends React.Component<Props, State> {
   handleClose = () => {
     this.setState({ changeStatus: false, setcurrency: false });
   };
+
+  handleReport = offermodel => {
+    this.props.selectOfferModel(offermodel);
+    history.push("/jobposition/offermodel/report")
+  }
+
+  handleContract = offermodel => {
+    this.props.selectOfferModel(offermodel);
+    history.push("/jobposition/offermodel/contract")
+  }
 
   handleAcceptButtonClick = (row) => {
     return
@@ -157,6 +170,16 @@ class OfferModelPage extends React.Component<Props, State> {
               >
                 <DeleteIcon />
               </IconButton>
+              <IconButton
+                onClick={() => this.handleReport(row.offermodel_id)}
+              >
+                <ReportIcon />
+              </IconButton>
+              <IconButton
+                onClick={() => this.handleContract(row.offermodel_id)}
+              >
+                <ContractIcon />
+              </IconButton>
             </CustomTableCell>
           )
         default:
@@ -167,6 +190,16 @@ class OfferModelPage extends React.Component<Props, State> {
               >
                 <DeleteIcon />
               </IconButton>
+              <IconButton
+                onClick={() => this.handleReport(row.offermodel_id)}
+              >
+                <ReportIcon />
+              </IconButton>
+              <IconButton
+                onClick={() => this.handleContract(row.offermodel_id)}
+              >
+                <ContractIcon />
+              </IconButton>
             </CustomTableCell>
           )
 
@@ -176,7 +209,7 @@ class OfferModelPage extends React.Component<Props, State> {
     return (
       <main>
         {!isUserHR(this.props.role) && (
-          <CustomButton onClick={() => history.push("/offermodel/create")}>New OfferModel</CustomButton>
+          <CustomButton onClick={() => history.push("/jobposition/offermodel/create")}>New OfferModel</CustomButton>
         )}
         <Paper className={classes.root}>
           <Table className={classes.table}>

@@ -56,7 +56,7 @@ class UpdateOfferModelPage extends Component<Props, UpdateOfferModelState> {
     return (
       <div className={classes.root}>
         <Typography component="h1" variant="h5">
-          New OfferModel
+          Update OfferModel
         </Typography>
         <OfferModelPage
         create={false}
