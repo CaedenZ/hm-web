@@ -377,76 +377,37 @@ class OfferModelPage extends React.Component<Props, State> {
                 <Grid item xs={10}>
 
                     <Grid container justify="space-evenly" alignItems="center">
+                        <Grid item xs={1} />
+                        <Grid item xs={3}>
+                            <p className={classes.subtitle}>Offer Modeller Type</p>
+                        </Grid>
                         <Grid item xs={4}>
-                            <p className={classes.subtitle}>TOM Modeller</p>
+                            <p>{this.state.model_type}</p>
                         </Grid>
                         <Grid item xs={1}>
-                            <p>Currency 1</p>
+                            <p>Offer Ref No</p>
                         </Grid>
                         <Grid item xs={3}>
-                            <NativeSelect
-                                id="type"
-                                value={this.state.currency1}
-                                onChange={this.handleChangeSelect('currency1')}
-                                inputProps={{
-                                    name: "type",
-                                    id: "type-simple"
-                                }}
-                            >
-                                <option value={undefined} />
-                                {this.props.currencyList.map(currency => (
-                                    <option value={currency.code}>{currency.code}</option>
-                                ))}
-                            </NativeSelect>
+                            {this.state.offer_reference}
                         </Grid>
                     </Grid>
 
                     <Grid container justify="space-evenly" alignItems="center">
-                        <Grid item xs={1}>Candidate</Grid>
-                        <Grid item xs={3}><TextField value={this.state.candidate_name} onChange={this.handleChange('candidate_name')} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                        <Grid item xs={1}>Offer Modeller Type</Grid>
-                        <Grid item xs={3}>
-                            <NativeSelect
-                                id="type"
-                                value={this.state.model_type}
-                                onChange={this.handleChangeSelect('model_type')}
-                                inputProps={{
-                                    name: "type",
-                                    id: "type-simple"
-                                }}
-                            >
-                                <option value={undefined} />
-                                <option value={'Promotion'} >Promotion</option>
-                                <option value={'Transfer'} >Transfer</option>
-                                <option value={'New'} >New</option>
-                            </NativeSelect>
-                        </Grid>
-                        <Grid item xs={1}>Offer Reference</Grid>
-                        <Grid item xs={3}><TextField value={this.state.offer_reference} onChange={this.handleChange('offer_reference')} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                        <Grid item xs={1}/>
+                        <Grid item xs={3}>Name</Grid>
+                        <Grid item xs={2}>{this.state.candidate_name}</Grid>
+                        <Grid item xs={2}>Gender</Grid>
+                        <Grid item xs={1}>Male</Grid>
+                        <Grid item xs={2}>Year Of Birth</Grid>
+                        <Grid item xs={1}>{this.state.year_of_birth}</Grid>
                     </Grid>
-                    <Grid container justify="space-evenly" alignItems="center">
-                        <Grid item xs={1}>Job Flag</Grid>
 
-                        <Grid item xs={3}>
-                            <NativeSelect
-                                id="flag"
-                                value={this.state.job_flag}
-                                onChange={this.handleChangeSelect('job_flag')}
-                                inputProps={{
-                                    name: "flag",
-                                    id: "flag-simple"
-                                }}
-                            >
-                                <option value={undefined} />
-                                <option value={'Critical'} >Critical</option>
-                                <option value={'Business Driver'} >Business Driver</option>
-                            </NativeSelect>
+                    <Grid container justify="space-evenly" alignItems="center">
+                        <Grid item xs={1} />
+
+                        <Grid item xs={3}>Job Flag</Grid>
+                        <Grid item xs={8}>{this.state.job_flag}</Grid>
                         </Grid>
-                        <Grid item xs={1}>Year of Birth</Grid>
-                        <Grid item xs={3}><TextField type="date" value={this.state.year_of_birth} onChange={this.handleChange('year_of_birth')} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                        <Grid item xs={1}>Job Grade</Grid>
-                        <Grid item xs={3}><TextField disabled value={this.state.jobgrade_id} onChange={this.handleChange('jobgrade_id')} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                    </Grid>
 
                     <div className={classes.spacediv} />
 
