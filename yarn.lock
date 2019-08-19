@@ -1291,7 +1291,7 @@
   dependencies:
     "@syncfusion/ej2-base" "~17.2.39"
 
-"@syncfusion/ej2-dropdowns@~17.2.41":
+"@syncfusion/ej2-dropdowns@17.2.41", "@syncfusion/ej2-dropdowns@~17.2.41":
   version "17.2.41"
   resolved "https://registry.yarnpkg.com/@syncfusion/ej2-dropdowns/-/ej2-dropdowns-17.2.41.tgz#43774a182a828bb23b0b112a82e5100c3a239501"
   dependencies:
@@ -1335,7 +1335,7 @@
   version "17.2.34"
   resolved "https://registry.yarnpkg.com/@syncfusion/ej2-icons/-/ej2-icons-17.2.34.tgz#a775f7d1c6840cfe3918113b2593d7941fd4709e"
 
-"@syncfusion/ej2-inputs@~17.2.41":
+"@syncfusion/ej2-inputs@17.2.41", "@syncfusion/ej2-inputs@~17.2.41":
   version "17.2.41"
   resolved "https://registry.yarnpkg.com/@syncfusion/ej2-inputs/-/ej2-inputs-17.2.41.tgz#150662454bff41701674c7fc3d586d9a5b265752"
   dependencies:
@@ -1382,12 +1382,28 @@
   dependencies:
     "@syncfusion/ej2-base" "~17.2.40"
 
+"@syncfusion/ej2-react-dropdowns@^17.2.41":
+  version "17.2.41"
+  resolved "https://registry.yarnpkg.com/@syncfusion/ej2-react-dropdowns/-/ej2-react-dropdowns-17.2.41.tgz#cf7c4dbbf8f2cb4a55ee7b235c5c32d40e2637c4"
+  dependencies:
+    "@syncfusion/ej2-base" "~17.2.40"
+    "@syncfusion/ej2-dropdowns" "17.2.41"
+    "@syncfusion/ej2-react-base" "~17.2.40"
+
 "@syncfusion/ej2-react-grids@^17.2.41":
   version "17.2.41"
   resolved "https://registry.yarnpkg.com/@syncfusion/ej2-react-grids/-/ej2-react-grids-17.2.41.tgz#d9af6f28bbb2cddfe0bc8e9fe1a9e612dd935b8c"
   dependencies:
     "@syncfusion/ej2-base" "~17.2.40"
     "@syncfusion/ej2-grids" "17.2.41"
+    "@syncfusion/ej2-react-base" "~17.2.40"
+
+"@syncfusion/ej2-react-inputs@^17.2.41":
+  version "17.2.41"
+  resolved "https://registry.yarnpkg.com/@syncfusion/ej2-react-inputs/-/ej2-react-inputs-17.2.41.tgz#1169bff5c0da87e21bf04b3386d57fe364cbe89a"
+  dependencies:
+    "@syncfusion/ej2-base" "~17.2.40"
+    "@syncfusion/ej2-inputs" "17.2.41"
     "@syncfusion/ej2-react-base" "~17.2.40"
 
 "@syncfusion/ej2-splitbuttons@~17.2.40":
