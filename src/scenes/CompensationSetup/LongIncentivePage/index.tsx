@@ -18,6 +18,8 @@ import CustomizedTable from "./component/table";
 import { Typography, Divider } from "@material-ui/core";
 import CustomButton from "../../../helper/components/CustomButton";
 import EquityrangePage from "./EquityRangePage"
+import CustomizedTable_v2 from "./component/stable";
+import Component from "../../OfferModelPage/Component";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -85,7 +87,7 @@ class LongIncentivePage extends React.Component<Props, State> {
 
   handleEquityRangeClick = equityrange => {
     console.log(equityrange)
-    this.setState({ selectedlti: equityrange.type })
+    this.setState({ selectedlti: "Showing Equity Range for " + equityrange.type })
     this.props.selectLongIncentive(equityrange.longterm_incentive_id);
     this.props.getEquityRangeList()
     this.setState({ equityrange: true })
@@ -131,12 +133,11 @@ class LongIncentivePage extends React.Component<Props, State> {
   render() {
     return (
       <main>
-        <CustomButton onClick={this.handleNewGrade}>
-          Create
-        </CustomButton>
-        <CustomizedTable longincentiveList={this.props.longincentiveList} onUpdate={this.handleUpdateButtonClick} onEquityRange={this.handleEquityRangeClick} />
+        <CustomizedTable_v2 longincentiveList={this.props.longincentiveList} onUpdate={this.handleUpdateButtonClick} onEquityRange={this.handleEquityRangeClick} />
         <Divider style={{ marginTop: 50 }} />
-        <Typography>{this.state.selectedlti}</Typography>
+        <Typography component="h1" variant="h6">
+          {this.state.selectedlti}
+          </Typography>
         {this.state.equityrange &&
           <EquityrangePage />
         }

@@ -11,7 +11,7 @@ import Paper from "@material-ui/core/Paper";
 import { SharedDispatchProps } from "../../../../interface/propsInterface";
 import { Company } from "../../../../interface/companyInterface";
 import { JobGrade } from "../../../../interface/jobgradeInterface";
-import { Signons } from "../../../../interface/signonsInterface";
+import { ShortIncentive } from "../../../../interface/shortIncentiveInterface";
 import { RootState } from "../../../../reducer";
 import { mapDispatchToProps } from "../../../../helper/dispachProps";
 import { connect } from "react-redux";
@@ -55,9 +55,9 @@ interface State { }
 
 interface InState {
     selectedCompany: Company;
-    signonsList: Signons[];
+    shortincentiveList: ShortIncentive[];
     onUpdate: Function;
-    onBreakdown: Function;
+    jobgradeList: JobGrade[]
 }
 
 export class CustomizedTable_v2 extends React.Component<Props, State>  {
@@ -82,7 +82,7 @@ export class CustomizedTable_v2 extends React.Component<Props, State>  {
         setTimeout(() => {
             this.rendereComplete();
         });
-        console.log("SignonsPage MOunt");
+        console.log("ShortIncentivePage MOunt");
         if (this.props.selectedCompany.company_id === "") {
           let data = {
             type: "warning",
@@ -90,7 +90,7 @@ export class CustomizedTable_v2 extends React.Component<Props, State>  {
             id: "1"
           };
           this.props.showDialog(data);
-        } else this.props.getSignonsList();
+        } else this.props.getShortIncentiveList();
       }
 
       public groupOptions: Object = { showGroupedColumn: true, columns: ['country'] };
@@ -107,23 +107,103 @@ export class CustomizedTable_v2 extends React.Component<Props, State>  {
 
       countryTypes() {
         const type = []
+        type.push({ id: "Global",value: "Global"})
         this.props.selectedCompany.country.forEach(element => {
           type.push({ id: element, value: element })
         });
         return type
       };
-   
+
+      jobgradeTypes() {
+        const type = []
+        this.props.jobgradeList.forEach(element => {
+          type.push(element.jobgrade_name)
+        });
+        console.log(type);
+        return arrayUnique(type)
+      };
+
+      valueTypes() {
+        const type = []
+        type.push('Fixed');
+        type.push('Percent');
+        console.log(type);
+        return type
+      };
+
+      percentTypes() {
+        const type = []
+        type.push('Annual Base');
+        console.log(type);
+        return type
+      };
+
+      typeTypes() {
+        const type = []
+        this.props.shortincentiveList.forEach(element => {
+          type.push(element.type)
+        });
+        console.log(type);
+        return arrayUnique(type)
+      };
+
+      public countryParams : IEditCell = {
+        params:   {
+          actionComplete: () => false,
+          allowFiltering: true,
+          dataSource: this.countryTypes(),
+          fields: { text: "value", value: "value"},
+          query: new Query()
+        }
+      };
+
+      public jobgradeParams : IEditCell = {
+        params:   {
+          actionComplete: () => false,
+          allowFiltering: true,
+          dataSource: this.jobgradeTypes(),
+          fields: { text: "value", value: "value"},
+          query: new Query()
+        }
+      };
+
+      public valuetypeParams : IEditCell = {
+        params:   {
+          actionComplete: () => false,
+          allowFiltering: true,
+          dataSource: this.valueTypes(),
+          fields: { text: "value", value: "value"},
+          query: new Query()
+        }
+      };
+
+      public percenttypeParams : IEditCell = {
+        params:   {
+          actionComplete: () => false,
+          allowFiltering: true,
+          dataSource: this.percentTypes(),
+          fields: { text: "value", value: "value"},
+          query: new Query()
+        }
+      };
+    
       actionBegin(args: any): void {
         if (args.requestType === 'save') {
           if(args.index === 0)
           {
             console.log(args.data);
             const data = {
-                value: args.data.value,
+                jobgrade_id: ' ',
+                jobgrade_name: args.data.jobgrade_name,
+                jobgrade_global: ' ',
                 type: args.data.type,
-                isOptional: 'N',
+                country: args.data.country,
+                value: args.data.value,
+                isOptional: 'Y',
+                value_type: args.data.value_type,
+                percent_type: args.data.percent_type
               }
-              this.props.createSignons(data)
+              this.props.createShortIncentive(data)
           }
           else
           {
@@ -135,9 +215,9 @@ export class CustomizedTable_v2 extends React.Component<Props, State>  {
           console.log(obj);
           const rowIndexes : string[]=[];
           obj.forEach((dat: any,index) => {
-              rowIndexes.push(dat.signons_id); 
+              rowIndexes.push(dat.shortterm_incentive_id); 
           });
-          this.props.deleteSignons(rowIndexes[0]);
+          this.props.deleteShortIncentive(rowIndexes[0]);
           console.log(rowIndexes[0]);
         }
         if (args.requestType === 'add') {
@@ -148,18 +228,27 @@ export class CustomizedTable_v2 extends React.Component<Props, State>  {
     render() {
       const { classes } = this.props;
       const that = this;      
-     
+
+      function editTemplate(args: object) {      
+        let typeData: { [key: string]: Object }[] =that.typeTypes();
+        return (<ComboBoxComponent id='type' dataSource={typeData} value={getValue('type', args)} />)
+      }
+      
       function editNumberTemplateValue(args: object) {      
         return (<NumericTextBoxComponent id='value' format='N' value={getValue('value', args)} showSpinButton={false} readonly={true}/>)
       }
 
       return (
         <Paper className={classes.root}>
-            <GridComponent dataSource={this.props.signonsList} toolbar={this.toolbarOptions} editSettings={this.editSettings} ref={ grid => this.gridInstance = grid} allowSorting={true}
+            <GridComponent dataSource={this.props.shortincentiveList} toolbar={this.toolbarOptions} editSettings={this.editSettings} ref={ grid => this.gridInstance = grid} allowGrouping={true} groupSettings={this.groupOptions} allowSorting={true}
                     dataBound={this.dataBound.bind(this)} load={this.load} allowFiltering={true} filterSettings={this.filterSettings} actionBegin={this.actionBegin.bind(this)}>
               <ColumnsDirective>
-                <ColumnDirective field='type' headerText='Type' width='150' textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='country' headerText='Country' width='120' validationRules={this.requiredRules} edit={this.countryParams} editType='dropdownedit' textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='jobgrade_name' headerText='Jobgrade' validationRules={this.requiredRules} width='130' edit={this.jobgradeParams} editType='dropdownedit' textAlign='Left' />
+                <ColumnDirective field='type' headerText='Type' width='150' editTemplate={editTemplate} textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='value_type' headerText='Value Type' width='150' edit={this.valuetypeParams} editType='dropdownedit' textAlign='Left'></ColumnDirective>
                 <ColumnDirective field='value' headerText='Value' width='150' validationRules={this.numbersRules} template={editNumberTemplateValue} textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='percent_type' headerText='Percent Type' width='150' edit={this.percenttypeParams} editType='dropdownedit' textAlign='Left'></ColumnDirective>
               </ColumnsDirective>
               <Inject services={[Page, Group, Sort, Edit, Toolbar, Filter]} />
             </GridComponent>
@@ -174,7 +263,8 @@ export class CustomizedTable_v2 extends React.Component<Props, State>  {
 
   function mapStateToProps(state: RootState) {
     return {
-        selectedCompany: state.companyReducer.selectedCompany
+        selectedCompany: state.companyReducer.selectedCompany,
+        jobgradeList: state.jobgradeReducer.jobgradeList,
     };
   }
   

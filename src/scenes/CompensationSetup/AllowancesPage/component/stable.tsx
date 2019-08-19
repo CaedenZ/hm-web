@@ -242,7 +242,7 @@ export class CustomizedTable_v2 extends React.Component<Props, State>  {
 
       return (
         <Paper className={classes.root}>
-            <GridComponent dataSource={this.props.allowancesList} toolbar={this.toolbarOptions} editSettings={this.editSettings} allowPaging={true} ref={ grid => this.gridInstance = grid} pageSettings={{ pageCount: 5 }} allowGrouping={true} groupSettings={this.groupOptions} allowSorting={true}
+            <GridComponent dataSource={this.props.allowancesList} toolbar={this.toolbarOptions} editSettings={this.editSettings} ref={ grid => this.gridInstance = grid} allowGrouping={true} groupSettings={this.groupOptions} allowSorting={true}
                     dataBound={this.dataBound.bind(this)} load={this.load} allowFiltering={true} filterSettings={this.filterSettings} actionBegin={this.actionBegin.bind(this)}>
               <ColumnsDirective>
                 <ColumnDirective field='country' headerText='Country' width='120' validationRules={this.requiredRules} edit={this.countryParams} editType='dropdownedit' textAlign='Left'></ColumnDirective>

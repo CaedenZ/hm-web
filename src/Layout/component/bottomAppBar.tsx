@@ -17,12 +17,15 @@ import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import { fade } from "@material-ui/core/styles/colorManipulator";
 import SearchIcon from "@material-ui/icons/Search";
 import { isUserHR } from "../../function/checkRole";
+import { setMinHeight } from "@syncfusion/ej2-popups/src/common/resize";
 
 const styles = (theme: Theme) =>
   createStyles({
     root: {
-      backgroundColor: "#edeae8",
-      width: "100%"
+      //backgroundColor: "#edeae8",
+      backgroundColor: fade("#edeae8", 0.15),
+      width: "100%",
+      height: "3rem",
     },
     link: {
       color: "#000",
@@ -54,7 +57,7 @@ const styles = (theme: Theme) =>
     },
     inputRoot: {
       color: "inherit",
-      width: "100%"
+      width: "100%",
     },
     inputInput: {
       paddingTop: theme.spacing.unit,
@@ -113,7 +116,7 @@ class BottomAppBar extends React.Component<Props, State> {
           <NavigateNextIcon fontSize="small" style={{ color: "#000" }} />
         }
         arial-label="Breadcrumb"
-        style={{ marginLeft: "1rem" }}
+        style={{ marginLeft: "1rem", marginTop:"0.3rem" }}
       >
         <RouterLink key="/" to="/" className={classes.link}>
           <p>Dashboard</p>

@@ -25,6 +25,7 @@ import { Company } from "../../../interface/companyInterface";
 import { Country } from "../../../interface/countryInterface";
 import CustomizedTable from "./component/table";
 import CustomButton from "../../../helper/components/CustomButton";
+import CustomizedTable_v2 from "./component/stable";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -149,10 +150,7 @@ class ShortIncentivePage extends React.Component<Props, State> {
 
     return (
       <main>
-        <CustomButton onClick={this.handleNewGrade}>
-          Create
-        </CustomButton>
-        <CustomizedTable shortincentiveList={data} onUpdate={this.handleUpdateButtonClick} />
+        <CustomizedTable_v2 shortincentiveList={data} onUpdate={this.handleUpdateButtonClick} />
       </main>
     );
   }

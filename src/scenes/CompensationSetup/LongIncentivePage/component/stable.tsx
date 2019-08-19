@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { GridComponent, ColumnsDirective, ColumnDirective, Page, Group, Sort, Inject, Edit, Toolbar, Filter, IEditCell } from '@syncfusion/ej2-react-grids';
+import { GridComponent, ColumnsDirective, ColumnDirective, Page, Group, Sort, Inject, Edit, Toolbar, Filter, IEditCell, Freeze, Selection, RowSelectEventArgs } from '@syncfusion/ej2-react-grids';
 import PropTypes from "prop-types";
 import {
   createStyles,
@@ -11,7 +11,8 @@ import Paper from "@material-ui/core/Paper";
 import { SharedDispatchProps } from "../../../../interface/propsInterface";
 import { Company } from "../../../../interface/companyInterface";
 import { JobGrade } from "../../../../interface/jobgradeInterface";
-import { Signons } from "../../../../interface/signonsInterface";
+import { LongIncentive } from "../../../../interface/longIncentiveInterface";
+import { EquityRange } from "../../../../interface/equityRangeInterface";
 import { RootState } from "../../../../reducer";
 import { mapDispatchToProps } from "../../../../helper/dispachProps";
 import { connect } from "react-redux";
@@ -20,6 +21,7 @@ import { Query } from '@syncfusion/ej2-data';
 import { ComboBoxComponent } from '@syncfusion/ej2-react-dropdowns';
 import { NumericTextBoxComponent } from '@syncfusion/ej2-react-inputs';
 import { arrayUnique } from "../../../../helper/uniqeArray";
+import { Typography } from '@material-ui/core';
 
 enableRipple(true);
 let refresh: Boolean;
@@ -55,9 +57,9 @@ interface State { }
 
 interface InState {
     selectedCompany: Company;
-    signonsList: Signons[];
+    longincentiveList: LongIncentive[];
     onUpdate: Function;
-    onBreakdown: Function;
+    onEquityRange: Function;
 }
 
 export class CustomizedTable_v2 extends React.Component<Props, State>  {
@@ -65,6 +67,8 @@ export class CustomizedTable_v2 extends React.Component<Props, State>  {
     public filterSettings: any = { type: 'CheckBox' }
     public requiredRules: object = { required: true };
     public numbersRules: object = { number: true };
+    public detailGrid: GridComponent;
+    public detail: Object = [];
 
     public editSettings: any = { allowEditing: true, allowAdding: true, allowDeleting: true, newRowPosition: 'Top' };
     state = {
@@ -82,7 +86,7 @@ export class CustomizedTable_v2 extends React.Component<Props, State>  {
         setTimeout(() => {
             this.rendereComplete();
         });
-        console.log("SignonsPage MOunt");
+        console.log("LongIncentivePage MOunt");
         if (this.props.selectedCompany.company_id === "") {
           let data = {
             type: "warning",
@@ -90,7 +94,11 @@ export class CustomizedTable_v2 extends React.Component<Props, State>  {
             id: "1"
           };
           this.props.showDialog(data);
-        } else this.props.getSignonsList();
+        } 
+        else 
+        {
+            this.props.getLongIncentiveList();
+        }
       }
 
       public groupOptions: Object = { showGroupedColumn: true, columns: ['country'] };
@@ -118,12 +126,7 @@ export class CustomizedTable_v2 extends React.Component<Props, State>  {
           if(args.index === 0)
           {
             console.log(args.data);
-            const data = {
-                value: args.data.value,
-                type: args.data.type,
-                isOptional: 'N',
-              }
-              this.props.createSignons(data)
+            //TO DO
           }
           else
           {
@@ -133,16 +136,22 @@ export class CustomizedTable_v2 extends React.Component<Props, State>  {
         if (args.requestType === 'delete') {
           const obj: Object[] = this.gridInstance.getSelectedRecords();
           console.log(obj);
-          const rowIndexes : string[]=[];
-          obj.forEach((dat: any,index) => {
-              rowIndexes.push(dat.signons_id); 
-          });
-          this.props.deleteSignons(rowIndexes[0]);
-          console.log(rowIndexes[0]);
+          //const rowIndexes : string[]=[];
+          //obj.forEach((dat: any,index) => {
+          //    rowIndexes.push(dat.signons_id); 
+          //});
+          //this.props.deleteSignons(rowIndexes[0]);
+          //console.log(rowIndexes[0]);
         }
         if (args.requestType === 'add') {
           
         }
+      }
+
+      public rowselect(args: RowSelectEventArgs): void {
+        console.log("Row Selected");
+        console.log(args.data);
+        this.props.onEquityRange(args.data);
       }
 
     render() {
@@ -155,13 +164,18 @@ export class CustomizedTable_v2 extends React.Component<Props, State>  {
 
       return (
         <Paper className={classes.root}>
-            <GridComponent dataSource={this.props.signonsList} toolbar={this.toolbarOptions} editSettings={this.editSettings} ref={ grid => this.gridInstance = grid} allowSorting={true}
-                    dataBound={this.dataBound.bind(this)} load={this.load} allowFiltering={true} filterSettings={this.filterSettings} actionBegin={this.actionBegin.bind(this)}>
+            <GridComponent dataSource={this.props.longincentiveList} frozenColumns={6} allowTextWrap={true} toolbar={this.toolbarOptions} editSettings={this.editSettings} ref={ grid => this.gridInstance = grid} allowSorting={true}
+                    dataBound={this.dataBound.bind(this)} load={this.load} allowFiltering={true} filterSettings={this.filterSettings} actionBegin={this.actionBegin.bind(this)} rowSelected={this.rowselect.bind(this)}>
               <ColumnsDirective>
                 <ColumnDirective field='type' headerText='Type' width='150' textAlign='Left'></ColumnDirective>
                 <ColumnDirective field='value' headerText='Value' width='150' validationRules={this.numbersRules} template={editNumberTemplateValue} textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='investing_type' headerText='Investing Type' width='150' textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='share_symbol' headerText='Share Symbol' width='150' textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='share_exchange' headerText='Share Exchange' width='150' textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='currency' headerText='Currency' width='150' textAlign='Left'></ColumnDirective>
+                <ColumnDirective columns={[{ field:'year1', headerText:'Year 1', width:'150', validationRules:this.numbersRules, textAlign:'Left'},{ field:'year2', headerText:'Year 2', width:'150', validationRules:this.numbersRules, textAlign:'Left'},{ field:'year3', headerText:'Year 3', width:'150', validationRules:this.numbersRules, textAlign:'Left'},{ field:'year4', headerText:'Year 4', width:'150', validationRules:this.numbersRules, textAlign:'Left'},{ field:'year5', headerText:'Year 5', width:'150', validationRules:this.numbersRules, textAlign:'Left'}]} headerText='Allocation Percentage' textAlign='Center'></ColumnDirective>
               </ColumnsDirective>
-              <Inject services={[Page, Group, Sort, Edit, Toolbar, Filter]} />
+              <Inject services={[Selection, Freeze, Page, Group, Sort, Edit, Toolbar, Filter]} />
             </GridComponent>
         </Paper>
       )
@@ -174,7 +188,7 @@ export class CustomizedTable_v2 extends React.Component<Props, State>  {
 
   function mapStateToProps(state: RootState) {
     return {
-        selectedCompany: state.companyReducer.selectedCompany
+        selectedCompany: state.companyReducer.selectedCompany,
     };
   }
   

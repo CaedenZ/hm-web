@@ -29,6 +29,7 @@ import { history } from "../../../../store";
 import { Company } from "../../../../interface/companyInterface";
 import { Country } from "../../../../interface/countryInterface";
 import CustomizedTable from "./component/table";
+import CustomizedTable_v2 from "./component/stable";
 import { EquityRange } from "../../../../interface/equityRangeInterface";
 import CustomButton from "../../../../helper/components/CustomButton";
 
@@ -125,8 +126,7 @@ class EquityRangePage extends React.Component<Props, State> {
     return (
       <main>
         <div style={{ marginTop: 20 }} />
-        <CustomButton onClick={this.handleCreateEquityRange}>Create</CustomButton>
-        <CustomizedTable equityrangeList={this.props.equityrangeList} onUpdate={this.handleUpdate} onDelete={this.handleDelete} />
+        <CustomizedTable_v2 equityrangeList={this.props.equityrangeList} onUpdate={this.handleUpdate} onDelete={this.handleDelete} />
       </main>
     );
   }
