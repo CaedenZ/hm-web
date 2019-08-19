@@ -24,11 +24,12 @@ import { isMaster } from "../../../../function/checkRole";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white
+    backgroundColor: "#FF5733",
+    color: theme.palette.common.white,
+    fontSize: 12
   },
   body: {
-    fontSize: 14
+    fontSize: 12
   }
 }))(TableCell);
 
