@@ -42,11 +42,12 @@ import CustomButton from "../../helper/components/CustomButton";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white
+    backgroundColor: "#FF5733",
+    color: theme.palette.common.white,
+    fontSize: 12
   },
   body: {
-    fontSize: 14
+    fontSize: 12
   }
 }))(TableCell);
 
@@ -55,10 +56,10 @@ const styles = (theme: Theme) =>
     root: {
       width: "100%",
       marginTop: theme.spacing.unit * 3,
-      overflowX: "auto"     
+      overflowX: "auto",   
     },    
     table: {
-      minWidth: 700,
+      minWidth: 700
     },
     row: {
       "&:nth-of-type(odd)": {
