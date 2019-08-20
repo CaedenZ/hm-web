@@ -19,6 +19,8 @@ import { Allowances } from "../../../interface/allowanceInterface";
 import theme from "../../../assets/theme";
 import "../../../css/hideicon.css"
 import { Currency } from "../../../interface/countryInterface";
+import jsPDF from "jspdf";
+import { renderToString } from "react-dom/server";
 
 const styles = (theme: Theme) =>
     createStyles({
@@ -375,9 +377,17 @@ class OfferModelPage extends React.Component<Props, State> {
                 },
             }),
         };
-        return (
-            <Grid container alignItems="center" justify="space-evenly" direction="row" className={classes.root}>
-                <Grid item xs={10}>
+
+        const handleCreatePDF = () => {
+
+            const pdfstring = renderToString(<ToPDF />);
+            const pdf = new jsPDF("p", "mm", "a4");
+            pdf.fromHTML(pdfstring);
+            pdf.save("pdf");
+        };
+
+        const ToPDF = () => (
+            <Grid item xs={10}>
 
                     <Grid className={classes.gridMargin} container justify="space-evenly" alignItems="center">
                         Offer Sheet
@@ -499,6 +509,25 @@ class OfferModelPage extends React.Component<Props, State> {
                     </Grid>
 
                 </Grid>
+        )
+        return (
+            <Grid container alignItems="center" justify="space-evenly" direction="row" className={classes.root}>
+                <ToPDF/>
+                <div
+                    style={{
+                        display: "flex",
+                        paddingTop: "1rem"
+                    }}
+                >
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        style={{ marginLeft: "auto" }}
+                        onClick={() => handleCreatePDF()}
+                    >
+                        Generate PDF
+            </Button>
+                </div>
 
             </Grid >
         );
