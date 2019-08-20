@@ -58,7 +58,9 @@ const styles = (theme: Theme) =>
       background: "linear-gradient(#F0F0F0 0%, #FFFFFF 30%)"
     },
     menudivider: {},
-    navlist: {},
+    navlist: {
+      paddingLeft: "3.5rem"
+    },
     drawer: {
       width: drawerWidth,
       flexShrink: 0
