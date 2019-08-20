@@ -245,10 +245,10 @@ export class CustomizedTable_v2 extends React.Component<Props, State>  {
               <ColumnsDirective>
                 <ColumnDirective field='country' headerText='Country' width='120' validationRules={this.requiredRules} edit={this.countryParams} editType='dropdownedit' textAlign='Left'></ColumnDirective>
                 <ColumnDirective field='jobgrade_name' headerText='Jobgrade' validationRules={this.requiredRules} width='130' edit={this.jobgradeParams} editType='dropdownedit' textAlign='Left' />
-                <ColumnDirective field='type' headerText='Type' width='150' editTemplate={editTemplate} textAlign='Left'></ColumnDirective>
-                <ColumnDirective field='value_type' headerText='Value Type' width='150' edit={this.valuetypeParams} editType='dropdownedit' textAlign='Left'></ColumnDirective>
-                <ColumnDirective field='value' headerText='Value' width='150' validationRules={this.numbersRules} template={editNumberTemplateValue} textAlign='Left'></ColumnDirective>
-                <ColumnDirective field='percent_type' headerText='Percent Type' width='150' edit={this.percenttypeParams} editType='dropdownedit' textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='type' headerText='Type' width='150' validationRules={this.requiredRules} editTemplate={editTemplate} textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='value_type' headerText='Value Type' width='150' validationRules={this.requiredRules} edit={this.valuetypeParams} editType='dropdownedit' textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='value' headerText='Value' width='150' defaultValue="0" validationRules={this.numbersRules} template={editNumberTemplateValue} textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='percent_type' headerText='Percent Type' width='150' validationRules={this.requiredRules} edit={this.percenttypeParams} editType='dropdownedit' textAlign='Left'></ColumnDirective>
               </ColumnsDirective>
               <Inject services={[Page, Group, Sort, Edit, Toolbar, Filter]} />
             </GridComponent>

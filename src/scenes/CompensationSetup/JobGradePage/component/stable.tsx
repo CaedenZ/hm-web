@@ -191,7 +191,7 @@ export class CustomizedTable_v2 extends React.Component<Props, State>  {
                     dataBound={this.dataBound.bind(this)} load={this.load} allowFiltering={true} filterSettings={this.filterSettings} actionBegin={this.actionBegin.bind(this)}>
               <ColumnsDirective>
                 <ColumnDirective field='country' headerText='Country' width='120' validationRules={this.requiredRules} edit={this.countryParams} editType='dropdownedit' textAlign='Left'></ColumnDirective>
-                <ColumnDirective field='type' headerText='Type' width='150' editTemplate={editTemplate} textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='type' headerText='Type' width='150' defaultValue="" editTemplate={editTemplate} textAlign='Left'></ColumnDirective>
                 <ColumnDirective field='jobgrade_name' headerText='Jobgrade' validationRules={this.requiredRules} width='130' textAlign='Left' />
               </ColumnsDirective>
               <Inject services={[Page, Group, Sort, Edit, Toolbar, Filter]} />

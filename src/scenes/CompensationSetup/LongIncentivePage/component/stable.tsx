@@ -120,6 +120,40 @@ export class CustomizedTable_v2 extends React.Component<Props, State>  {
         });
         return type
       };
+
+      currencyTypes() {
+        const type = []
+        type.push({ id: this.props.selectedCompany.base_currency_id, value: this.props.selectedCompany.base_currency_id });
+        return type
+      };
+
+      valueTypes() {
+        const type = []
+        type.push('Fixed');
+        type.push('Percent');
+        console.log(type);
+        return type
+      };
+
+      public valuetypeParams : IEditCell = {
+        params:   {
+          actionComplete: () => false,
+          allowFiltering: true,
+          dataSource: this.valueTypes(),
+          fields: { text: "value", value: "value"},
+          query: new Query()
+        }
+      };
+
+      public currencyParams : IEditCell = {
+        params:   {
+          actionComplete: () => false,
+          allowFiltering: true,
+          dataSource: this.currencyTypes(),
+          fields: { text: "value", value: "value"},
+          query: new Query()
+        }
+      };
    
       actionBegin(args: any): void {
         if (args.requestType === 'save') {
@@ -167,13 +201,13 @@ export class CustomizedTable_v2 extends React.Component<Props, State>  {
             <GridComponent dataSource={this.props.longincentiveList} frozenColumns={6} allowTextWrap={true} toolbar={this.toolbarOptions} editSettings={this.editSettings} ref={ grid => this.gridInstance = grid} allowSorting={true}
                     dataBound={this.dataBound.bind(this)} load={this.load} allowFiltering={true} filterSettings={this.filterSettings} actionBegin={this.actionBegin.bind(this)} rowSelected={this.rowselect.bind(this)}>
               <ColumnsDirective>
-                <ColumnDirective field='type' headerText='Type' width='150' textAlign='Left'></ColumnDirective>
-                <ColumnDirective field='value' headerText='Value' width='150' validationRules={this.numbersRules} template={editNumberTemplateValue} textAlign='Left'></ColumnDirective>
-                <ColumnDirective field='investing_type' headerText='Investing Type' width='150' textAlign='Left'></ColumnDirective>
-                <ColumnDirective field='share_symbol' headerText='Share Symbol' width='150' textAlign='Left'></ColumnDirective>
-                <ColumnDirective field='share_exchange' headerText='Share Exchange' width='150' textAlign='Left'></ColumnDirective>
-                <ColumnDirective field='currency' headerText='Currency' width='150' textAlign='Left'></ColumnDirective>
-                <ColumnDirective columns={[{ field:'year1', headerText:'Year 1', width:'150', validationRules:this.numbersRules, textAlign:'Left'},{ field:'year2', headerText:'Year 2', width:'150', validationRules:this.numbersRules, textAlign:'Left'},{ field:'year3', headerText:'Year 3', width:'150', validationRules:this.numbersRules, textAlign:'Left'},{ field:'year4', headerText:'Year 4', width:'150', validationRules:this.numbersRules, textAlign:'Left'},{ field:'year5', headerText:'Year 5', width:'150', validationRules:this.numbersRules, textAlign:'Left'}]} headerText='Allocation Percentage' textAlign='Center'></ColumnDirective>
+                <ColumnDirective field='type' headerText='Type' validationRules={this.requiredRules} width='150' textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='value' headerText='Value' width='150' defaultValue="0" validationRules={this.numbersRules} template={editNumberTemplateValue} textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='investing_type' validationRules={this.requiredRules} edit={this.valuetypeParams} editType='dropdownedit' headerText='Investing Type' width='150' textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='share_symbol' defaultValue="" headerText='Share Symbol' width='150' textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='share_exchange' defaultValue="" headerText='Share Exchange' width='150' textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='currency' validationRules={this.requiredRules} edit={this.currencyParams} editType='dropdownedit' headerText='Currency' width='150' textAlign='Left'></ColumnDirective>
+                <ColumnDirective columns={[{ field:'year1', headerText:'Year 1', width:'150', validationRules:this.numbersRules, textAlign:'Left', defaultValue:'0'},{ field:'year2', headerText:'Year 2', width:'150', validationRules:this.numbersRules, textAlign:'Left', defaultValue:'0'},{ field:'year3', headerText:'Year 3', width:'150', validationRules:this.numbersRules, textAlign:'Left', defaultValue:'0'},{ field:'year4', headerText:'Year 4', width:'150', validationRules:this.numbersRules, textAlign:'Left', defaultValue:'0'},{ field:'year5', headerText:'Year 5', width:'150', validationRules:this.numbersRules, textAlign:'Left', defaultValue:'0'}]} headerText='Allocation Percentage' textAlign='Center'></ColumnDirective>
               </ColumnsDirective>
               <Inject services={[Selection, Freeze, Page, Group, Sort, Edit, Toolbar, Filter]} />
             </GridComponent>

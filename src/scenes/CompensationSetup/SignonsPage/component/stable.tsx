@@ -158,8 +158,8 @@ export class CustomizedTable_v2 extends React.Component<Props, State>  {
             <GridComponent dataSource={this.props.signonsList} toolbar={this.toolbarOptions} editSettings={this.editSettings} ref={ grid => this.gridInstance = grid} allowSorting={true}
                     dataBound={this.dataBound.bind(this)} load={this.load} allowFiltering={true} filterSettings={this.filterSettings} actionBegin={this.actionBegin.bind(this)}>
               <ColumnsDirective>
-                <ColumnDirective field='type' headerText='Type' width='150' textAlign='Left'></ColumnDirective>
-                <ColumnDirective field='value' headerText='Value' width='150' validationRules={this.numbersRules} template={editNumberTemplateValue} textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='type' headerText='Type' width='150' validationRules={this.requiredRules} textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='value' headerText='Value' width='150' defaultValue="0" validationRules={this.numbersRules} template={editNumberTemplateValue} textAlign='Left'></ColumnDirective>
               </ColumnsDirective>
               <Inject services={[Page, Group, Sort, Edit, Toolbar, Filter]} />
             </GridComponent>
