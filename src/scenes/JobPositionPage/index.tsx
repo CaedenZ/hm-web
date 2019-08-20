@@ -96,8 +96,11 @@ class JobPositionPage extends React.Component<Props, State> {
     history.push("/jobposition/offermodel")
   }
 
-  public commandClick(args: CommandClickEventArgs): void  {
-    console.log(args.rowData);
+  public commandClick(args: CommandClickEventArgs): void  {    
+    const result = args.rowData as JobPosition;
+    console.log(result);
+    this.props.selectJobPosition(result);
+    history.push("/jobposition/offermodel")
   }
 
   handleDelete = id => {
@@ -146,7 +149,7 @@ class JobPositionPage extends React.Component<Props, State> {
             </Grid>
         </Grid>
         <Paper className={classes.root}>
-        <GridComponent id='gridcomp' dataSource={this.props.jobPositionList} editSettings={this.editSettings} commandClick={this.commandClick} >
+        <GridComponent id='gridcomp' dataSource={this.props.jobPositionList} editSettings={this.editSettings} commandClick={this.commandClick.bind(this)} >
             <ColumnsDirective>
               <ColumnDirective field='country' headerText='Country' width='160' textAlign='Left'></ColumnDirective>
               <ColumnDirective field='jobgrade_name' headerText='Job Grade' width='120' textAlign='Left'></ColumnDirective>
