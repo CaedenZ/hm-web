@@ -6,6 +6,7 @@ import {
   withStyles,
   WithStyles
 } from "@material-ui/core/styles";
+import { Typography, Grid, InputBase } from "@material-ui/core";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -24,7 +25,9 @@ import { history } from "../../store";
 import UpdateIcon from "@material-ui/icons/PlaylistAddCheck";
 import { Company } from "../../interface/companyInterface";
 import { isUserHR, isUserPowerOrHR } from "../../function/checkRole";
-import CustomButton from "../../helper/components/CustomButton";
+import { GridComponent, ColumnsDirective, ColumnDirective, Inject, Page, Edit, CommandColumn, CommandClickEventArgs, CommandModel } from '@syncfusion/ej2-react-grids';
+import StatsBox from "./component/statsbox"
+import ModellerButton from "./component/modelButton"
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -46,6 +49,9 @@ const styles = (theme: Theme) =>
     },
     table: {
       minWidth: 700
+    },
+    fixedHeight: {
+      height: 150,
     },
     row: {
       "&:nth-of-type(odd)": {
@@ -85,7 +91,15 @@ class JobPositionPage extends React.Component<Props, State> {
   };
 
   handleOfferButtonClick = jobposition => {
+    console.log('clicked');
     this.props.selectJobPosition(jobposition);
+    history.push("/jobposition/offermodel")
+  }
+
+  public commandClick(args: CommandClickEventArgs): void  {    
+    const result = args.rowData as JobPosition;
+    console.log(result);
+    this.props.selectJobPosition(result);
     history.push("/jobposition/offermodel")
   }
 
@@ -98,16 +112,55 @@ class JobPositionPage extends React.Component<Props, State> {
     this.props.showDialog(payload);
   };
 
+  public editSettings: any = { allowEditing: true, allowAdding: true, allowDeleting: true, allowEditOnDblClick: false };
+  public commands: CommandModel[] = [
+    {
+      buttonOption: {
+        content: 'Offers', cssClass: 'e-primary e-outline'
+      }
+    }
+  ];
+  
   render() {
     const { classes } = this.props;
 
     return (
       <main>
-        {!isUserHR(this.props.role) && (
-          <CustomButton onClick={() => history.push("/jobposition/create")}>New JobPosition</CustomButton>
-        )}
+        <Grid container spacing={16} style={{ marginBottom:"0.3rem" }}>
+            <Grid item xs={12} md={4} lg={3}>
+              <Paper>
+                <StatsBox statstype={"new"} statsvalue={"10"}/>
+              </Paper>
+            </Grid>
+            <Grid item xs={12} md={4} lg={3}>
+              <Paper>
+                <StatsBox statstype={"close"} statsvalue={"10"}/>
+              </Paper>
+            </Grid>
+            <Grid item xs={12} md={4} lg={3}>
+              <Paper>
+                <StatsBox statstype={"total"} statsvalue={"10"}/>
+              </Paper>
+            </Grid>
+            <Grid item xs={12} md={4} lg={3}>
+              <Paper>
+                <ModellerButton onClick={() => history.push("/jobposition/create")}/>
+              </Paper>
+            </Grid>
+        </Grid>
         <Paper className={classes.root}>
-          <Table className={classes.table}>
+        <GridComponent id='gridcomp' dataSource={this.props.jobPositionList} editSettings={this.editSettings} commandClick={this.commandClick.bind(this)} >
+            <ColumnsDirective>
+              <ColumnDirective field='country' headerText='Country' width='160' textAlign='Left'></ColumnDirective>
+              <ColumnDirective field='jobgrade_name' headerText='Job Grade' width='120' textAlign='Left'></ColumnDirective>
+              <ColumnDirective field='business_title' headerText='Business Title'textAlign='Left'></ColumnDirective>
+              <ColumnDirective field='job_name' headerText='Job Function' textAlign='Left'></ColumnDirective>
+              <ColumnDirective headerText='Manage Records' commands={this.commands}></ColumnDirective>
+            </ColumnsDirective>
+            <Inject services={[Page, CommandColumn, Edit]} />
+          </GridComponent>
+
+          {/*<Table className={classes.table}>
             <TableHead>
               <TableRow>
                 <CustomTableCell align="left">Country</CustomTableCell>
@@ -146,7 +199,6 @@ class JobPositionPage extends React.Component<Props, State> {
                           <UpdateIcon />
                         </IconButton>
                       )}
-                      {/* <Button color="primary" variant="contained" onClick={() => this.handleUpdateButtonClick(row)}>view</Button> */}
                       {!isUserPowerOrHR(this.props.role) && (
                         <IconButton
                           onClick={() => this.handleDelete(row.jobposition_id)}
@@ -159,7 +211,7 @@ class JobPositionPage extends React.Component<Props, State> {
                 ))}
               </TableBody>
             )}
-          </Table>
+                      </Table>*/}
         </Paper>
       </main>
     );
