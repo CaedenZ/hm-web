@@ -19,6 +19,7 @@ import { Allowances } from "../../../interface/allowanceInterface";
 import theme from "../../../assets/theme";
 import "../../../css/hideicon.css"
 import { Currency } from "../../../interface/countryInterface";
+import { TextBoxComponent } from '@syncfusion/ej2-react-inputs';
 
 const styles = (theme: Theme) =>
     createStyles({
@@ -27,10 +28,17 @@ const styles = (theme: Theme) =>
             fontSize: 13,
         },
         title: {
-            fontSize: 20
+            fontSize: 24,
+            color: '#f44336',
+            marginBottom: '1.5rem',
+            fontWeight: 'bold'
         },
         subtitle: {
             fontWeight: 'bold'
+        },
+        paper_header: {
+            padding: 30,
+            marginBottom: '1.5rem',
         },
         paper: {
             height: '100%',
@@ -53,6 +61,27 @@ const styles = (theme: Theme) =>
             transform: 'rotate(0.5turn)'
         },
         textField: {
+        },
+        field_label: {
+            fontSize: 12,
+        },
+        field_data: {
+            fontSize: 14,
+            fontWeight: 'bold',
+            marginBottom: '1rem',
+            width: 200
+        },
+        field_data_view: {
+            fontSize: 14,
+            fontWeight: 'bold',
+            marginTop: '0.4rem',
+            marginBottom: '1rem',
+            width: 200
+        },
+        field_section: {
+            fontSize: 14,
+            fontWeight: 'bold',
+            color: '#f44336',
         },
     });
 
@@ -631,39 +660,22 @@ class OfferModelPage extends React.Component<Props, State> {
         };
         return (
             <Grid container alignItems="center" justify="space-evenly" direction="row" className={classes.root}>
-                <Grid item xs={10}>
-
-                    <Grid container justify="space-evenly" alignItems="center">
+                <Grid item xs={8}>
+                    <Typography className={classes.title} color="textSecondary" gutterBottom>
+                    TOM Offer Modeller
+                    </Typography>
+                    <Paper className={classes.paper_header} >
+                    <Grid container>
                         <Grid item xs={4}>
-                            <p className={classes.subtitle}>TOM Modeller</p>
-                        </Grid>
-                        <Grid item xs={1}>
-                            <p>Currency 1</p>
-                        </Grid>
-                        <Grid item xs={3}>
+                            <Typography className={classes.field_label}>
+                            Candidate Name
+                            </Typography>
+                            <TextField className={classes.field_data} value={this.state.candidate_name} onChange={this.handleChange('candidate_name')}/>
+                            <Typography className={classes.field_label}>
+                            Modeller Type
+                            </Typography>
                             <NativeSelect
-                                id="type"
-                                value={this.state.currency1}
-                                onChange={this.handleChangeSelect('currency1')}
-                                inputProps={{
-                                    name: "type",
-                                    id: "type-simple"
-                                }}
-                            >
-                                <option value={undefined} />
-                                {this.props.currencyList.map(currency => (
-                                    <option value={currency.code}>{currency.code}</option>
-                                ))}
-                            </NativeSelect>
-                        </Grid>
-                    </Grid>
-
-                    <Grid container justify="space-evenly" alignItems="center">
-                        <Grid item xs={1}>Candidate</Grid>
-                        <Grid item xs={3}><TextField value={this.state.candidate_name} onChange={this.handleChange('candidate_name')} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                        <Grid item xs={1}>Offer Modeller Type</Grid>
-                        <Grid item xs={3}>
-                            <NativeSelect
+                                className={classes.field_data} 
                                 id="type"
                                 value={this.state.model_type}
                                 onChange={this.handleChangeSelect('model_type')}
@@ -671,21 +683,18 @@ class OfferModelPage extends React.Component<Props, State> {
                                     name: "type",
                                     id: "type-simple"
                                 }}
-                            >
-                                <option value={undefined} />
+                                >
                                 <option value={'Promotion'} >Promotion</option>
                                 <option value={'Transfer'} >Transfer</option>
                                 <option value={'New'} >New</option>
                             </NativeSelect>
                         </Grid>
-                        <Grid item xs={1}>Offer Reference</Grid>
-                        <Grid item xs={3}><TextField value={this.state.offer_reference} onChange={this.handleChange('offer_reference')} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                    </Grid>
-                    <Grid container justify="space-evenly" alignItems="center">
-                        <Grid item xs={1}>Job Flag</Grid>
-
-                        <Grid item xs={3}>
+                        <Grid item xs={4}>
+                            <Typography className={classes.field_label}>
+                            Job Flag
+                            </Typography>
                             <NativeSelect
+                                className={classes.field_data} 
                                 id="flag"
                                 value={this.state.job_flag}
                                 onChange={this.handleChangeSelect('job_flag')}
@@ -694,98 +703,139 @@ class OfferModelPage extends React.Component<Props, State> {
                                     id: "flag-simple"
                                 }}
                             >
-                                <option value={undefined} />
                                 <option value={'Critical'} >Critical</option>
                                 <option value={'Business Driver'} >Business Driver</option>
                             </NativeSelect>
+                            <Typography className={classes.field_label}>
+                            Year of Birth
+                            </Typography>
+                            <TextField className={classes.field_data} type="date" value={this.state.year_of_birth} onChange={this.handleChange('year_of_birth')} />                            
                         </Grid>
-                        <Grid item xs={1}>Year of Birth</Grid>
-                        <Grid item xs={3}><TextField type="date" value={this.state.year_of_birth} onChange={this.handleChange('year_of_birth')} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                        <Grid item xs={1}>Job Grade</Grid>
-                        <Grid item xs={3}><TextField disabled value={this.state.jobgrade_id} onChange={this.handleChange('jobgrade_id')} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                        <Grid item xs={4}>
+                        <Typography className={classes.field_label}>
+                            Job Grade
+                        </Typography>
+                        <Typography className={classes.field_data_view}>
+                            {this.state.jobgrade_id}
+                        </Typography>
+                        {/*<TextField className={classes.field_data} disabled value={this.state.jobgrade_id} onChange={this.handleChange('jobgrade_id')}/>*/}
+                        <Typography className={classes.field_label}>
+                            Compare Currency
+                        </Typography>
+                        <NativeSelect
+                            className={classes.field_data} 
+                            id="type"
+                            value={this.state.currency1}
+                            onChange={this.handleChangeSelect('currency1')}
+                            inputProps={{
+                                name: "type",
+                                id: "type-simple"
+                            }}
+                            >
+                            <option value={undefined} />
+                            {this.props.currencyList.map(currency => (
+                                <option value={currency.code}>{currency.code}</option>
+                            ))}
+                        </NativeSelect>
+                        </Grid>
                     </Grid>
-
-                    <div className={classes.spacediv} />
-
+                    </Paper>
                     <ExpansionPanel>
                         <ExpansionPanelSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-controls="panel1a-content"
                             id="panel1a-header"
                         >
-                            <p className={classes.subtitle}>Position</p>
+                            <Typography className={classes.field_section}>
+                            Candidate Information
+                            </Typography>
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails>
-                            <Divider />
-                            <Grid style={{ width: '100%' }} alignItems="center" justify="space-evenly" direction="row">
+                            <Grid style={{ width: '100%' }} direction="row">
                                 <Grid container>
-                                    <Grid item xs={4}><p className={classes.subtitle}>Status</p></Grid>
-                                    <Grid item xs={4}><p className={classes.subtitle}>Current</p></Grid>
-                                    <Grid item xs={4}><p className={classes.subtitle}>Propose</p></Grid>
+                                    <Grid item xs={2}><p className={classes.subtitle}>Status</p></Grid>
+                                    <Grid item xs={5}><p className={classes.subtitle}>Current</p></Grid>
+                                    <Grid item xs={5}><p className={classes.subtitle}>Propose</p></Grid>
                                 </Grid>
                                 <Grid container>
-                                    <Grid item xs={4}><p className={classes.subtitle}>Title</p></Grid>
-                                    <Grid item xs={4}>
-                                        <TextField
-                                            value={this.state.current_position_title} onChange={this.handleChange('current_position_title')}
-                                            inputProps={{
-                                                style: { textAlign: "center" }
-                                            }} />
+                                    <Grid item xs={2}><p className={classes.subtitle}>Title</p></Grid>
+                                    <Grid item xs={5}>
+                                        <TextField className={classes.field_data}
+                                            value={this.state.current_position_title} onChange={this.handleChange('current_position_title')}/>
                                     </Grid>
-                                    <Grid item xs={4}>
-                                        <TextField disabled value={this.props.selectedJobPosition.business_title} inputProps={{ style: { textAlign: "center" } }} /></Grid>
+                                    <Grid item xs={5}>
+                                    <Typography className={classes.field_data_view}>
+                                        {this.props.selectedJobPosition.business_title}
+                                    </Typography>
+                                    {/*<TextField disabled value={this.props.selectedJobPosition.business_title} inputProps={{ style: { textAlign: "center" } }} />*/}
+                                    </Grid>
                                 </Grid>
                                 <Grid container>
-                                    <Grid item xs={4}><p className={classes.subtitle}>Country</p></Grid>
-                                    <Grid item xs={4}><TextField
-                                        value={this.state.current_position_country} onChange={this.handleChange('current_position_country')}
-                                        inputProps={{
-                                            style: { textAlign: "center" }
-                                        }} /></Grid>
-                                    <Grid item xs={4}><TextField disabled value={this.props.selectedJobPosition.country} inputProps={{ style: { textAlign: "center" } }} /></Grid>
+                                    <Grid item xs={2}><p className={classes.subtitle}>Country</p></Grid>
+                                    <Grid item xs={5}>
+                                        <TextField className={classes.field_data}
+                                        value={this.state.current_position_country} onChange={this.handleChange('current_position_country')}/>
+                                    </Grid>
+                                    <Grid item xs={5}>
+                                    <Typography className={classes.field_data_view}>
+                                        {this.props.selectedJobPosition.country}
+                                    </Typography> 
+                                    {/*<TextField disabled value={this.props.selectedJobPosition.country} inputProps={{ style: { textAlign: "center" } }} />*/}
+                                    </Grid>
                                 </Grid>
                                 <Grid container>
-                                    <Grid item xs={4}><p className={classes.subtitle}>Location</p></Grid>
-                                    <Grid item xs={4}><TextField
-                                        value={this.state.current_position_location} onChange={this.handleChange('current_position_location')}
-                                        inputProps={{
-                                            style: { textAlign: "center" }
-                                        }} /></Grid>
-                                    <Grid item xs={4}><TextField disabled value={this.props.selectedJobPosition.location} inputProps={{ style: { textAlign: "center" } }} /></Grid>
+                                    <Grid item xs={2}><p className={classes.subtitle}>Location</p></Grid>
+                                    <Grid item xs={5}>
+                                        <TextField className={classes.field_data}
+                                        value={this.state.current_position_location} onChange={this.handleChange('current_position_location')}/>
+                                    </Grid>
+                                    <Grid item xs={5}>
+                                    <Typography className={classes.field_data_view}>
+                                        {this.props.selectedJobPosition.location}
+                                    </Typography> 
+                                    {/*<TextField disabled value={this.props.selectedJobPosition.location} inputProps={{ style: { textAlign: "center" } }} />*/}
+                                    </Grid>
                                 </Grid>
                                 <Grid container>
-                                    <Grid item xs={4}><p className={classes.subtitle}>Grade</p></Grid>
-                                    <Grid item xs={4}><TextField
-                                        value={this.state.current_position_grade} onChange={this.handleChange('current_position_grade')}
-                                        inputProps={{
-                                            style: { textAlign: "center" }
-                                        }} /></Grid>
-                                    <Grid item xs={4}><TextField disabled value={this.props.selectedJobPosition.jobgrade_name} inputProps={{ style: { textAlign: "center" } }} /></Grid>
+                                    <Grid item xs={2}><p className={classes.subtitle}>Grade</p></Grid>
+                                    <Grid item xs={5}>
+                                        <TextField className={classes.field_data}
+                                        value={this.state.current_position_grade} onChange={this.handleChange('current_position_grade')}/>
+                                        </Grid>
+                                    <Grid item xs={5}>
+                                    <Typography className={classes.field_data_view}>
+                                        {this.props.selectedJobPosition.jobgrade_name}
+                                    </Typography>    
+                                    {/*<TextField disabled value={this.props.selectedJobPosition.jobgrade_name} inputProps={{ style: { textAlign: "center" } }} />*/}
+                                    </Grid>
                                 </Grid>
                                 <Grid container>
-                                    <Grid item xs={4}><p className={classes.subtitle}>Datestart</p></Grid>
-                                    <Grid item xs={4}><TextField
+                                    <Grid item xs={2}><p className={classes.subtitle}>Jobfunction</p></Grid>
+                                    <Grid item xs={5}>
+                                        <TextField className={classes.field_data}
+                                        value={this.state.current_position_jobfunction} onChange={this.handleChange('current_position_jobfunction')}/>
+                                        </Grid>
+                                    <Grid item xs={5}>
+                                    <Typography className={classes.field_data_view}>
+                                        {this.props.selectedJobPosition.job_name}
+                                    </Typography>    
+                                    {/*<TextField disabled value={this.props.selectedJobPosition.job_name} inputProps={{ style: { textAlign: "center" } }} />*/}
+                                    </Grid>
+                                </Grid>
+                                <Grid container>
+                                    <Grid item xs={2}><p className={classes.subtitle}>Datestart</p></Grid>
+                                    <Grid item xs={5}>
+                                        <TextField className={classes.field_data}
                                         type="date"
-                                        value={this.state.current_position_datestart} onChange={this.handleChange('current_position_datestart')}
-                                        inputProps={{
-                                            style: { textAlign: "center" }
-                                        }} /></Grid>
-                                    <Grid item xs={4}><TextField
+                                        value={this.state.current_position_datestart} onChange={this.handleChange('current_position_datestart')}/>
+                                    </Grid>
+                                    <Grid item xs={5}>
+                                        <TextField className={classes.field_data}
                                         type="date"
-                                        value={this.state.propose_position_datestart} onChange={this.handleChange('propose_position_datestart')}
-                                        inputProps={{
-                                            style: { textAlign: "center" }
-                                        }} /></Grid>
+                                        value={this.state.propose_position_datestart} onChange={this.handleChange('propose_position_datestart')}/>
+                                        </Grid>
                                 </Grid>
-                                <Grid container>
-                                    <Grid item xs={4}><p className={classes.subtitle}>Jobfunction</p></Grid>
-                                    <Grid item xs={4}><TextField
-                                        value={this.state.current_position_jobfunction} onChange={this.handleChange('current_position_jobfunction')}
-                                        inputProps={{
-                                            style: { textAlign: "center" }
-                                        }} /></Grid>
-                                    <Grid item xs={4}><TextField disabled value={this.props.selectedJobPosition.job_name} inputProps={{ style: { textAlign: "center" } }} /></Grid>
-                                </Grid>
+
                             </Grid>
                         </ExpansionPanelDetails>
                     </ExpansionPanel>
@@ -798,65 +848,67 @@ class OfferModelPage extends React.Component<Props, State> {
                             aria-controls="panel1a-content"
                             id="panel1a-header"
                         >
-                            <p className={classes.subtitle}>Guaranteed Cash</p>
+                            <Typography className={classes.field_section}>
+                            Guaranteed Cash
+                            </Typography>
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails>
-                            <Divider />
-                            <Grid container alignItems="center">
+                        <Grid style={{ width: '100%' }} direction="row">
+                            <Grid container>
                                 <Grid item xs={6} style={{ height: "100%" }}>
-                                    <Paper style={{ height: "100%", position: "relative" }}>
+                                    <Grid style={{ height: "100%", position: "relative" }}>
                                         <p className={classes.subtitle}>Current</p>
-                                        <Grid container justify="space-evenly">
-                                            <Grid item xs={3}>Currency</Grid>
-                                            <Grid item xs={2}>{this.state.currency}</Grid>
-                                            <Grid item xs={2}>{this.state.currency1}</Grid>
+                                        <Grid container  spacing={8}>
+                                            <Grid item xs={4}>Currency</Grid>
+                                            <Grid item xs={3} style={{ width: "100%"}}>{this.state.currency}</Grid>
+                                            <Grid item xs={3}>{this.state.currency1}</Grid>
                                             {/* <Grid item xs={2}>{this.state.currency2}</Grid> */}
-                                            <Grid item xs={1}><IconButton onClick={this.handleAddGC}><AddIcon /></IconButton></Grid>
+                                            <Grid item xs={1}><IconButton color="primary" onClick={this.handleAddGC}><AddIcon /></IconButton></Grid>
                                         </Grid>
-                                        <Grid container justify="space-evenly" alignItems="center">
-                                            <Grid item xs={3}>Annual Base</Grid>
-                                            <Grid item xs={2}><TextField type="number" value={this.state.current_data.guaranteed_cash.annual_base} onChange={this.handleChangeAnnualBaseCurrent} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                            <Grid item xs={2}><TextField disabled value={this.getCurrency1(this.state.current_data.guaranteed_cash.annual_base)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                        <Grid container  spacing={8}>
+                                            <Grid item xs={4}>Annual Base</Grid>
+                                            <Grid item xs={3}><TextField type="number" value={this.state.current_data.guaranteed_cash.annual_base} onChange={this.handleChangeAnnualBaseCurrent} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                            <Grid item xs={3}><TextField disabled value={this.getCurrency1(this.state.current_data.guaranteed_cash.annual_base)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
                                             <Grid item xs={1} />
                                         </Grid>
-                                        <Grid container justify="space-evenly" alignItems="center">
-                                            <Grid item xs={3}>Compa Ratio</Grid>
-                                            <Grid item xs={2}></Grid>
-                                            <Grid item xs={2}></Grid>
+                                        <Grid container  spacing={8}>
+                                            <Grid item xs={4}></Grid>
+                                            <Grid item xs={3}></Grid>
+                                            <Grid item xs={3}></Grid>
                                             <Grid item xs={1} />
                                         </Grid>
-                                        <Grid container justify="space-evenly" alignItems="center">
-                                            <Grid item xs={3}>Market Ratio Grade</Grid>
-                                            <Grid item xs={2}></Grid>
-                                            <Grid item xs={2}></Grid>
+                                        <Grid container  spacing={8}>
+                                            <Grid item xs={4}></Grid>
+                                            <Grid item xs={3}></Grid>
+                                            <Grid item xs={3}></Grid>
                                             <Grid item xs={1} />
                                         </Grid>
-                                        <Grid container justify="space-evenly" alignItems="center">
-                                            <Grid item xs={3}>Market Ratio Function</Grid>
-                                            <Grid item xs={2}></Grid>
-                                            <Grid item xs={2}></Grid>
+                                        <Grid container  spacing={8}>
+                                            <Grid item xs={4}></Grid>
+                                            <Grid item xs={3}></Grid>
+                                            <Grid item xs={3}></Grid>
                                             <Grid item xs={1} />
                                         </Grid>
 
                                         {this.state.current_data.guaranteed_cash.optional.map((item: NameValue, index) =>
-                                            <Grid key={'gc' + index} container justify="space-evenly" alignItems="center">
-                                                <Grid item xs={3}><TextField value={this.state.current_data.guaranteed_cash.optional[index].name} onChange={this.handleChangeGCOptionalNameCurrent(index)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                                <Grid item xs={2}><TextField type="number" value={this.state.current_data.guaranteed_cash.optional[index].value} onChange={this.handleChangeGCOptionalValueCurrent(index)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                                <Grid item xs={2}><TextField disabled value={this.getCurrency1(this.state.current_data.guaranteed_cash.optional[index].value)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
-                                                <Grid item xs={1}><IconButton onClick={() => this.handleDeleteGC(index)}><DeleteIcon /></IconButton></Grid>
+                                            <Grid key={'gc' + index} container spacing={8}>
+                                                <Grid item xs={4}><TextField value={this.state.current_data.guaranteed_cash.optional[index].name} onChange={this.handleChangeGCOptionalNameCurrent(index)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                                <Grid item xs={3}><TextField type="number" value={this.state.current_data.guaranteed_cash.optional[index].value} onChange={this.handleChangeGCOptionalValueCurrent(index)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                                <Grid item xs={3}><TextField disabled value={this.getCurrency1(this.state.current_data.guaranteed_cash.optional[index].value)} inputProps={{ style: { textAlign: "center", fontSize: 13 } }} /></Grid>
+                                                <Grid item xs={1}><IconButton color="primary" onClick={() => this.handleDeleteGC(index)}><DeleteIcon /></IconButton></Grid>
                                             </Grid>)}
 
                                         <div className={classes.spacediv} />
-                                        <Grid container style={{ position: "absolute", bottom: 10 }} justify="space-evenly" alignItems="center">
-                                            <Grid item xs={3}>Sub</Grid>
-                                            <Grid item xs={2}>{this.getsubtotalGC()}</Grid>
-                                            <Grid item xs={2}>{this.getCurrency1(this.getsubtotalGC())}</Grid>
+                                        <Grid container spacing={8}>
+                                            <Grid item xs={4}>Sub</Grid>
+                                            <Grid item xs={3}>{this.getsubtotalGC()}</Grid>
+                                            <Grid item xs={3}>{this.getCurrency1(this.getsubtotalGC())}</Grid>
                                             <Grid item xs={1} />
                                         </Grid>
-                                    </Paper>
+                                    </Grid>
                                 </Grid>
                                 <Grid item xs={6} style={{ height: "100%" }}>
-                                    <Paper style={{ height: "100%", position: "relative" }}>
+                                    <Grid style={{ height: "100%", position: "relative" }}>
                                         <p className={classes.subtitle}>Propose</p>
                                         <Grid container justify="space-evenly">
                                             <Grid item xs={3}>Currency</Grid>
@@ -932,9 +984,10 @@ class OfferModelPage extends React.Component<Props, State> {
                                             <Grid item xs={2}>{(this.getsubtotalGP() * 100 / this.getsubtotalGC()).toFixed(2)}%</Grid>
                                             <Grid item xs={1} />
                                         </Grid>
-                                    </Paper>
+                                    </Grid>
                                 </Grid>
                             </Grid>
+                        </Grid>
                         </ExpansionPanelDetails>
                     </ExpansionPanel>
 
@@ -1443,6 +1496,9 @@ class OfferModelPage extends React.Component<Props, State> {
                     </div>
 
                 </Grid >
+                <Grid item xs={4}>
+
+                </Grid>
 
             </Grid >
         );

@@ -4,7 +4,8 @@ import {
   Typography,
   createStyles,
   WithStyles,
-  withStyles
+  withStyles,
+  Paper
 } from "@material-ui/core";
 import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
@@ -17,6 +18,9 @@ const styles = () =>
   createStyles({
     root: {
       flexGrow: 1
+    },
+    modeller: {
+      padding: "1rem"
     }
   });
 
@@ -55,14 +59,13 @@ class UpdateOfferModelPage extends Component<Props, UpdateOfferModelState> {
     const { classes } = this.props;
     return (
       <div className={classes.root}>
-        <Typography component="h1" variant="h5">
-          Update OfferModel
-        </Typography>
-        <OfferModelPage
-        create={false}
-        updateData={this.props.selectedOfferModel}
-        onSubmit={(data) => this.handleUpdateOfferModel(data)}
-      />
+        <Paper className={classes.modeller}>
+            <OfferModelPage
+            create={false}
+            updateData={this.props.selectedOfferModel}
+            onSubmit={(data) => this.handleUpdateOfferModel(data)}
+          />
+        </Paper>
       </div>
     );
   }

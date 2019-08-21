@@ -6,7 +6,7 @@ import {
   withStyles,
   WithStyles
 } from "@material-ui/core/styles";
-import { Typography, Grid, InputBase } from "@material-ui/core";
+import { Typography, Grid, InputBase, Dialog, DialogContent } from "@material-ui/core";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -25,9 +25,10 @@ import { history } from "../../store";
 import UpdateIcon from "@material-ui/icons/PlaylistAddCheck";
 import { Company } from "../../interface/companyInterface";
 import { isUserHR, isUserPowerOrHR } from "../../function/checkRole";
-import { GridComponent, ColumnsDirective, ColumnDirective, Inject, Page, Edit, CommandColumn, CommandClickEventArgs, CommandModel } from '@syncfusion/ej2-react-grids';
+import { GridComponent, ColumnsDirective, ColumnDirective, Inject, Page, Edit, CommandColumn, CommandClickEventArgs, CommandModel, Group, Sort, Filter } from '@syncfusion/ej2-react-grids';
 import StatsBox from "./component/statsbox"
 import ModellerButton from "./component/modelButton"
+import FormPage from "./component/form"
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -65,7 +66,10 @@ export interface Props
   SharedDispatchProps,
   InState { }
 
-interface State { }
+interface State { 
+  isModalOpen: boolean,
+  isModalUpdateOpen: boolean,
+}
 
 interface InState {
   selectedCompany: Company;
@@ -73,6 +77,14 @@ interface InState {
   role;
 }
 class JobPositionPage extends React.Component<Props, State> {
+  public groupOptions: Object = { showGroupedColumn: true };
+  public filterSettings: any = { type: 'CheckBox' }
+
+  state = {
+    isModalOpen: false,
+    isModalUpdateOpen: false,
+  }
+
   componentDidMount() {
     console.log("JobPosition Page Mounted");
     if (this.props.selectedCompany.company_id === "") {
@@ -112,6 +124,25 @@ class JobPositionPage extends React.Component<Props, State> {
     this.props.showDialog(payload);
   };
 
+  //Create Job Position
+  handleModelCreateButtonClick = () => {
+    this.setState({ isModalOpen: true });
+    this.forceUpdate();
+    console.log(this.state);
+  };
+
+  handleCreateJobPosition = (e, data) => {
+    e.preventDefault();
+    this.props.createJobPosition(data);
+    this.setState({ isModalOpen: false });
+  };
+
+   //General Handle Close
+   handleModalClose = () => {
+    this.setState({ isModalOpen: false });
+    this.setState({ isModalUpdateOpen: false });
+  };
+
   public editSettings: any = { allowEditing: true, allowAdding: true, allowDeleting: true, allowEditOnDblClick: false };
   public commands: CommandModel[] = [
     {
@@ -122,6 +153,8 @@ class JobPositionPage extends React.Component<Props, State> {
   ];
   
   render() {
+
+
     const { classes } = this.props;
 
     return (
@@ -144,76 +177,39 @@ class JobPositionPage extends React.Component<Props, State> {
             </Grid>
             <Grid item xs={12} md={4} lg={3}>
               <Paper>
-                <ModellerButton onClick={() => history.push("/jobposition/create")}/>
+                <ModellerButton onClick={() => this.handleModelCreateButtonClick()}/>
               </Paper>
             </Grid>
         </Grid>
         <Paper className={classes.root}>
-        <GridComponent id='gridcomp' dataSource={this.props.jobPositionList} editSettings={this.editSettings} commandClick={this.commandClick.bind(this)} >
+        <GridComponent id='gridcomp' dataSource={this.props.jobPositionList} allowGrouping={true} groupSettings={this.groupOptions} allowSorting={true} editSettings={this.editSettings} allowFiltering={true} filterSettings={this.filterSettings} commandClick={this.commandClick.bind(this)} >
             <ColumnsDirective>
-              <ColumnDirective field='country' headerText='Country' width='160' textAlign='Left'></ColumnDirective>
-              <ColumnDirective field='jobgrade_name' headerText='Job Grade' width='120' textAlign='Left'></ColumnDirective>
+              <ColumnDirective field='country' headerText='Country' textAlign='Left'></ColumnDirective>
+              <ColumnDirective field='jobgrade_name' headerText='Job Grade' textAlign='Left'></ColumnDirective>
               <ColumnDirective field='business_title' headerText='Business Title'textAlign='Left'></ColumnDirective>
               <ColumnDirective field='job_name' headerText='Job Function' textAlign='Left'></ColumnDirective>
               <ColumnDirective headerText='Manage Records' commands={this.commands}></ColumnDirective>
             </ColumnsDirective>
-            <Inject services={[Page, CommandColumn, Edit]} />
+            <Inject services={[Page, CommandColumn, Edit, Group, Sort, Filter]} />
           </GridComponent>
-
-          {/*<Table className={classes.table}>
-            <TableHead>
-              <TableRow>
-                <CustomTableCell align="left">Country</CustomTableCell>
-                <CustomTableCell align="left">Job Grade</CustomTableCell>
-                <CustomTableCell align="left">Business Title</CustomTableCell>
-                <CustomTableCell align="left">Job Function</CustomTableCell>
-                <CustomTableCell align="right">Action</CustomTableCell>
-              </TableRow>
-            </TableHead>
-            {this.props.jobPositionList.length > 0 && (
-              <TableBody>
-                {this.props.jobPositionList.map(row => (
-                  <TableRow className={classes.row} key={row.jobposition_id}>
-                    <CustomTableCell component="th" scope="row">
-                      {row.country}
-                    </CustomTableCell>
-                    <CustomTableCell component="th" scope="row">
-                      {row.jobgrade_name}
-                    </CustomTableCell>
-                    <CustomTableCell component="th" scope="row">
-                      {row.business_title}
-                    </CustomTableCell>
-                    <CustomTableCell component="th" scope="row">
-                      {row.job_name}
-                    </CustomTableCell>
-                    <CustomTableCell align="right">
-                      <IconButton
-                        onClick={() => this.handleOfferButtonClick(row)}
-                      >
-                        <OfferIcon />
-                      </IconButton>
-                      {!isUserHR(this.props.role) && (
-                        <IconButton
-                          onClick={() => this.handleUpdateButtonClick(row)}
-                        >
-                          <UpdateIcon />
-                        </IconButton>
-                      )}
-                      {!isUserPowerOrHR(this.props.role) && (
-                        <IconButton
-                          onClick={() => this.handleDelete(row.jobposition_id)}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                      )}
-                    </CustomTableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            )}
-                      </Table>*/}
         </Paper>
-      </main>
+        <Dialog
+          open={this.state.isModalOpen}
+          onClose={this.handleModalClose}
+          maxWidth={false}
+        >
+          <DialogContent>
+            <Typography component="h1" variant="h5" style = {{margin:"1rem"}}>
+            Create Job Position
+            </Typography>
+            <FormPage
+              create={true}
+              updateData=""
+              onSubmit={(e, data) => this.handleCreateJobPosition(e, data)}
+            />
+          </DialogContent>
+        </Dialog>
+      </main>      
     );
   }
 }

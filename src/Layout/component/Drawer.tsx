@@ -167,10 +167,6 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
         {
           title: "Customer",
           path: "/company"
-        },
-        {
-          title: "Offer Modeller",
-          path: "/jobposition"
         }
       ]
 
@@ -178,10 +174,6 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
         {
           title: "Company",
           path: "/company/info"
-        },
-        {
-          title: "Offer Modeller",
-          path: "/jobposition"
         }
       ]     
 
@@ -192,6 +184,16 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
           return adm;
         } else return usr;
       } else return usr;
+    };
+
+    const mainmenu2functin = (): any => {
+      let adm = [
+        {
+          title: "Offer Modeller",
+          path: "/jobposition"
+        }
+      ]
+       return adm;
     };
 
 
@@ -543,6 +545,23 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
               ))}
             </List>
           </Collapse>
+          <Divider />
+          <List className={classes.menubar}>
+            {mainmenu2functin().map((item, index) => (
+              <Link
+                key={item.title}
+                to={item.path}
+                style={{ textDecoration: "none" }}
+              >
+                <ListItem button>
+                  <ListItemIcon>
+                    {index % 2 === 0 ? <MailIcon /> : <MailIcon />}
+                  </ListItemIcon>
+                  <ListItemText primary={item.title} />
+                </ListItem>
+              </Link>
+            ))}
+          </List>
           {/* <Divider />
           <ListItem
             className={classes.menubar}

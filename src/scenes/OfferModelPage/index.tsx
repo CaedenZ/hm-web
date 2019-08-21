@@ -16,7 +16,7 @@ import { RootState } from "../../reducer";
 import { mapDispatchToProps } from "../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../interface/propsInterface";
-import { IconButton } from "@material-ui/core";
+import { IconButton, Grid } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ConfirmIcon from "@material-ui/icons/Done";
 import RejectIcon from "@material-ui/icons/Close";
@@ -30,7 +30,10 @@ import { Company } from "../../interface/companyInterface";
 import { isUserHR, isUserPowerOrHR } from "../../function/checkRole";
 import CustomButton from "../../helper/components/CustomButton";
 import ChangeStatus from "./Component/changeStatus";
-
+import JobPanel from "./Component/jobinfo";
+import ModelButton from "./Component/modelButton";
+import { JobPosition } from "../../interface/jobpositionInterface";
+import { GridComponent, ColumnsDirective, Inject, ColumnDirective, CommandColumn, Edit, Sort, CommandModel, CommandClickEventArgs } from "@syncfusion/ej2-react-grids";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -132,6 +135,21 @@ class OfferModelPage extends React.Component<Props, State> {
     return
   }
 
+  public commandClick(args: CommandClickEventArgs): void  {    
+    const result = args.rowData as OfferModel;
+    console.log(result);
+    this.props.selectOfferModel(result);
+    history.push("/jobposition/offermodel/update");
+  }
+
+  public commands: CommandModel[] = [
+    {
+      buttonOption: {
+        content: 'View', cssClass: 'e-primary e-outline'
+      }
+    }
+  ];
+
   render() {
     const { classes } = this.props;
 
@@ -208,10 +226,31 @@ class OfferModelPage extends React.Component<Props, State> {
 
     return (
       <main>
-        {!isUserHR(this.props.role) && (
-          <CustomButton onClick={() => history.push("/jobposition/offermodel/create")}>New OfferModel</CustomButton>
-        )}
+        <Grid container spacing={16} style={{ marginBottom:"0.3rem" }}>
+            <Grid item xs={12} md={12} lg={9}>
+              <Paper>
+                <JobPanel/>
+              </Paper>
+            </Grid>
+            <Grid item xs={12} md={4} lg={3}>
+              <Paper>
+              <ModelButton onClick={() => history.push("/jobposition/offermodel/create")}/>
+              </Paper>
+            </Grid>
+        </Grid>
         <Paper className={classes.root}>
+        <GridComponent id='gridcomp' dataSource={this.props.offerModelList} allowSorting={true} commandClick={this.commandClick.bind(this)} >
+            <ColumnsDirective>
+              <ColumnDirective field='candidate_name' headerText='Candidate Name' textAlign='Left'></ColumnDirective>
+              <ColumnDirective field='model_type' headerText='Model Type' textAlign='Left'></ColumnDirective>
+              <ColumnDirective field='job_flag' headerText='Jog Flag'textAlign='Left'></ColumnDirective>
+              <ColumnDirective field='status' headerText='Status' textAlign='Left'></ColumnDirective>
+              <ColumnDirective headerText='Manage Records' commands={this.commands}></ColumnDirective>
+            </ColumnsDirective>
+            <Inject services={[CommandColumn, Edit, Sort]} />
+          </GridComponent>
+        </Paper>
+        {/*<Paper className={classes.root}>
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
@@ -244,7 +283,7 @@ class OfferModelPage extends React.Component<Props, State> {
               </TableBody>
             )}
           </Table>
-        </Paper>
+                </Paper>*/}
         <ChangeStatus
           open={this.state.changeStatus}
           handleClose={this.handleClose}
