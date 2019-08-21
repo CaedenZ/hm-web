@@ -1494,24 +1494,34 @@ class OfferModelPage extends React.Component<Props, State> {
                     justify="flex-start"
                     alignItems="flex-start"
                     >
-                        <Grid item xs={12} >
-                        <Paper>
+                        <Grid item xs={12} justify="flex-end">
                         <Button
-                            variant="contained"
-                            color="primary"
-                            style={{ marginLeft: "auto" }}
-                            onClick={() => this.props.onSubmit(this.state)}
-                        >
-                            Save
-            </Button>
+                                        variant="contained"
+                                        color="primary"
+                                        style={{ marginRight: "1rem" }}
+                                        onClick={() => this.props.onSubmit(this.state)}
+                                    >
+                                        Save
+                        </Button>
+                        {//this button goes to the report
+                        }
                         <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={() => this.handleSubmit()}
-                        >
-                            Submit
-            </Button>
-                        </Paper>
+                                        variant="contained"
+                                        color="primary"
+                                        style={{ marginRight: "1rem" }}
+                                        onClick={() => this.handleSubmit()}
+                                    >
+                                        Generate
+                        </Button>
+                        {//this button goes to the contract
+                        }
+                        <Button
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={() => this.handleSubmit()}
+                                    >
+                                        Contract
+                        </Button>
                         </Grid>
                     </Grid>
                 </Grid>
