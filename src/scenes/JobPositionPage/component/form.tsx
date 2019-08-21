@@ -27,6 +27,8 @@ import { Country } from "../../../interface/countryInterface";
 import { JobGrade } from "../../../interface/jobgradeInterface";
 import { JobFunction } from "../../../interface/jobfunctionInterface";
 import { Location } from "../../../interface/locationInterface";
+import { Region } from "../../../interface/regionInterface";
+import { Unit } from "../../../interface/companyInterface";
 
 const styles = () =>
   createStyles({
@@ -44,6 +46,12 @@ interface FormState {
   location: number;
   jobfunction: string;
   sjobfunction: string;
+  division: string;
+	region: string;
+	legal_entity: string;
+	manager_name: string;
+	manager_position_title: string;
+	manager_grade: string;
   remarks: string;
 }
 export interface Props
@@ -60,6 +68,8 @@ interface InState {
   jobgradeList: JobGrade[];
   jobfunctionList: JobFunction[];
   locationList: Location[];
+  regionList:Region[];
+  divisionList:Unit[];
 }
 
 class CreateJobPositionPage extends Component<Props, FormState> {
@@ -77,6 +87,12 @@ class CreateJobPositionPage extends Component<Props, FormState> {
     jobfunction: "",
     sjobfunction: "",
     remarks: "",
+    division: "",
+	  region: "",
+	  legal_entity: "",
+	  manager_name: "",
+	  manager_position_title: "",
+  	manager_grade: "",
   };
 
   componentDidMount() {
@@ -106,6 +122,36 @@ class CreateJobPositionPage extends Component<Props, FormState> {
     if (tmpLocation) {
       this.setState({
         location: tmpLocation.location_id
+      });
+    }
+  };
+
+  handleRegionChangeSelect = () => (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const regionID = event.target.value;
+    const tmpRegion = this.props.regionList.find(region => {
+      return region.region_id === regionID;
+    });
+
+    if (tmpRegion) {
+      this.setState({
+        region: tmpRegion.region_id
+      });
+    }
+  };
+
+  handleDivisionChangeSelect = () => (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const divisionID = event.target.value;
+    const tmpDivision = this.props.divisionList.find(division => {
+      return division.unit_id === divisionID;
+    });
+
+    if (tmpDivision) {
+      this.setState({
+        division: tmpDivision.unit_id
       });
     }
   };
@@ -250,6 +296,58 @@ class CreateJobPositionPage extends Component<Props, FormState> {
             )}
           </Grid>
           <Grid item justify="center" container xs>
+            {this.props.regionList.length > 0 && (
+              <FormControl className={classes.textField}>
+                <InputLabel>Region</InputLabel>
+                <NativeSelect
+                  id="region"
+                  value={this.state.location}
+                  onChange={this.handleRegionChangeSelect()}
+                  inputProps={{
+                    name: "region",
+                    id: "region-simple"
+                  }}
+                >
+                  <option value={undefined} />
+                  {this.props.regionList.map(region => (
+                    <option
+                      value={region.region_id}
+                      key={region.region_id}
+                    >
+                      {region.region_name}
+                    </option>
+                  ))}
+                </NativeSelect>
+              </FormControl>
+            )}
+          </Grid>
+          <Grid item justify="center" container xs>
+            {this.props.divisionList.length > 0 && (
+              <FormControl className={classes.textField}>
+                <InputLabel>Division</InputLabel>
+                <NativeSelect
+                  id="division"
+                  value={this.state.division}
+                  onChange={this.handleDivisionChangeSelect()}
+                  inputProps={{
+                    name: "division",
+                    id: "division-simple"
+                  }}
+                >
+                  <option value={undefined} />
+                  {this.props.divisionList.map(division => (
+                    <option
+                      value={division.unit_id}
+                      key={division.unit_id}
+                    >
+                      {division.unit_name}
+                    </option>
+                  ))}
+                </NativeSelect>
+              </FormControl>
+            )}
+          </Grid>
+          <Grid item justify="center" container xs>
             {this.props.jobgradeList.length > 0 && (
               <FormControl className={classes.textField}>
                 <InputLabel>Job Grade</InputLabel>
@@ -381,6 +479,8 @@ function mapStateToProps(state: RootState) {
     jobgradeList: state.jobgradeReducer.jobgradeList,
     jobfunctionList: state.jobFunctionReducer.jobFunctionList,
     locationList: state.locationReducer.locationList,
+    divisionList:state.companyReducer.divisionList,
+    regionList:state.regionReducer.regionList,
   };
 }
 
