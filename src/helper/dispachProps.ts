@@ -22,6 +22,7 @@ import { selectLocationAction, createLocationAction, updateLocationAction, delet
 import { insertDataAction } from "../actions/dataInsertAction";
 import { selectJobPositionAction, createJobPositionAction, updateJobPositionAction, deleteJobPositionAction, getJobPositionListAction } from "../actions/jobPositionAction";
 import { selectOfferModelAction, createOfferModelAction, updateOfferModelAction, deleteOfferModelAction, getOfferModelListAction } from "../actions/offerModelAction";
+import { selectContractAction, createContractAction, updateContractAction, deleteContractAction, getContractListAction } from "../actions/contractAction";
 
 
 
@@ -188,5 +189,11 @@ export function mapDispatchToProps(dispatch): SharedDispatchProps {
         updateOfferModel: (payload) => { dispatch(updateOfferModelAction.request(payload)) },
         deleteOfferModel: (payload) => { dispatch(deleteOfferModelAction.request(payload)) },
         getOfferModelList: () => { dispatch(getOfferModelListAction.request()) },
+
+        selectContract: (payload) => { dispatch(selectContractAction(payload)) },
+        createContract: (payload) => { dispatch(createContractAction.request(payload)) },
+        updateContract: (payload) => { dispatch(updateContractAction.request(payload)) },
+        deleteContract: (payload) => { dispatch(deleteContractAction.request(payload)) },
+        getContractList: () => { dispatch(getContractListAction.request()) },
     }
 }

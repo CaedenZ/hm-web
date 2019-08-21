@@ -1,0 +1,44 @@
+import { createAsyncAction, createAction } from "typesafe-actions";
+import { Contract, CREATECONTRACTCRED , UPDATECONTRACTCRED } from "../interface/contractInterface";
+
+const SELECT_CONTRACT = "SELECT_CONTRACT"
+export const selectContractAction = createAction(SELECT_CONTRACT,
+    action => {
+        return (contract: Contract) => action(contract)
+    })
+
+const GET_CONTRACT_LIST_REQUEST = "GET_CONTRACT_LIST_REQUEST"
+const GET_CONTRACT_LIST_SUCCESS = "GET_CONTRACT_LIST_SUCCESS"
+const GET_CONTRACT_LIST_FAILURE = "GET_CONTRACT_LIST_FAILURE"
+export const getContractListAction = createAsyncAction(
+    GET_CONTRACT_LIST_REQUEST,
+    GET_CONTRACT_LIST_SUCCESS,
+    GET_CONTRACT_LIST_FAILURE
+)<void, Contract[], void>()
+
+const CREATE_CONTRACT_REQUEST = "CREATE_CONTRACT_REQUEST"
+const CREATE_CONTRACT_SUCCESS = "CREATE_CONTRACT_SUCCESS"
+const CREATE_CONTRACT_FAILURE = "CREATE_CONTRACT_FAILURE"
+export const createContractAction = createAsyncAction(
+    CREATE_CONTRACT_REQUEST,
+    CREATE_CONTRACT_SUCCESS,
+    CREATE_CONTRACT_FAILURE
+)<CREATECONTRACTCRED, void, void>()
+
+const UPDATE_CONTRACT_REQUEST = "UPDATE_CONTRACT_REQUEST"
+const UPDATE_CONTRACT_SUCCESS = "UPDATE_CONTRACT_SUCCESS"
+const UPDATE_CONTRACT_FAILURE = "UPDATE_CONTRACT_FAILURE"
+export const updateContractAction = createAsyncAction(
+    UPDATE_CONTRACT_REQUEST,
+    UPDATE_CONTRACT_SUCCESS,
+    UPDATE_CONTRACT_FAILURE
+)<UPDATECONTRACTCRED, void, void>()
+
+const DELETE_CONTRACT_REQUEST = "DELETE_CONTRACT_REQUEST"
+const DELETE_CONTRACT_SUCCESS = "DELETE_CONTRACT_SUCCESS"
+const DELETE_CONTRACT_FAILURE = "DELETE_CONTRACT_FAILURE"
+export const deleteContractAction = createAsyncAction(
+    DELETE_CONTRACT_REQUEST,
+    DELETE_CONTRACT_SUCCESS,
+    DELETE_CONTRACT_FAILURE
+)<string, void, void>()
