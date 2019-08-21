@@ -614,8 +614,12 @@ class OfferModelPage extends React.Component<Props, State> {
     }
 
     handleSubmit = () => {
-        this.setState({ status: "Generated" })
-        this.props.onSubmit(this.state)
+        // this.setState({ status: "Generated" })
+        let send = {
+            ...this.state,
+            status: "Generated"
+        }
+        this.props.onSubmit(send)
     }
 
     render() {
@@ -1436,7 +1440,7 @@ class OfferModelPage extends React.Component<Props, State> {
                         <Button
                             variant="contained"
                             color="primary"
-                            onClick={() => this.handleSubmit}
+                            onClick={() => this.handleSubmit()}
                         >
                             Submit
             </Button>

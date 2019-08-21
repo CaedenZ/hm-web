@@ -108,7 +108,7 @@ import CreateOfferModelPage from "../scenes/OfferModelPage/create"
 import UpdateOfferModelPage from "../scenes/OfferModelPage/update"
 
 import OfferModelReportPage from "../scenes/OfferModelPage/Component/report"
-import OfferModelContractPage from "../scenes/OfferModelPage/Component/contract"
+import OfferModelContractPage from "../scenes/ContractPage"
 
 
 import { Company } from "../interface/companyInterface";

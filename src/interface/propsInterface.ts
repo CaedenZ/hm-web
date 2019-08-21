@@ -71,6 +71,7 @@ import {
 } from "./locationInterface";
 import { UPDATEPROFILECRED } from "./authInterface";
 import { CREATEJOBPOSITIONCRED, UPDATEJOBPOSITIONCRED, JobPosition } from "./jobpositionInterface";
+import { CREATECONTRACTCRED, UPDATECONTRACTCRED, Contract } from "./contractInterface";
 import { OfferModel, CREATEOFFERMODELCRED, UPDATEOFFERMODELCRED } from "./offerModelInterface";
 
 export interface SharedDispatchProps {
@@ -234,4 +235,10 @@ export interface SharedDispatchProps {
   createOfferModel: (cred: CREATEOFFERMODELCRED) => void;
   updateOfferModel: (cred: UPDATEOFFERMODELCRED) => void;
   deleteOfferModel: (cred: string) => void;
+
+  getContractList: () => void;
+  selectContract: (Contract: Contract) => void;
+  createContract: (cred: CREATECONTRACTCRED) => void;
+  updateContract: (cred: UPDATECONTRACTCRED) => void;
+  deleteContract: (cred: string) => void;
 }

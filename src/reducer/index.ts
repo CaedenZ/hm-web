@@ -164,6 +164,7 @@ import {
 import { insertDataEpic } from "./dataInsertReducer";
 import { jobPositionReducer, createJobPositionEpic, getJobPositionListEpic, updateJobPositionEpic, deleteJobPositionEpic } from "./jobPositionReducer";
 import { offerModelReducer, createOfferModelEpic, getOfferModelListEpic, updateOfferModelEpic, deleteOfferModelEpic } from "./offerModelReducer"
+import { contractReducer,createContractEpic, getContractListEpic, updateContractEpic, deleteContractEpic } from "./contractReducer";
 
 export const history = createBrowserHistory();
 
@@ -191,6 +192,7 @@ export const rootReducer = combineReducers({
   jobchartReducer,
   jobPositionReducer,
   offerModelReducer,
+  contractReducer,
   router: connectRouter(history)
   //   userDetail,
   //   currentReport,
@@ -330,6 +332,11 @@ export const rootEpic = combineEpics(
   getOfferModelListEpic,
   updateOfferModelEpic,
   deleteOfferModelEpic,
+
+  createContractEpic,
+  getContractListEpic,
+  updateContractEpic,
+  deleteContractEpic,
 );
 
 // export type DetailState = DetailState
