@@ -81,12 +81,12 @@ class ContractPage extends React.Component<Props, State> {
 
   handleUpdateButtonClick = contract => {
     this.props.selectContract(contract);
-    history.push("/contract/update");
+    history.push("/jobposition/offermodel/contract/update");
   };
 
   handleOfferButtonClick = contract => {
     this.props.selectContract(contract);
-    history.push("/contract/offermodel")
+    history.push("/jobposition/offermodel/contract/offermodel")
   }
 
   handleDelete = id => {
@@ -104,7 +104,7 @@ class ContractPage extends React.Component<Props, State> {
     return (
       <main>
         {!isUserHR(this.props.role) && (
-          <CustomButton onClick={() => history.push("/contract/create")}>New Contract</CustomButton>
+          <CustomButton onClick={() => history.push("/jobposition/offermodel/contract/create")}>New Contract</CustomButton>
         )}
         <Paper className={classes.root}>
           <Table className={classes.table}>

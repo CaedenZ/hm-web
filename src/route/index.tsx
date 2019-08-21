@@ -109,6 +109,8 @@ import UpdateOfferModelPage from "../scenes/OfferModelPage/update"
 
 import OfferModelReportPage from "../scenes/OfferModelPage/Component/report"
 import OfferModelContractPage from "../scenes/ContractPage"
+import CreateContractPage from "../scenes/ContractPage/create"
+import UpdateContractPage from "../scenes/ContractPage/update"
 
 
 import { Company } from "../interface/companyInterface";
@@ -692,6 +694,9 @@ class RootRoute extends React.Component<Props, State> {
             <Route exact path="/jobposition/offermodel/update" render={() => (<PrimaryLayout><UpdateOfferModelPage /></PrimaryLayout>)} />
             <Route exact path="/jobposition/offermodel/report" render={() => (<PrimaryLayout><OfferModelReportPage /></PrimaryLayout>)} />
             <Route exact path="/jobposition/offermodel/contract" render={() => (<PrimaryLayout><OfferModelContractPage /></PrimaryLayout>)} />
+            <Route exact path="/jobposition/offermodel/contract/create" render={() => (<PrimaryLayout><CreateContractPage /></PrimaryLayout>)} />
+            <Route exact path="/jobposition/offermodel/contract/update" render={() => (<PrimaryLayout><UpdateContractPage /></PrimaryLayout>)} />
+
 
             <Route exact path="/jobposition" render={() => (<PrimaryLayout><JobPositionPage /></PrimaryLayout>)} />
             <Route exact path="/jobposition/create" render={() => (<PrimaryLayout><CreateJobPositionPage /></PrimaryLayout>)} />
