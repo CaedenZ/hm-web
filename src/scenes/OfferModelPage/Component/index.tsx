@@ -659,7 +659,8 @@ class OfferModelPage extends React.Component<Props, State> {
             }),
         };
         return (
-            <Grid container alignItems="center" justify="space-evenly" direction="row" className={classes.root}>
+            <Grid container justify="flex-start"
+            alignItems="flex-start" direction="row" className={classes.root}>
                 <Grid item xs={8}>
                     <Typography className={classes.title} color="textSecondary" gutterBottom>
                     TOM Offer Modeller
@@ -1478,6 +1479,19 @@ class OfferModelPage extends React.Component<Props, State> {
                             paddingTop: "1rem"
                         }}
                     >
+
+                    </div>
+
+                </Grid >
+                <Grid item xs={4} >
+                    <Grid
+                    container
+                    direction="row"
+                    justify="flex-start"
+                    alignItems="flex-start"
+                    >
+                        <Grid item xs={12} >
+                        <Paper>
                         <Button
                             variant="contained"
                             color="primary"
@@ -1493,11 +1507,9 @@ class OfferModelPage extends React.Component<Props, State> {
                         >
                             Submit
             </Button>
-                    </div>
-
-                </Grid >
-                <Grid item xs={4}>
-
+                        </Paper>
+                        </Grid>
+                    </Grid>
                 </Grid>
 
             </Grid >
