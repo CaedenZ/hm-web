@@ -29,15 +29,15 @@ export interface Contract {
 }
 
 
-interface SalaryComponent{
+export interface SalaryComponent{
     type:string;
 }
 
-interface Leave{
+export interface Leave{
     name:string;
 }
 
-interface Deduction{
+export interface Deduction{
     type:string;
     value:string;
 }
