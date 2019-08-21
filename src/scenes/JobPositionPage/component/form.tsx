@@ -427,6 +427,46 @@ class CreateJobPositionPage extends Component<Props, FormState> {
           </Grid>
           <Grid item justify="center" container xs>
             <TextField
+              id="legal_entity"
+              label="legal_entity"
+              className={classes.textField}
+              value={this.state.legal_entity}
+              onChange={e => this.setState({ legal_entity: e.target.value })}
+              margin="normal"
+            />
+          </Grid>
+          <Grid item justify="center" container xs>
+            <TextField
+              id="manager_grade"
+              label="manager_grade"
+              className={classes.textField}
+              value={this.state.manager_grade}
+              onChange={e => this.setState({ manager_grade: e.target.value })}
+              margin="normal"
+            />
+          </Grid>
+          <Grid item justify="center" container xs>
+            <TextField
+              id="manager_name"
+              label="manager_name"
+              className={classes.textField}
+              value={this.state.manager_name}
+              onChange={e => this.setState({ manager_name: e.target.value })}
+              margin="normal"
+            />
+          </Grid>
+          <Grid item justify="center" container xs>
+            <TextField
+              id="manager_position_title"
+              label="manager_position_title"
+              className={classes.textField}
+              value={this.state.manager_position_title}
+              onChange={e => this.setState({ manager_position_title: e.target.value })}
+              margin="normal"
+            />
+          </Grid>
+          <Grid item justify="center" container xs>
+            <TextField
               id="description"
               label="description"
               className={classes.textField}
