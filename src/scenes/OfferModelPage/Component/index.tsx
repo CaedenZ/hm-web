@@ -20,6 +20,7 @@ import theme from "../../../assets/theme";
 import "../../../css/hideicon.css"
 import { Currency } from "../../../interface/countryInterface";
 import { TextBoxComponent } from '@syncfusion/ej2-react-inputs';
+import SaveModelButton from './sactionButton';
 
 const styles = (theme: Theme) =>
     createStyles({
@@ -663,7 +664,7 @@ class OfferModelPage extends React.Component<Props, State> {
             }),
         };
         return (
-            <Grid container justify="flex-start"
+            <Grid container justify="flex-start" spacing={16}
             alignItems="flex-start" direction="row" className={classes.root}>
                 <Grid item xs={8}>
                     <Typography className={classes.title} color="textSecondary" gutterBottom>
@@ -1493,9 +1494,21 @@ class OfferModelPage extends React.Component<Props, State> {
                     direction="row"
                     justify="flex-start"
                     alignItems="flex-start"
+                    spacing={16}
                     >
-                        <Grid item xs={12} justify="flex-end">
-                        <Button
+                        <Grid item xs={4} >
+                            <SaveModelButton btype={"save"}/>
+                        </Grid>
+                        <Grid item xs={4}>
+                            <SaveModelButton btype={"generate"}/>
+                        </Grid>
+                        <Grid item xs={4}>
+                            <SaveModelButton btype={"contract"}/>
+                        </Grid>
+                    </Grid>
+                    
+                  
+                        {/*<Button
                                         variant="contained"
                                         color="primary"
                                         style={{ marginRight: "1rem" }}
@@ -1521,9 +1534,8 @@ class OfferModelPage extends React.Component<Props, State> {
                                         onClick={() => this.handleSubmit()}
                                     >
                                         Contract
-                        </Button>
-                        </Grid>
-                    </Grid>
+                    </Button>*/}
+                        
                 </Grid>
 
             </Grid >
