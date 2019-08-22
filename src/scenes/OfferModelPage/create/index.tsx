@@ -35,6 +35,20 @@ class CreateOfferModelPage extends Component<Props, CreateOfferModelState> {
     history.goBack();
   };
 
+  handleCreateOfferModelGenerate = (data) => {
+    delete data.comparator_data
+    this.props.createOfferModel(data);
+    this.props.selectOfferModel(data);
+    history.push("/jobposition/offermodel/report");
+  };
+
+  handleCreateOfferModelContract = (data) => {
+    delete data.comparator_data
+    this.props.createOfferModel(data);
+    this.props.selectOfferModel(data);
+    history.push("/jobposition/offermodel/contract");
+  };
+
   render() {
     const { classes } = this.props;
     return (
@@ -43,6 +57,8 @@ class CreateOfferModelPage extends Component<Props, CreateOfferModelState> {
         create={true}
         updateData=""
         onSubmit={(data) => this.handleCreateOfferModel(data)}
+        onGenerate={(data) => this.handleCreateOfferModelGenerate(data)}
+        onContract={(data) => this.handleCreateOfferModelContract(data)}
         />
       </div>
     );

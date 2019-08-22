@@ -55,6 +55,18 @@ class UpdateOfferModelPage extends Component<Props, UpdateOfferModelState> {
     history.goBack();
   };
 
+  handleUpdateOfferModelGenerate = (data) => {
+    this.props.updateOfferModel(data);
+    this.props.selectOfferModel(this.props.selectedOfferModel);
+    history.push("/jobposition/offermodel/report");
+  };
+
+  handleUpdateOfferModelContract = (data) => {
+    this.props.updateOfferModel(data);
+    this.props.selectOfferModel(this.props.selectedOfferModel);
+    history.push("/jobposition/offermodel/contract")
+  };
+
   render() {
     const { classes } = this.props;
     return (
@@ -64,6 +76,8 @@ class UpdateOfferModelPage extends Component<Props, UpdateOfferModelState> {
             create={false}
             updateData={this.props.selectedOfferModel}
             onSubmit={(data) => this.handleUpdateOfferModel(data)}
+            onGenerate={(data) => this.handleUpdateOfferModelGenerate(data)}
+            onContract={(data) => this.handleUpdateOfferModelContract(data)}
           />
         </Paper>
       </div>
