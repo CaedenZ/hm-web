@@ -133,7 +133,7 @@ class CreateJobPositionPage extends Component<Props, FormState> {
     const tmpRegion = this.props.regionList.find(region => {
       return region.region_id === regionID;
     });
-
+    
     if (tmpRegion) {
       this.setState({
         region: tmpRegion.region_id
@@ -301,7 +301,7 @@ class CreateJobPositionPage extends Component<Props, FormState> {
                 <InputLabel>Region</InputLabel>
                 <NativeSelect
                   id="region"
-                  value={this.state.location}
+                  value={this.state.region}
                   onChange={this.handleRegionChangeSelect()}
                   inputProps={{
                     name: "region",

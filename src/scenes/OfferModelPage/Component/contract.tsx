@@ -8,18 +8,22 @@ import PropTypes from "prop-types";
 const styles = (theme: Theme) =>
     createStyles({
         root: {
-            padding:0,
+            padding: 0,
+            flex: 1
             // fontSize: 13,
         },
-        border:{
+        border: {
+            flex: 1,
             border: '1px solid black',
         },
-        borderBottom:{
-            height:"100%",
+        borderBottom: {
+            flex: 1,
+            height: "100%",
             borderBottom: '1px solid black',
         },
-        borderRight:{
-            height:"100%",
+        borderRight: {
+            flex: 1,
+            height: "100%",
             borderRight: '1px solid black',
         },
         spacediv: {
@@ -38,148 +42,147 @@ class ContractPage extends React.Component<Props, State>  {
                 <Grid className={classes.border} style={{ width: '100%' }} alignItems="center" justify="space-evenly" direction="row">
                     <Grid className={classes.borderBottom} container justify="space-evenly" alignItems="center">Details Of Employment</Grid>
                     <Grid className={classes.borderBottom} container justify="space-evenly" alignItems="center">
-                        <Grid className={classes.borderRight} style={{ height: '100%' }} xs={2}>Company Name</Grid>
-                        <Grid style={{ height: '100%' }} xs={10}>tt</Grid>
+                        <Grid className={classes.borderRight} xs={2}><p>Company Name</p></Grid>
+                        <Grid style={{ height: '100%', flex: 1 }} xs={10}><p>tt</p></Grid>
                     </Grid>
                     <Grid className={classes.borderBottom} container justify="space-evenly" alignItems="center">
-                        <Grid className={classes.borderRight} style={{ height: '100%' }} xs={2}>Company Name</Grid>
-                        <Grid className={classes.borderRight} style={{ height: '100%' }} xs={6}>ttt</Grid>
-                        <Grid className={classes.borderRight} style={{ height: '100%' }} xs={2}>Employee NRIC/FIN</Grid>
+                        <Grid className={classes.borderRight} xs={2}><p>Company Name</p></Grid>
+                        <Grid className={classes.borderRight} xs={6}><p>ttt</p></Grid>
+                        <Grid className={classes.borderRight} xs={2}><p>Employee NRIC/FIN</p></Grid>
                         <Grid xs={2}>tt</Grid>
                     </Grid>
                     <Grid className={classes.borderBottom} container justify="space-evenly" alignItems="center">
-                        <Grid className={classes.borderRight} style={{ height: '100%' }} xs={2}>Job Title</Grid>
-                        <Grid className={classes.borderRight} style={{ height: '100%' }} xs={6}>ttt</Grid>
-                        <Grid className={classes.borderRight} style={{ height: '100%' }} xs={2}>Employment Start Date</Grid>
+                        <Grid className={classes.borderRight} xs={2}><p>Job Title</p></Grid>
+                        <Grid className={classes.borderRight} xs={6}><p>ttt</p></Grid>
+                        <Grid className={classes.borderRight} xs={2}><p>Employment Start Date</p></Grid>
                         <Grid xs={2}>tt</Grid>
                     </Grid>
                     <Grid container justify="space-evenly" alignItems="center">
-                        <Grid className={classes.borderRight} style={{ height: '100%' }} xs={2}>Main duties and responsibilities</Grid>
-                        <Grid style={{ height: '100%' }} xs={10}>tt</Grid>
+                        <Grid className={classes.borderRight} xs={2}><p>Main duties and responsibilities</p></Grid>
+                        <Grid xs={10}>tt</Grid>
                     </Grid>
                 </Grid>
                 <div className={classes.spacediv} />
 
                 <Grid className={classes.border} style={{ width: '100%' }} alignItems="center" justify="space-evenly" direction="row">
-                    <Grid className={classes.borderBottom} container justify="space-evenly" alignItems="center">Working HOurs and Rest Days</Grid>
+                    <Grid className={classes.borderBottom} container justify="space-evenly" alignItems="center"><p>Working HOurs and Rest Days</p></Grid>
                     <Grid className={classes.borderBottom} container justify="space-evenly" alignItems="center">
-                        <Grid className={classes.borderRight} style={{ height: '100%' }} xs={2}>Duration of Employment</Grid>
-                        <Grid className={classes.borderRight} style={{ height: '100%' }} xs={6}>ttt</Grid>
-                        <Grid className={classes.borderRight} style={{ height: '100%' }} xs={1}>Place of Work</Grid>
-                        <Grid style={{ height: '100%' }} xs={3}>tt</Grid>
+                        <Grid className={classes.borderRight} xs={2}><p>Duration of Employment</p></Grid>
+                        <Grid className={classes.borderRight} xs={6}><p>ttt</p></Grid>
+                        <Grid className={classes.borderRight} xs={1}><p>Place of Work</p></Grid>
+                        <Grid xs={3}>tt</Grid>
                     </Grid>
                     <Grid className={classes.borderBottom} container justify="space-evenly" alignItems="center">
-                        <Grid className={classes.borderRight} style={{ height: '100%',position: "relative" }} xs={2}>Working Hours and Rest Days</Grid>
-                        <Grid className={classes.borderRight} style={{ height: '100%',position: "relative" }} xs={6}>ttt</Grid>
-                        <Grid className={classes.borderRight} style={{ height: '100%',position: "relative" }} xs={1}>Working Days Per Week</Grid>
-                        <Grid className={classes.borderRight} style={{ height: '100%',position: "relative" }} xs={1}>tt</Grid>
-                        <Grid className={classes.borderRight} style={{ height: '100%',position: "relative" }} xs={1}>Rest Day Per Week</Grid>
-                        <Grid style={{ height: '100%' }} xs={1}>tt</Grid>
+                        <Grid className={classes.borderRight} style={{ height: '100%', position: "relative" }} xs={2}><p>Working Hours and Rest Days</p></Grid>
+                        <Grid className={classes.borderRight} style={{ height: '100%', position: "relative" }} xs={6}><p>ttt</p></Grid>
+                        <Grid className={classes.borderRight} style={{ height: '100%', position: "relative" }} xs={1}><p>Working Days Per Week</p></Grid>
+                        <Grid className={classes.borderRight} style={{ height: '100%', position: "relative" }} xs={1}><p>tt</p></Grid>
+                        <Grid className={classes.borderRight} style={{ height: '100%', position: "relative" }} xs={1}><p>Rest Day Per Week</p></Grid>
+                        <Grid xs={1}>tt</Grid>
                     </Grid>
                     <Grid container justify="space-evenly" alignItems="center">
-                        <Grid className={classes.borderRight} style={{ height: '100%',position: "relative" }} xs={2}>Salary  Period</Grid>
-                        <Grid className={classes.borderRight} style={{ height: '100%',position: "relative" }} xs={6}>ttt</Grid>
-                        <Grid className={classes.borderRight} style={{ height: '100%',position: "relative" }} xs={1}>Overtime payment period</Grid>
-                        <Grid className={classes.borderRight} style={{ height: '100%',position: "relative" }} xs={1}>tt</Grid>
-                        <Grid className={classes.borderRight} style={{ height: '100%',position: "relative" }} xs={1}>Date of Salary Payment</Grid>
-                        <Grid style={{ height: '100%' }} xs={1}>tt</Grid>
+                        <Grid className={classes.borderRight} style={{ height: '100%', position: "relative" }} xs={2}><p>Salary  Period</p></Grid>
+                        <Grid className={classes.borderRight} style={{ height: '100%', position: "relative" }} xs={6}><p>ttt</p></Grid>
+                        <Grid className={classes.borderRight} style={{ height: '100%', position: "relative" }} xs={1}><p>Overtime payment period</p></Grid>
+                        <Grid className={classes.borderRight} style={{ height: '100%', position: "relative" }} xs={1}><p>tt</p></Grid>
+                        <Grid className={classes.borderRight} style={{ height: '100%', position: "relative" }} xs={1}><p>Date of Salary Payment</p></Grid>
+                        <Grid xs={1}>tt</Grid>
                     </Grid>
                 </Grid>
                 <div className={classes.spacediv} />
 
                 <Grid className={classes.border} style={{ width: '100%' }} alignItems="center" justify="space-evenly" direction="row">
-                    <Grid className={classes.borderBottom} container justify="space-evenly" alignItems="center">Salary</Grid>
+                    <Grid className={classes.borderBottom} container justify="space-evenly" alignItems="center"><p>Salary</p></Grid>
                     <Grid className={classes.borderBottom} container justify="space-evenly" alignItems="center">
-                        <Grid className={classes.borderRight} xs={2}>Basic Salary</Grid>
-                        <Grid className={classes.borderRight} xs={3}>ttt</Grid>
-                        <Grid className={classes.borderRight} xs={3}>ttt</Grid>
-                        <Grid className={classes.borderRight} xs={2}>Overtime rate of pay</Grid>
-                        <Grid className={classes.borderRight} xs={1}>tt</Grid>
+                        <Grid className={classes.borderRight} xs={2}><p>Basic Salary</p></Grid>
+                        <Grid className={classes.borderRight} xs={3}><p>ttt</p></Grid>
+                        <Grid className={classes.borderRight} xs={3}><p>ttt</p></Grid>
+                        <Grid className={classes.borderRight} xs={2}><p>Overtime rate of pay</p></Grid>
+                        <Grid className={classes.borderRight} xs={1}><p>tt</p></Grid>
                         <Grid xs={1}>tt</Grid>
                     </Grid>
                     <Grid className={classes.borderBottom} container justify="space-evenly" alignItems="center">
-                        <Grid className={classes.borderRight} style={{ height: '100%',position: "relative" }}  xs={2}><Typography style={{ height: '100%',position: "relative" }} >Fixed Allowances</Typography></Grid>
-                        <Grid className={classes.borderRight} xs={3}>ttt</Grid>
-                        <Grid className={classes.borderRight} xs={3}>ttt</Grid>
-                        <Grid className={classes.borderRight} xs={2}>Other salary-related components</Grid>
+                        <Grid className={classes.borderRight} style={{ height: '100%', position: "relative" }} xs={2}><p>Fixed Allowances</p></Grid>
+                        <Grid className={classes.borderRight} xs={3}><p>ttt</p></Grid>
+                        <Grid className={classes.borderRight} xs={2}><p>Other salary-related components</p></Grid>
                         <Grid xs={2}>tt</Grid>
                     </Grid>
                     <Grid className={classes.borderBottom} container justify="space-evenly" alignItems="center">
-                        <Grid className={classes.borderRight} xs={2}>Mobile Phone Allowances</Grid>
-                        <Grid className={classes.borderRight} xs={3}>ttt</Grid>
-                        <Grid className={classes.borderRight} xs={3}>ttt</Grid>
+                        <Grid className={classes.borderRight} xs={2}><p>Mobile Phone Allowances</p></Grid>
+                        <Grid className={classes.borderRight} xs={3}><p>ttt</p></Grid>
+                        <Grid className={classes.borderRight} xs={3}><p>ttt</p></Grid>
                         <Grid xs={4}></Grid>
                     </Grid>
                     <Grid className={classes.borderBottom} container justify="space-evenly" alignItems="center">
-                        <Grid className={classes.borderRight} xs={2}>Transport Claim</Grid>
-                        <Grid className={classes.borderRight} xs={3}>ttt</Grid>
-                        <Grid className={classes.borderRight} xs={3}>ttt</Grid>
+                        <Grid className={classes.borderRight} xs={2}><p>Transport Claim</p></Grid>
+                        <Grid className={classes.borderRight} xs={3}><p>ttt</p></Grid>
+                        <Grid className={classes.borderRight} xs={3}><p>ttt</p></Grid>
                         <Grid xs={4}></Grid>
                     </Grid>
                     <Grid className={classes.borderBottom} container justify="space-evenly" alignItems="center">
-                        <Grid className={classes.borderRight} xs={2}>Food</Grid>
-                        <Grid className={classes.borderRight} xs={3}>ttt</Grid>
-                        <Grid className={classes.borderRight} xs={3}>ttt</Grid>
+                        <Grid className={classes.borderRight} xs={2}><p>Food</p></Grid>
+                        <Grid className={classes.borderRight} xs={3}><p>ttt</p></Grid>
+                        <Grid className={classes.borderRight} xs={3}><p>ttt</p></Grid>
                         <Grid xs={4}></Grid>
                     </Grid>
                     <Grid className={classes.borderBottom} container justify="space-evenly" alignItems="center">
-                        <Grid className={classes.borderRight} xs={5}>Fixed Deductions</Grid>
-                        <Grid className={classes.borderRight} xs={3}>ttt</Grid>
+                        <Grid className={classes.borderRight} xs={5}><p>Fixed Deductions</p></Grid>
+                        <Grid className={classes.borderRight} xs={3}><p>ttt</p></Grid>
                         <Grid xs={4}></Grid>
                     </Grid>
                     <Grid className={classes.borderBottom} container justify="space-evenly" alignItems="center">
-                        <Grid className={classes.borderRight} xs={2}>CDAC</Grid>
-                        <Grid className={classes.borderRight} xs={3}>ttt</Grid>
-                        <Grid className={classes.borderRight} xs={3}>ttt</Grid>
+                        <Grid className={classes.borderRight} xs={2}><p>CDAC</p></Grid>
+                        <Grid className={classes.borderRight} xs={3}><p>ttt</p></Grid>
+                        <Grid className={classes.borderRight} xs={3}><p>ttt</p></Grid>
                         <Grid xs={4}></Grid>
                     </Grid>
                     <Grid container justify="space-evenly" alignItems="center">
-                        <Grid className={classes.borderRight} xs={2}>CPF</Grid>
-                        <Grid className={classes.borderRight} xs={6}>ttt</Grid>
+                        <Grid className={classes.borderRight} xs={2}><p>CPF</p></Grid>
+                        <Grid className={classes.borderRight} xs={6}><p>ttt</p></Grid>
                         <Grid xs={4}></Grid>
                     </Grid>
                 </Grid>
                 <div className={classes.spacediv} />
 
                 <Grid className={classes.border} style={{ width: '100%' }} alignItems="center" justify="space-evenly" direction="row">
-                    <Grid className={classes.borderBottom} container justify="space-evenly" alignItems="center">Leave and Medical Benefits</Grid>
+                    <Grid className={classes.borderBottom} container justify="space-evenly" alignItems="center"><p>Leave and Medical Benefits</p></Grid>
                     <Grid className={classes.borderBottom} container justify="space-evenly" alignItems="center">
-                        <Grid className={classes.borderRight} xs={2}>Pay Annual Leave</Grid>
-                        <Grid className={classes.borderRight} xs={6}>ttt</Grid>
-                        <Grid className={classes.borderRight} xs={2}>Other Type of Leave</Grid>
+                        <Grid className={classes.borderRight} xs={2}><p>Pay Annual Leave</p></Grid>
+                        <Grid className={classes.borderRight} xs={6}><p>ttt</p></Grid>
+                        <Grid className={classes.borderRight} xs={2}><p>Other Type of Leave</p></Grid>
                         <Grid xs={2}>tt</Grid>
                     </Grid>
                     <Grid className={classes.borderBottom} container justify="space-evenly" alignItems="center">
-                        <Grid className={classes.borderRight} xs={2}>Pay Annual LeavePay Outpatient Sice Leave</Grid>
-                        <Grid className={classes.borderRight} xs={6}>ttt</Grid>
-                        <Grid className={classes.borderRight} xs={2}>Birthday Leave</Grid>
+                        <Grid className={classes.borderRight} xs={2}><p>Pay Annual LeavePay Outpatient Sice Leave</p></Grid>
+                        <Grid className={classes.borderRight} xs={6}><p>ttt</p></Grid>
+                        <Grid className={classes.borderRight} xs={2}><p>Birthday Leave</p></Grid>
                         <Grid xs={2}>tt</Grid>
                     </Grid>
                     <Grid className={classes.borderBottom} container justify="space-evenly" alignItems="center">
-                        <Grid className={classes.borderRight} xs={2}>Paid Hospitalisation Leave</Grid>
-                        <Grid className={classes.borderRight} xs={6}>ttt</Grid>
+                        <Grid className={classes.borderRight} xs={2}><p>Paid Hospitalisation Leave</p></Grid>
+                        <Grid className={classes.borderRight} xs={6}><p>ttt</p></Grid>
                         <Grid xs={4}></Grid>
                     </Grid>
                     <Grid container justify="space-evenly" alignItems="center">
-                        <Grid className={classes.borderRight} xs={2}>Medical Benefits</Grid>
+                        <Grid className={classes.borderRight} xs={2}><p>Medical Benefits</p></Grid>
                         <Grid xs={4}>ttt</Grid>
                     </Grid>
                 </Grid>
                 <div className={classes.spacediv} />
 
                 <Grid className={classes.border} style={{ width: '100%' }} alignItems="center" justify="space-evenly" direction="row">
-                    <Grid className={classes.borderBottom} container justify="space-evenly" alignItems="center">Others</Grid>
+                    <Grid className={classes.borderBottom} container justify="space-evenly" alignItems="center"><p>Others</p></Grid>
                     <Grid className={classes.borderBottom} container justify="space-evenly" alignItems="center">
-                        <Grid className={classes.borderRight} xs={2}>Notice Period</Grid>
-                        <Grid className={classes.borderRight} xs={6}>ttt</Grid>
-                        <Grid className={classes.borderRight} xs={2}>Probation Start Date</Grid>
+                        <Grid className={classes.borderRight} xs={2}><p>Notice Period</p></Grid>
+                        <Grid className={classes.borderRight} xs={6}><p>ttt</p></Grid>
+                        <Grid className={classes.borderRight} xs={2}><p>Probation Start Date</p></Grid>
                         <Grid xs={2}>tt</Grid>
                     </Grid>
                     <Grid container justify="space-evenly" alignItems="center">
-                        <Grid className={classes.borderRight} xs={2}>Length of Probation</Grid>
-                        <Grid className={classes.borderRight} xs={6}>ttt</Grid>
-                        <Grid className={classes.borderRight} xs={2}>Probation End Date</Grid>
-                        <Grid xs={2}>tt</Grid>
+                        <Grid className={classes.borderRight} xs={2}><p>Length of Probation</p></Grid>
+                        <Grid className={classes.borderRight} xs={6}><p>ttt</p></Grid>
+                        <Grid className={classes.borderRight} xs={2}><p>Probation End Date</p></Grid>
+                        <Grid xs={2}><p>tt</p></Grid>
                     </Grid>
                 </Grid>
                 <div className={classes.spacediv} />
