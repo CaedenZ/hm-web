@@ -24,7 +24,9 @@ const styles = (theme: Theme) =>
     card: {
         display: 'flex',
         height: 50,
+        width: 120,
         background: "linear-gradient(45deg, #FF8E53 30%, #f44336 90%)",
+        marginLeft: '1rem'
       },
       title: {
         fontSize: 12,
@@ -47,7 +49,7 @@ const styles = (theme: Theme) =>
         height: 50,
         minWidth: 50,
         marginLeft: '1rem',
-        marginTop: '1rem'
+        marginTop: '0.5rem'
       }
 
   });
@@ -92,11 +94,16 @@ const styles = (theme: Theme) =>
             let totaltitle = (
               "Contract"
             );
+            let finishtitle = (
+              "Close Offer"
+            );
       
             if (this.props.btype == 'save') {
                 return newtitle;
             } else if (this.props.btype == 'generate') {
                 return closedtitle;
+            } else if (this.props.btype == 'close') {
+                return finishtitle;
             } else return totaltitle;
         };
 

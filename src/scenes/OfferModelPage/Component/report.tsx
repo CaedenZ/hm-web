@@ -40,6 +40,11 @@ const styles = (theme: Theme) =>
             textAlign: 'center',
             color: theme.palette.text.secondary,
         },
+        main_paper: {
+            height: '100%',
+            padding: 30,
+            textAlign: 'left'
+        },
         spacediv: {
             height: 20
         },
@@ -387,11 +392,12 @@ class OfferModelPage extends React.Component<Props, State> {
         };
 
         const ToPDF = () => (
-            <Grid item xs={10}>
-
-                    <Grid className={classes.gridMargin} container justify="space-evenly" alignItems="center">
+            <Grid container>
+                <Grid item xs={8}>
+                    <Paper className={classes.main_paper}>
+                        <Typography className={classes.title} color="textSecondary" gutterBottom>
                         Offer Sheet
-                    </Grid>
+                        </Typography>
 
                     <Grid className={classes.gridMargin} container justify="space-evenly" alignItems="center">
                         <Grid item xs={2}>Name</Grid>
@@ -507,18 +513,16 @@ class OfferModelPage extends React.Component<Props, State> {
                             <Grid item xs={8}>{this.getsubtotalSP()}</Grid>
                         </Grid>
                     </Grid>
+                    </Paper>
+                </Grid>
+                <Grid item xs={4}>
 
                 </Grid>
+            </Grid>
         )
         return (
-            <Grid container alignItems="center" justify="space-evenly" direction="row" className={classes.root}>
-                <ToPDF/>
-                <div
-                    style={{
-                        display: "flex",
-                        paddingTop: "1rem"
-                    }}
-                >
+            <Grid container direction="row" spacing={16} className={classes.root}>
+                <Grid item xs={12}>
                     <Button
                         variant="contained"
                         color="primary"
@@ -526,7 +530,16 @@ class OfferModelPage extends React.Component<Props, State> {
                         onClick={() => handleCreatePDF()}
                     >
                         Generate PDF
-            </Button>
+                    </Button>
+                </Grid>
+                <ToPDF/>
+                <div
+                    style={{
+                        display: "flex",
+                        paddingTop: "1rem"
+                    }}
+                >
+
                 </div>
 
             </Grid >

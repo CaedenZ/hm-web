@@ -67,6 +67,10 @@ class UpdateOfferModelPage extends Component<Props, UpdateOfferModelState> {
     history.push("/jobposition/offermodel/contract")
   };
 
+  handleCreateOfferModelClose = (data) => {
+    
+  };
+
   render() {
     const { classes } = this.props;
     return (
@@ -78,6 +82,7 @@ class UpdateOfferModelPage extends Component<Props, UpdateOfferModelState> {
             onSubmit={(data) => this.handleUpdateOfferModel(data)}
             onGenerate={(data) => this.handleUpdateOfferModelGenerate(data)}
             onContract={(data) => this.handleUpdateOfferModelContract(data)}
+            onClose={(data) => this.handleCreateOfferModelClose(data)}
           />
         </Paper>
       </div>

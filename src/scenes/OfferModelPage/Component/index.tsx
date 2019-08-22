@@ -39,7 +39,7 @@ const styles = (theme: Theme) =>
             fontWeight: 'bold'
         },
         paper_header: {
-            padding: 30,
+            padding: 15,
             marginBottom: '1.5rem',
         },
         paper: {
@@ -95,6 +95,7 @@ interface InState {
     onSubmit: Function;
     onGenerate: Function;
     onContract: Function;
+    onClose: Function;
     session_key: string;
     selectedCompany: Company;
     selectedJobPosition: JobPosition;
@@ -666,6 +667,8 @@ class OfferModelPage extends React.Component<Props, State> {
         this.props.onSubmit(send)
     }
 
+
+
     render() {
         const { classes } = this.props;
         const selectStyles = {
@@ -677,13 +680,40 @@ class OfferModelPage extends React.Component<Props, State> {
                 },
             }),
         };
+
+        const closeFunction = (): any => {
+            let closebutton = (
+                <SaveModelButton btype={"close"} onClick={()=> this.props.onClose(this.state)}/>
+            );
+      
+            if (this.props.updateData) {
+                return closebutton;
+            } else return "";
+        };
+
         return (
             <Grid container justify="flex-start" spacing={16}
             alignItems="flex-start" direction="row" className={classes.root}>
-                <Grid item xs={9}>
+                <Grid item xs={6}>
                     <Typography className={classes.title} color="textSecondary" gutterBottom>
                     TOM Offer Modeller
                     </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                    <Grid
+                    container
+                    direction="row"
+                    justify="flex-end"
+                    alignItems="flex-end"
+                    spacing={16}
+                    >
+                        <SaveModelButton btype={"save"} onClick={() => this.props.onSubmit(this.state)}/>
+                        <SaveModelButton btype={"generate"} onClick={()=> this.props.onGenerate(this.state)}/>
+                        <SaveModelButton btype={"contract"} onClick={()=> this.props.onContract(this.state)}/>
+                        {closeFunction()}
+                    </Grid>
+                </Grid>
+                <Grid item xs={9}>
                     <Paper className={classes.paper_header} >
                     <Grid container>
                         <Grid item xs={4}>
@@ -1479,25 +1509,7 @@ class OfferModelPage extends React.Component<Props, State> {
                     justify="flex-start"
                     alignItems="flex-start"
                     spacing={16}
-                    style={{ marginBottom: '1rem' }}
-                    >
-                        <Grid item xs={4} >
-                            <SaveModelButton btype={"save"} onClick={() => this.props.onSubmit(this.state)}/>
-                        </Grid>
-                        <Grid item xs={4}>
-                            <SaveModelButton btype={"generate"} onClick={()=> this.props.onGenerate(this.state)}/>
-                        </Grid>
-                        <Grid item xs={4}>
-                            <SaveModelButton btype={"contract"} onClick={()=> this.props.onContract(this.state)}/>
-                        </Grid>
-                    </Grid>
-                    <Grid
-                    container
-                    direction="row"
-                    justify="flex-start"
-                    alignItems="flex-start"
-                    spacing={16}
-                    style={{ marginBottom: '1rem' }}
+                    style={{ marginBottom: '1rem', marginTop:'0.3rem' }}
                     >
                         <Paper style={{ width: "100%", padding: "1rem" }}>
                             <Typography className={classes.field_section}>
