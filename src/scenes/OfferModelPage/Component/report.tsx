@@ -20,6 +20,7 @@ import theme from "../../../assets/theme";
 import "../../../css/hideicon.css"
 import { Currency } from "../../../interface/countryInterface";
 import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 import { renderToString } from "react-dom/server";
 
 const styles = (theme: Theme) =>
@@ -29,10 +30,14 @@ const styles = (theme: Theme) =>
             fontSize: 13,
         },
         title: {
-            fontSize: 20
+            fontSize: 16,
+            fontWeight: 'bold'
         },
         subtitle: {
-            fontWeight: 'bold'
+            fontSize: 14,
+            color: '#f44336',
+            fontWeight: 'bold',
+            marginBottom: '1rem'
         },
         paper: {
             height: '100%',
@@ -43,7 +48,8 @@ const styles = (theme: Theme) =>
         main_paper: {
             height: '100%',
             padding: 30,
-            textAlign: 'left'
+            textAlign: 'left',
+            fontSize: 12
         },
         spacediv: {
             height: 20
@@ -55,6 +61,9 @@ const styles = (theme: Theme) =>
         },
         colorcontainer: {
             background: '#e6d5c5',
+            borderStyle: "solid",
+            padding: '0.3rem',
+            marginTop: '1rem'
         },
         verticaltext: {
             transform: 'rotate(0.5turn)'
@@ -62,7 +71,7 @@ const styles = (theme: Theme) =>
         textField: {
         },
         gridMargin: {
-            marginTop: 20,
+            marginTop: 10,
         }
     });
 
@@ -385,50 +394,66 @@ class OfferModelPage extends React.Component<Props, State> {
 
         const handleCreatePDF = () => {
 
-            const pdfstring = renderToString(<ToPDF />);
-            const pdf = new jsPDF("p", "mm", "a4");
-            pdf.fromHTML(pdfstring);
-            pdf.save("pdf");
+            //const pdfstring = renderToString(<ToPDF />);
+            const input = document.getElementById('divToPrint');
+            const pdfdata = html2canvas(input);
+            //const pdf = new jsPDF("p", "mm", "a4");
+            //console.log(pdfstring);
+            //pdf.fromHTML(pdfstring);
+            //pdf.save("pdf");
+            html2canvas(input,  {
+                scale: 2
+                })
+            .then((canvas) => {
+              const imgData = canvas.toDataURL('image/png');
+              const pdf = new jsPDF("p", "mm", "a4");
+              var width = pdf.internal.pageSize.getWidth();
+              var height = pdf.internal.pageSize.getHeight();
+              pdf.addImage(imgData, 'JPEG', 0, 0, width, height);
+              // pdf.output('dataurlnewwindow');
+              pdf.save("download.pdf");
+            })
+          ;
         };
 
-        const ToPDF = () => (
-            <Grid container>
-                <Grid item xs={8}>
+        const ToPDF = () => (           
+            <Grid container style={{ width: '100%', height:'100%' }} >               
+                <Grid item xs={12}>
                     <Paper className={classes.main_paper}>
                         <Typography className={classes.title} color="textSecondary" gutterBottom>
                         Offer Sheet
                         </Typography>
 
                     <Grid className={classes.gridMargin} container justify="space-evenly" alignItems="center">
-                        <Grid item xs={2}>Name</Grid>
+                        <Grid item xs={2}>Name:</Grid>
                         <Grid item xs={4}>{this.state.candidate_name}</Grid>
-                        <Grid item xs={2}>Country</Grid>
+                        <Grid item xs={2}>Country:</Grid>
                         <Grid item xs={4}>{this.state.current_position_country}</Grid>
                     </Grid>
 
                     <Grid className={classes.gridMargin} container justify="space-evenly" alignItems="center">
-                        <Grid item xs={2}>Title</Grid>
+                        <Grid item xs={2}>Business Title:</Grid>
                         <Grid item xs={4}>{this.state.current_position_title}</Grid>
-                        <Grid item xs={2}>Divition</Grid>
+                        <Grid item xs={2}>Division</Grid>
                         <Grid item xs={4}>{this.state.current_position_jobfunction}</Grid>
                     </Grid>
 
                     <Grid className={classes.gridMargin} container justify="space-evenly" alignItems="center">
-                        <Grid item xs={2}>Grade</Grid>
+                        <Grid item xs={2}>Grade:</Grid>
                         <Grid item xs={4}>{this.state.current_position_grade}</Grid>
-                        <Grid item xs={2}>Region</Grid>
+                        <Grid item xs={2}>Region:</Grid>
                         <Grid item xs={4}>{this.state.current_position_location}</Grid>
                     </Grid>
 
                     <Grid className={classes.gridMargin} container justify="space-evenly" alignItems="center">
-                        <Grid item xs={2}>Hire Date</Grid>
+                        <Grid item xs={2}>Hire Date:</Grid>
                         <Grid item xs={4}>{this.state.propose_position_datestart}</Grid>
-                        <Grid item xs={2}>Legal Entity</Grid>
+                        <Grid item xs={2}>Legal Entity:</Grid>
                         <Grid item xs={4}>{}</Grid>
                     </Grid>
 
                     <Grid className={classes.gridMargin} container justify="space-evenly" alignItems="center">
-                        <Grid item xs={2}>Function</Grid>
+                        <Grid item xs={2}>Function:</Grid>
                         <Grid item xs={4}>{this.state.current_position_jobfunction}</Grid>
                         <Grid item xs={2}></Grid>
                         <Grid item xs={4}>{}</Grid>
@@ -436,7 +461,7 @@ class OfferModelPage extends React.Component<Props, State> {
 
                     <div className={classes.spacediv} />
 
-                    <Typography>Cash Compensation</Typography>
+                    <Typography className={classes.subtitle}>Cash Compensation</Typography>
 
 
                     <Grid style={{ width: '100%' }} alignItems="center" justify="space-evenly" direction="row">
@@ -450,7 +475,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                 <Grid item xs={8}>{item.value}</Grid>
                             </Grid>
                         )}
-                        <Grid container>
+                        <Grid container className={classes.colorcontainer}>
                             <Grid item xs={4}>Guaranteed Cash</Grid>
                             <Grid item xs={8}>{this.getsubtotalGP()}</Grid>
                         </Grid>
@@ -458,7 +483,7 @@ class OfferModelPage extends React.Component<Props, State> {
 
                     <div className={classes.spacediv} />
 
-                    <Typography>Short Term Incentive</Typography>
+                    <Typography className={classes.subtitle}>Short Term Incentive</Typography>
 
 
                     <Grid style={{ width: '100%' }} alignItems="center" justify="space-evenly" direction="row">
@@ -476,7 +501,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                 <Grid item xs={8}>{item.value}</Grid>
                             </Grid>
                         )}
-                        <Grid container>
+                        <Grid container className={classes.colorcontainer}>
                             <Grid item xs={4}>Total Target Cash</Grid>
                             <Grid item xs={8}>{this.getsubtotalSP()}</Grid>
                         </Grid>
@@ -484,7 +509,7 @@ class OfferModelPage extends React.Component<Props, State> {
 
                     <div className={classes.spacediv} />
 
-                    <Typography>Long Term Incentive</Typography>
+                    <Typography className={classes.subtitle}>Long Term Incentive</Typography>
 
 
                     <Grid style={{ width: '100%' }} alignItems="center" justify="space-evenly" direction="row">
@@ -498,7 +523,7 @@ class OfferModelPage extends React.Component<Props, State> {
 
                     <div className={classes.spacediv} />
 
-                    <Typography>Sign On</Typography>
+                    <Typography className={classes.subtitle}>Sign On</Typography>
 
 
                     <Grid style={{ width: '100%' }} alignItems="center" justify="space-evenly" direction="row">
@@ -508,31 +533,52 @@ class OfferModelPage extends React.Component<Props, State> {
                                 <Grid item xs={8}>{item.value}</Grid>
                             </Grid>
                         )}
-                        <Grid container>
+                        <Grid container className={classes.colorcontainer}>
                             <Grid item xs={4}>Total Compensation Offer</Grid>
                             <Grid item xs={8}>{this.getsubtotalSP()}</Grid>
                         </Grid>
                     </Grid>
                     </Paper>
-                </Grid>
-                <Grid item xs={4}>
-
-                </Grid>
+                </Grid>                
             </Grid>
         )
         return (
             <Grid container direction="row" spacing={16} className={classes.root}>
-                <Grid item xs={12}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        style={{ marginLeft: "auto" }}
-                        onClick={() => handleCreatePDF()}
+                <Grid container>
+                <Grid
+                    container
+                    direction="row"
+                    justify="flex-end"
+                    alignItems="flex-end"
+                    spacing={16}
                     >
-                        Generate PDF
-                    </Button>
+                        <Grid item xs={12}>
+                        <Button
+                        variant="contained"                       
+                        color="primary"
+                        style={{ marginBottom: "1rem", marginRight:"1rem" }}
+                        onClick={() => handleCreatePDF()}
+                        >
+                            Back to Offer
+                        </Button>
+                        <Button
+                        variant="contained"                       
+                        color="primary"
+                        style={{ marginBottom: "1rem", marginRight:"1rem" }}
+                        onClick={() => handleCreatePDF()}
+                        >
+                            Generate PDF
+                        </Button>
+                        </Grid>
+                </Grid>                   
                 </Grid>
+                <div id="divToPrint" style={{
+                    backgroundColor: '#f5f5f5',
+                    width: '160mm',
+                    minHeight: '200mm'
+                }}>
                 <ToPDF/>
+                </div>
                 <div
                     style={{
                         display: "flex",
