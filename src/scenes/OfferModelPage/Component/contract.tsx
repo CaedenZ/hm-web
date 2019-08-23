@@ -9,6 +9,8 @@ import { SharedDispatchProps } from "../../../interface/propsInterface";
 import { history } from "../../../store";
 import { OfferModel } from "../../../interface/offerModelInterface";
 import { JobPosition } from "../../../interface/jobpositionInterface";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 const styles = (theme: Theme) =>
     createStyles({
@@ -104,6 +106,28 @@ class ContractPage extends React.Component<Props, State>  {
 
     render() {
         const { classes } = this.props;
+
+        const handleCreatePDF = () => {
+
+            //const pdfstring = renderToString(<ToPDF />);
+            const input = document.getElementById('divToPrint');
+            //const pdfdata = html2canvas(input);
+            //const pdf = new jsPDF("p", "mm", "a4");
+            //console.log(pdfstring);
+            //pdf.fromHTML(pdfstring);
+            //pdf.save("pdf");
+            html2canvas(input)
+            .then((canvas) => {
+              const imgData = canvas.toDataURL('image/png');
+              const pdf = new jsPDF("p", "mm", "a4");
+              var width = pdf.internal.pageSize.getWidth();
+              var height = pdf.internal.pageSize.getHeight();
+              pdf.addImage(imgData, 'JPEG', 0, 0, width, height);
+              // pdf.output('dataurlnewwindow');
+              pdf.save("download.pdf");
+            })
+          ;
+        };
 
         const ToPDF = () => (   
             <Grid container style={{ width: '100%', height:'100%' }} >               
@@ -279,14 +303,16 @@ class ContractPage extends React.Component<Props, State>  {
                         variant="contained"                       
                         color="primary"
                         style={{ marginBottom: "1rem", marginRight:"1rem" }}
-                        //onClick={() => handleCreatePDF()}
+                        onClick={() => handleCreatePDF()}
                         >
                             Generate PDF
                         </Button>
                         </Grid>
                 </Grid>                   
                 </Grid>
+                <div id="divToPrint">
                 <ToPDF/>
+                </div>
             </Grid >
         );
     }

@@ -399,7 +399,7 @@ class OfferModelPage extends React.Component<Props, State> {
 
             //const pdfstring = renderToString(<ToPDF />);
             const input = document.getElementById('divToPrint');
-            const pdfdata = html2canvas(input);
+            //const pdfdata = html2canvas(input);
             //const pdf = new jsPDF("p", "mm", "a4");
             //console.log(pdfstring);
             //pdf.fromHTML(pdfstring);
