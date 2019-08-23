@@ -159,10 +159,10 @@ class OfferModelPage extends React.Component<Props, State> {
         current_position_country: "",
         current_position_location: "",
         current_position_grade: "",
-        current_position_datestart: "",
+        current_position_datestart: "2015-01-01",
         current_position_jobfunction: "",
         current_position_sjobfunction: "",
-        propose_position_datestart: "",
+        propose_position_datestart: "2019-01-01",
         current_data: {
             guaranteed_cash: {
                 annual_base: '0',
@@ -260,8 +260,7 @@ class OfferModelPage extends React.Component<Props, State> {
         // }
 
         console.dir(this.props.updateData)
-        // this.setState(this.props.updateData)
-
+        // this.setState(this.props.updateData)       
         let c = this.getCurrencyByCountry(this.props.selectedJobPosition.country)
         if (this.props.create) {
             this.setState({

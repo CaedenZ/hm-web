@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Grid, WithStyles, Theme, createStyles, withStyles, Input, Typography, Paper, Button } from "@material-ui/core";
+import { Grid, WithStyles, Theme, createStyles, withStyles, Input, Typography, Paper, Button, TextField } from "@material-ui/core";
 import { connect } from "react-redux";
 import { RootState } from "../../../reducer";
 import { mapDispatchToProps } from "../../../helper/dispachProps";
@@ -7,6 +7,8 @@ import PropTypes from "prop-types";
 import { Company } from "../../../interface/companyInterface";
 import { SharedDispatchProps } from "../../../interface/propsInterface";
 import { history } from "../../../store";
+import { OfferModel } from "../../../interface/offerModelInterface";
+import { JobPosition } from "../../../interface/jobpositionInterface";
 
 const styles = (theme: Theme) =>
     createStyles({
@@ -61,7 +63,7 @@ const styles = (theme: Theme) =>
             fontSize: 14,
             fontWeight: 'bold',
             marginBottom: '1rem',
-            width: 200
+            width: '100%'
         }
     });
 
@@ -70,16 +72,20 @@ export interface Props
     SharedDispatchProps,
     InState { }
 
-interface State { }
+interface State {
+
+ }
 
 interface InState {
+    selectedJobPosition: JobPosition;
+    selectedOfferModel: OfferModel;
     selectedCompany: Company;
 }
 
 class ContractPage extends React.Component<Props, State>  {
     
     state = {
-
+        
     }
 
     componentDidMount() {
@@ -115,13 +121,13 @@ class ContractPage extends React.Component<Props, State>  {
                         </Grid>
                         <Grid className={classes.borderBottom} container justify="space-evenly" alignItems="center">
                             <Grid className={classes.borderRight} xs={2}><p>Employee Name</p></Grid>
-                            <Grid className={classes.borderRight} xs={6}><p>ttt</p></Grid>
+                            <Grid className={classes.borderRight} xs={6}><p>{this.props.selectedOfferModel.candidate_name}</p></Grid>
                             <Grid className={classes.borderRight} xs={2}><p>Employee NRIC/FIN</p></Grid>
-                            <Grid xs={2}>tt</Grid>
+                            <Grid xs={2}><TextField className={classes.field_data}/></Grid>
                         </Grid>
                         <Grid className={classes.borderBottom} container justify="space-evenly" alignItems="center">
                             <Grid className={classes.borderRight} xs={2}><p>Job Title</p></Grid>
-                            <Grid className={classes.borderRight} xs={6}><p>ttt</p></Grid>
+                            <Grid className={classes.borderRight} xs={6}><p>{this.props.selectedJobPosition.business_title}</p></Grid>
                             <Grid className={classes.borderRight} xs={2}><p>Employment Start Date</p></Grid>
                             <Grid xs={2}>tt</Grid>
                         </Grid>
@@ -138,9 +144,9 @@ class ContractPage extends React.Component<Props, State>  {
                     
                     <Grid className={classes.borderBottom} container justify="space-evenly" alignItems="center">
                         <Grid className={classes.borderRight} xs={2}><p>Duration of Employment</p></Grid>
-                        <Grid className={classes.borderRight} xs={5}><p>ttt</p></Grid>
+                        <Grid className={classes.borderRight} xs={5}><p><TextField className={classes.field_data}/></p></Grid>
                         <Grid className={classes.borderRight} xs={2}><p>Place of Work</p></Grid>
-                        <Grid xs={3}>tt</Grid>
+                        <Grid xs={3}><TextField className={classes.field_data}/></Grid>
                     </Grid>
                     <Grid className={classes.borderBottom} container justify="space-evenly" alignItems="center">
                         <Grid className={classes.borderRight} style={{ height: '100%', position: "relative" }} xs={2}><p>Working Hours and Rest Days</p></Grid>
@@ -292,10 +298,11 @@ class ContractPage extends React.Component<Props, State>  {
 
 function mapStateToProps(state: RootState) {
     return {
-        selectedOffermodel: state.offerModelReducer.selectedOfferModel,
         currencyList: state.countryReducer.currencyList,
         session_key: state.authenticationReducer.token,
         selectedCompany: state.companyReducer.selectedCompany,
+        selectedOfferModel: state.offerModelReducer.selectedOfferModel,
+        selectedJobPosition: state.jobPositionReducer.selectedJobPosition,
     };
 }
 
