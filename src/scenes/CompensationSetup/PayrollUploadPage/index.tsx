@@ -8,10 +8,13 @@ import { SharedDispatchProps } from "../../../interface/propsInterface";
 import { Button, Paper, Grid, Divider, Typography, TableCell, Theme, Table, TableHead, TableRow, TableBody, IconButton, Modal, Dialog } from "@material-ui/core";
 import ManualForm from "./form"
 import $axios from "../../../plugin/axios";
-import ReactDataGrid from "react-data-grid";
 import DeleteIcon from '@material-ui/icons/Delete';
 import CustomButton from "../../../helper/components/CustomButton";
-import { Toolbar, Data, Filters } from "react-data-grid-addons";
+import { GridComponent, ColumnsDirective, ColumnDirective, Inject, Page, Group, Sort, Filter, VirtualScroll, ColumnChooser } from "@syncfusion/ej2-react-grids";
+import { enableRipple, getValue } from '@syncfusion/ej2-base';
+
+enableRipple(true);
+let refresh: Boolean;
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -115,6 +118,8 @@ interface InState {
   companyid: string;
 }
 class PayrollUploadPage extends React.Component<Props, State> {
+  public toolbarOptions: any = ['ColumnChooser'];
+  public filterSettings: any = { type: 'CheckBox' }
 
   state: State = {
     data: false,
@@ -257,18 +262,21 @@ class PayrollUploadPage extends React.Component<Props, State> {
     })
   }
 
+  public groupOptions: Object = { showGroupedColumn: true, columns: ['country'] };
+  private gridInstance: GridComponent;
+  public dataBound() {
+    if(refresh) {
+      this.gridInstance.groupColumn('country');
+      refresh = false;
+    }
+  }
+  public load() {
+      refresh = (this as any).refreshing;
+  }
+
   render() {
     const { classes } = this.props
     const that = this
-
-    const selectors = Data.Selectors;
-
-    const {
-      NumericFilter,
-      AutoCompleteFilter,
-      MultiSelectFilter,
-      SingleSelectFilter
-    } = Filters;
 
     const handleFilterChange = filter => {
       console.log(this.state.filters)
@@ -288,39 +296,6 @@ class PayrollUploadPage extends React.Component<Props, State> {
           return i === a.indexOf(item);
         });
     }
-
-    function getRows(rows, filters) {
-      return selectors.getRows({ rows, filters });
-    }
-
-    const filteredRows = getRows(this.state.listdata, this.state.filters);
-
-    const columns: any = [
-      { key: 'source_filepath', name: "source_filepath" },
-      { key: 'type', name: "type" },
-      { key: 'uploaded', name: "uploaded" },
-      { key: 'status', name: "status" },
-      { key: 'action', name: "action" },
-    ]
-
-    const defaultColumnProperties = {
-      filterable: true,
-    };
-    const datacolumn: any = [
-      { key: 'year', name: "Year", filterRenderer: AutoCompleteFilter, width: 150 },
-      { key: 'country', name: "Country", filterRenderer: AutoCompleteFilter, width: 150 },
-      { key: 'employee_id', name: "Employee ID", filterRenderer: AutoCompleteFilter, width: 150 },
-      { key: 'gender', name: "Gender", filterRenderer: AutoCompleteFilter, width: 150 },
-      { key: 'jobfunction', name: "Job Function", filterRenderer: AutoCompleteFilter, width: 150 },
-      { key: 'sjobfunction', name: "Sub Job Function", filterRenderer: AutoCompleteFilter, width: 200 },
-      { key: 'annual_base_pay', name: "Annual Base Pay", filterRenderer: AutoCompleteFilter, width: 150 },
-      { key: 'annual_cash_allowance', name: "Annual Cash Allowance", filterRenderer: AutoCompleteFilter, width: 150 },
-      { key: 'annual_fixed_pay', name: "Annual Fixed Pay", filterRenderer: AutoCompleteFilter, width: 150 },
-      { key: 'business_title', name: "Business Title", filterRenderer: AutoCompleteFilter, width: 250 },
-      { key: 'grade', name: "Grade", filterRenderer: AutoCompleteFilter, width: 150 },
-      { key: 'department', name: "Department", filterRenderer: AutoCompleteFilter, width: 200 },
-      { key: 'currency', name: "Currency", filterRenderer: AutoCompleteFilter, width: 150 },
-    ].map(c => ({ ...c, ...defaultColumnProperties }));
 
     function actions(row) {
       return [
@@ -376,21 +351,30 @@ class PayrollUploadPage extends React.Component<Props, State> {
               </Button> */}
 
         {this.state.data && <Grid container>
-          <Paper className={classes.paper}>
-            <ReactDataGrid
-              columns={datacolumn}
-              rowGetter={i => filteredRows[i]}
-              rowsCount={this.state.listdata.length}
-              toolbar={<Toolbar enableFilter={true} />}
-              onAddFilter={filter => handleFilterChange(filter)}
-              onClearFilters={() => this.setState({ filters: {} })}
-              getValidFilterValues={columnKey => getValidFilterValues(this.state.listdata, columnKey)}
-              enableCellSelect={true} />
-            <Divider />
+          <Paper className={classes.root}>
+            <GridComponent dataSource={this.state.listdata} toolbar={this.toolbarOptions} allowSorting={true} allowTextWrap={true} showColumnChooser={true} allowPaging={true} pageSettings={{ pageCount: 5 }}
+                    dataBound={this.dataBound.bind(this)} load={this.load} allowFiltering={true} filterSettings={this.filterSettings}>
+              <ColumnsDirective>
+                <ColumnDirective field='year' headerText='Year' width='120' textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='country' headerText='Country' width='180' textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='currency' headerText='Currency' visible={false} width='150' textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='gender' headerText='Gender' width='150' textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='jobfunction' headerText='Job Name' textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='sjobfunction' headerText='Sub Job' visible={false} textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='grade' headerText='Grade' textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='business_title' headerText='Business Title' textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='department' headerText='Department' visible={false} textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='annual_base_pay' headerText='Annual Base' textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='annual_cash_allowance' headerText='Annual Cash' textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='annual_fixed_pay' headerText='Annual Fixed' textAlign='Left'></ColumnDirective>                
+              </ColumnsDirective>
+              <Inject services={[Page, Group, Sort, Filter,ColumnChooser]} />
+            </GridComponent>
           </Paper>
         </Grid>}
 
-        <Dialog open={this.state.queue} onClose={this.handleClose} scroll='paper' >
+
+        {/*<Dialog open={this.state.queue} onClose={this.handleClose} scroll='paper' >
           <div style={{ width: '800px' }}>
             <ReactDataGrid
               columns={columns}
@@ -400,7 +384,7 @@ class PayrollUploadPage extends React.Component<Props, State> {
               enableCellSelect={true} />
             <Divider />
           </div>
-        </Dialog>
+        </Dialog>*/}
 
         <Dialog open={this.state.queueitem} onClose={this.handleClose} scroll='paper'>
           <Table className={classes.table}>

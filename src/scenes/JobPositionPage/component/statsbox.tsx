@@ -142,7 +142,7 @@ const styles = (theme: Theme) =>
                     <Typography className={classes.stats} variant="h1" component="h1">
                     {this.props.statsvalue}
                     </Typography>      
-                    <Button size="small">View Offers</Button>
+                    {/*<Button size="small">View Offers</Button>*/}
                 </CardContent>
                 </div>
                 {imagefunctin()}

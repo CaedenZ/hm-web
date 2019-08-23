@@ -29,6 +29,7 @@ import { GridComponent, ColumnsDirective, ColumnDirective, Inject, Page, Edit, C
 import StatsBox from "./component/statsbox"
 import ModellerButton from "./component/modelButton"
 import FormPage from "./component/form"
+import $axios from "../../plugin/axios";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -69,13 +70,23 @@ export interface Props
 interface State { 
   isModalOpen: boolean,
   isModalUpdateOpen: boolean,
+  listdata: ListData,
+  data: boolean;
 }
 
 interface InState {
   selectedCompany: Company;
   jobPositionList: JobPosition[];
   role;
+  sessionkey: string;  
 }
+
+interface ListData {
+  total_close_offer: number;
+  total_new_offer: number;
+  total_offer: number;
+}
+
 class JobPositionPage extends React.Component<Props, State> {
   public groupOptions: Object = { showGroupedColumn: true };
   public filterSettings: any = { type: 'CheckBox' }
@@ -83,6 +94,8 @@ class JobPositionPage extends React.Component<Props, State> {
   state = {
     isModalOpen: false,
     isModalUpdateOpen: false,
+    listdata: null,
+    data: false
   }
 
   componentDidMount() {
@@ -94,7 +107,23 @@ class JobPositionPage extends React.Component<Props, State> {
         id: "1"
       };
       this.props.showDialog(data);
-    } else this.props.getJobPositionList();
+    } else 
+    {
+      this.listdataFunc();
+      this.props.getJobPositionList();
+    }
+  }
+
+  listdataFunc = async () => {
+    let data = {
+      session_key: this.props.sessionkey,
+      company_id: this.props.selectedCompany.company_id
+    }
+    const listdata = await $axios.post('/job/getOfferCount', data);
+    console.log(listdata.data.data)
+    console.log(this.state.listdata)
+    this.setState({ listdata: listdata.data.data })
+    this.setState({ data: true })
   }
 
   handleUpdateButtonClick = jobposition => {
@@ -153,26 +182,25 @@ class JobPositionPage extends React.Component<Props, State> {
   ];
   
   render() {
-
-
     const { classes } = this.props;
 
     return (
       <main>
+        {this.state.data && <Grid container>
         <Grid container spacing={16} style={{ marginBottom:"0.3rem" }}>
             <Grid item xs={12} md={4} lg={3}>
               <Paper>
-                <StatsBox statstype={"new"} statsvalue={"10"}/>
+                <StatsBox statstype={"new"} statsvalue={this.state.listdata.total_new_offer}/>
               </Paper>
             </Grid>
             <Grid item xs={12} md={4} lg={3}>
               <Paper>
-                <StatsBox statstype={"close"} statsvalue={"10"}/>
+                <StatsBox statstype={"close"} statsvalue={this.state.listdata.total_close_offer}/>
               </Paper>
             </Grid>
             <Grid item xs={12} md={4} lg={3}>
               <Paper>
-                <StatsBox statstype={"total"} statsvalue={"10"}/>
+                <StatsBox statstype={"total"} statsvalue={this.state.listdata.total_offer}/>
               </Paper>
             </Grid>
             <Grid item xs={12} md={4} lg={3}>
@@ -193,6 +221,7 @@ class JobPositionPage extends React.Component<Props, State> {
             <Inject services={[Page, CommandColumn, Edit, Group, Sort, Filter]} />
           </GridComponent>
         </Paper>
+        </Grid>}
         <Dialog
           open={this.state.isModalOpen}
           onClose={this.handleModalClose}
@@ -222,7 +251,8 @@ function mapStateToProps(state: RootState) {
   return {
     selectedCompany: state.companyReducer.selectedCompany,
     jobPositionList: state.jobPositionReducer.jobpositionList,
-    role: state.authenticationReducer.profile.info.role_name
+    role: state.authenticationReducer.profile.info.role_name,
+    sessionkey: state.authenticationReducer.token,
   };
 }
 

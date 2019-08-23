@@ -11,7 +11,10 @@ import $axios from "../../../plugin/axios";
 import ReactDataGrid from "react-data-grid";
 import DeleteIcon from '@material-ui/icons/Delete';
 import CustomButton from "../../../helper/components/CustomButton";
-import { Toolbar, Data, Filters } from "react-data-grid-addons";
+import { GridComponent, ColumnsDirective, ColumnDirective, Inject, Page, Group, Sort, Filter, VirtualScroll, ColumnChooser } from "@syncfusion/ej2-react-grids";
+import { enableRipple, getValue } from '@syncfusion/ej2-base';
+enableRipple(true);
+let refresh: Boolean;
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -115,7 +118,9 @@ interface InState {
   companyid: string;
 }
 class MarketDataUploadPage extends React.Component<Props, State> {
-
+  public toolbarOptions: any = ['ColumnChooser'];
+  public filterSettings: any = { type: 'CheckBox' }
+  
   state: State = {
     data: false,
     queue: false,
@@ -257,18 +262,21 @@ class MarketDataUploadPage extends React.Component<Props, State> {
     })
   }
 
+  public groupOptions: Object = { showGroupedColumn: true, columns: ['country'] };
+  private gridInstance: GridComponent;
+  public dataBound() {
+    if(refresh) {
+      this.gridInstance.groupColumn('country');
+      refresh = false;
+    }
+  }
+  public load() {
+      refresh = (this as any).refreshing;
+  }
+
   render() {
     const { classes } = this.props
     const that = this
-
-    const selectors = Data.Selectors;
-
-    const {
-      NumericFilter,
-      AutoCompleteFilter,
-      MultiSelectFilter,
-      SingleSelectFilter
-    } = Filters;
 
     const handleFilterChange = filter => {
       console.log(this.state.filters)
@@ -289,12 +297,6 @@ class MarketDataUploadPage extends React.Component<Props, State> {
         });
     }
 
-    function getRows(rows, filters) {
-      return selectors.getRows({ rows, filters });
-    }
-
-    const filteredRows = getRows(this.state.listdata, this.state.filters);
-
     const columns: any = [
       { key: 'source_filepath', name: "source_filepath" },
       { key: 'type', name: "type" },
@@ -302,27 +304,6 @@ class MarketDataUploadPage extends React.Component<Props, State> {
       { key: 'status', name: "status" },
       { key: 'action', name: "action" },
     ]
-
-    const defaultColumnProperties = {
-      filterable: true,
-      filterRenderer: AutoCompleteFilter
-    };
-    const datacolumn: any = [
-      { key: 'year', name: "Year" ,width: 150},
-      { key: 'country', name: "Country" ,width: 150},
-      { key: 'survey_company', name: "Survey" ,width: 150},
-      { key: 'employee_id', name: "Employee ID" ,width: 150},
-      { key: 'company_grade', name: "Grade" ,width: 150},
-      { key: 'survey_grade', name: "Survey Grade",width: 150},
-      { key: 'jobfunction', name: "Job Function",width: 150 },
-      { key: 'sjobfunction', name: "Sub Job Function", width: 200 },
-      { key: 'annual_base_pay', name: "Annual Base Pay" ,width: 150},
-      { key: 'annual_cash_allowance', name: "Annual Cash Allowance" ,width: 150},
-      { key: 'annual_fixed_pay', name: "Annual Fixed Pay" ,width: 150},
-      { key: 'target_total', name: "Target Total" ,width: 150},
-      { key: 'target_direct_comp', name: "Target Direct Comp",width: 150 },
-      { key: 'target_total_rem', name: "Target Total Rem",width: 150 },
-    ].map(c => ({ ...c, ...defaultColumnProperties }));
 
     function actions(row) {
       return [
@@ -378,17 +359,26 @@ class MarketDataUploadPage extends React.Component<Props, State> {
               </Button> */}
 
         {this.state.data && <Grid container>
-          <Paper className={classes.paper}>
-            <ReactDataGrid
-              columns={datacolumn}
-              rowGetter={i => filteredRows[i]}
-              rowsCount={this.state.listdata.length}
-              toolbar={<Toolbar enableFilter={true} />}
-              onAddFilter={filter => handleFilterChange(filter)}
-              onClearFilters={() => this.setState({ filters: {} })}
-              getValidFilterValues={columnKey => getValidFilterValues(this.state.listdata, columnKey)}
-              enableCellSelect={true} />
-            <Divider />
+          <Paper className={classes.root}>
+            <GridComponent dataSource={this.state.listdata} toolbar={this.toolbarOptions} allowSorting={true} allowTextWrap={true} showColumnChooser={true} allowPaging={true} pageSettings={{ pageCount: 5 }}
+                    dataBound={this.dataBound.bind(this)} load={this.load} allowFiltering={true} filterSettings={this.filterSettings}>
+              <ColumnsDirective>
+                <ColumnDirective field='year' headerText='Year' width='120' textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='country' headerText='Country' width='180' textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='survey_company' headerText='Survey' visible={false} width='150' textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='jobfunction' headerText='Job Name' textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='sjobfunction' headerText='Sub Job' visible={false} textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='company_grade' headerText='Company Grade' textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='survey_grade' headerText='Survey Grade' visible={false} textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='annual_base_pay' headerText='Annual Base' visible={false} textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='annual_cash_allowance' headerText='Annual Cash' visible={false} textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='annual_fixed_pay' headerText='Annual Fixed' visible={false} textAlign='Left'></ColumnDirective>   
+                <ColumnDirective field='target_total' headerText='Target Total' textAlign='Left'></ColumnDirective> 
+                <ColumnDirective field='target_direct_comp' headerText='Target Direct' textAlign='Left'></ColumnDirective> 
+                <ColumnDirective field='target_total_rem' headerText='Total Rem' textAlign='Left'></ColumnDirective>              
+              </ColumnsDirective>
+              <Inject services={[Page, Group, Sort, Filter,ColumnChooser]} />
+            </GridComponent>
           </Paper>
         </Grid>}
 

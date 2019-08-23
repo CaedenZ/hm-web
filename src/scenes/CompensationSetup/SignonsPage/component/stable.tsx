@@ -123,11 +123,13 @@ export class CustomizedTable_v2 extends React.Component<Props, State>  {
                 type: args.data.type,
                 isOptional: 'N',
               }
-              this.props.createSignons(data)
+              this.props.createSignons(data);
+              this.forceUpdate();
           }
           else
           {
             this.props.onUpdate(args.data);
+            this.forceUpdate();
           }                   
         }
         if (args.requestType === 'delete') {
@@ -139,6 +141,7 @@ export class CustomizedTable_v2 extends React.Component<Props, State>  {
           });
           this.props.deleteSignons(rowIndexes[0]);
           console.log(rowIndexes[0]);
+          this.forceUpdate();
         }
         if (args.requestType === 'add') {
           

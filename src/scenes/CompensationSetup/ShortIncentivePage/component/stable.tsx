@@ -203,11 +203,13 @@ export class CustomizedTable_v2 extends React.Component<Props, State>  {
                 value_type: args.data.value_type,
                 percent_type: args.data.percent_type
               }
-              this.props.createShortIncentive(data)
+              this.props.createShortIncentive(data);
+              this.forceUpdate();
           }
           else
           {
             this.props.onUpdate(args.data);
+            this.forceUpdate();
           }                   
         }
         if (args.requestType === 'delete') {
@@ -219,6 +221,7 @@ export class CustomizedTable_v2 extends React.Component<Props, State>  {
           });
           this.props.deleteShortIncentive(rowIndexes[0]);
           console.log(rowIndexes[0]);
+          this.forceUpdate();
         }
         if (args.requestType === 'add') {
           

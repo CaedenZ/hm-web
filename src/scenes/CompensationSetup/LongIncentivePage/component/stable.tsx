@@ -160,22 +160,40 @@ export class CustomizedTable_v2 extends React.Component<Props, State>  {
           if(args.index === 0)
           {
             console.log(args.data);
-            //TO DO
+            const data = {
+              value: args.data.value,
+              type: args.data.type,
+              investing_type: args.data.investing_type,
+              share_symbol: args.data.share_symbol,
+              share_exchange: args.data.share_exchange,
+              currency: args.data.currency,
+              isOptional: 'Y',
+              year1: args.data.year1,
+              year2: args.data.year2,
+              year3: args.data.year3,
+              year4: args.data.year4,
+              year5: args.data.year5,
+              year6: 0,
+            }
+            this.props.createLongIncentive(data)
+            this.forceUpdate();
           }
           else
           {
             this.props.onUpdate(args.data);
+            this.forceUpdate();
           }                   
         }
         if (args.requestType === 'delete') {
           const obj: Object[] = this.gridInstance.getSelectedRecords();
           console.log(obj);
-          //const rowIndexes : string[]=[];
-          //obj.forEach((dat: any,index) => {
-          //    rowIndexes.push(dat.signons_id); 
-          //});
-          //this.props.deleteSignons(rowIndexes[0]);
-          //console.log(rowIndexes[0]);
+          const rowIndexes : string[]=[];
+          obj.forEach((dat: any,index) => {
+              rowIndexes.push(dat.longterm_incentive_id); 
+          });
+          this.props.deleteLongIncentive(rowIndexes[0]);
+          console.log(rowIndexes[0]);
+          this.forceUpdate();
         }
         if (args.requestType === 'add') {
           
