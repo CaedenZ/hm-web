@@ -24,6 +24,7 @@ import html2canvas from "html2canvas";
 import { renderToString } from "react-dom/server";
 import { history } from "../../../store";
 
+
 const styles = (theme: Theme) =>
     createStyles({
         root: {
@@ -79,7 +80,8 @@ const styles = (theme: Theme) =>
 interface Props extends InState, WithStyles<typeof styles> { }
 
 interface InState {
-    selectedOffermodel: Number;
+    selectedJobPosition: JobPosition;
+    selectedOfferModel: OfferModel;
     currencyList: Currency[];
     session_key: string;
 }
@@ -173,7 +175,7 @@ class OfferModelPage extends React.Component<Props, State> {
 
         const data = {
             session_key: this.props.session_key,
-            offermodel_id: this.props.selectedOffermodel,
+            offermodel_id: this.props.selectedOfferModel.offermodel_id,
         }
 
         const response = await $axios.post('/job/viewOfferModel', data)
@@ -468,17 +470,17 @@ class OfferModelPage extends React.Component<Props, State> {
                     <Grid style={{ width: '100%' }} alignItems="center" justify="space-evenly" direction="row">
                         <Grid container>
                             <Grid item xs={4}>Annual Base Salary</Grid>
-                            <Grid item xs={8}>{this.state.propose_data.guaranteed_cash.annual_base}</Grid>
+                            <Grid item xs={8}>{parseInt(this.state.propose_data.guaranteed_cash.annual_base).toLocaleString(navigator.language, { maximumFractionDigits: 0 })}</Grid>
                         </Grid>
                         {this.state.propose_data.guaranteed_cash.optional.map((item: NameValue, index) =>
                             <Grid key={'gc' + index} container>
                                 <Grid item xs={4}>{item.name}</Grid>
-                                <Grid item xs={8}>{item.value}</Grid>
+                                <Grid item xs={8}>{parseInt(item.value).toLocaleString(navigator.language, { maximumFractionDigits: 0 })}</Grid>
                             </Grid>
                         )}
                         <Grid container className={classes.colorcontainer}>
                             <Grid item xs={4}>Guaranteed Cash</Grid>
-                            <Grid item xs={8}>{this.getsubtotalGP()}</Grid>
+                            <Grid item xs={8}>{this.getsubtotalGP().toLocaleString(navigator.language, { maximumFractionDigits: 0 })}</Grid>
                         </Grid>
                     </Grid>
 
@@ -494,17 +496,17 @@ class OfferModelPage extends React.Component<Props, State> {
                         </Grid>
                         <Grid container>
                             <Grid item xs={4}>Bonus Target Amount</Grid>
-                            <Grid item xs={8}>{this.state.propose_data.sti.bonus_target_amount}</Grid>
+                            <Grid item xs={8}>{parseInt(this.state.propose_data.sti.bonus_target_amount).toLocaleString(navigator.language, { maximumFractionDigits: 0 })}</Grid>
                         </Grid>
                         {this.state.propose_data.sti.optional.map((item: NameValue, index) =>
                             <Grid key={'gc' + index} container>
                                 <Grid item xs={4}>{item.name}</Grid>
-                                <Grid item xs={8}>{item.value}</Grid>
+                                <Grid item xs={8}>{parseInt(item.value).toLocaleString(navigator.language, { maximumFractionDigits: 0 })}</Grid>
                             </Grid>
                         )}
                         <Grid container className={classes.colorcontainer}>
                             <Grid item xs={4}>Total Target Cash</Grid>
-                            <Grid item xs={8}>{this.getsubtotalSP()}</Grid>
+                            <Grid item xs={8}>{(this.getsubtotalGP() + this.getsubtotalSP()).toLocaleString(navigator.language, { maximumFractionDigits: 0 })}</Grid>
                         </Grid>
                     </Grid>
 
@@ -517,7 +519,7 @@ class OfferModelPage extends React.Component<Props, State> {
                         {this.state.propose_data.lti.optional.map((item: NameValue, index) =>
                             <Grid key={'gc' + index} container>
                                 <Grid item xs={4}>{item.name}</Grid>
-                                <Grid item xs={8}>{item.value}</Grid>
+                                <Grid item xs={8}>{parseInt(item.value).toLocaleString(navigator.language, { maximumFractionDigits: 0 })}</Grid>
                             </Grid>
                         )}
                     </Grid>
@@ -528,15 +530,15 @@ class OfferModelPage extends React.Component<Props, State> {
 
 
                     <Grid style={{ width: '100%' }} alignItems="center" justify="space-evenly" direction="row">
-                        {this.state.propose_data.sti.optional.map((item: NameValue, index) =>
+                        {this.state.propose_data.sign_on.optional.map((item: NameValue, index) =>
                             <Grid key={'gc' + index} container>
                                 <Grid item xs={4}>{item.name}</Grid>
-                                <Grid item xs={8}>{item.value}</Grid>
+                                <Grid item xs={8}>{parseInt(item.value).toLocaleString(navigator.language, { maximumFractionDigits: 0 })}</Grid>
                             </Grid>
                         )}
                         <Grid container className={classes.colorcontainer}>
                             <Grid item xs={4}>Total Compensation Offer</Grid>
-                            <Grid item xs={8}>{this.getsubtotalSP()}</Grid>
+                            <Grid item xs={8}>{(this.getsubtotalGP() + this.getsubtotalSP() + this.getsubtotalLP() + this.getsubtotalSOP()).toLocaleString(navigator.language, { minimumFractionDigits: 0 })}</Grid>
                         </Grid>
                     </Grid>
                     </Paper>
@@ -603,6 +605,8 @@ function mapStateToProps(state: RootState) {
         selectedOffermodel: state.offerModelReducer.selectedOfferModel,
         currencyList: state.countryReducer.currencyList,
         session_key: state.authenticationReducer.token,
+        selectedOfferModel: state.offerModelReducer.selectedOfferModel,
+        selectedJobPosition: state.jobPositionReducer.selectedJobPosition,
     };
 }
 

@@ -129,11 +129,11 @@ class ContractPage extends React.Component<Props, State>  {
                             <Grid className={classes.borderRight} xs={2}><p>Job Title</p></Grid>
                             <Grid className={classes.borderRight} xs={6}><p>{this.props.selectedJobPosition.business_title}</p></Grid>
                             <Grid className={classes.borderRight} xs={2}><p>Employment Start Date</p></Grid>
-                            <Grid xs={2}>tt</Grid>
+                            <Grid xs={2}><TextField className={classes.field_data}/></Grid>
                         </Grid>
                         <Grid className={classes.borderBottomless} container justify="space-evenly" alignItems="center">
                             <Grid className={classes.borderRight} xs={2}><p>Main duties and responsibilities</p></Grid>
-                            <Grid xs={10}>tt</Grid>
+                            <Grid xs={10}><TextField className={classes.field_data}/></Grid>
                         </Grid>
                     </Grid>
                 <div className={classes.spacediv} />
@@ -150,19 +150,19 @@ class ContractPage extends React.Component<Props, State>  {
                     </Grid>
                     <Grid className={classes.borderBottom} container justify="space-evenly" alignItems="center">
                         <Grid className={classes.borderRight} style={{ height: '100%', position: "relative" }} xs={2}><p>Working Hours and Rest Days</p></Grid>
-                        <Grid className={classes.borderRight} style={{ height: '100%', position: "relative" }} xs={4}><p>ttt</p></Grid>
+                        <Grid className={classes.borderRight} style={{ height: '100%', position: "relative" }} xs={4}><p><TextField className={classes.field_data}/></p></Grid>
                         <Grid className={classes.borderRight} style={{ height: '100%', position: "relative" }} xs={1}><p>Working Days Per Week</p></Grid>
-                        <Grid className={classes.borderRight} style={{ height: '100%', position: "relative" }} xs={2}><p>tt</p></Grid>
+                        <Grid className={classes.borderRight} style={{ height: '100%', position: "relative" }} xs={2}><p><TextField className={classes.field_data}/></p></Grid>
                         <Grid className={classes.borderRight} style={{ height: '100%', position: "relative" }} xs={1}><p>Rest Day Per Week</p></Grid>
-                        <Grid xs={2}>tt</Grid>
+                        <Grid xs={2}><TextField className={classes.field_data}/></Grid>
                     </Grid>
                     <Grid container justify="space-evenly" alignItems="center">
                         <Grid className={classes.borderRight} style={{ height: '100%', position: "relative" }} xs={2}><p>Salary  Period</p></Grid>
-                        <Grid className={classes.borderRight} style={{ height: '100%', position: "relative" }} xs={4}><p>ttt</p></Grid>
+                        <Grid className={classes.borderRight} style={{ height: '100%', position: "relative" }} xs={4}><p><TextField className={classes.field_data}/></p></Grid>
                         <Grid className={classes.borderRight} style={{ height: '100%', position: "relative" }} xs={1}><p>Overtime payment period</p></Grid>
-                        <Grid className={classes.borderRight} style={{ height: '100%', position: "relative" }} xs={2}><p>tt</p></Grid>
+                        <Grid className={classes.borderRight} style={{ height: '100%', position: "relative" }} xs={2}><p><TextField className={classes.field_data}/></p></Grid>
                         <Grid className={classes.borderRight} style={{ height: '100%', position: "relative" }} xs={1}><p>Date of Salary Payment</p></Grid>
-                        <Grid xs={2}>tt</Grid>
+                        <Grid xs={2}><TextField className={classes.field_data}/></Grid>
                     </Grid>
                 </Grid>
                 <div className={classes.spacediv} />
@@ -172,34 +172,34 @@ class ContractPage extends React.Component<Props, State>  {
                 <Grid className={classes.border} style={{ width: '100%' }} alignItems="center" justify="space-evenly" direction="row">
                     <Grid className={classes.borderBottom} container justify="space-evenly" alignItems="center">
                         <Grid className={classes.borderRight} xs={2}><p>Basic Salary</p></Grid>
-                        <Grid className={classes.borderRight} xs={3}><p>ttt</p></Grid>
+                        <Grid className={classes.borderRight} xs={3}><p><TextField className={classes.field_data}/></p></Grid>
                         <Grid className={classes.borderRight} xs={3}><p></p></Grid>
                         <Grid className={classes.borderRight} xs={2}><p>Overtime rate of pay</p></Grid>
-                        <Grid className={classes.borderRight} xs={1}><p>tt</p></Grid>
+                        <Grid className={classes.borderRight} xs={1}><p><TextField className={classes.field_data}/></p></Grid>
                         <Grid xs={1}></Grid>
                     </Grid>
                     <Grid className={classes.borderBottom} container justify="space-evenly" alignItems="center">
                         <Grid className={classes.borderRight} xs={2}><p>Fixed Allowances</p></Grid>
-                        <Grid className={classes.borderRight} xs={3}><p>ttt</p></Grid>
+                        <Grid className={classes.borderRight} xs={3}><p><TextField className={classes.field_data}/></p></Grid>
                         <Grid className={classes.borderRight} xs={3}><p></p></Grid>
                         <Grid className={classes.borderRight} xs={2}><p>Other salary-related components</p></Grid>
-                        <Grid xs={2}>tt</Grid>
+                        <Grid xs={2}><TextField className={classes.field_data}/></Grid>
                     </Grid>
                     <Grid className={classes.borderBottom} container justify="space-evenly" alignItems="center">
                         <Grid className={classes.borderRight} xs={2}><p>Allowances....</p></Grid>
-                        <Grid className={classes.borderRight} xs={3}><p>ttt</p></Grid>
+                        <Grid className={classes.borderRight} xs={3}><p><TextField className={classes.field_data}/></p></Grid>
                         <Grid className={classes.borderRight} xs={3}><p></p></Grid>
                         <Grid xs={4}></Grid>
                     </Grid>
                     <Grid className={classes.borderBottom} container justify="space-evenly" alignItems="center">
                         <Grid className={classes.borderRight} xs={2}><p>Fixed Deductions</p></Grid>
-                        <Grid className={classes.borderRight} xs={3}><p>ttt</p></Grid>
+                        <Grid className={classes.borderRight} xs={3}><p><TextField className={classes.field_data}/></p></Grid>
                         <Grid className={classes.borderRight} xs={3}><p></p></Grid>
                         <Grid xs={4}></Grid>
                     </Grid>
                     <Grid className={classes.borderBottomless} container justify="space-evenly" alignItems="center">
                         <Grid className={classes.borderRight} xs={2}><p>CDAC</p></Grid>
-                        <Grid className={classes.borderRight} xs={3}><p>ttt</p></Grid>
+                        <Grid className={classes.borderRight} xs={3}><p><TextField className={classes.field_data}/></p></Grid>
                         <Grid className={classes.borderRight} xs={3}><p></p></Grid>
                         <Grid xs={4}></Grid>
                     </Grid>
@@ -211,24 +211,24 @@ class ContractPage extends React.Component<Props, State>  {
                 <Grid className={classes.border} style={{ width: '100%' }} alignItems="center" justify="space-evenly" direction="row">
                     <Grid className={classes.borderBottom} container justify="space-evenly" alignItems="center">
                         <Grid className={classes.borderRight} xs={2}><p>Pay Annual Leave</p></Grid>
-                        <Grid className={classes.borderRight} xs={5}><p>ttt</p></Grid>
+                        <Grid className={classes.borderRight} xs={5}><p><TextField className={classes.field_data}/></p></Grid>
                         <Grid className={classes.borderRight} xs={2}><p>Other Type of Leave</p></Grid>
-                        <Grid xs={3}>tt</Grid>
+                        <Grid xs={3}><TextField className={classes.field_data}/></Grid>
                     </Grid>
                     <Grid className={classes.borderBottom} container justify="space-evenly" alignItems="center">
                         <Grid className={classes.borderRight} xs={2}><p>Pay Annual LeavePay Outpatient Sice Leave</p></Grid>
-                        <Grid className={classes.borderRight} xs={5}><p>ttt</p></Grid>
+                        <Grid className={classes.borderRight} xs={5}><p><TextField className={classes.field_data}/></p></Grid>
                         <Grid className={classes.borderRight} xs={2}><p>Birthday Leave</p></Grid>
-                        <Grid xs={3}>tt</Grid>
+                        <Grid xs={3}><TextField className={classes.field_data}/></Grid>
                     </Grid>
                     <Grid className={classes.borderBottom} container justify="space-evenly" alignItems="center">
                         <Grid className={classes.borderRight} xs={2}><p>Paid Hospitalisation Leave</p></Grid>
-                        <Grid className={classes.borderRight} xs={5}><p>ttt</p></Grid>
+                        <Grid className={classes.borderRight} xs={5}><p><TextField className={classes.field_data}/></p></Grid>
                         <Grid xs={6}></Grid>
                     </Grid>
                     <Grid container justify="space-evenly" alignItems="center">
                         <Grid className={classes.borderRight} xs={2}><p>Medical Benefits</p></Grid>
-                        <Grid className={classes.borderRight} xs={5}><p>ttt</p></Grid>
+                        <Grid className={classes.borderRight} xs={5}><p><TextField className={classes.field_data}/></p></Grid>
                         <Grid xs={6}></Grid>
                     </Grid>
                 </Grid>
@@ -239,15 +239,15 @@ class ContractPage extends React.Component<Props, State>  {
                 <Grid className={classes.border} style={{ width: '100%' }} alignItems="center" justify="space-evenly" direction="row">
                     <Grid className={classes.borderBottom} container justify="space-evenly" alignItems="center">
                         <Grid className={classes.borderRight} xs={2}><p>Notice Period</p></Grid>
-                        <Grid className={classes.borderRight} xs={5}><p>ttt</p></Grid>
+                        <Grid className={classes.borderRight} xs={5}><p><TextField className={classes.field_data}/></p></Grid>
                         <Grid className={classes.borderRight} xs={2}><p>Probation Start Date</p></Grid>
-                        <Grid xs={3}>tt</Grid>
+                        <Grid xs={3}><TextField className={classes.field_data}/></Grid>
                     </Grid>
                     <Grid container justify="space-evenly" alignItems="center">
                         <Grid className={classes.borderRight} xs={2}><p>Length of Probation</p></Grid>
-                        <Grid className={classes.borderRight} xs={5}><p>ttt</p></Grid>
+                        <Grid className={classes.borderRight} xs={5}><p><TextField className={classes.field_data}/></p></Grid>
                         <Grid className={classes.borderRight} xs={2}><p>Probation End Date</p></Grid>
-                        <Grid xs={3}><p>tt</p></Grid>
+                        <Grid xs={3}><p><TextField className={classes.field_data}/></p></Grid>
                     </Grid>
                 </Grid>
                 <div className={classes.spacediv} />
