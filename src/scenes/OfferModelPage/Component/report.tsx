@@ -22,6 +22,7 @@ import { Currency } from "../../../interface/countryInterface";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { renderToString } from "react-dom/server";
+import { history } from "../../../store";
 
 const styles = (theme: Theme) =>
     createStyles({
@@ -557,7 +558,7 @@ class OfferModelPage extends React.Component<Props, State> {
                         variant="contained"                       
                         color="primary"
                         style={{ marginBottom: "1rem", marginRight:"1rem" }}
-                        onClick={() => handleCreatePDF()}
+                        onClick={() => history.push("/jobposition/offermodel/update")}
                         >
                             Back to Offer
                         </Button>
