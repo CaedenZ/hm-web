@@ -22,6 +22,7 @@ import { Currency } from "../../../interface/countryInterface";
 import { TextBoxComponent } from '@syncfusion/ej2-react-inputs';
 import SaveModelButton from './sactionButton';
 import { history } from "../../../store";
+import { ComboBoxComponent } from "@syncfusion/ej2-react-dropdowns";
 
 const styles = (theme: Theme) =>
     createStyles({
@@ -32,11 +33,16 @@ const styles = (theme: Theme) =>
         title: {
             fontSize: 24,
             color: '#f44336',
-            marginBottom: '1.5rem',
+            marginBottom: '1rem',
             fontWeight: 'bold'
         },
         subtitle: {
             fontWeight: 'bold'
+        },
+        status: {
+            fontSize: 12,
+            fontWeight: 'bold',
+            marginBottom: '0.3rem',
         },
         paper_header: {
             padding: 15,
@@ -498,16 +504,6 @@ class OfferModelPage extends React.Component<Props, State> {
         this.setState({ propose_data: gc })
     }
 
-    handleChangeGCOptionalNameProposed = (index) => (event) => {
-        const gc = { ...this.state.propose_data }
-        gc.guaranteed_cash.optional[index].name = event.target.value
-        let result = this.props.allowancesList.find(e => {
-            return e.type === event.target.value
-        })
-        gc.guaranteed_cash.optional[index].value = result.value
-        this.setState({ propose_data: gc })
-    }
-
     handleChangeSTIOptionalValueCurrent = (index) => (event) => {
         const gc = { ...this.state.current_data }
         gc.sti.optional[index].value = event.target.value
@@ -523,16 +519,6 @@ class OfferModelPage extends React.Component<Props, State> {
     handleChangeSTIOptionalValueProposed = (index) => (event) => {
         const gc = { ...this.state.propose_data }
         gc.sti.optional[index].value = event.target.value
-        this.setState({ propose_data: gc })
-    }
-
-    handleChangeSTIOptionalNameProposed = (index) => (event) => {
-        const gc = { ...this.state.propose_data }
-        gc.sti.optional[index].name = event.target.value
-        let result = this.props.stiList.find(e => {
-            return e.type === event.target.value
-        })
-        gc.sti.optional[index].value = result.value
         this.setState({ propose_data: gc })
     }
 
@@ -554,16 +540,6 @@ class OfferModelPage extends React.Component<Props, State> {
         this.setState({ propose_data: gc })
     }
 
-    handleChangeLTIOptionalNameProposed = (index) => (event) => {
-        const gc = { ...this.state.propose_data }
-        gc.lti.optional[index].name = event.target.value
-        let result = this.props.ltiList.find(e => {
-            return e.type === event.target.value
-        })
-        gc.lti.optional[index].value = result.value
-        this.setState({ propose_data: gc })
-    }
-
     handleChangeSignOnOptionalValueCurrent = (index) => (event) => {
         const gc = { ...this.state.current_data }
         gc.sign_on.optional[index].value = event.target.value
@@ -581,17 +557,6 @@ class OfferModelPage extends React.Component<Props, State> {
         gc.sign_on.optional[index].value = event.target.value
         this.setState({ propose_data: gc })
     }
-
-    handleChangeSignOnOptionalNameProposed = (index) => (event) => {
-        const gc = { ...this.state.propose_data }
-        gc.sign_on.optional[index].name = event.target.value
-        let result = this.props.signonList.find(e => {
-            return e.type === event.target.value
-        })
-        gc.sign_on.optional[index].value = result.value
-        this.setState({ propose_data: gc })
-    }
-
 
     getsubtotalGC = () => {
         let a = parseInt(this.state.current_data.guaranteed_cash.annual_base)
@@ -666,10 +631,118 @@ class OfferModelPage extends React.Component<Props, State> {
         this.props.onSubmit(send)
     }
 
+    private fields: Object = { text: 'name', value: 'id' };
 
+    gCashtypeTypes() {
+        const type = []
+        
+        this.props.allowancesList.filter(al => (al.country === this.props.selectedJobPosition.country && al.jobgrade_name === this.props.selectedJobPosition.jobgrade_name)).forEach(element => {
+            let newItem: { [key: string]: Object; } = {'name': element.type, 'id': element.allowance_id };
+            type.push(newItem)
+        });
+        console.log(type);
+        return type;
+
+    };
+
+    sTermtypeTypes() {
+        const type = []
+        
+        this.props.stiList.filter(sti => (sti.country === this.props.selectedJobPosition.country && sti.jobgrade_name === this.props.selectedJobPosition.jobgrade_name)).forEach(element => {
+            let newItem: { [key: string]: Object; } = {'name': element.type, 'id': element.shortterm_incentive_id };
+            type.push(newItem)
+        });
+        console.log(type);
+        return type;
+
+    };
+
+    
+    lTermtypeTypes() {
+        const type = []
+        
+        this.props.ltiList.forEach(element => {
+            let newItem: { [key: string]: Object; } = {'name': element.type, 'id': element.longterm_incentive_id };
+            type.push(newItem)
+        });
+        console.log(type);
+        return type;
+
+    };
+
+    sOnstypeTypes() {
+        const type = []
+        
+        this.props.signonList.forEach(element => {
+            let newItem: { [key: string]: Object; } = {'name': element.type, 'id': element.signons_id };
+            type.push(newItem)
+        });
+        console.log(type);
+        return type;
+
+    };
+
+    handleChangeGCOptionalNameProposed = (index) => (event) => {
+        try{
+            console.log(event.value);
+            const gc = { ...this.state.propose_data }
+            gc.guaranteed_cash.optional[index].name = event.value
+            let result = this.props.allowancesList.find(e => {
+                return e.allowance_id === event.value
+            })
+            gc.guaranteed_cash.optional[index].value = result.value
+            this.setState({ propose_data: gc })
+        }catch(e){
+            console.log('error', e);        
+        }
+    }
+
+    handleChangeSTIOptionalNameProposed = (index) => (event) => {
+        try{
+            const gc = { ...this.state.propose_data }
+            gc.sti.optional[index].name = event.value
+            let result = this.props.stiList.find(e => {
+                return e.shortterm_incentive_id === event.value
+            })
+            gc.sti.optional[index].value = result.value
+            this.setState({ propose_data: gc })
+        }catch(e){
+            console.log('error', e);        
+        }
+    }
+
+    handleChangeLTIOptionalNameProposed = (index) => (event) => {
+        try{
+            const gc = { ...this.state.propose_data }
+            gc.lti.optional[index].name = event.value
+            let result = this.props.ltiList.find(e => {
+                return e.longterm_incentive_id === event.value
+            })
+            gc.lti.optional[index].value = result.value
+            this.setState({ propose_data: gc })
+        }catch(e){
+            console.log('error', e);        
+        }
+    }
+
+    handleChangeSignOnOptionalNameProposed = (index) => (event) => {
+        try{
+            const gc = { ...this.state.propose_data }
+            gc.sign_on.optional[index].name = event.value
+            let result = this.props.signonList.find(e => {
+                return e.signons_id === event.value
+            })
+            gc.sign_on.optional[index].value = result.value
+            this.setState({ propose_data: gc })
+        }catch(e){
+            console.log('error', e);        
+        }
+    }
 
     render() {
         const { classes } = this.props;
+        const that = this;  
+
         const selectStyles = {
             input: base => ({
                 ...base,
@@ -685,15 +758,24 @@ class OfferModelPage extends React.Component<Props, State> {
                 <SaveModelButton btype={"close"} onClick={()=> this.props.onClose(this.state)}/>
             );
       
-            if (this.props.updateData) {
+            if ((this.props.updateData) && (this.state.status === 'In Progress')) {
                 return closebutton;
             } else return "";
         };
+
+
+        let gCashtypeData: { [key: string]: Object }[] =that.gCashtypeTypes();
+        let sTermtypeData: { [key: string]: Object }[] =that.sTermtypeTypes();
+        let lTermtypeData: { [key: string]: Object }[] =that.lTermtypeTypes();
+        let sOnstypeData: { [key: string]: Object }[] =that.sOnstypeTypes();
 
         return (
             <Grid container justify="flex-start" spacing={16}
             alignItems="flex-start" direction="row" className={classes.root}>
                 <Grid item xs={6}>
+                    <Typography className={classes.status} color="textSecondary" gutterBottom>
+                    {this.state.status}
+                    </Typography>
                     <Typography className={classes.title} color="textSecondary" gutterBottom>
                     TOM Offer Modeller
                     </Typography>
@@ -951,7 +1033,14 @@ class OfferModelPage extends React.Component<Props, State> {
                                         {this.state.propose_data.guaranteed_cash.optional.map((item: NameValue, index) =>
                                             <Grid key={"gp" + index} container spacing={8}>
                                                 <Grid item xs={3}>
-                                                    <NativeSelect
+                                                <ComboBoxComponent 
+                                                    id="allowance" 
+                                                    dataSource={gCashtypeData} 
+                                                    change={this.handleChangeGCOptionalNameProposed(index)}
+                                                    fields={this.fields}
+                                                    value={this.state.propose_data.guaranteed_cash.optional[index].name}/>
+                                                    
+                                                    {/*<NativeSelect
                                                         id="allowance"
                                                         value={this.state.propose_data.guaranteed_cash.optional[index].name}
                                                         onChange={this.handleChangeGCOptionalNameProposed(index)}
@@ -969,7 +1058,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                                                 {allowances.type}
                                                             </option>
                                                         ))}
-                                                    </NativeSelect>
+                                                        </NativeSelect>*/}
                                                 </Grid>
                                                 <Grid item xs={2}><TextField value={this.state.propose_data.guaranteed_cash.optional[index].value} onChange={this.handleChangeGCOptionalValueProposed(index)} inputProps={{ style: { textAlign: "right", fontSize: 13 } }} /></Grid>
                                                 <Grid item xs={2}><TextField disabled value={this.getCurrency1(this.state.propose_data.guaranteed_cash.optional[index].value)} inputProps={{ style: { textAlign: "right", fontSize: 13 } }} /></Grid>
@@ -1072,7 +1161,15 @@ class OfferModelPage extends React.Component<Props, State> {
                                             <Grid key={"sp" + index} container spacing={8}>
 
                                                 <Grid item xs={3}>
-                                                    <NativeSelect
+                                                    <ComboBoxComponent 
+                                                    id="sti" 
+                                                        dataSource={sTermtypeData} 
+                                                        change={this.handleChangeSTIOptionalNameProposed(index)}
+                                                        fields={this.fields}
+                                                        value={this.state.propose_data.sti.optional[index].name}/>
+
+
+                                                    {/*<NativeSelect
                                                         id="sti"
                                                         value={this.state.propose_data.sti.optional[index].name}
                                                         onChange={this.handleChangeSTIOptionalNameProposed(index)}
@@ -1090,7 +1187,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                                                 {sti.type}
                                                             </option>
                                                         ))}
-                                                    </NativeSelect>
+                                                        </NativeSelect>*/}
                                                 </Grid>
                                                 <Grid item xs={2}><TextField value={this.state.propose_data.sti.optional[index].value} onChange={this.handleChangeSTIOptionalValueProposed(index)} inputProps={{ style: { textAlign: "right", fontSize: 13 } }} /></Grid>
                                                 <Grid item xs={2}><TextField disabled value={this.getCurrency1(this.state.propose_data.sti.optional[index].value)} inputProps={{ style: { textAlign: "right", fontSize: 13 } }} /></Grid>
@@ -1204,7 +1301,15 @@ class OfferModelPage extends React.Component<Props, State> {
                                         {this.state.propose_data.lti.optional.map((item: NameValue, index) =>
                                             <Grid container spacing={8}>
                                                 <Grid item xs={3}>
-                                                    <NativeSelect
+                                                    <ComboBoxComponent 
+                                                        id="lti" 
+                                                        dataSource={lTermtypeData} 
+                                                        change={this.handleChangeLTIOptionalNameProposed(index)}
+                                                        fields={this.fields}
+                                                        value={this.state.propose_data.lti.optional[index].name}/>
+
+
+                                                    {/*<NativeSelect
                                                         id="lti"
                                                         value={this.state.propose_data.lti.optional[index].name}
                                                         onChange={this.handleChangeLTIOptionalNameProposed(index)}
@@ -1222,7 +1327,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                                                 {lti.type}
                                                             </option>
                                                         ))}
-                                                    </NativeSelect>
+                                                        </NativeSelect>*/}
                                                 </Grid>
                                                 <Grid item xs={2}><TextField value={this.state.propose_data.lti.optional[index].value} onChange={this.handleChangeLTIOptionalValueProposed(index)} inputProps={{ style: { textAlign: "right", fontSize: 13 } }} /></Grid>
                                                 <Grid item xs={2}><TextField disabled value={this.getCurrency1(this.state.propose_data.lti.optional[index].value)} inputProps={{ style: { textAlign: "right", fontSize: 13 } }} /></Grid>
@@ -1320,7 +1425,15 @@ class OfferModelPage extends React.Component<Props, State> {
                                         {this.state.propose_data.sign_on.optional.map((item: NameValue, index) =>
                                             <Grid container key={'sop' + index} spacing={8}>
                                                 <Grid item xs={3}>
-                                                    <NativeSelect
+                                                    <ComboBoxComponent 
+                                                            id="signon" 
+                                                            dataSource={sOnstypeData} 
+                                                            change={this.handleChangeSignOnOptionalNameProposed(index)}
+                                                            fields={this.fields}
+                                                            value={this.state.propose_data.sign_on.optional[index].name}/>
+
+
+                                                    {/*<NativeSelect
                                                         id="signon"
                                                         value={this.state.propose_data.sign_on.optional[index].name}
                                                         onChange={this.handleChangeSignOnOptionalNameProposed(index)}
@@ -1338,7 +1451,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                                                 {signon.type}
                                                             </option>
                                                         ))}
-                                                    </NativeSelect>
+                                                        </NativeSelect>*/}
                                                 </Grid>
                                                 <Grid item xs={2}><TextField value={this.state.propose_data.sign_on.optional[index].value} onChange={this.handleChangeSignOnOptionalValueProposed(index)} inputProps={{ style: { textAlign: "right", fontSize: 13 } }} /></Grid>
                                                 <Grid item xs={2}><TextField disabled value={this.getCurrency1(this.state.propose_data.sign_on.optional[index].value)} inputProps={{ style: { textAlign: "right", fontSize: 13 } }} /></Grid>

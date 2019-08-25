@@ -32,7 +32,8 @@ class CreateOfferModelPage extends Component<Props, CreateOfferModelState> {
   handleCreateOfferModel = (data) => {
     delete data.comparator_data
     this.props.createOfferModel(data);
-    history.goBack();
+    history.push("/jobposition/offermodel");
+    //history.goBack();
   };
 
   handleCreateOfferModelGenerate = (data) => {

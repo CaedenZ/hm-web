@@ -52,7 +52,8 @@ class UpdateOfferModelPage extends Component<Props, UpdateOfferModelState> {
 
   handleUpdateOfferModel = (data) => {
     this.props.updateOfferModel(data);
-    history.goBack();
+    history.push("/jobposition/offermodel");
+    //history.goBack();
   };
 
   handleUpdateOfferModelGenerate = (data) => {
@@ -68,7 +69,12 @@ class UpdateOfferModelPage extends Component<Props, UpdateOfferModelState> {
   };
 
   handleCreateOfferModelClose = (data) => {
-    
+    let send = {
+      ...data,
+      status: "Close"
+    };
+    this.props.updateOfferModel(send);
+    history.push("/jobposition/offermodel");
   };
 
   render() {
