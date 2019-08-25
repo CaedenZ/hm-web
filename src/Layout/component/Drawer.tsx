@@ -218,7 +218,7 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
         //   icon: <UnitIcon />,
         // },
         {
-          title: "Entity",
+          title: "Legal Entity",
           path: "/entity",
           icon: <CompanyIcon />,
           index: 2
