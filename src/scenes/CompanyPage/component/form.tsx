@@ -347,50 +347,8 @@ class CreateCompanyPage extends Component<Props, FormState> {
           onSubmit={e => this.props.onSubmit(e, this.state)}
           style={{ padding: "2rem" }}
         >
-          <Grid justify="center" spacing={16} container>
-            <Grid item direction="column" xs={3} container>
-              <Grid item xs={6}>
-                <Typography>Company Icon</Typography>
-                <div style={{ margin: "1rem 1rem", marginTop: 0 }}>
-                  {/* {this.props.view ? (
-                    <img
-                      alt="company icon"
-                      src={this.state.logo_small}
-                      style={{ width: 200, height: 150 }}
-                    />
-                  ) : (
-                    <Avatar
-                      width={200}
-                      height={150}
-                      onCrop={this.onCrop}
-                      onClose={this.onClose}
-                    />
-                  )} */}
-                  {this.companyIcon()}
-                </div>
-              </Grid>
-              <Grid item xs={6}>
-                <Typography>Company Logo</Typography>
-                <div style={{ margin: "1rem 1rem", marginTop: 0 }}>
-                  {/* {this.props.view ? (
-                    <img
-                      alt="company main"
-                      src={this.state.logo_main}
-                      style={{ width: 200, height: 150 }}
-                    />
-                  ) : (
-                    <Avatar
-                      width={200}
-                      height={150}
-                      onCrop={this.onMainCrop}
-                      onClose={this.onMainClose}
-                    />
-                  )} */}
-                  {this.companyMain()}
-                </div>
-              </Grid>
-            </Grid>
-            <Grid alignItems="center" container item xs>
+          <Grid justify="center" spacing={16} container>           
+            <Grid item direction="column" xs={9} container>
               <Grid container>
                 <Grid container item xs={6}>
                   <TextField
@@ -417,18 +375,6 @@ class CreateCompanyPage extends Component<Props, FormState> {
                     margin="normal"
                   />
                 </Grid>
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid justify="flex-start" container />
-          <Divider />
-          <Typography component="h1" variant="h6">
-            Operational Infomation
-          </Typography>
-          <Grid justify="center" container>
-            <Grid item direction="column" xs={3} container />
-            <Grid container item xs>
-              <Grid container>
                 <Grid container item xs={6}>
                   {this.props.sectorList.length > 0 && (
                     <Select
@@ -477,9 +423,8 @@ class CreateCompanyPage extends Component<Props, FormState> {
                     )}
                   </Grid>
                 )}
-              </Grid>
-              <Grid container>
-                <Grid container item xs={12}>
+
+                  <Grid container item xs={12}>
                   {this.props.parameterList.countryList.length > 0 && (
                     <Select
                       isDisabled={this.props.view}
@@ -506,9 +451,7 @@ class CreateCompanyPage extends Component<Props, FormState> {
                     />
                   )}
                 </Grid>
-              </Grid>
-              <Grid container>
-                <Grid container item xs={6}>
+                <Grid container item xs={12}>
                   {this.props.parameterList.distintCurrencyList.length > 0 && (
                     <Select
                       isDisabled={this.props.view}
@@ -535,8 +478,49 @@ class CreateCompanyPage extends Component<Props, FormState> {
                 </Grid>
               </Grid>
             </Grid>
+            <Grid item direction="column" xs={3} container>
+              <Grid item xs={6}>
+                <Typography>Company Icon</Typography>
+                <div style={{ margin: "1rem 1rem", marginTop: 0 }}>
+                  {/* {this.props.view ? (
+                    <img
+                      alt="company icon"
+                      src={this.state.logo_small}
+                      style={{ width: 200, height: 150 }}
+                    />
+                  ) : (
+                    <Avatar
+                      width={200}
+                      height={150}
+                      onCrop={this.onCrop}
+                      onClose={this.onClose}
+                    />
+                  )} */}
+                  {this.companyIcon()}
+                </div>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography>Company Logo</Typography>
+                <div style={{ margin: "1rem 1rem", marginTop: 0 }}>
+                  {/* {this.props.view ? (
+                    <img
+                      alt="company main"
+                      src={this.state.logo_main}
+                      style={{ width: 200, height: 150 }}
+                    />
+                  ) : (
+                    <Avatar
+                      width={200}
+                      height={150}
+                      onCrop={this.onMainCrop}
+                      onClose={this.onMainClose}
+                    />
+                  )} */}
+                  {this.companyMain()}
+                </div>
+              </Grid>
+            </Grid>
           </Grid>
-          <Divider />
           <Divider />
           {this.submitbutton()}
         </form>
