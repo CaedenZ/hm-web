@@ -34,10 +34,14 @@ import CustomizedTable_v2 from "./component/stable";
 
 const styles = (theme: Theme) =>
   createStyles({
+    main: {
+      width: "100%",
+      padding: "1rem"
+    },
     root: {
       width: "100%",
       height: "100%",
-      marginTop: theme.spacing.unit * 3,
+      marginTop: theme.spacing.unit * 1,
       overflowX: "auto"
     },
     table: {
@@ -179,9 +183,9 @@ class JobGradePage extends React.Component<Props, State> {
     let { classes } = this.props
     return (
       <main>
-        {/*<CustomButton onClick={this.handleCreateJobGrade}>Create</CustomButton>*/}
-        {/*<CustomizedTable jobgradeList={data} onUpdate={this.handleUpdate} />*/}
+        <Paper className={classes.main}>
         <CustomizedTable_v2 jobgradeList={data} onUpdate={this.handleUpdate} />
+        </Paper>
       </main>
     );
   }

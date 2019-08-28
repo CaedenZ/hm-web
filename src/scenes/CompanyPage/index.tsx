@@ -53,9 +53,13 @@ const CustomTableCell = withStyles(theme => ({
 
 const styles = (theme: Theme) =>
   createStyles({
+    main: {
+      width: "100%",
+      padding: "1rem"
+    },
     root: {
       width: "100%",
-      marginTop: theme.spacing.unit * 3,
+      marginTop: theme.spacing.unit * 1,
       overflowX: "auto",   
     },    
     table: {
@@ -240,81 +244,82 @@ class CustomizedTable extends React.Component<Props, State> {
 
     return (
       <main>
+        <Paper className={classes.main}>
         {ProtectedComponent()}
-        <Grid container>
-          {!isTechnical(this.props.role) && (
-            <Grid container item xs={2}>
-              <CustomButton onClick={() => history.push("/company/create")}>New Company</CustomButton>
-            </Grid>
-          )}
-          <Grid container item xs={6}>
-            <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon />
+          <Grid container>
+            {!isTechnical(this.props.role) && (
+              <Grid container item xs={2}>
+                <CustomButton onClick={() => history.push("/company/create")}>New Company</CustomButton>
+              </Grid>
+            )}
+            <Grid container item xs={6}>
+              <div className={classes.search}>
+                <div className={classes.searchIcon}>
+                  <SearchIcon />
+                </div>
+                <InputBase
+                  placeholder="Search…"
+                  classes={{
+                    root: classes.inputRoot,
+                    input: classes.inputInput
+                  }}
+                  onChange={this.handleSearch}
+                />
               </div>
-              <InputBase
-                placeholder="Search…"
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput
-                }}
-                onChange={this.handleSearch}
-              />
-            </div>
+            </Grid>
           </Grid>
-        </Grid>
-        <Paper className={classes.root}>
-          <Table className={classes.table}>
-            <TableHead>
-              <TableRow>
-                <CustomTableCell>Company Name</CustomTableCell>
-                <CustomTableCell align="left">Action</CustomTableCell>
-              </TableRow>
-            </TableHead>
-            {this.filteredList().length > 0 && (
-              <TableBody>
-                {this.filteredList()
-                  .sort(this.sortCompanyListcompare)
-                  .map((row: Company) => (
-                    <TableRow className={classes.row} key={row.company_id}>
-                      <CustomTableCell component="th" scope="row">
-                        {row.company_name}
-                      </CustomTableCell>
-                      <CustomTableCell align="left">
-                      <IconButton
-                          onClick={() => this.handleViewButtonClick(row)}
-                        >
-                          <ViewIcon />
-                        </IconButton>
+          <Paper className={classes.root}>
+            <Table className={classes.table}>
+              <TableHead>
+                <TableRow>
+                  <CustomTableCell>Company Name</CustomTableCell>
+                  <CustomTableCell align="left">Action</CustomTableCell>
+                </TableRow>
+              </TableHead>
+              {this.filteredList().length > 0 && (
+                <TableBody>
+                  {this.filteredList()
+                    .sort(this.sortCompanyListcompare)
+                    .map((row: Company) => (
+                      <TableRow className={classes.row} key={row.company_id}>
+                        <CustomTableCell component="th" scope="row">
+                          {row.company_name}
+                        </CustomTableCell>
+                        <CustomTableCell align="left">
                         <IconButton
-                          onClick={() => this.handleDetailButtonClick(row)}
-                        >
-                          <DetailIcon />
-                        </IconButton>                        
-                        {!isTechnical(this.props.role) && (
-                          <IconButton
-                            onClick={() => this.handleUpdateButtonClick(row)}
+                            onClick={() => this.handleViewButtonClick(row)}
                           >
-                            <UpdateIcon />
+                            <ViewIcon />
                           </IconButton>
-                        )}
-
-                        {row.company_id !== "5ZwOXIkeKuPhpFriTsmD" &&
-                          isMaster(this.props.role) && (
+                          <IconButton
+                            onClick={() => this.handleDetailButtonClick(row)}
+                          >
+                            <DetailIcon />
+                          </IconButton>                        
+                          {!isTechnical(this.props.role) && (
                             <IconButton
-                              onClick={() => this.handleDelete(row.company_id)}
+                              onClick={() => this.handleUpdateButtonClick(row)}
                             >
-                              <DeleteIcon />
+                              <UpdateIcon />
                             </IconButton>
                           )}
-                      </CustomTableCell>
-                    </TableRow>
-                  ))}
-              </TableBody>
-            )}
-          </Table>
-        </Paper>
 
+                          {row.company_id !== "5ZwOXIkeKuPhpFriTsmD" &&
+                            isMaster(this.props.role) && (
+                              <IconButton
+                                onClick={() => this.handleDelete(row.company_id)}
+                              >
+                                <DeleteIcon />
+                              </IconButton>
+                            )}
+                        </CustomTableCell>
+                      </TableRow>
+                    ))}
+                </TableBody>
+              )}
+            </Table>
+          </Paper>
+        </Paper>
         <Dialog
           open={this.state.detail}
           onClose={this.handleClose}

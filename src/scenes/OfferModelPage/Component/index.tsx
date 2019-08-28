@@ -783,7 +783,7 @@ class OfferModelPage extends React.Component<Props, State> {
                     {this.state.status}
                     </Typography>
                     <Typography className={classes.title} color="textSecondary" gutterBottom>
-                    TOM Offer Modeller
+                    TOM Offer Modeller 
                     </Typography>
                 </Grid>
                 <Grid item xs={6}>
@@ -1253,6 +1253,27 @@ class OfferModelPage extends React.Component<Props, State> {
 
                     <div className={classes.spacediv} />
 
+                    <Paper className={classes.colorcontainer}>
+                        <Grid container>
+                            <Grid item xs={5} style={{ height: "100%" }}>
+                            <Grid container spacing={8} style={{ marginLeft: "0.5rem" }}>
+                                <Grid item xs={4} style={{ width: "100%", textAlign: "left"}}></Grid>
+                                <Grid item xs={3} style={{ width: "100%", textAlign: "right", fontWeight: 'bold'}}>{this.state.currency}</Grid>
+                                <Grid item xs={3} style={{ width: "100%", textAlign: "right", fontWeight: 'bold'}}>{this.state.currency1}</Grid>
+                            </Grid>
+                            </Grid>
+                            <Grid item xs={7} style={{ height: "100%" }}>
+                            <Grid container spacing={8} style={{ marginLeft: "1.5rem" }}>
+                                <Grid item xs={2}></Grid>
+                                <Grid item xs={2} style={{ width: "100%", textAlign: "right", fontWeight: 'bold'}}>{this.state.currency}</Grid>
+                                <Grid item xs={2} style={{ width: "100%", textAlign: "right", fontWeight: 'bold'}}>{this.state.currency1}</Grid>
+                                <Grid item xs={2} style={{ width: "100%", textAlign: "right", fontWeight: 'bold'}}>Difference</Grid>
+                                <Grid item xs={1} />
+                            </Grid>
+                            </Grid>
+                        </Grid>
+                    </Paper>
+                    <div className={classes.spacediv} />
                     <Paper className={classes.colorcontainer}>
                         <Grid container>
                             <Grid item xs={5} style={{ height: "100%" }}>

@@ -12,15 +12,21 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import CustomButton from "../../../helper/components/CustomButton";
 import { GridComponent, ColumnsDirective, ColumnDirective, Inject, Page, Group, Sort, Filter, VirtualScroll, ColumnChooser } from "@syncfusion/ej2-react-grids";
 import { enableRipple, getValue } from '@syncfusion/ej2-base';
+import { history } from "../../../store";
 
 enableRipple(true);
 let refresh: Boolean;
 
 const styles = (theme: Theme) =>
   createStyles({
+    main: {
+      width: "100%",
+      padding: "1rem"
+    },
     root: {
       width: "100%",
-      marginTop: theme.spacing.unit * 3,
+      height: "100%",
+      marginTop: theme.spacing.unit * 1,
       overflowX: "auto"
     },
     table: {
@@ -329,19 +335,8 @@ class PayrollUploadPage extends React.Component<Props, State> {
 
     return (
       <main>
-        <input
-          accept="*"
-          id="contained-button-file"
-          type="file"
-          onChange={this.readFile}
-          name="file"
-          style={{ display: "none" }}
-        />
-        <label htmlFor="contained-button-file" >
-          <CustomButton component="span">
-            Upload
-              </CustomButton>
-        </label>
+        <Paper className={classes.main}>
+        <CustomButton onClick={() => history.push("/payrollupload/upload")}>File Upload</CustomButton>
 
         {/* <Button color="primary" onClick={this.listqueue} variant="contained" component="span">
             List Queue
@@ -370,9 +365,9 @@ class PayrollUploadPage extends React.Component<Props, State> {
               </ColumnsDirective>
               <Inject services={[Page, Group, Sort, Filter,ColumnChooser]} />
             </GridComponent>
-          </Paper>
-        </Grid>}
-
+            </Paper>
+          </Grid>}
+        </Paper>
 
         {/*<Dialog open={this.state.queue} onClose={this.handleClose} scroll='paper' >
           <div style={{ width: '800px' }}>
