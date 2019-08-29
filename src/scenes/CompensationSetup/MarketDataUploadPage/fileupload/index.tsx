@@ -91,7 +91,7 @@ interface InState {
   sessionkey: string;
   companyid: string;
 }
-class FileUploadPage extends React.Component<Props, State> {
+class FileUploadPageMarket extends React.Component<Props, State> {
   public editOptions: EditSettingsModel = { allowEditing: true, mode: 'Normal' };
 
   state: State = {
@@ -145,7 +145,7 @@ class FileUploadPage extends React.Component<Props, State> {
     let data = {
       session_key: this.props.sessionkey,
       company_id: this.props.companyid,
-      type: 1,
+      type: 0,
       file_name: key,
       original_file_name: fileToBeUploaded.name,
     }
@@ -160,7 +160,7 @@ class FileUploadPage extends React.Component<Props, State> {
     let data = {
       session_key: this.props.sessionkey,
       customer_id: this.props.companyid,
-      type: '1'
+      type: '0'
     }
     const listqueue = await $axios.post('/company/getImportQueue', data);
     console.log("List Queue Item");
@@ -170,7 +170,7 @@ class FileUploadPage extends React.Component<Props, State> {
     this.state.format_listqueue = [];
     this.state.raw_listqueue.forEach(element => {
       let date = moment(element.uploaded).utc().format('YYYY-MM-DD');
-      this.state.format_listqueue.push({ source_filepath: element.source_filepath, uploaded: date, status: this.getstatus(element.status), active: this.getactive(element.active), original_filename: element.original_filename,source_url: element.source_url })
+      this.state.format_listqueue.push({ source_filepath: element.source_filepath, uploaded: date, status: this.getstatus(element.status), active: this.getactive(element.active), original_filename: element.original_filename, source_url: element.source_url })
     });
     this.setState({ data: true })
     console.log(this.state.format_listqueue)
@@ -216,7 +216,7 @@ class FileUploadPage extends React.Component<Props, State> {
     console.log(args);
     console.log(result.source_filepath);
     
-    history.push("/payrollupload/upload/log",result.source_filepath)
+    history.push("/marketdataupload/upload/log",result.source_filepath)
 
   }
 
@@ -233,7 +233,7 @@ class FileUploadPage extends React.Component<Props, State> {
         session_key: this.props.sessionkey,
         source_filepath: args.data.source_filepath,
         customer_id: this.props.companyid,
-        type: '1',
+        type: '0',
         active: pactive
       }
       const setActive_result = await $axios.post('/company/setActiveData', data);
@@ -247,8 +247,8 @@ class FileUploadPage extends React.Component<Props, State> {
     const that = this
 
     function fileurlLink(args: object) {      
-      return (<a rel='nofollow' href={getValue('source_url', args)}>{getValue('original_filename', args)}</a>)
-    }
+        return (<a rel='nofollow' href={getValue('source_url', args)}>{getValue('original_filename', args)}</a>)
+      }
 
     return (
       <main>
@@ -288,7 +288,7 @@ class FileUploadPage extends React.Component<Props, State> {
   }
 }
 
-(FileUploadPage as React.ComponentClass<Props>).propTypes = {
+(FileUploadPageMarket as React.ComponentClass<Props>).propTypes = {
   classes: PropTypes.object.isRequired
 } as any;
 
@@ -302,4 +302,4 @@ function mapStateToProps(state: RootState) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(FileUploadPage));
+)(withStyles(styles)(FileUploadPageMarket));

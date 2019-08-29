@@ -13,14 +13,21 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import CustomButton from "../../../helper/components/CustomButton";
 import { GridComponent, ColumnsDirective, ColumnDirective, Inject, Page, Group, Sort, Filter, VirtualScroll, ColumnChooser } from "@syncfusion/ej2-react-grids";
 import { enableRipple, getValue } from '@syncfusion/ej2-base';
+import { history } from "../../../store";
+
 enableRipple(true);
 let refresh: Boolean;
 
 const styles = (theme: Theme) =>
   createStyles({
+    main: {
+      width: "100%",
+      padding: "1rem"
+    },
     root: {
       width: "100%",
-      marginTop: theme.spacing.unit * 3,
+      height: "100%",
+      marginTop: theme.spacing.unit * 1,
       overflowX: "auto"
     },
     table: {
@@ -297,14 +304,6 @@ class MarketDataUploadPage extends React.Component<Props, State> {
         });
     }
 
-    const columns: any = [
-      { key: 'source_filepath', name: "source_filepath" },
-      { key: 'type', name: "type" },
-      { key: 'uploaded', name: "uploaded" },
-      { key: 'status', name: "status" },
-      { key: 'action', name: "action" },
-    ]
-
     function actions(row) {
       return [
         // {
@@ -337,26 +336,8 @@ class MarketDataUploadPage extends React.Component<Props, State> {
 
     return (
       <main>
-        <input
-          accept="*"
-          id="contained-button-file"
-          type="file"
-          onChange={this.readFile}
-          name="file"
-          style={{ display: "none" }}
-        />
-        <label htmlFor="contained-button-file">
-          <CustomButton component="span">
-            Upload
-              </CustomButton>
-        </label>
-
-        {/* <Button color="primary" onClick={this.listqueue} variant="contained" component="span">
-            List Queue
-              </Button>
-          <Button color="primary" onClick={this.handleManualEntry} variant="contained" component="span">
-            Manual Entry
-              </Button> */}
+        <Paper className={classes.main}>
+        <CustomButton onClick={() => history.push("/marketdataupload/upload")}>File Upload</CustomButton>
 
         {this.state.data && <Grid container>
           <Paper className={classes.root}>
@@ -381,75 +362,8 @@ class MarketDataUploadPage extends React.Component<Props, State> {
             </GridComponent>
           </Paper>
         </Grid>}
+      </Paper>
 
-        <Dialog open={this.state.queue} onClose={this.handleClose} scroll='paper'>
-          <div style={{ width: '800px' }}>
-            <ReactDataGrid
-              columns={columns}
-              rowGetter={i => this.state.listqueue[i]}
-              rowsCount={this.state.listqueue.length}
-              getCellActions={getCellActions}
-              enableCellSelect={true} />
-          </div>
-        </Dialog>
-
-        <Dialog open={this.state.queueitem} onClose={this.handleClose} scroll='paper'>
-          <Table className={classes.table}>
-            <TableHead>
-              <TableRow>
-                <CustomTableCell align="left">source_filepath</CustomTableCell>
-                <CustomTableCell align="left">uploaded</CustomTableCell>
-                <CustomTableCell align="left">user</CustomTableCell>
-                <CustomTableCell align="left">customer_id</CustomTableCell>
-                <CustomTableCell align="left">status</CustomTableCell>
-                <CustomTableCell align="left">process_dt</CustomTableCell>
-              </TableRow>
-            </TableHead>
-            {this.state.listqueueitem.length > 0 && (
-              <TableBody>
-                {this.state.listqueueitem.map((row, index) => (
-                  <TableRow className={classes.row} key={row.source_filepath}>
-                    <CustomTableCell component="th" scope="row">
-                      {row.source_filepath}
-                    </CustomTableCell>
-                    <CustomTableCell align="left">{row.uploaded}</CustomTableCell>
-                    <CustomTableCell align="left">{row.user}</CustomTableCell>
-                    <CustomTableCell align="left">{row.customer_id}</CustomTableCell>
-                    <CustomTableCell align="left">{this.getstatus(row.status)}</CustomTableCell>
-                    <CustomTableCell align="left">{row.process_dt}</CustomTableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            )}
-          </Table>
-        </Dialog>
-
-        <Dialog open={this.state.queuelog} onClose={this.handleClose} scroll='paper'>
-          <Table className={classes.table}>
-            <TableHead>
-              <TableRow>
-                <CustomTableCell align="left">record_no</CustomTableCell>
-                <CustomTableCell align="left">status</CustomTableCell>
-                <CustomTableCell align="left">message</CustomTableCell>
-              </TableRow>
-            </TableHead>
-            {this.state.listqueuelog.length > 0 && (
-              <TableBody>
-                {this.state.listqueuelog.map((row, index) => (
-                  <TableRow className={classes.row} key={row.record_no}>
-                    <CustomTableCell component="th" scope="row">{row.record_no}</CustomTableCell>
-                    <CustomTableCell align="left">{row.status}</CustomTableCell>
-                    <CustomTableCell align="left">{row.message}</CustomTableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            )}
-          </Table>
-        </Dialog>
-
-        <Dialog open={this.state.manual} onClose={this.handleClose} scroll='paper'>
-          <ManualForm />
-        </Dialog>
       </main>
     );
   }
