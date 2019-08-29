@@ -13,6 +13,7 @@ import CustomButton from "../../../../helper/components/CustomButton";
 import { GridComponent, ColumnsDirective, ColumnDirective, Inject, Page, Group, Sort, Filter, VirtualScroll, ColumnChooser, CommandModel, CommandClickEventArgs, CommandColumn, Edit, EditSettingsModel } from "@syncfusion/ej2-react-grids";
 import { enableRipple, getValue } from '@syncfusion/ej2-base';
 import moment from "moment";
+import { history } from "../../../../store";
 
 enableRipple(true);
 let refresh: Boolean;
@@ -149,6 +150,8 @@ class FileUploadPage extends React.Component<Props, State> {
 
     await $axios.post("/company/uploadExceldata", data);
     this.setState({ filename: fileToBeUploaded.name })
+    console.log("Upload OK");
+    this.listqueue()
   };
 
   listqueue = async () => {
@@ -169,6 +172,7 @@ class FileUploadPage extends React.Component<Props, State> {
     });
     this.setState({ data: true })
     console.log(this.state.format_listqueue)
+    //this.listqueue()
   }
 
   getstatus = (id) => {
@@ -208,8 +212,9 @@ class FileUploadPage extends React.Component<Props, State> {
   public commandClick(args: CommandClickEventArgs): void  {    
     const result = args.rowData as ListQueueData;
     console.log(args);
-    console.log(result);
-
+    console.log(result.source_filepath);
+    
+    history.push("/payrollupload/upload/log",result.source_filepath)
 
   }
 

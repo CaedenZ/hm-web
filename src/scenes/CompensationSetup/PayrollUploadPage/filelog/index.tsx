@@ -64,6 +64,7 @@ export interface Props
 interface State {
   data: boolean;
   listqueuelog: ListQueueLog[];
+  file: string;
 }
 
 interface ListQueueLog {
@@ -75,17 +76,22 @@ interface ListQueueLog {
 interface InState {
   sessionkey: string;
   companyid: string;
+  filename: any;
 }
 
 class FileLogPage extends React.Component<Props, State> {
   state: State = {
     data: false,
     listqueuelog: [],
+    file: ""
   }
 
   componentDidMount() {
     this.setState({ data: false })
-    //this.listqueuelog(this.props.filename)
+    console.log("Mount")
+    this.state.file = this.props.filename.location.state;
+    console.log(this.props.filename.location.state)
+    this.listqueuelog(this.state.file)
 
   }
 

@@ -683,10 +683,10 @@ class RootRoute extends React.Component<Props, State> {
 
             <Route
               exact
-              path="/payrollupload/log"
-              render={() => (
+              path="/payrollupload/upload/log"
+              render={(props) => (
                 <PrimaryLayout>
-                  <PayrollFileLogPage />
+                  <PayrollFileLogPage filename={props}/>
                 </PrimaryLayout>
               )}
             />
