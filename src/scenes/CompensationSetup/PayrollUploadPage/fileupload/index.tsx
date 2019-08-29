@@ -210,6 +210,7 @@ class FileUploadPage extends React.Component<Props, State> {
     console.log(args);
     console.log(result);
 
+
   }
 
   async actionBegin(args: any): Promise<void> {

@@ -99,6 +99,7 @@ import UpdateShortIncentivePage from "../scenes/CompensationSetup/ShortIncentive
 
 import PayrollUploadPage from "../scenes/CompensationSetup/PayrollUploadPage";
 import PayrollFileUploadPage from "../scenes/CompensationSetup/PayrollUploadPage/fileupload";
+import PayrollFileLogPage from "../scenes/CompensationSetup/PayrollUploadPage/filelog";
 
 import MarketDataUploadPage from "../scenes/CompensationSetup/MarketDataUploadPage";
 
@@ -676,6 +677,16 @@ class RootRoute extends React.Component<Props, State> {
               render={() => (
                 <PrimaryLayout>
                   <PayrollFileUploadPage />
+                </PrimaryLayout>
+              )}
+            />
+
+            <Route
+              exact
+              path="/payrollupload/log"
+              render={() => (
+                <PrimaryLayout>
+                  <PayrollFileLogPage />
                 </PrimaryLayout>
               )}
             />
