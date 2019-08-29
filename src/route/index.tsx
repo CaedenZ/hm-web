@@ -105,6 +105,8 @@ import MarketDataUploadPage from "../scenes/CompensationSetup/MarketDataUploadPa
 import MarketFileUploadPage from "../scenes/CompensationSetup/MarketDataUploadPage/fileupload";
 import MarketFileLogPage from "../scenes/CompensationSetup/MarketDataUploadPage/filelog";
 
+import CompensationRulesPage from "../scenes/CompensationSetup/CompensationRulePage";
+
 import JobChartPage from "../scenes/ConfigurationPage/JobChartPage";
 
 import OfferModelPage from "../scenes/OfferModelPage"
@@ -719,6 +721,16 @@ class RootRoute extends React.Component<Props, State> {
               render={(props) => (
                 <PrimaryLayout>
                   <MarketFileLogPage filename={props}/>
+                </PrimaryLayout>
+              )}
+            />
+
+            <Route
+              exact
+              path="/rules"
+              render={() => (
+                <PrimaryLayout>
+                  <CompensationRulesPage/>
                 </PrimaryLayout>
               )}
             />

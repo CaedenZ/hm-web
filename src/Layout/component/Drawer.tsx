@@ -370,22 +370,28 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
     const jobgradefunction = (): any => {
       let adm = [
         {
+          title: "Rule Kit",
+          path: "/rules",
+          icon: <JobGradeIcon />,
+          index: 12
+        },
+        {
           title: "Job Grade",
           path: "/jobgrade",
           icon: <JobGradeIcon />,
-          index: 12
+          index: 13
         },
         {
           title: "Salary Range",
           path: "/salaryrange",
           icon: <SalaryRangeIcon />,
-          index: 13
+          index: 14
         },
         {
           title: "Allowances",
           path: "/allowances",
           icon: <AllowanceIcon />,
-          index: 14
+          index: 15
         },
         {
           title: "Signons",
