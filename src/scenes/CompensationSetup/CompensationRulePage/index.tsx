@@ -10,11 +10,13 @@ import { GridComponent, ColumnsDirective, ColumnDirective, Inject, Page, Group, 
 import { enableRipple, getValue } from '@syncfusion/ej2-base';
 import moment from "moment";
 import { Paper, Grid, Button, Typography } from "@material-ui/core";
-import { DropDownListComponent, MultiSelectComponent } from "@syncfusion/ej2-react-dropdowns";
+import { DropDownListComponent, MultiSelectComponent, CheckBoxSelection, ListBoxComponent } from "@syncfusion/ej2-react-dropdowns";
 import { JobGrade } from "../../../interface/jobgradeInterface";
 import { arrayUnique } from "../../../helper/uniqeArray";
 import { JobFunction } from "../../../interface/jobfunctionInterface";
 import { Company } from "../../../interface/companyInterface";
+import { CountryState } from "../../../interface/countryInterface";
+import { Sector } from "../../../interface/sectorInterface";
 
 enableRipple(true);
 let refresh: Boolean;
@@ -74,6 +76,8 @@ interface InState {
   selectedCompany: Company;
   jobgradeList: JobGrade[];
   jobfunctionList: JobFunction[];
+  parameterList: CountryState;
+  sectorList: Sector[];
 }
 
 class CompensationRulesPage extends React.Component<Props, State> {
@@ -106,6 +110,7 @@ class CompensationRulesPage extends React.Component<Props, State> {
   }
 
   private fields: Object = { text: 'name', value: 'id' };
+  private groupFields: Object = { groupBy: 'group', text: 'name', value: 'id' };
 
   gRatiotypeTypes() {
     const type = []
@@ -152,6 +157,73 @@ class CompensationRulesPage extends React.Component<Props, State> {
     return type
   };
 
+  countryTypes() {
+    const type = []
+    this.props.parameterList.countryList.forEach(element => {
+      let newItem: { [key: string]: Object; } = {'name': element.country_name, 'id': element.country_name };
+      type.push(newItem)
+    });
+    console.log(type);
+    return type
+  };
+
+  industryTypes() {
+    const type = []
+    this.props.sectorList.forEach(element => {
+      element.industry.forEach(selement => {
+        let newItem: { [key: string]: Object; } = {'name': selement.name, 'id': selement.industry_id };
+        type.push(newItem)
+      });      
+    });
+    console.log(type);
+    return type
+  };
+
+  sectorTypes() {
+    const type = []
+    this.props.sectorList.forEach(element => {
+      let newItem: { [key: string]: Object; } = {'name': element.name, 'id': element.sector_id };
+      type.push(newItem)
+    });
+    console.log(type);
+    return type
+  };
+
+  sectorGroupTypes() {
+    const type = []
+    this.props.sectorList.forEach(element => {
+      element.industry.forEach(selement => {
+        let newItem: { [key: string]: Object; } = {'group': element.name, 'name': selement.name, 'id': selement.industry_id };
+        type.push(newItem)
+      });    
+    });
+    console.log(type);
+    return type
+  };
+
+  businessTypes() {
+    const type = []
+    let newItem0: { [key: string]: Object; } = {'name': 'Company A', 'id': 'CompanyA' };
+    type.push(newItem0)
+    let newItem: { [key: string]: Object; } = {'name': 'Company B', 'id': 'CompanyB' };
+    type.push(newItem)
+    console.log(type);
+    return type
+  };
+
+  pReferenceTypes() {
+    const type = []
+    let newItem0: { [key: string]: Object; } = {'name': 'Salary Range', 'id': '1' };
+    type.push(newItem0)
+    let newItem: { [key: string]: Object; } = {'name': 'Payroll Information', 'id': '2' };
+    type.push(newItem)
+    let newItem1: { [key: string]: Object; } = {'name': 'Market Data', 'id': '3' };
+    type.push(newItem1)
+    console.log(type);
+    return type
+  };
+  
+
   render() {
     const { classes } = this.props
     const that = this
@@ -171,7 +243,7 @@ class CompensationRulesPage extends React.Component<Props, State> {
                     Total Offering Modeller
                     </Typography>
                 </Grid>
-                <Grid item xs={12} className={classes.qns}>
+                <Grid item xs={6} className={classes.qns}>
                     <Typography className={classes.headlabel} color="textSecondary" gutterBottom>
                     Business Rules
                     </Typography>
@@ -179,7 +251,27 @@ class CompensationRulesPage extends React.Component<Props, State> {
                     1. Select your benchmarking Industry or Sector
                     </Typography>
                 </Grid>
-                <Grid item xs={12} className={classes.qns}>
+                <Grid item xs={6} className={classes.qns}>
+                    <Typography className={classes.headlabel} color="textSecondary" gutterBottom>
+                    Industries/Sectors
+                    </Typography>
+                    <MultiSelectComponent id="qns1" dataSource={this.sectorGroupTypes()} mode="CheckBox" showSelectAll={true} fields={this.groupFields} placeholder="Industries and Sectors">
+                    <Inject services={[CheckBoxSelection]} />
+                    </MultiSelectComponent>
+                    {/*<Typography className={classes.headlabel} color="textSecondary" gutterBottom>
+                    Sector
+                    </Typography>
+                    <MultiSelectComponent id="qns1_1" dataSource={this.industryTypes()} mode="CheckBox" showSelectAll={true} fields={this.fields} placeholder="Sectors">
+                    <Inject services={[CheckBoxSelection]} />
+                    </MultiSelectComponent>*/}
+                    <Typography className={classes.headlabel} color="textSecondary" gutterBottom>
+                    Business Group (SME)
+                    </Typography>
+                    <MultiSelectComponent id="qns1_1" dataSource={this.businessTypes()} mode="CheckBox" showSelectAll={true} fields={this.fields} placeholder="Businesses">
+                    <Inject services={[CheckBoxSelection]} />
+                    </MultiSelectComponent>
+                </Grid>
+                <Grid item xs={6} className={classes.qns}>
                     <Typography className={classes.headlabel} color="textSecondary" gutterBottom>
                     Business Rules
                     </Typography>
@@ -187,13 +279,41 @@ class CompensationRulesPage extends React.Component<Props, State> {
                     2. Select your specific benchmarking for business division
                     </Typography>
                 </Grid>
-                <Grid item xs={12} className={classes.qns}>
+                <Grid item xs={6} className={classes.qns}>
+                    <Typography className={classes.headlabel} color="textSecondary" gutterBottom>
+                    Industries/Sectors
+                    </Typography>
+                    <MultiSelectComponent id="qns2" dataSource={this.sectorGroupTypes()} mode="CheckBox" showSelectAll={true} fields={this.groupFields} placeholder="Industries and Sectors">
+                    <Inject services={[CheckBoxSelection]} />
+                    </MultiSelectComponent>
+                    {/*<Typography className={classes.headlabel} color="textSecondary" gutterBottom>
+                    Sector
+                    </Typography>
+                    <MultiSelectComponent id="qns1_1" dataSource={this.industryTypes()} mode="CheckBox" showSelectAll={true} fields={this.fields} placeholder="Sectors">
+                    <Inject services={[CheckBoxSelection]} />
+                    </MultiSelectComponent>*/}
+                    <Typography className={classes.headlabel} color="textSecondary" gutterBottom>
+                    Business Group (SME)
+                    </Typography>
+                    <MultiSelectComponent id="qns2_1" dataSource={this.businessTypes()} mode="CheckBox" showSelectAll={true} fields={this.fields} placeholder="Businesses">
+                    <Inject services={[CheckBoxSelection]} />
+                    </MultiSelectComponent>
+                </Grid>
+                <Grid item xs={6} className={classes.qns}>
                     <Typography className={classes.headlabel} color="textSecondary" gutterBottom>
                     Business Rules
                     </Typography>
                     <Typography className={classes.label} color="textSecondary" gutterBottom>
                     3. Select your country specific benchmarking
                     </Typography>
+                </Grid>
+                <Grid item xs={6} className={classes.qns}>
+                    <Typography className={classes.headlabel} color="textSecondary" gutterBottom>
+                    Countries
+                    </Typography>
+                    <MultiSelectComponent id="qns6" dataSource={this.countryTypes()} mode="CheckBox" showSelectAll={true} fields={this.fields} placeholder="Countries">
+                    <Inject services={[CheckBoxSelection]} />
+                    </MultiSelectComponent>
                 </Grid>
                 <Grid item xs={6} className={classes.qns}>
                     <Typography className={classes.headlabel} color="textSecondary" gutterBottom>
@@ -225,19 +345,29 @@ class CompensationRulesPage extends React.Component<Props, State> {
                     <Typography className={classes.headlabel} color="textSecondary" gutterBottom>
                     Grade
                     </Typography>
-                    <MultiSelectComponent id="qns5_1" dataSource={this.jobgradeTypes()} mode="Default" fields={this.fields} placeholder="Grade" />
+                    <MultiSelectComponent id="qns5_1" dataSource={this.jobgradeTypes()} mode="CheckBox" showSelectAll={true} fields={this.fields} placeholder="Grade">
+                    <Inject services={[CheckBoxSelection]} />
+                    </MultiSelectComponent>
                     <Typography className={classes.headlabel} color="textSecondary" gutterBottom>
                     Job Function
                     </Typography>
-                    <MultiSelectComponent id="qns5_2" dataSource={this.jobFunctionTypes()} mode="Default" fields={this.fields} placeholder="Job Function" />
+                    <MultiSelectComponent id="qns5_2" dataSource={this.jobFunctionTypes()} mode="CheckBox" showSelectAll={true} fields={this.fields} placeholder="Job Function">
+                    <Inject services={[CheckBoxSelection]} />
+                    </MultiSelectComponent>
                 </Grid>
-                <Grid item xs={12} className={classes.qns}>
+                <Grid item xs={6} className={classes.qns}>
                     <Typography className={classes.headlabel} color="textSecondary" gutterBottom>
                     Compensation Rules
                     </Typography>
                     <Typography className={classes.label} color="textSecondary" gutterBottom>
                     6. Select priority preference for Base Salary Offer
                     </Typography>
+                </Grid>
+                <Grid item xs={6} className={classes.qns}>
+                    <Typography className={classes.headlabel} color="textSecondary" gutterBottom>
+                    Priority Order (Drag)
+                    </Typography>
+                    <ListBoxComponent dataSource={this.pReferenceTypes()} height="auto" allowDragAndDrop={true} fields={this.fields} />
                 </Grid>
                 <Grid item xs={6} className={classes.qns}>
                     <Typography className={classes.headlabel} color="textSecondary" gutterBottom>
@@ -251,11 +381,15 @@ class CompensationRulesPage extends React.Component<Props, State> {
                   <Typography className={classes.headlabel} color="textSecondary" gutterBottom>
                     Grade
                     </Typography>
-                    <MultiSelectComponent id="qns7" dataSource={this.jobgradeTypes()} mode="Default" fields={this.fields} placeholder="Grade" />
+                    <MultiSelectComponent id="qns7" dataSource={this.jobgradeTypes()} mode="CheckBox" showSelectAll={true} fields={this.fields} placeholder="Grade">
+                    <Inject services={[CheckBoxSelection]} />
+                    </MultiSelectComponent>
                     <Typography className={classes.headlabel} color="textSecondary" gutterBottom>
                     Job Function
                     </Typography>
-                    <MultiSelectComponent id="qns7_1" dataSource={this.jobFunctionTypes()} mode="Default" fields={this.fields} placeholder="Job Function" />
+                    <MultiSelectComponent id="qns7_1" dataSource={this.jobFunctionTypes()} mode="CheckBox" showSelectAll={true} fields={this.fields} placeholder="Job Function" >
+                      <Inject services={[CheckBoxSelection]} />
+                    </MultiSelectComponent>
                 </Grid>
                 <Grid item xs={6} className={classes.qns}>
                     <Typography className={classes.headlabel} color="textSecondary" gutterBottom>
@@ -301,7 +435,10 @@ class CompensationRulesPage extends React.Component<Props, State> {
                 </Grid>
                 <Grid item xs={6}>  
                 </Grid>
-                <Grid item xs={6}>      
+                <Grid item xs={6} container style={{ width:"100%", alignItems: "right" }}>   
+                  <Grid item xs={10} style={{ width:"100%", alignItems: "right" }}>
+                  </Grid> 
+                  <Grid item xs={2} style={{ width:"100%", alignItems: "right" }}>
                   <Button
                   variant="contained"
                   color="primary"
@@ -309,7 +446,9 @@ class CompensationRulesPage extends React.Component<Props, State> {
                   style={{ marginLeft: "auto" }}
                   >
                     Submit
-                </Button>
+                  </Button>                    
+                    </Grid>  
+
                 </Grid>              
           </Grid>
         </form>
@@ -330,6 +469,8 @@ function mapStateToProps(state: RootState) {
     jobgradeList: state.jobgradeReducer.jobgradeList,
     jobfunctionList: state.jobFunctionReducer.jobFunctionList,
     selectedCompany: state.companyReducer.selectedCompany,
+    parameterList: state.countryReducer,
+    sectorList: state.sectorReducer.sectorList
   };
 }
 
