@@ -117,7 +117,9 @@ import OfferModelReportPage from "../scenes/OfferModelPage/Component/report"
 import OfferModelContractPage from "../scenes/OfferModelPage/Component/contract"
 import CreateContractPage from "../scenes/ContractPage/create"
 import UpdateContractPage from "../scenes/ContractPage/update"
+import OfferContractPage from "../scenes/OfferModelPage/contract"
 
+import ContractSetupPage from "../scenes/CompensationSetup/ContractPage"
 
 import { Company } from "../interface/companyInterface";
 
@@ -745,11 +747,31 @@ class RootRoute extends React.Component<Props, State> {
               )}
             />
 
+            <Route
+              exact
+              path="/contract"
+              render={() => (
+                <PrimaryLayout>
+                  <ContractSetupPage />
+                </PrimaryLayout>
+              )}
+            />
+
+            <Route
+              exact
+              path="/jobposition/offermodel/contract"
+              render={() => (
+                <PrimaryLayout>
+                  <OfferContractPage />
+                </PrimaryLayout>
+              )}
+            />
+
             <Route exact path="/jobposition/offermodel" render={() => (<PrimaryLayout><OfferModelPage /></PrimaryLayout>)} />
             <Route exact path="/jobposition/offermodel/create" render={() => (<PrimaryLayout><CreateOfferModelPage /></PrimaryLayout>)} />
             <Route exact path="/jobposition/offermodel/update" render={() => (<PrimaryLayout><UpdateOfferModelPage /></PrimaryLayout>)} />
             <Route exact path="/jobposition/offermodel/report" render={() => (<PrimaryLayout><OfferModelReportPage /></PrimaryLayout>)} />
-            <Route exact path="/jobposition/offermodel/contract" render={() => (<PrimaryLayout><OfferModelContractPage /></PrimaryLayout>)} />
+            {/*<Route exact path="/jobposition/offermodel/contract" render={() => (<PrimaryLayout><OfferModelContractPage /></PrimaryLayout>)} />*/}
             <Route exact path="/jobposition/offermodel/contract/create" render={() => (<PrimaryLayout><CreateContractPage /></PrimaryLayout>)} />
             <Route exact path="/jobposition/offermodel/contract/update" render={() => (<PrimaryLayout><UpdateContractPage /></PrimaryLayout>)} />
 

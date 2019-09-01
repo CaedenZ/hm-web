@@ -144,6 +144,14 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
             expended4: !state.expended4
           }));
           break;
+        case 5:
+            this.setState(state => ({
+              expended1: false,
+              expended2: false,
+              expended3: false,
+              expended4: false,
+            }));
+            break;
       default:
         break;
     }
@@ -422,6 +430,12 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
           path: "/marketdataupload",
           icon: <JobGradeIcon />,
           index: 20
+        },
+        {
+          title: "Contract Setup",
+          path: "/contract",
+          icon: <JobGradeIcon />,
+          index: 21
         }
       ];
       return adm;
@@ -558,6 +572,7 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
                 key={item.title}
                 to={item.path}
                 style={{ textDecoration: "none" }}
+                onClick={() => this.handleExpand(5)}
               >
                 <ListItem button>
                   <ListItemIcon>
