@@ -5,7 +5,7 @@ import { RootState } from "../../../reducer";
 import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../interface/propsInterface";
-import { Button, Paper, Grid, Divider, Typography, TableCell, Theme, Table, TableHead, TableRow, TableBody, IconButton, Modal, Dialog } from "@material-ui/core";
+import { Button, Paper, Grid, Divider, Typography, TableCell, Theme, Table, TableHead, TableRow, TableBody, IconButton, Modal, Dialog, DialogContent } from "@material-ui/core";
 import $axios from "../../../plugin/axios";
 import DeleteIcon from '@material-ui/icons/Delete';
 import CustomButton from "../../../helper/components/CustomButton";
@@ -81,7 +81,7 @@ class OfferContractPage extends React.Component<Props, State> {
   state: State = {
     data: false,
     raw_list: [],
-    filename: ''
+    filename: '',
   }
 
   componentDidMount() {
@@ -240,7 +240,7 @@ class OfferContractPage extends React.Component<Props, State> {
             </GridComponent>
             </Paper>
           </Grid>}
-        </Paper>       
+        </Paper>      
       </main>
     );
   }

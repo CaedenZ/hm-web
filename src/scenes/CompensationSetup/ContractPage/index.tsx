@@ -5,7 +5,7 @@ import { RootState } from "../../../reducer";
 import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../interface/propsInterface";
-import { Button, Paper, Grid, Divider, Typography, TableCell, Theme, Table, TableHead, TableRow, TableBody, IconButton, Modal, Dialog } from "@material-ui/core";
+import { Button, Paper, Grid, Divider, Typography, TableCell, Theme, Table, TableHead, TableRow, TableBody, IconButton, Modal, Dialog, DialogContent } from "@material-ui/core";
 import $axios from "../../../plugin/axios";
 import DeleteIcon from '@material-ui/icons/Delete';
 import CustomButton from "../../../helper/components/CustomButton";
@@ -13,6 +13,7 @@ import { GridComponent, ColumnsDirective, ColumnDirective, Inject, Page, Group, 
 import { enableRipple, getValue } from '@syncfusion/ej2-base';
 import moment from "moment";
 import { history } from "../../../store";
+import FormPage from "./form";
 
 enableRipple(true);
 let refresh: Boolean;
@@ -55,6 +56,7 @@ interface State {
   data: boolean;
   raw_list: ListContract[];
   filename: string;
+  isModalOpen: boolean;
 }
 
 interface ListContract {
@@ -62,6 +64,13 @@ interface ListContract {
   type: string;
   filename: string;
   url: string;
+}
+
+interface UpdateFormData {
+  filename: any;
+  filedisplay: string;
+  type: string;
+  company_apply: string;
 }
 
 interface InState {
@@ -74,7 +83,8 @@ class ContractSetupPage extends React.Component<Props, State> {
   state: State = {
     data: false,
     raw_list: [],
-    filename: ''
+    filename: '',
+    isModalOpen: false,
   }
 
   componentDidMount() {
@@ -171,6 +181,74 @@ class ContractSetupPage extends React.Component<Props, State> {
 
   }
 
+  //General Handle Close
+  handleModalClose = () => {
+    this.setState({ isModalOpen: false });
+  };
+  
+  async handleCreateContract(e: any, data: any) {
+    console.log("Create Contract"); 
+    console.log(data);
+    let fdata = data as UpdateFormData;
+
+    const retURLData = await $axios.post("/job/getdocuploadurl", {
+      session_key: this.props.sessionkey
+    });
+    const presignedURLData = retURLData.data;
+    console.log(presignedURLData);
+    if (presignedURLData.error) {
+      // Error occured
+      this.props.showSnackBar();
+      return;
+    }
+
+    // Continue if no error
+    const presignedURL = presignedURLData.data.presigned_url;
+    const key = presignedURLData.data.key
+    console.log(key);
+    // Create the formdata to be sent
+
+    // Send to S3
+    const retUploadData = await $axios.put(presignedURL, fdata.filename, {
+      headers: {
+        'Content-Type': fdata.filename.type,
+        'key': key,
+      }
+    });
+    console.log(retUploadData);
+    if (retUploadData.data.error) {
+      // Error occured
+      console.log("Upload Error");
+      console.log(retUploadData.data.error);
+      //this.props.showSnackBar();
+      return;
+    }
+    console.log(retUploadData);
+
+    let udata = {
+      session_key: this.props.sessionkey,
+      company_id: this.props.companyid,
+      type: fdata.type,
+      file_name: key,
+      original_file_name: fdata.filename.name,
+    }
+
+    await $axios.post("/job/uploaddocxdata", udata);
+    this.setState({ filename: fdata.filename.name })
+    console.log("Upload OK");
+    this.setState({ isModalOpen: false });
+    this.listcontract()
+
+  }
+
+  //Create Main
+  handleModelCreateButtonClick = () => {
+    this.setState({ isModalOpen: true });
+    this.forceUpdate();
+    console.log(this.state);
+  };
+
+
   render() {
     const { classes } = this.props
     const that = this
@@ -196,6 +274,10 @@ class ContractSetupPage extends React.Component<Props, State> {
           </CustomButton>
         </label>*/}
 
+          <CustomButton onClick={() => this.handleModelCreateButtonClick()}>
+          Upload
+          </CustomButton>
+
         {this.state.data && <Grid container>
           <Paper className={classes.root}>
             <GridComponent dataSource={this.state.raw_list}>
@@ -207,7 +289,22 @@ class ContractSetupPage extends React.Component<Props, State> {
             </GridComponent>
             </Paper>
           </Grid>}
-        </Paper>       
+        </Paper>
+
+        <Dialog
+          open={this.state.isModalOpen}
+          onClose={this.handleModalClose}
+          maxWidth={false}
+        >
+          <DialogContent>
+            <Typography component="h1" variant="h5" style = {{margin:"1rem"}}>
+            Upload Contract Template
+            </Typography>
+            <FormPage
+              onSubmit={(e, data) => this.handleCreateContract(e, data)}
+            />
+          </DialogContent>
+        </Dialog>        
       </main>
     );
   }
