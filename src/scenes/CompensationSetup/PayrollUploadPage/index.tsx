@@ -255,7 +255,13 @@ class PayrollUploadPage extends React.Component<Props, State> {
       case 2:
         return 'Success'
       case 3:
-        return 'Failed'
+        return 'File Failed'
+      case 4:
+        return 'Format Failed'
+      case 5:
+        return 'Partial Success'
+      default:
+        return 'Unknown Error'  
     }
   }
 

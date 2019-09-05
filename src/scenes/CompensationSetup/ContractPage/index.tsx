@@ -9,7 +9,7 @@ import { Button, Paper, Grid, Divider, Typography, TableCell, Theme, Table, Tabl
 import $axios from "../../../plugin/axios";
 import DeleteIcon from '@material-ui/icons/Delete';
 import CustomButton from "../../../helper/components/CustomButton";
-import { GridComponent, ColumnsDirective, ColumnDirective, Inject, Page, Group, Sort, Filter, VirtualScroll, ColumnChooser, CommandModel, CommandClickEventArgs, CommandColumn, Edit, EditSettingsModel } from "@syncfusion/ej2-react-grids";
+import { GridComponent, ColumnsDirective, ColumnDirective, Inject, Page, Group, Sort, Filter, VirtualScroll, ColumnChooser, CommandModel, CommandClickEventArgs, CommandColumn, Edit, EditSettingsModel, Toolbar } from "@syncfusion/ej2-react-grids";
 import { enableRipple, getValue } from '@syncfusion/ej2-base';
 import moment from "moment";
 import { history } from "../../../store";
@@ -78,7 +78,8 @@ interface InState {
   companyid: string;
 }
 class ContractSetupPage extends React.Component<Props, State> {
-  public editOptions: EditSettingsModel = { allowEditing: true, mode: 'Normal' };
+  public toolbarOptions: any =  ['Delete'];
+  public editSettings: any = { allowDeleting: true};
 
   state: State = {
     data: false,
@@ -167,6 +168,8 @@ class ContractSetupPage extends React.Component<Props, State> {
     }
   ];
 
+  private gridInstance: GridComponent;
+
   public commandClick(args: CommandClickEventArgs): void  {    
     //const result = args.rowData as ListQueueData;
     //console.log(args);
@@ -178,7 +181,20 @@ class ContractSetupPage extends React.Component<Props, State> {
 
   async actionBegin(args: any): Promise<void> {
     console.log(args);
+    if (args.requestType === 'delete') {
+      const obj: Object[] = this.gridInstance.getSelectedRecords();
+      let pdata = obj[0] as ListContract;
+      console.log(pdata.id);
+      let data = {
+        session_key: this.props.sessionkey,
+        template_id: pdata.id
+      }
+  
+      await $axios.post("/job/delcontracttemplate", data);
 
+      this.listcontract();
+      this.forceUpdate();
+    }
   }
 
   //General Handle Close
@@ -260,32 +276,18 @@ class ContractSetupPage extends React.Component<Props, State> {
     return (
       <main>
         <Paper className={classes.main}>
-        {/*<input
-          accept="*"
-          id="contained-button-file"
-          type="file"
-          onChange={this.readFile}
-          name="file"
-          style={{ display: "none" }}
-        />
-        <label htmlFor="contained-button-file" >
-          <CustomButton component="span">
-            Upload
-          </CustomButton>
-        </label>*/}
-
           <CustomButton onClick={() => this.handleModelCreateButtonClick()}>
           Upload
           </CustomButton>
 
         {this.state.data && <Grid container>
           <Paper className={classes.root}>
-            <GridComponent dataSource={this.state.raw_list}>
+            <GridComponent dataSource={this.state.raw_list} ref={ grid => this.gridInstance = grid} toolbar={this.toolbarOptions} editSettings={this.editSettings} actionBegin={this.actionBegin.bind(this)}>
               <ColumnsDirective>
                 <ColumnDirective field='type' headerText='Contract Type' textAlign='Left'></ColumnDirective>
                 <ColumnDirective field='filename' headerText='File' textAlign='Left' template={fileurlLink}></ColumnDirective>
               </ColumnsDirective>
-              <Inject services={[Edit]} />
+              <Inject services={[Edit, Toolbar]} />
             </GridComponent>
             </Paper>
           </Grid>}

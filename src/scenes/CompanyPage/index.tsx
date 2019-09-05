@@ -238,7 +238,7 @@ class CustomizedTable extends React.Component<Props, State> {
 
     const ProtectedComponent = () => {
         if (this.props.companyList.length === 1) {
-          return <Redirect to='/company/info'  />
+          return <Redirect to='/info'  />
         }
      }
 

@@ -16,6 +16,7 @@ import ResetPasswordPage from "../scenes/ResetPasswordPage";
 import HomePage from "../scenes/HomePage";
 import ProfilePage from "../scenes/ProfilePage";
 import SettingPage from "../scenes/SettingPage";
+import CompanyInfoPage from "../scenes/CompanyInfoPage";
 
 import UserPage from "../scenes/UserPage";
 import CreateUserPage from "../scenes/UserPage/create/index";
@@ -140,7 +141,7 @@ class RootRoute extends React.Component<Props, State> {
       );
 
       let usr = (
-        <Route exact path="/" render={() => (<PrimaryLayout><UpdateSelfCompanyPage /></PrimaryLayout>)} />
+        <Route exact path="/" render={() => (<PrimaryLayout><CompanyInfoPage /></PrimaryLayout>)} />
       );
 
       if (this.props.companyList.length > 1) {
@@ -180,6 +181,16 @@ class RootRoute extends React.Component<Props, State> {
               render={() => (
                 <PrimaryLayout>
                   <UpdateSelfCompanyPage />
+                </PrimaryLayout>
+              )}
+            />
+
+            <Route
+              exact
+              path="/info"
+              render={() => (
+                <PrimaryLayout>
+                  <CompanyInfoPage />
                 </PrimaryLayout>
               )}
             />

@@ -33,7 +33,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import PrimarySearchAppBar from "./AppBar";
 import { Link } from "react-router-dom";
-import logo from "../../assets/images/3CGradient Full.png";
+import logo from "../../assets/images/3CGradient Full.jpeg";
 import { mapDispatchToProps } from "../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../interface/propsInterface";
@@ -52,7 +52,7 @@ const styles = (theme: Theme) =>
     },
     logo: {
       height: "100%",
-      padding: "20px"
+      padding: "10px"
     },
     menubar: {
       background: "linear-gradient(#F0F0F0 0%, #FFFFFF 30%)"
@@ -181,7 +181,7 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
       let usr = [
         {
           title: "Company",
-          path: "/company/info"
+          path: "/info"
         }
       ]     
 
@@ -474,6 +474,7 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
                 key={item.title}
                 to={item.path}
                 style={{ textDecoration: "none" }}
+                onClick={() => this.handleExpand(5)}
               >
                 <ListItem button>
                   <ListItemIcon>

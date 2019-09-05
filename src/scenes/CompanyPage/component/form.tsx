@@ -277,6 +277,7 @@ class CreateCompanyPage extends Component<Props, FormState> {
     } else {
       return (
         <Avatar
+          src={this.state.logo_small}
           width={200}
           height={150}
           onCrop={this.onCrop}
