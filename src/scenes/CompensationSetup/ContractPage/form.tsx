@@ -40,6 +40,7 @@ export interface Props
 
 interface InState {
   onSubmit: any;
+  uploadtype: string;
 }
 
 class UploadDocForm extends Component<Props, FormState> {
@@ -55,6 +56,7 @@ class UploadDocForm extends Component<Props, FormState> {
   };
 
   componentDidMount() {
+    this.state.company_apply = this.props.uploadtype;
   }
 
   readFile = async (e: any) => {

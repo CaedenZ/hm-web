@@ -643,7 +643,7 @@ class OfferModelPage extends React.Component<Props, State> {
         const type = []
         
         this.props.allowancesList.filter(al => (al.country === this.props.selectedJobPosition.country && al.jobgrade_name === this.props.selectedJobPosition.jobgrade_name)).forEach(element => {
-            let newItem: { [key: string]: Object; } = {'name': element.type, 'id': element.allowance_id };
+            let newItem: { [key: string]: Object; } = {'name': element.type, 'id': element.type };
             type.push(newItem)
         });
         console.log(type);
@@ -655,7 +655,7 @@ class OfferModelPage extends React.Component<Props, State> {
         const type = []
         
         this.props.stiList.filter(sti => (sti.country === this.props.selectedJobPosition.country && sti.jobgrade_name === this.props.selectedJobPosition.jobgrade_name)).forEach(element => {
-            let newItem: { [key: string]: Object; } = {'name': element.type, 'id': element.shortterm_incentive_id };
+            let newItem: { [key: string]: Object; } = {'name': element.type, 'id': element.type };
             type.push(newItem)
         });
         console.log(type);
@@ -668,7 +668,7 @@ class OfferModelPage extends React.Component<Props, State> {
         const type = []
         
         this.props.ltiList.forEach(element => {
-            let newItem: { [key: string]: Object; } = {'name': element.type, 'id': element.longterm_incentive_id };
+            let newItem: { [key: string]: Object; } = {'name': element.type, 'id': element.type };
             type.push(newItem)
         });
         console.log(type);
@@ -680,7 +680,7 @@ class OfferModelPage extends React.Component<Props, State> {
         const type = []
         
         this.props.signonList.forEach(element => {
-            let newItem: { [key: string]: Object; } = {'name': element.type, 'id': element.signons_id };
+            let newItem: { [key: string]: Object; } = {'name': element.type, 'id': element.type };
             type.push(newItem)
         });
         console.log(type);

@@ -57,7 +57,30 @@ export interface Props
 interface State {
   data: boolean;
   raw_list: ListContract[];
+  display_list: ListContractDisplay[];
   filename: string;
+  currency: string;
+  currency1: string;
+  currency2: string;
+  jobposition_id: string;
+  created_by: string;
+  candidate_name: string;
+  job_flag: string;
+  model_type: string;
+  year_of_birth: string;
+  offer_reference: string;
+  jobgrade_id: string;
+  status: string;
+  current_position_title: string,
+  current_position_country: string,
+  current_position_location: string,
+  current_position_grade: string,
+  current_position_datestart: string,
+  current_position_jobfunction: string,
+  current_position_sjobfunction: string,
+  propose_position_datestart: string,
+  current_data: any;
+  propose_data: any;
 }
 
 interface ListContract {
@@ -65,6 +88,13 @@ interface ListContract {
   type: string;
   filename: string;
   did: string;
+}
+
+interface ListContractDisplay {
+  doc_key: string;
+  type: string;
+  filename: string;
+  mode: string;
 }
 
 interface InState {
@@ -81,12 +111,84 @@ class OfferContractPage extends React.Component<Props, State> {
   state: State = {
     data: false,
     raw_list: [],
+    display_list: [],
     filename: '',
+    jobposition_id: "",
+        created_by: "user.master@mail.com",
+        candidate_name: "",
+        job_flag: "",
+        model_type: "",
+        year_of_birth: "",
+        offer_reference: "",
+        jobgrade_id: "",
+        status: "Draft",
+        currency: "USD",
+        currency1: "",
+        currency2: "",
+        current_position_title: "",
+        current_position_country: "",
+        current_position_location: "",
+        current_position_grade: "",
+        current_position_datestart: "",
+        current_position_jobfunction: "",
+        current_position_sjobfunction: "",
+        propose_position_datestart: "",
+        current_data: {
+            guaranteed_cash: {
+                annual_base: '0',
+                optional: [],
+            },
+            sti: {
+                bonus_target_amount: '0',
+                bonus_target: '0',
+                optional: []
+            },
+            lti: {
+                unvested_equity: '0',
+                optional: []
+            },
+            sign_on: {
+                optional: []
+            },
+        },
+        propose_data: {
+            guaranteed_cash: {
+                annual_base: '0',
+                optional: [],
+            },
+            sti: {
+                bonus_target_amount: '0',
+                bonus_target: '0',
+                optional: []
+            },
+            lti: {
+                optional: []
+            },
+            sign_on: {
+                optional: []
+            },
+        },
   }
 
-  componentDidMount() {
-    this.setState({ data: false })
-    this.listcontract()
+  componentDidMount = async () => {
+    const data = {
+      session_key: this.props.sessionkey,
+      offermodel_id: this.props.selectedOfferModel.offermodel_id,
+    }
+
+    const response = await $axios.post('/job/viewOfferModel', data)
+    this.setState(response.data.data)
+    
+      this.setState({ data: false })
+      this.listcontract()
+  }
+
+  getsubtotalGP = () => {
+    let a = parseInt(this.state.propose_data.guaranteed_cash.annual_base)
+    this.state.propose_data.guaranteed_cash.optional.forEach(element => {
+        a += parseInt(element.value)
+    });
+    return a
   }
 
   readFile = async (e: any) => {
@@ -163,8 +265,18 @@ class OfferContractPage extends React.Component<Props, State> {
     let gen_data = {
         company: this.props.selectedCompany.company_name,
         name: this.props.selectedOfferModel.candidate_name,
-        jobtitle: this.props.selectedJobPosition.business_title
+        jobtitle: this.props.selectedJobPosition.business_title,
+        jobgrade: this.props.selectedJobPosition.jobgrade_name,
+        location: this.props.selectedJobPosition.location,
+        jobname: this.props.selectedJobPosition.job_name,
+        subjobname: this.props.selectedJobPosition.subjob_name,
+        startdate: this.props.selectedOfferModel.propose_position_datestart,
+        annualbase: parseInt(this.state.propose_data.guaranteed_cash.annual_base).toLocaleString(navigator.language, { maximumFractionDigits: 0 }),
+        guaranteedcash: this.getsubtotalGP().toLocaleString(navigator.language, { maximumFractionDigits: 0 }),
+        allowance: this.state.propose_data.guaranteed_cash.optional
     }
+
+    console.log(gen_data);
 
     let data = {
         session_key: this.props.sessionkey,
