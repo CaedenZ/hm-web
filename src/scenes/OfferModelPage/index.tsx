@@ -16,7 +16,7 @@ import { RootState } from "../../reducer";
 import { mapDispatchToProps } from "../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../interface/propsInterface";
-import { IconButton, Grid } from "@material-ui/core";
+import { IconButton, Grid, Button } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ConfirmIcon from "@material-ui/icons/Done";
 import RejectIcon from "@material-ui/icons/Close";
@@ -115,6 +115,10 @@ class OfferModelPage extends React.Component<Props, State> {
 
   handleClose = () => {
     this.setState({ changeStatus: false, setcurrency: false });
+  };
+
+  handleArchive = () => {
+    history.push("/jobposition")
   };
 
   handleReport = offermodel => {
@@ -226,7 +230,11 @@ class OfferModelPage extends React.Component<Props, State> {
 
     return (
       <main>
-        <Grid container spacing={16} style={{ marginBottom:"0.3rem" }}>
+        <Button size="small" color="primary" onClick={e =>
+          window.confirm("Are you sure you wish to archive this job?") &&
+          this.handleArchive()
+        }>Archive</Button>
+        <Grid container spacing={16} style={{ marginBottom:"0.3rem" }}>      
             <Grid item xs={12} md={12} lg={9}>
               <Paper>
                 <JobPanel/>
@@ -238,6 +246,7 @@ class OfferModelPage extends React.Component<Props, State> {
               </Paper>
             </Grid>
         </Grid>
+        
         <Paper className={classes.root}>
         <GridComponent id='gridcomp' dataSource={this.props.offerModelList} allowSorting={true} commandClick={this.commandClick.bind(this)} >
             <ColumnsDirective>

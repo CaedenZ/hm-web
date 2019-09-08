@@ -28,7 +28,7 @@ import { JobGrade } from "../../../interface/jobgradeInterface";
 import { JobFunction } from "../../../interface/jobfunctionInterface";
 import { Location } from "../../../interface/locationInterface";
 import { Region } from "../../../interface/regionInterface";
-import { Unit } from "../../../interface/companyInterface";
+import { Unit, Entity } from "../../../interface/companyInterface";
 
 const styles = () =>
   createStyles({
@@ -43,7 +43,7 @@ interface FormState {
   country: string;
   description: string;
   jobgrade_id: string;
-  location: number;
+  location: string;
   jobfunction: string;
   sjobfunction: string;
   division: string;
@@ -70,6 +70,7 @@ interface InState {
   locationList: Location[];
   regionList:Region[];
   divisionList:Unit[];
+  companyList: Entity[];
 }
 
 class CreateJobPositionPage extends Component<Props, FormState> {
@@ -83,7 +84,7 @@ class CreateJobPositionPage extends Component<Props, FormState> {
     country: "",
     description: "",
     jobgrade_id: "",
-    location: 0,
+    location: "",
     jobfunction: "",
     sjobfunction: "",
     remarks: "",
@@ -114,16 +115,17 @@ class CreateJobPositionPage extends Component<Props, FormState> {
   handleLocationChangeSelect = () => (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    const locationID = parseInt(event.target.value);
-    const tmpLocation = this.props.locationList.find(location => {
-      return location.location_id === locationID;
+    this.setState({
+      location: event.target.value
     });
+  };
 
-    if (tmpLocation) {
-      this.setState({
-        location: tmpLocation.location_id
-      });
-    }
+  handleEntityChangeSelect = () => (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    this.setState({
+      legal_entity: event.target.value
+    });
   };
 
   handleRegionChangeSelect = () => (
@@ -236,7 +238,7 @@ class CreateJobPositionPage extends Component<Props, FormState> {
             <TextField
               required
               id="busisness_title"
-              label="JobPosition Name"
+              label="Job Business Title"
               className={classes.textField}
               value={this.state.business_title}
               onChange={e => this.setState({ business_title: e.target.value })}
@@ -248,6 +250,7 @@ class CreateJobPositionPage extends Component<Props, FormState> {
               <FormControl className={classes.textField}>
                 <InputLabel required>Country</InputLabel>
                 <NativeSelect
+                  required
                   id="country"
                   value={this.state.country}
                   onChange={this.handleChangeSelect("country")}
@@ -272,8 +275,9 @@ class CreateJobPositionPage extends Component<Props, FormState> {
           <Grid item justify="center" container xs>
             {this.props.locationList.length > 0 && (
               <FormControl className={classes.textField}>
-                <InputLabel>Location</InputLabel>
+                <InputLabel required>Location</InputLabel>
                 <NativeSelect
+                  required
                   id="location"
                   value={this.state.location}
                   onChange={this.handleLocationChangeSelect()}
@@ -285,10 +289,10 @@ class CreateJobPositionPage extends Component<Props, FormState> {
                   <option value={undefined} />
                   {this.props.locationList.map(location => (
                     <option
-                      value={location.location_id}
-                      key={location.location_id}
+                      value={location.location_name}
+                      key={location.location_name}
                     >
-                      {location.address}
+                      {location.location_name}
                     </option>
                   ))}
                 </NativeSelect>
@@ -350,8 +354,9 @@ class CreateJobPositionPage extends Component<Props, FormState> {
           <Grid item justify="center" container xs>
             {this.props.jobgradeList.length > 0 && (
               <FormControl className={classes.textField}>
-                <InputLabel>Job Grade</InputLabel>
+                <InputLabel required>Job Grade</InputLabel>
                 <NativeSelect
+                  required
                   id="jobgrade"
                   value={this.state.jobgrade_id}
                   onChange={this.handleJobGradeChangeSelect()}
@@ -376,8 +381,9 @@ class CreateJobPositionPage extends Component<Props, FormState> {
           <Grid item justify="center" container xs>
             {this.props.jobfunctionList.length > 0 && (
               <FormControl className={classes.textField}>
-                <InputLabel>Job Function</InputLabel>
+                <InputLabel required>Job Function</InputLabel>
                 <NativeSelect
+                  required
                   id="jobgrade"
                   value={this.state.jobfunction}
                   onChange={this.handleJobFunctionChangeSelect()}
@@ -402,8 +408,9 @@ class CreateJobPositionPage extends Component<Props, FormState> {
           <Grid item justify="center" container xs>
             {this.getsjobfunctionList().length > 0 && (
               <FormControl className={classes.textField}>
-                <InputLabel>Sub Job Function</InputLabel>
+                <InputLabel required>Sub Job Function</InputLabel>
                 <NativeSelect
+                  required
                   id="jobgrade"
                   value={this.state.sjobfunction}
                   onChange={this.handleSubJobFunctionChangeSelect()}
@@ -426,19 +433,36 @@ class CreateJobPositionPage extends Component<Props, FormState> {
             )}
           </Grid>
           <Grid item justify="center" container xs>
-            <TextField
-              id="legal_entity"
-              label="legal_entity"
-              className={classes.textField}
-              value={this.state.legal_entity}
-              onChange={e => this.setState({ legal_entity: e.target.value })}
-              margin="normal"
-            />
+            {this.props.companyList.length > 0 && (
+              <FormControl className={classes.textField}>
+                <InputLabel required>Legal Entity</InputLabel>
+                <NativeSelect
+                  required
+                  id="legal_entity"
+                  value={this.state.legal_entity}
+                  onChange={this.handleEntityChangeSelect()}
+                  inputProps={{
+                    name: "legal_entity",
+                    id: "legal_entity-simple"
+                  }}
+                >
+                  <option value={undefined} />
+                  {this.props.companyList.map(company => (
+                    <option
+                      value={company.company_name}
+                      key={company.company_name}
+                    >
+                      {company.company_name}
+                    </option>
+                  ))}
+                </NativeSelect>
+              </FormControl>
+            )}
           </Grid>
           <Grid item justify="center" container xs>
             <TextField
               id="manager_grade"
-              label="manager_grade"
+              label="Manager Grade"
               className={classes.textField}
               value={this.state.manager_grade}
               onChange={e => this.setState({ manager_grade: e.target.value })}
@@ -448,7 +472,7 @@ class CreateJobPositionPage extends Component<Props, FormState> {
           <Grid item justify="center" container xs>
             <TextField
               id="manager_name"
-              label="manager_name"
+              label="Manager Name"
               className={classes.textField}
               value={this.state.manager_name}
               onChange={e => this.setState({ manager_name: e.target.value })}
@@ -458,7 +482,7 @@ class CreateJobPositionPage extends Component<Props, FormState> {
           <Grid item justify="center" container xs>
             <TextField
               id="manager_position_title"
-              label="manager_position_title"
+              label="Manager Job Title"
               className={classes.textField}
               value={this.state.manager_position_title}
               onChange={e => this.setState({ manager_position_title: e.target.value })}
@@ -468,7 +492,7 @@ class CreateJobPositionPage extends Component<Props, FormState> {
           <Grid item justify="center" container xs>
             <TextField
               id="description"
-              label="description"
+              label="Description"
               className={classes.textField}
               value={this.state.description}
               onChange={e => this.setState({ description: e.target.value })}
@@ -478,7 +502,7 @@ class CreateJobPositionPage extends Component<Props, FormState> {
           <Grid item justify="center" container xs>
             <TextField
               id="remarks"
-              label="remarks"
+              label="Remarks"
               className={classes.textField}
               value={this.state.remarks}
               onChange={e => this.setState({ remarks: e.target.value })}
@@ -521,6 +545,7 @@ function mapStateToProps(state: RootState) {
     locationList: state.locationReducer.locationList,
     divisionList:state.companyReducer.divisionList,
     regionList:state.regionReducer.regionList,
+    companyList: state.companyReducer.childCompanyList,
   };
 }
 

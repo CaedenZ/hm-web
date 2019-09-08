@@ -10,13 +10,15 @@ import {
   CardContent,
   Button,
   Typography,
-  Grid
+  Grid,
+  CardActions
 } from "@material-ui/core";
 import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../../interface/propsInterface";
 import { RootState } from "../../../reducer";
 import { JobPosition } from "../../../interface/jobpositionInterface";
+import { history } from "../../../store";
 
 const styles = (theme: Theme) =>
   createStyles({

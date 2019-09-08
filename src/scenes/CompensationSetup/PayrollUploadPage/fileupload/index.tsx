@@ -187,6 +187,8 @@ class FileUploadPage extends React.Component<Props, State> {
         return 'Success'
       case 3:
         return 'Failed'
+      case 4:
+        return 'Partial Success'  
     }
   }
 
