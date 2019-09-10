@@ -29,7 +29,7 @@ const styles = (theme: Theme) =>
         transform: 'scale(0.8)',
       },
       title: {
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: 'bold'
       },
       stats: {
@@ -48,6 +48,7 @@ const styles = (theme: Theme) =>
       },
       cover: {
         width: 140,
+        margin: '1rem'
       }
 
   });
@@ -106,21 +107,21 @@ const styles = (theme: Theme) =>
             let newtitle = (
                 <CardMedia
                     className={classes.cover}
-                    image="/img/meeting.png"
+                    image="/img/tom_newoffer.png"
                     title="New Offers"
                 />
             );
             let closedtitle = (
                 <CardMedia
                     className={classes.cover}
-                    image="/img/close.png"
+                    image="/img/tom_closedoffer.png"
                     title="Closed Offers"
                 />
              );
             let totaltitle = (
                 <CardMedia
                     className={classes.cover}
-                    image="/img/total.png"
+                    image="/img/tom_totaloffer.png"
                     title="Total Offers"
                 />
             );

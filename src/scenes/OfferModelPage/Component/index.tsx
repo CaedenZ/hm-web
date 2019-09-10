@@ -68,7 +68,9 @@ const styles = (theme: Theme) =>
             borderStyle: "solid"
         },
         colorcontainer: {
-            background: '#e6d5c5',
+            background: '#f44336',
+            color: '#fff',
+            padding: '0.5rem'
         },
         verticaltext: {
             transform: 'rotate(0.5turn)'
