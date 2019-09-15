@@ -33,7 +33,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import PrimarySearchAppBar from "./AppBar";
 import { Link } from "react-router-dom";
-import logo from "../../assets/images/3CGradient Full.jpeg";
+import logo from "../../assets/images/logo_compcode_3.png";
 import { mapDispatchToProps } from "../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../interface/propsInterface";

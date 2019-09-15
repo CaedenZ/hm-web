@@ -326,13 +326,13 @@ class OfferModelPage extends React.Component<Props, State> {
     getCurrencyDiff = (main) => {
         let mainratio = this.getCurrencyRatio(this.state.currency2)
         let subratio = this.getCurrencyRatio(this.state.currency)
-        //console.log("Convert Currency");
-        //console.log(main);
-        //console.log(mainratio);
-        //console.log(subratio);
+        console.log("Convert Currency");
+        console.log(main);
+        console.log(mainratio);
+        console.log(subratio);
 
-        let result = (main / parseFloat(mainratio) * parseFloat(subratio)).toLocaleString(navigator.language, { maximumFractionDigits: 0 });
-        //console.log(result);
+        let result = (main / parseFloat(mainratio) * parseFloat(subratio));
+        console.log(result);
         return result
     }
 
@@ -1216,7 +1216,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                 <Grid item xs={5} style={{ height: "100%" }}>
                                     <Grid container spacing={8}>
                                             <Grid item xs={4}>Sub</Grid>
-                                            <Grid item xs={3} style={{ width: "100%", textAlign: "right"}}>{this.getsubtotalGC()}</Grid>
+                                            <Grid item xs={3} style={{ width: "100%", textAlign: "right"}}>{this.getsubtotalGC().toLocaleString(navigator.language, { maximumFractionDigits: 0 })}</Grid>
                                             <Grid item xs={3} style={{ width: "100%", textAlign: "right"}}>{this.getCurrency2(this.getsubtotalGC())}</Grid>
                                             <Grid item xs={1} />
                                     </Grid>
@@ -1224,7 +1224,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                 <Grid item xs={7} style={{ height: "100%" }}>
                                     <Grid container spacing={8}>                                            
                                             <Grid item xs={3}>Sub</Grid>
-                                            <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.getsubtotalGP()}</Grid>
+                                            <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.getsubtotalGP().toLocaleString(navigator.language, { maximumFractionDigits: 0 })}</Grid>
                                             <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.getCurrency1(this.getsubtotalGP())}</Grid>
                                             <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.checkNan((this.getsubtotalGP() * 100 / (this.getCurrencyDiff(this.getsubtotalGC()) as any)) - 100).toFixed(2)}%</Grid>
                                             <Grid item xs={1} />
@@ -1336,7 +1336,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                 <Grid item xs={5} style={{ height: "100%" }}>
                                     <Grid container spacing={8}>
                                         <Grid item xs={4}>Sub</Grid>
-                                        <Grid item xs={3} style={{ width: "100%", textAlign: "right"}}>{this.getsubtotalSC()}</Grid>
+                                        <Grid item xs={3} style={{ width: "100%", textAlign: "right"}}>{this.getsubtotalSC().toLocaleString(navigator.language, { maximumFractionDigits: 0 })}</Grid>
                                         <Grid item xs={3} style={{ width: "100%", textAlign: "right"}}>{this.getCurrency2(this.getsubtotalSC())}</Grid>
                                         <Grid item xs={1} />
                                     </Grid>
@@ -1344,7 +1344,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                 <Grid item xs={7} style={{ height: "100%" }}>
                                     <Grid container spacing={8}>
                                         <Grid item xs={3}>Sub</Grid>
-                                        <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.getsubtotalSP()}</Grid>
+                                        <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.getsubtotalSP().toLocaleString(navigator.language, { maximumFractionDigits: 0 })}</Grid>
                                         <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.getCurrency1(this.getsubtotalSP())}</Grid>
                                         <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.checkNan((this.getsubtotalSP() * 100 / (this.getCurrencyDiff(this.getsubtotalSC()) as any)) -100).toFixed(2)}%</Grid>
                                         <Grid item xs={1} />
@@ -1514,7 +1514,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                 <Grid item xs={5} style={{ height: "100%" }}>
                                     <Grid container spacing={8}>
                                         <Grid item xs={4}>Sub</Grid>
-                                        <Grid item xs={3} style={{ width: "100%", textAlign: "right"}}>{this.getsubtotalLC()}</Grid>
+                                        <Grid item xs={3} style={{ width: "100%", textAlign: "right"}}>{this.getsubtotalLC().toLocaleString(navigator.language, { maximumFractionDigits: 0 })}</Grid>
                                         <Grid item xs={3} style={{ width: "100%", textAlign: "right"}}>{this.getCurrency2(this.getsubtotalLC())}</Grid>
                                         <Grid item xs={1} />
                                     </Grid>
@@ -1522,7 +1522,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                 <Grid item xs={7} style={{ height: "100%" }}>
                                     <Grid container spacing={8}>
                                         <Grid item xs={3}>Sub</Grid>
-                                        <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.getsubtotalLP()}</Grid>
+                                        <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.getsubtotalLP().toLocaleString(navigator.language, { maximumFractionDigits: 0 })}</Grid>
                                         <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.getCurrency1(this.getsubtotalLP())}</Grid>
                                         <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.checkNan((this.getsubtotalLP() * 100 / (this.getCurrencyDiff(this.getsubtotalLC()) as any)) - 100).toFixed(2)}%</Grid>
                                         <Grid item xs={1} />
@@ -1647,7 +1647,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                 <Grid item xs={5} style={{ height: "100%" }}>
                                     <Grid container spacing={8}>
                                         <Grid item xs={4}>Sub</Grid>
-                                        <Grid item xs={3} style={{ width: "100%", textAlign: "right"}}>{this.getsubtotalSOC()}</Grid>
+                                        <Grid item xs={3} style={{ width: "100%", textAlign: "right"}}>{this.getsubtotalSOC().toLocaleString(navigator.language, { maximumFractionDigits: 0 })}</Grid>
                                         <Grid item xs={3} style={{ width: "100%", textAlign: "right"}}>{this.getCurrency2(this.getsubtotalSOC())}</Grid>
                                         <Grid item xs={1} />
                                     </Grid>
@@ -1655,7 +1655,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                 <Grid item xs={7} style={{ height: "100%" }}>
                                     <Grid container spacing={8}>
                                         <Grid item xs={3}>Sub</Grid>
-                                        <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.getsubtotalSOP()}</Grid>
+                                        <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.getsubtotalSOP().toLocaleString(navigator.language, { maximumFractionDigits: 0 })}</Grid>
                                         <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.getCurrency1(this.getsubtotalSOP())}</Grid>
                                         <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.checkNan((this.getsubtotalSOP() * 100 / (this.getCurrencyDiff(this.getsubtotalSOC()) as any)) - 100).toFixed(2)}%</Grid>
                                         <Grid item xs={1} />

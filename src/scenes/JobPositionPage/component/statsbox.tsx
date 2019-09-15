@@ -47,7 +47,8 @@ const styles = (theme: Theme) =>
         flexDirection: 'column',
       },
       cover: {
-        width: 140,
+        height: 120,
+        width: "100%",
         margin: '1rem'
       }
 
@@ -107,7 +108,7 @@ const styles = (theme: Theme) =>
             let newtitle = (
                 <CardMedia
                     className={classes.cover}
-                    image="/img/tom_newoffer.png"
+                    image="/img/tom_newoffermodel.png"
                     title="New Offers"
                 />
             );

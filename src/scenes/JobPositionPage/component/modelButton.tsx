@@ -86,7 +86,7 @@ const styles = (theme: Theme) =>
             <Card className={classes.card}>
                 <CardMedia
                     className={classes.cover}
-                    image="/img/resume.png"
+                    image="/img/tom_newjobposition.png"
                     title="Create Offer"
                 />
                 <CardActionArea onClick={this.props.onClick && (() => this.props.onClick())} component={this.props.component && (this.props.component)}>
