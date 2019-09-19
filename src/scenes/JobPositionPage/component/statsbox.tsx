@@ -47,7 +47,7 @@ const styles = (theme: Theme) =>
         flexDirection: 'column',
       },
       cover: {
-        height: 120,
+        height: 130,
         width: "100%",
         margin: '1rem'
       }
