@@ -170,7 +170,7 @@ class FormPage extends Component<Props, FormState> {
                             {this.state.sjobfunctionList.length > 0 && (
                                 <FormControl>
                                     <InputLabel style={{ marginLeft: "20px" }} required>
-                                        Sub Job Function
+                                        Job Sub Function
                   </InputLabel>
                                     <Select
                                         id="sjobfunction"

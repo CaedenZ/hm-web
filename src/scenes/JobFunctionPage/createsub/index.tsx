@@ -82,7 +82,7 @@ class CreateSubJobFunctionPage extends Component<
     return (
       <div className={classes.root}>
         <Typography component="h1" variant="h5">
-          New SubJobFunction
+          New Job Sub Function
         </Typography>
         <Paper style={{ marginTop: "2rem" }}>
           <form
@@ -99,7 +99,7 @@ class CreateSubJobFunctionPage extends Component<
               <Grid item justify="center" container xs>
                 <TextField
                   id="subjob_name"
-                  label="Sub Job Name"
+                  label="Job Sub Function"
                   className={classes.textField}
                   value={this.state.subjob_name}
                   onChange={this.handleChange("subjob_name")}

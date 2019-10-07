@@ -270,6 +270,7 @@ class OfferContractPage extends React.Component<Props, State> {
         location: this.props.selectedJobPosition.location,
         jobname: this.props.selectedJobPosition.job_name,
         subjobname: this.props.selectedJobPosition.subjob_name,
+        offerreference: this.props.selectedOfferModel.offer_reference,
         startdate: this.props.selectedOfferModel.propose_position_datestart,
         annualbase: parseInt(this.state.propose_data.guaranteed_cash.annual_base).toLocaleString(navigator.language, { maximumFractionDigits: 0 }),
         guaranteedcash: this.getsubtotalGP().toLocaleString(navigator.language, { maximumFractionDigits: 0 }),

@@ -104,7 +104,7 @@ class CreateSubJobFunctionPage extends Component<Props, CreateSubJobFunctionStat
     return (
       <div className={classes.root}>
         <Typography component="h1" variant="h5">
-          New SubJobFunction
+          New Job Sub Function
       </Typography>
         <Paper>
           <form onSubmit={this.handleCreateSubJobFunction}>

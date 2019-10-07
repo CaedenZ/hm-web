@@ -347,7 +347,7 @@ class MarketDataUploadPage extends React.Component<Props, State> {
                 <ColumnDirective field='year' headerText='Year' width='120' textAlign='Left'></ColumnDirective>
                 <ColumnDirective field='country' headerText='Country' width='180' textAlign='Left'></ColumnDirective>
                 <ColumnDirective field='survey_company' headerText='Survey' visible={false} width='150' textAlign='Left'></ColumnDirective>
-                <ColumnDirective field='jobfunction' headerText='Job Name' textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='jobfunction' headerText='Job Function' textAlign='Left'></ColumnDirective>
                 <ColumnDirective field='sjobfunction' headerText='Sub Job' visible={false} textAlign='Left'></ColumnDirective>
                 <ColumnDirective field='company_grade' headerText='Company Grade' textAlign='Left'></ColumnDirective>
                 <ColumnDirective field='survey_grade' headerText='Survey Grade' visible={false} textAlign='Left'></ColumnDirective>

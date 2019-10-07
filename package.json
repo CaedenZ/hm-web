@@ -1,7 +1,7 @@
 {
   "name": "my-app",
   "homepage": "http://tom.talentcodeglobal.com",
-  "version": "0.3.26",
+  "version": "0.3.27",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^3.9.2",

@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Grid, Theme, createStyles, Paper, WithStyles, withStyles, Divider, TextField, Typography, IconButton, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Button, InputAdornment, NativeSelect } from "@material-ui/core";
+import { Grid, Theme, createStyles, Paper, WithStyles, withStyles, Divider, TextField, Typography, IconButton, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Button, InputAdornment, NativeSelect, Toolbar } from "@material-ui/core";
 import { mapDispatchToProps } from "../../../helper/dispachProps";
 import { connect } from "react-redux";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -23,6 +23,7 @@ import { TextBoxComponent } from '@syncfusion/ej2-react-inputs';
 import SaveModelButton from './sactionButton';
 import { history } from "../../../store";
 import { ComboBoxComponent } from "@syncfusion/ej2-react-dropdowns";
+import AppBar from '@material-ui/core/AppBar';
 
 const styles = (theme: Theme) =>
     createStyles({
@@ -34,6 +35,12 @@ const styles = (theme: Theme) =>
             fontSize: 24,
             color: '#f44336',
             fontWeight: 'bold'
+        },
+        bartitle: {
+            fontSize: 24,
+            color: '#ffffff',
+            fontWeight: 'bold',
+            alignSelf: 'right'
         },
         subtitle: {
             fontWeight: 'bold'
@@ -68,7 +75,7 @@ const styles = (theme: Theme) =>
             borderStyle: "solid"
         },
         colorcontainer: {
-            background: '#f44336',
+            background: '#696969',
             color: '#fff',
             padding: '0.5rem'
         },
@@ -98,6 +105,12 @@ const styles = (theme: Theme) =>
             fontWeight: 'bold',
             color: '#f44336',
         },
+        appBar: {
+            top: 'auto',
+            bottom: 0,
+            backgroundColor:'#f5f5f5',
+            alignContent:'right'
+        }
     });
 
 interface Props extends InState, WithStyles<typeof styles> { }
@@ -817,55 +830,19 @@ class OfferModelPage extends React.Component<Props, State> {
         let sOnstypeData: { [key: string]: Object }[] =that.sOnstypeTypes();
 
         return (
+            
             <Grid container justify="flex-start" spacing={16}
-            alignItems="flex-start" direction="row" className={classes.root}>
+            alignItems="flex-start" direction="row" className={classes.root}>  
+             
                 <Grid item xs={6}>
                     <Typography className={classes.status} color="textSecondary" gutterBottom>
                     {this.state.status} 
                     </Typography>
                     <Typography className={classes.title} color="textSecondary" gutterBottom>
-                    TOM Offer Modeller 
+                    TOM Offer Modeler 
                     </Typography>
                 </Grid>
-                <Grid item xs={6}>
-                    <Grid
-                    container
-                    direction="row"
-                    justify="flex-end"
-                    alignItems="flex-end"
-                    spacing={16}
-                    >
-                        {closeFunction()}
-                        <Button
-                        variant="contained"                       
-                        color="primary"
-                        style={{ marginRight:"0.5rem" }}
-                        onClick={() => {if(this.state.candidate_name != "") this.props.onSubmit(this.state)}}
-                        >
-                            Save
-                        </Button>
-                        <Button
-                        variant="contained"                       
-                        color="primary"
-                        style={{ marginRight:"0.5rem" }}
-                        onClick={() => {if(this.state.candidate_name != "") this.props.onGenerate(this.state)}}
-                        >
-                            Generate
-                        </Button>
-                        <Button
-                        variant="contained"                       
-                        color="primary"
-                        onClick={() => {if(this.state.candidate_name != "") this.props.onContract(this.state)}}
-                        >
-                            Contract
-                        </Button>
-                        
-                        {/*<SaveModelButton btype={"save"} onClick={() => this.props.onSubmit(this.state)}/>
-                        <SaveModelButton btype={"generate"} onClick={()=> this.props.onGenerate(this.state)}/>
-                        <SaveModelButton btype={"contract"} onClick={()=> this.props.onContract(this.state)}/>
-                        {closeFunction()}*/}
-                    </Grid>
-                </Grid>
+                
                 <Grid item xs={9}>
                     <Paper className={classes.paper_header} >
                     <Grid container>
@@ -958,7 +935,7 @@ class OfferModelPage extends React.Component<Props, State> {
                             id="panel1a-header"
                         >
                             <Typography className={classes.field_section}>
-                            Candidate Information
+                            Position
                             </Typography>
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails>
@@ -1139,11 +1116,11 @@ class OfferModelPage extends React.Component<Props, State> {
                         <ExpansionPanelDetails>
                         <Grid style={{ width: '100%' }} direction="row">
                             <Grid container>
-                                <Grid item xs={5} style={{ height: "100%", paddingBottom:"1rem" }}>
+                                <Grid item xs={5} style={{ height: "100%", padding:"0.5rem" }}>
                                     <Grid style={{ height: "100%", position: "relative" }}>
                                         <p className={classes.subtitle}>Current</p>
                                         <Grid container  spacing={8}>
-                                            <Grid item xs={4}>Currency</Grid>
+                                            <Grid item xs={4}></Grid>
                                             <Grid item xs={3} style={{ width: "100%", textAlign: "right"}}>{this.state.currency2}</Grid>
                                             <Grid item xs={3} style={{ width: "100%", textAlign: "right"}}>{this.state.currency1}</Grid>
                                             {/* <Grid item xs={2}>{this.state.currency2}</Grid> */}
@@ -1170,20 +1147,27 @@ class OfferModelPage extends React.Component<Props, State> {
                                                 <Grid item xs={3}><TextField disabled value={this.getCurrency2(this.state.current_data.guaranteed_cash.optional[index].value)} inputProps={{ style: { textAlign: "right", fontSize: 13 } }} /></Grid>
                                                 <Grid item xs={1}><IconButton color="primary" onClick={() => this.handleDeleteGC(index)}><DeleteIcon /></IconButton></Grid>
                                             </Grid>)}
+
+                                        <Grid container spacing={8}>
+                                            <Grid item xs={4}>Sub</Grid>
+                                            <Grid item xs={3} style={{ width: "100%", textAlign: "right"}}>{this.getsubtotalGC().toLocaleString(navigator.language, { maximumFractionDigits: 0 })}</Grid>
+                                            <Grid item xs={3} style={{ width: "100%", textAlign: "right"}}>{this.getCurrency2(this.getsubtotalGC())}</Grid>
+                                            <Grid item xs={1} />
+                                        </Grid>
                                     </Grid>
                                 </Grid>
-                                <Grid item xs={7} style={{ height: "100%", paddingBottom:"1rem" }}>
+                                <Grid item xs={7} style={{ height: "100%", backgroundColor: "#f5f5f5", padding:"0.5rem"}}>
                                     <Grid style={{ height: "100%", position: "relative" }}>
                                         <p className={classes.subtitle}>Propose</p>
                                         <Grid container  spacing={8}>
-                                            <Grid item xs={3}>Currency</Grid>
+                                            <Grid item xs={5}></Grid>
                                             <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.state.currency}</Grid>
                                             <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.state.currency1}</Grid>
                                             <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>Difference</Grid>
                                             <Grid item xs={1}></Grid>
                                         </Grid>
                                         <Grid container  spacing={8}>
-                                            <Grid item xs={3}>Annual Base</Grid>
+                                            <Grid item xs={5}>Annual Base</Grid>
                                             <Grid item xs={2}><TextField type="number" value={this.state.propose_data.guaranteed_cash.annual_base} onChange={this.handleChangeAnnualBaseProposed} inputProps={{ style: { textAlign: "right", fontSize: 13 } }} /></Grid>
                                             <Grid item xs={2}><TextField disabled value={this.getCurrency1(this.state.propose_data.guaranteed_cash.annual_base)} inputProps={{ style: { textAlign: "right", fontSize: 13 } }} /></Grid>
                                             <Grid item xs={2}><TextField value={this.checkNan((parseInt(this.state.propose_data.guaranteed_cash.annual_base) * 100 / parseInt(this.getCurrencyDiff(this.state.current_data.guaranteed_cash.annual_base) as any)) - 100).toFixed(2) + "%"} disabled inputProps={{ style: { textAlign: "right", fontSize: 13 } }} /></Grid>
@@ -1193,13 +1177,13 @@ class OfferModelPage extends React.Component<Props, State> {
                                         <hr className={classes.spaceline}/>
 
                                         <Grid container  spacing={8}>
-                                            <Grid item xs={7}></Grid>
+                                            <Grid item xs={9}></Grid>
                                             <Grid item xs={3}><IconButton color="primary" onClick={this.handleAddGP}><AddIcon /></IconButton></Grid>
                                         </Grid>
 
                                         {this.state.propose_data.guaranteed_cash.optional.map((item: NameValue, index) =>
                                             <Grid key={"gp" + index} container spacing={8}>
-                                                <Grid item xs={3}>
+                                                <Grid item xs={5}>
                                                 <ComboBoxComponent 
                                                     id="allowance" 
                                                     dataSource={gCashtypeData} 
@@ -1211,23 +1195,14 @@ class OfferModelPage extends React.Component<Props, State> {
                                                 <Grid item xs={2}><TextField disabled value={this.getCurrency1(this.state.propose_data.guaranteed_cash.optional[index].value)} inputProps={{ style: { textAlign: "right", fontSize: 13 } }} /></Grid>
                                                 <Grid item xs={3}><IconButton color="primary" onClick={() => this.handleDeleteGP(index)}><DeleteIcon /></IconButton></Grid>
                                             </Grid>)}
-                                    </Grid>
-                                </Grid>
-                                <Grid item xs={5} style={{ height: "100%" }}>
-                                    <Grid container spacing={8}>
-                                            <Grid item xs={4}>Sub</Grid>
-                                            <Grid item xs={3} style={{ width: "100%", textAlign: "right"}}>{this.getsubtotalGC().toLocaleString(navigator.language, { maximumFractionDigits: 0 })}</Grid>
-                                            <Grid item xs={3} style={{ width: "100%", textAlign: "right"}}>{this.getCurrency2(this.getsubtotalGC())}</Grid>
-                                            <Grid item xs={1} />
-                                    </Grid>
-                                </Grid>
-                                <Grid item xs={7} style={{ height: "100%" }}>
-                                    <Grid container spacing={8}>                                            
-                                            <Grid item xs={3}>Sub</Grid>
+                                        
+                                        <Grid container spacing={8}>                                            
+                                            <Grid item xs={5}>Sub</Grid>
                                             <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.getsubtotalGP().toLocaleString(navigator.language, { maximumFractionDigits: 0 })}</Grid>
                                             <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.getCurrency1(this.getsubtotalGP())}</Grid>
                                             <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.checkNan((this.getsubtotalGP() * 100 / (this.getCurrencyDiff(this.getsubtotalGC()) as any)) - 100).toFixed(2)}%</Grid>
                                             <Grid item xs={1} />
+                                        </Grid>
                                     </Grid>
                                 </Grid>
                             </Grid>
@@ -1250,10 +1225,10 @@ class OfferModelPage extends React.Component<Props, State> {
                         <ExpansionPanelDetails>
                         <Grid style={{ width: '100%' }} direction="row">
                             <Grid container>
-                                <Grid item xs={5} style={{ height: "100%", paddingBottom:"1rem" }}>
+                                <Grid item xs={5} style={{ height: "100%", padding:"0.5rem" }}>
                                         <p className={classes.subtitle}>Current</p>
                                         <Grid container  spacing={8}>
-                                            <Grid item xs={4}>Currency</Grid>
+                                            <Grid item xs={4}></Grid>
                                             <Grid item xs={3} style={{ width: "100%", textAlign: "right"}}>{this.state.currency2}</Grid>
                                             <Grid item xs={3} style={{ width: "100%", textAlign: "right"}}>{this.state.currency1}</Grid>
                                             <Grid item xs={1}></Grid>
@@ -1265,7 +1240,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                             <Grid item xs={1} />
                                         </Grid>
                                         <Grid container  spacing={8}>
-                                            <Grid item xs={4}>Bonus Target Amount</Grid>
+                                            <Grid item xs={4}>Amount</Grid>
                                             <Grid item xs={3}><TextField value={this.state.current_data.sti.bonus_target_amount} onChange={this.handleChangeBonusTargetAmountCurrent} inputProps={{ style: { textAlign: "right", fontSize: 13 } }} /></Grid>
                                             <Grid item xs={3}><TextField disabled value={this.getCurrency2(this.state.current_data.sti.bonus_target_amount)} inputProps={{ style: { textAlign: "right", fontSize: 13 } }} /></Grid>
                                             <Grid item xs={1} />
@@ -1285,25 +1260,32 @@ class OfferModelPage extends React.Component<Props, State> {
                                                 <Grid item xs={3}><TextField disabled value={this.getCurrency2(this.state.current_data.sti.optional[index].value)} inputProps={{ style: { textAlign: "right", fontSize: 13 } }} /></Grid>
                                                 <Grid item xs={1}><IconButton color="primary" onClick={() => this.handleDeleteSC(index)}><DeleteIcon /></IconButton></Grid>
                                             </Grid>)}
+
+                                        <Grid container spacing={8}>
+                                            <Grid item xs={4}>Sub</Grid>
+                                            <Grid item xs={3} style={{ width: "100%", textAlign: "right"}}>{this.getsubtotalSC().toLocaleString(navigator.language, { maximumFractionDigits: 0 })}</Grid>
+                                            <Grid item xs={3} style={{ width: "100%", textAlign: "right"}}>{this.getCurrency2(this.getsubtotalSC())}</Grid>
+                                            <Grid item xs={1} />
+                                        </Grid>
                                 </Grid>
-                                <Grid item xs={7} style={{ height: "100%", paddingBottom:"1rem" }}>
+                                <Grid item xs={7} style={{ height: "100%", backgroundColor: "#f5f5f5", padding:"0.5rem" }}>
                                         <p className={classes.subtitle}>Propose</p>
                                         <Grid container spacing={8}>
-                                            <Grid item xs={3}>Currency</Grid>
+                                            <Grid item xs={5}></Grid>
                                             <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.state.currency}</Grid>
                                             <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.state.currency1}</Grid>
                                             <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>Difference</Grid>
                                             <Grid item xs={1}></Grid>
                                         </Grid>
                                         <Grid container spacing={8}>
-                                            <Grid item xs={3}>Bonus Target</Grid>
+                                            <Grid item xs={5}>Bonus Target</Grid>
                                             <Grid item xs={2}><TextField value={this.state.propose_data.sti.bonus_target} onChange={this.handleChangeBonusTargetProposed} inputProps={{ style: { textAlign: "right", fontSize: 13 } }} InputProps={{ endAdornment: <InputAdornment position="end">%</InputAdornment> }} /></Grid>
                                             <Grid item xs={2}></Grid>
                                             <Grid item xs={2}></Grid>
                                             <Grid item xs={1} />
                                         </Grid>
                                         <Grid container spacing={8}>
-                                            <Grid item xs={3}>Bonus Target Amount</Grid>
+                                            <Grid item xs={5}>Amount</Grid>
                                             <Grid item xs={2}><TextField value={this.state.propose_data.sti.bonus_target_amount} onChange={this.handleChangeBonusTargetAmountProposed} inputProps={{ style: { textAlign: "right", fontSize: 13 } }} /></Grid>
                                             <Grid item xs={2}><TextField disabled value={this.getCurrency1(this.state.propose_data.sti.bonus_target_amount)} inputProps={{ style: { textAlign: "right", fontSize: 13 } }} /></Grid>
                                             <Grid item xs={2}></Grid>
@@ -1313,14 +1295,14 @@ class OfferModelPage extends React.Component<Props, State> {
                                         <hr className={classes.spaceline}/>
 
                                         <Grid container  spacing={8}>
-                                            <Grid item xs={7}></Grid>
+                                            <Grid item xs={9}></Grid>
                                             <Grid item xs={3}><IconButton color="primary" onClick={this.handleAddSP}><AddIcon /></IconButton></Grid>
                                         </Grid>
 
                                         {this.state.propose_data.sti.optional.map((item: NameValueType, index) =>
                                             <Grid key={"sp" + index} container spacing={8}>
 
-                                                <Grid item xs={3}>
+                                                <Grid item xs={5}>
                                                     <ComboBoxComponent 
                                                     id="sti" 
                                                         dataSource={sTermtypeData} 
@@ -1332,23 +1314,13 @@ class OfferModelPage extends React.Component<Props, State> {
                                                 <Grid item xs={2}><TextField disabled value={this.getCurrency1(this.state.propose_data.sti.optional[index].value)} inputProps={{ style: { textAlign: "right", fontSize: 13 } }} /></Grid>
                                                 <Grid item xs={3}><IconButton color="primary" onClick={() => this.handleDeleteSP(index)}><DeleteIcon /></IconButton></Grid>
                                             </Grid>)}
-                                </Grid>
-                                <Grid item xs={5} style={{ height: "100%" }}>
-                                    <Grid container spacing={8}>
-                                        <Grid item xs={4}>Sub</Grid>
-                                        <Grid item xs={3} style={{ width: "100%", textAlign: "right"}}>{this.getsubtotalSC().toLocaleString(navigator.language, { maximumFractionDigits: 0 })}</Grid>
-                                        <Grid item xs={3} style={{ width: "100%", textAlign: "right"}}>{this.getCurrency2(this.getsubtotalSC())}</Grid>
-                                        <Grid item xs={1} />
-                                    </Grid>
-                                </Grid>
-                                <Grid item xs={7} style={{ height: "100%" }}>
-                                    <Grid container spacing={8}>
-                                        <Grid item xs={3}>Sub</Grid>
-                                        <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.getsubtotalSP().toLocaleString(navigator.language, { maximumFractionDigits: 0 })}</Grid>
-                                        <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.getCurrency1(this.getsubtotalSP())}</Grid>
-                                        <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.checkNan((this.getsubtotalSP() * 100 / (this.getCurrencyDiff(this.getsubtotalSC()) as any)) -100).toFixed(2)}%</Grid>
-                                        <Grid item xs={1} />
-                                    </Grid>
+                                        <Grid container spacing={8}>
+                                            <Grid item xs={5}>Sub</Grid>
+                                            <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.getsubtotalSP().toLocaleString(navigator.language, { maximumFractionDigits: 0 })}</Grid>
+                                            <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.getCurrency1(this.getsubtotalSP())}</Grid>
+                                            <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.checkNan((this.getsubtotalSP() * 100 / (this.getCurrencyDiff(this.getsubtotalSC()) as any)) -100).toFixed(2)}%</Grid>
+                                            <Grid item xs={1} />
+                                        </Grid>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -1361,14 +1333,14 @@ class OfferModelPage extends React.Component<Props, State> {
                         <Grid container>
                             <Grid item xs={5} style={{ height: "100%" }}>
                             <Grid container spacing={8} style={{ marginLeft: "0.5rem" }}>
-                                <Grid item xs={4} style={{ width: "100%", textAlign: "left"}}></Grid>
+                                <Grid item xs={4} style={{ width: "100%", textAlign: "left", fontWeight: 'bold'}}>Current</Grid>
                                 <Grid item xs={3} style={{ width: "100%", textAlign: "right", fontWeight: 'bold'}}>{this.state.currency2}</Grid>
                                 <Grid item xs={3} style={{ width: "100%", textAlign: "right", fontWeight: 'bold'}}>{this.state.currency1}</Grid>
                             </Grid>
                             </Grid>
                             <Grid item xs={7} style={{ height: "100%" }}>
                             <Grid container spacing={8} style={{ marginLeft: "1.5rem" }}>
-                                <Grid item xs={2}></Grid>
+                                <Grid item xs={4} style={{ width: "100%", textAlign: "left", fontWeight: 'bold'}}>Propose</Grid>
                                 <Grid item xs={2} style={{ width: "100%", textAlign: "right", fontWeight: 'bold'}}>{this.state.currency}</Grid>
                                 <Grid item xs={2} style={{ width: "100%", textAlign: "right", fontWeight: 'bold'}}>{this.state.currency1}</Grid>
                                 <Grid item xs={2} style={{ width: "100%", textAlign: "right", fontWeight: 'bold'}}>Difference</Grid>
@@ -1389,7 +1361,7 @@ class OfferModelPage extends React.Component<Props, State> {
                             </Grid>
                             <Grid item xs={7} style={{ height: "100%" }}>
                             <Grid container spacing={8} style={{ marginLeft: "1.5rem" }}>
-                                <Grid item xs={2}></Grid>
+                                <Grid item xs={4}></Grid>
                                 <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{(this.getsubtotalGP() + this.getsubtotalSP()).toLocaleString(navigator.language, { minimumFractionDigits: 0 })}</Grid>
                                 <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.getCurrency1(this.getsubtotalGP() + this.getsubtotalSP())}</Grid>
                                 <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.checkNan(((this.getsubtotalGP() + this.getsubtotalSP()) * 100 / (this.getCurrencyDiff(this.getsubtotalGC() + this.getsubtotalSC()) as any)) -100).toFixed(2)}%</Grid>
@@ -1415,10 +1387,10 @@ class OfferModelPage extends React.Component<Props, State> {
                         <ExpansionPanelDetails>
                         <Grid style={{ width: '100%' }} direction="row">
                             <Grid container>
-                                <Grid item xs={5} style={{ height: "100%", paddingBottom:"1rem" }}>
+                                <Grid item xs={5} style={{ height: "100%", padding:"0.5rem" }}>
                                         <p className={classes.subtitle}>Current</p>
                                         <Grid container  spacing={8}>
-                                            <Grid item xs={4}>Currency</Grid>
+                                            <Grid item xs={4}></Grid>
                                             <Grid item xs={3} style={{ width: "100%", textAlign: "right"}}>{this.state.currency2}</Grid>
                                             <Grid item xs={3} style={{ width: "100%", textAlign: "right"}}>{this.state.currency1}</Grid>
                                             <Grid item xs={1}></Grid>
@@ -1452,11 +1424,18 @@ class OfferModelPage extends React.Component<Props, State> {
                                                 <Grid item xs={3}><TextField disabled value={this.getCurrency2(this.state.current_data.lti.optional[index].value)} inputProps={{ style: { textAlign: "right", fontSize: 13 } }} /></Grid>
                                                 <Grid item xs={1}><IconButton color="primary" onClick={() => this.handleDeleteLC(index)}><DeleteIcon /></IconButton></Grid>
                                             </Grid>)}
+
+                                        <Grid container spacing={8}>
+                                            <Grid item xs={4}>Sub</Grid>
+                                            <Grid item xs={3} style={{ width: "100%", textAlign: "right"}}>{this.getsubtotalLC().toLocaleString(navigator.language, { maximumFractionDigits: 0 })}</Grid>
+                                            <Grid item xs={3} style={{ width: "100%", textAlign: "right"}}>{this.getCurrency2(this.getsubtotalLC())}</Grid>
+                                            <Grid item xs={1} />
+                                        </Grid>
                                 </Grid>
-                                <Grid item xs={7} style={{ height: "100%", paddingBottom:"1rem" }}>
+                                <Grid item xs={7} style={{ height: "100%", backgroundColor: "#f5f5f5", padding:"0.5rem" }}>
                                         <p className={classes.subtitle}>Propose</p>
                                         <Grid container spacing={8}>
-                                            <Grid item xs={3}>Currency</Grid>
+                                            <Grid item xs={5}></Grid>
                                             <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.state.currency}</Grid>
                                             <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.state.currency1}</Grid>
                                             <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>Difference</Grid>
@@ -1470,63 +1449,33 @@ class OfferModelPage extends React.Component<Props, State> {
                                         <hr className={classes.spaceline}/>
 
                                         <Grid container  spacing={8}>
-                                            <Grid item xs={7}></Grid>
+                                            <Grid item xs={9}></Grid>
                                             <Grid item xs={3}><IconButton color="primary" onClick={this.handleAddLP}><AddIcon /></IconButton></Grid>
                                         </Grid>
 
 
                                         {this.state.propose_data.lti.optional.map((item: NameValue, index) =>
                                             <Grid container spacing={8}>
-                                                <Grid item xs={3}>
+                                                <Grid item xs={5}>
                                                     <ComboBoxComponent 
                                                         id="lti" 
                                                         dataSource={lTermtypeData} 
                                                         change={this.handleChangeLTIOptionalNameProposed(index)}
                                                         fields={this.fields}
                                                         value={this.state.propose_data.lti.optional[index].name}/>
-
-
-                                                    {/*<NativeSelect
-                                                        id="lti"
-                                                        value={this.state.propose_data.lti.optional[index].name}
-                                                        onChange={this.handleChangeLTIOptionalNameProposed(index)}
-                                                        inputProps={{
-                                                            name: "lti",
-                                                            id: "lti-simple"
-                                                        }}
-                                                    >
-                                                        <option value={undefined} />
-                                                        {this.props.ltiList.map(lti => (
-                                                            <option
-                                                                value={lti.type}
-                                                                key={lti.longterm_incentive_id}
-                                                            >
-                                                                {lti.type}
-                                                            </option>
-                                                        ))}
-                                                        </NativeSelect>*/}
                                                 </Grid>
                                                 <Grid item xs={2}><TextField value={this.state.propose_data.lti.optional[index].value} onChange={this.handleChangeLTIOptionalValueProposed(index)} inputProps={{ style: { textAlign: "right", fontSize: 13 } }} /></Grid>
                                                 <Grid item xs={2}><TextField disabled value={this.getCurrency1(this.state.propose_data.lti.optional[index].value)} inputProps={{ style: { textAlign: "right", fontSize: 13 } }} /></Grid>
                                                 <Grid item xs={3}><IconButton color="primary" onClick={() => this.handleDeleteLP(index)}><DeleteIcon /></IconButton></Grid>
                                             </Grid>)}
-                                </Grid>
-                                <Grid item xs={5} style={{ height: "100%" }}>
-                                    <Grid container spacing={8}>
-                                        <Grid item xs={4}>Sub</Grid>
-                                        <Grid item xs={3} style={{ width: "100%", textAlign: "right"}}>{this.getsubtotalLC().toLocaleString(navigator.language, { maximumFractionDigits: 0 })}</Grid>
-                                        <Grid item xs={3} style={{ width: "100%", textAlign: "right"}}>{this.getCurrency2(this.getsubtotalLC())}</Grid>
-                                        <Grid item xs={1} />
-                                    </Grid>
-                                </Grid>
-                                <Grid item xs={7} style={{ height: "100%" }}>
-                                    <Grid container spacing={8}>
-                                        <Grid item xs={3}>Sub</Grid>
-                                        <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.getsubtotalLP().toLocaleString(navigator.language, { maximumFractionDigits: 0 })}</Grid>
-                                        <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.getCurrency1(this.getsubtotalLP())}</Grid>
-                                        <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.checkNan((this.getsubtotalLP() * 100 / (this.getCurrencyDiff(this.getsubtotalLC()) as any)) - 100).toFixed(2)}%</Grid>
-                                        <Grid item xs={1} />
-                                    </Grid>
+
+                                        <Grid container spacing={8}>
+                                            <Grid item xs={5}>Sub</Grid>
+                                            <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.getsubtotalLP().toLocaleString(navigator.language, { maximumFractionDigits: 0 })}</Grid>
+                                            <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.getCurrency1(this.getsubtotalLP())}</Grid>
+                                            <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.checkNan((this.getsubtotalLP() * 100 / (this.getCurrencyDiff(this.getsubtotalLC()) as any)) - 100).toFixed(2)}%</Grid>
+                                            <Grid item xs={1} />
+                                        </Grid>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -1546,7 +1495,7 @@ class OfferModelPage extends React.Component<Props, State> {
                             </Grid>
                             <Grid item xs={7} style={{ height: "100%" }}>
                             <Grid container spacing={8} style={{ marginLeft: "1.5rem" }}>
-                                <Grid item xs={2}></Grid>
+                                <Grid item xs={4}></Grid>
                                 <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{(this.getsubtotalGP() + this.getsubtotalSP() + this.getsubtotalLP()).toLocaleString(navigator.language, { minimumFractionDigits: 0 })}</Grid>
                                 <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.getCurrency1(this.getsubtotalGP() + this.getsubtotalSP() + this.getsubtotalLP())}</Grid>
                                 <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.checkNan(((this.getsubtotalGP() + this.getsubtotalSP() + this.getsubtotalLP()) * 100 / (this.getCurrencyDiff(this.getsubtotalGC() + this.getsubtotalSC() + this.getsubtotalLC()) as any)) - 100).toFixed(2)}%</Grid>
@@ -1571,10 +1520,10 @@ class OfferModelPage extends React.Component<Props, State> {
                         <ExpansionPanelDetails>
                         <Grid style={{ width: '100%' }} direction="row">
                             <Grid container>
-                                <Grid item xs={5} style={{ height: "100%", paddingBottom:"1rem" }}>
+                                <Grid item xs={5} style={{ height: "100%", padding: "0.5rem" }}>
                                         <p className={classes.subtitle}>Current</p>
                                         <Grid container spacing={8}>
-                                            <Grid item xs={4}>Currency</Grid>
+                                            <Grid item xs={4}></Grid>
                                             <Grid item xs={3} style={{ width: "100%", textAlign: "right"}}>{this.state.currency2}</Grid>
                                             <Grid item xs={3} style={{ width: "100%", textAlign: "right"}}>{this.state.currency1}</Grid>
                                             <Grid item xs={1}></Grid>
@@ -1592,11 +1541,18 @@ class OfferModelPage extends React.Component<Props, State> {
                                                 <Grid item xs={3}><TextField disabled value={this.getCurrency2(this.state.current_data.sign_on.optional[index].value)} inputProps={{ style: { textAlign: "right", fontSize: 13 } }} /></Grid>
                                                 <Grid item xs={1}><IconButton color="primary" onClick={() => this.handleDeleteSOC(index)}><DeleteIcon /></IconButton></Grid>
                                             </Grid>)}
+
+                                        <Grid container spacing={8}>
+                                            <Grid item xs={4}>Sub</Grid>
+                                            <Grid item xs={3} style={{ width: "100%", textAlign: "right"}}>{this.getsubtotalSOC().toLocaleString(navigator.language, { maximumFractionDigits: 0 })}</Grid>
+                                            <Grid item xs={3} style={{ width: "100%", textAlign: "right"}}>{this.getCurrency2(this.getsubtotalSOC())}</Grid>
+                                            <Grid item xs={1} />
+                                        </Grid>
                                 </Grid>
-                                <Grid item xs={7} style={{ height: "100%", paddingBottom:"1rem" }}>
+                                <Grid item xs={7} style={{ height: "100%", backgroundColor: "#f5f5f5", padding:"0.5rem" }}>
                                         <p className={classes.subtitle}>Propose</p>
                                         <Grid container spacing={8}>
-                                            <Grid item xs={3}>Currency</Grid>
+                                            <Grid item xs={5}></Grid>
                                             <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.state.currency}</Grid>
                                             <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.state.currency1}</Grid>
                                             <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>Difference</Grid>
@@ -1604,62 +1560,32 @@ class OfferModelPage extends React.Component<Props, State> {
                                         </Grid>
 
                                         <Grid container  spacing={8}>
-                                            <Grid item xs={7}></Grid>
+                                            <Grid item xs={9}></Grid>
                                             <Grid item xs={3}><IconButton color="primary" onClick={this.handleAddSOP}><AddIcon /></IconButton></Grid>
                                         </Grid>
 
                                         {this.state.propose_data.sign_on.optional.map((item: NameValue, index) =>
                                             <Grid container key={'sop' + index} spacing={8}>
-                                                <Grid item xs={3}>
+                                                <Grid item xs={5}>
                                                     <ComboBoxComponent 
                                                             id="signon" 
                                                             dataSource={sOnstypeData} 
                                                             change={this.handleChangeSignOnOptionalNameProposed(index)}
                                                             fields={this.fields}
                                                             value={this.state.propose_data.sign_on.optional[index].name}/>
-
-
-                                                    {/*<NativeSelect
-                                                        id="signon"
-                                                        value={this.state.propose_data.sign_on.optional[index].name}
-                                                        onChange={this.handleChangeSignOnOptionalNameProposed(index)}
-                                                        inputProps={{
-                                                            name: "signon",
-                                                            id: "signon-simple"
-                                                        }}
-                                                    >
-                                                        <option value={undefined} />
-                                                        {this.props.signonList.map(signon => (
-                                                            <option
-                                                                value={signon.type}
-                                                                key={signon.signons_id}
-                                                            >
-                                                                {signon.type}
-                                                            </option>
-                                                        ))}
-                                                        </NativeSelect>*/}
                                                 </Grid>
                                                 <Grid item xs={2}><TextField value={this.state.propose_data.sign_on.optional[index].value} onChange={this.handleChangeSignOnOptionalValueProposed(index)} inputProps={{ style: { textAlign: "right", fontSize: 13 } }} /></Grid>
                                                 <Grid item xs={2}><TextField disabled value={this.getCurrency1(this.state.propose_data.sign_on.optional[index].value)} inputProps={{ style: { textAlign: "right", fontSize: 13 } }} /></Grid>
                                                 <Grid item xs={3}><IconButton color="primary" onClick={() => this.handleDeleteSOP(index)}><DeleteIcon /></IconButton></Grid>
                                             </Grid>)}
-                                </Grid>
-                                <Grid item xs={5} style={{ height: "100%" }}>
-                                    <Grid container spacing={8}>
-                                        <Grid item xs={4}>Sub</Grid>
-                                        <Grid item xs={3} style={{ width: "100%", textAlign: "right"}}>{this.getsubtotalSOC().toLocaleString(navigator.language, { maximumFractionDigits: 0 })}</Grid>
-                                        <Grid item xs={3} style={{ width: "100%", textAlign: "right"}}>{this.getCurrency2(this.getsubtotalSOC())}</Grid>
-                                        <Grid item xs={1} />
-                                    </Grid>
-                                </Grid>
-                                <Grid item xs={7} style={{ height: "100%" }}>
-                                    <Grid container spacing={8}>
-                                        <Grid item xs={3}>Sub</Grid>
-                                        <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.getsubtotalSOP().toLocaleString(navigator.language, { maximumFractionDigits: 0 })}</Grid>
-                                        <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.getCurrency1(this.getsubtotalSOP())}</Grid>
-                                        <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.checkNan((this.getsubtotalSOP() * 100 / (this.getCurrencyDiff(this.getsubtotalSOC()) as any)) - 100).toFixed(2)}%</Grid>
-                                        <Grid item xs={1} />
-                                    </Grid>
+                                        
+                                        <Grid container spacing={8}>
+                                            <Grid item xs={5}>Sub</Grid>
+                                            <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.getsubtotalSOP().toLocaleString(navigator.language, { maximumFractionDigits: 0 })}</Grid>
+                                            <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.getCurrency1(this.getsubtotalSOP())}</Grid>
+                                            <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.checkNan((this.getsubtotalSOP() * 100 / (this.getCurrencyDiff(this.getsubtotalSOC()) as any)) - 100).toFixed(2)}%</Grid>
+                                            <Grid item xs={1} />
+                                        </Grid>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -1679,7 +1605,7 @@ class OfferModelPage extends React.Component<Props, State> {
                             </Grid>
                             <Grid item xs={7} style={{ height: "100%" }}>
                             <Grid container spacing={8} style={{ marginLeft: "1.5rem" }}>
-                                <Grid item xs={2}></Grid>
+                                <Grid item xs={4}></Grid>
                                 <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{(this.getsubtotalGP() + this.getsubtotalSP() + this.getsubtotalLP() + this.getsubtotalSOP()).toLocaleString(navigator.language, { minimumFractionDigits: 0 })}</Grid>
                                 <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{(this.getCurrency1(this.getsubtotalGP() + this.getsubtotalSP() + this.getsubtotalLP() + this.getsubtotalSOP()))}</Grid>
                                 <Grid item xs={2} style={{ width: "100%", textAlign: "right"}}>{this.checkNan(((this.getsubtotalGP() + this.getsubtotalSP() + this.getsubtotalLP() + this.getsubtotalSOP()) * 100 / (this.getCurrencyDiff(this.getsubtotalGC() + this.getsubtotalSC() + this.getsubtotalLC() + this.getsubtotalSOC()) as any)) - 100).toFixed(2)}%</Grid>
@@ -1936,7 +1862,47 @@ class OfferModelPage extends React.Component<Props, State> {
                     </Button>*/}
                         
                 </Grid>
-
+                <AppBar position="fixed" className={classes.appBar}>
+                    <Toolbar>
+                    <Grid
+                    container
+                    direction="row"
+                    justify="flex-end"
+                    alignItems="flex-end"
+                    spacing={16}
+                    >
+                        {closeFunction()}
+                        <Button
+                        variant="contained"                       
+                        color="primary"
+                        style={{ marginRight:"0.5rem" }}
+                        onClick={() => {if(this.state.candidate_name != "") this.props.onSubmit(this.state)}}
+                        >
+                            Save
+                        </Button>
+                        <Button
+                        variant="contained"                       
+                        color="primary"
+                        style={{ marginRight:"0.5rem" }}
+                        onClick={() => {if(this.state.candidate_name != "") this.props.onGenerate(this.state)}}
+                        >
+                            Generate
+                        </Button>
+                        <Button
+                        variant="contained"                       
+                        color="primary"
+                        onClick={() => {if(this.state.candidate_name != "") this.props.onContract(this.state)}}
+                        >
+                            Contract
+                        </Button>
+                        
+                        {/*<SaveModelButton btype={"save"} onClick={() => this.props.onSubmit(this.state)}/>
+                        <SaveModelButton btype={"generate"} onClick={()=> this.props.onGenerate(this.state)}/>
+                        <SaveModelButton btype={"contract"} onClick={()=> this.props.onContract(this.state)}/>
+                        {closeFunction()}*/}
+                    </Grid>
+                    </Toolbar>
+                </AppBar> 
             </Grid >
         );
     }

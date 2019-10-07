@@ -91,7 +91,7 @@ class CreateSubJobFunctionPage extends Component<
     return (
       <div className={classes.root}>
         <Typography component="h1" variant="h5">
-          New SubJobFunction
+          New Job Sub Function
         </Typography>
         <Paper style={{ marginTop: "2rem" }}>
           <form

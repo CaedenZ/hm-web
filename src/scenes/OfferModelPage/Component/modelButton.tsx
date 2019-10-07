@@ -93,7 +93,7 @@ const styles = (theme: Theme) =>
                 <div className={classes.details}>
                 <CardContent>
                     <Typography className={classes.stats} variant="h1" component="h1">
-                    New Offer Model
+                    Make an Offer
                     </Typography> 
                     <Typography className={classes.title} color="textSecondary" gutterBottom>
                     Right pay for the right job

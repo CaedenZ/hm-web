@@ -68,7 +68,7 @@ class CreateJobFunctionPage extends Component<Props, CreateJobFunctionState> {
     return (
       <div className={classes.root}>
         <Typography component="h1" variant="h5">
-          New JobFunction
+          New Job Function
         </Typography>
         <Paper style={{ marginTop: "2rem" }}>
           <form

@@ -238,7 +238,7 @@ class CreateJobPositionPage extends Component<Props, FormState> {
             <TextField
               required
               id="busisness_title"
-              label="Job Business Title"
+              label="Position Title"
               className={classes.textField}
               value={this.state.business_title}
               onChange={e => this.setState({ business_title: e.target.value })}
@@ -408,7 +408,7 @@ class CreateJobPositionPage extends Component<Props, FormState> {
           <Grid item justify="center" container xs>
             {this.getsjobfunctionList().length > 0 && (
               <FormControl className={classes.textField}>
-                <InputLabel required>Sub Job Function</InputLabel>
+                <InputLabel required>Job Sub Function</InputLabel>
                 <NativeSelect
                   required
                   id="jobgrade"

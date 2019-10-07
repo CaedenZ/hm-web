@@ -112,7 +112,7 @@ const styles = (theme: Theme) =>
 
                         <Grid item xs={6}>
                         <Typography className={classes.field_label}>
-                        Job Name
+                        Job Function
                         </Typography> 
                         <Typography className={classes.field_data}>
                         {this.props.selectedJobPosition.job_name}

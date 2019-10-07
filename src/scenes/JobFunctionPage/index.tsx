@@ -141,8 +141,8 @@ class CustomizedTable extends React.Component<Props, any> {
             </colgroup>
             <TableHead>
               <TableRow>
-                <CustomTableCell align="left">Job Name</CustomTableCell>
-                <CustomTableCell align="left">Sub Job Function</CustomTableCell>
+                <CustomTableCell align="left">Job Function</CustomTableCell>
+                <CustomTableCell align="left">Job Sub Function</CustomTableCell>
                 <CustomTableCell align="center">Delete</CustomTableCell>
               </TableRow>
             </TableHead>

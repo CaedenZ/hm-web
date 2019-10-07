@@ -197,7 +197,7 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
     const mainmenu2functin = (): any => {
       let adm = [
         {
-          title: "Offer Modeller",
+          title: "Total Offer Modeler",
           path: "/jobposition"
         }
       ]
@@ -226,7 +226,7 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
         //   icon: <UnitIcon />,
         // },
         {
-          title: "Legal Entity",
+          title: "Business Entity",
           path: "/entity",
           icon: <CompanyIcon />,
           index: 2
@@ -345,7 +345,7 @@ class PermanentDrawerLeft extends React.Component<Props, State> {
       }
       const remainingList = [
         {
-          title: "Job Name",
+          title: "Job Function",
           path: "/jobfunction",
           icon: <JobFunctionIcon />,
           index: 8

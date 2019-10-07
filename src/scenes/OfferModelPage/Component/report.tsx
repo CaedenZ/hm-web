@@ -430,8 +430,8 @@ class OfferModelPage extends React.Component<Props, State> {
                     <Grid className={classes.gridMargin} container justify="space-evenly" alignItems="center">
                         <Grid item xs={2}>Name:</Grid>
                         <Grid item xs={4}>{this.state.candidate_name}</Grid>
-                        <Grid item xs={2}>Country:</Grid>
-                        <Grid item xs={4}>{this.state.current_position_country}</Grid>
+                        <Grid item xs={2}>Reference No:</Grid>
+                        <Grid item xs={4}>{this.state.offer_reference}</Grid>
                     </Grid>
 
                     <Grid className={classes.gridMargin} container justify="space-evenly" alignItems="center">
@@ -458,8 +458,8 @@ class OfferModelPage extends React.Component<Props, State> {
                     <Grid className={classes.gridMargin} container justify="space-evenly" alignItems="center">
                         <Grid item xs={2}>Function:</Grid>
                         <Grid item xs={4}>{this.state.current_position_jobfunction}</Grid>
-                        <Grid item xs={2}></Grid>
-                        <Grid item xs={4}>{}</Grid>
+                        <Grid item xs={2}>Country:</Grid>
+                        <Grid item xs={4}>{this.state.current_position_country}</Grid>
                     </Grid>
 
                     <div className={classes.spacediv} />
