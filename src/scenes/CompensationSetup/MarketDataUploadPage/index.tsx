@@ -346,17 +346,19 @@ class MarketDataUploadPage extends React.Component<Props, State> {
               <ColumnsDirective>
                 <ColumnDirective field='year' headerText='Year' width='120' textAlign='Left'></ColumnDirective>
                 <ColumnDirective field='country' headerText='Country' width='180' textAlign='Left'></ColumnDirective>
-                <ColumnDirective field='survey_company' headerText='Survey' visible={false} width='150' textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='survey_company' headerText='Survey Company' visible={false} width='150' textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='employee_id' headerText='Employee ID' visible={false} textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='company_grade' headerText='Job Grade' textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='survey_grade' headerText='Survey Grade' visible={false} textAlign='Left'></ColumnDirective>               
                 <ColumnDirective field='jobfunction' headerText='Job Function' textAlign='Left'></ColumnDirective>
-                <ColumnDirective field='sjobfunction' headerText='Sub Job' visible={false} textAlign='Left'></ColumnDirective>
-                <ColumnDirective field='company_grade' headerText='Company Grade' textAlign='Left'></ColumnDirective>
-                <ColumnDirective field='survey_grade' headerText='Survey Grade' visible={false} textAlign='Left'></ColumnDirective>
-                <ColumnDirective field='annual_base_pay' headerText='Annual Base' visible={false} textAlign='Left'></ColumnDirective>
-                <ColumnDirective field='annual_cash_allowance' headerText='Annual Cash' visible={false} textAlign='Left'></ColumnDirective>
-                <ColumnDirective field='annual_fixed_pay' headerText='Annual Fixed' visible={false} textAlign='Left'></ColumnDirective>   
-                <ColumnDirective field='target_total' headerText='Target Total' textAlign='Left'></ColumnDirective> 
-                <ColumnDirective field='target_direct_comp' headerText='Target Direct' textAlign='Left'></ColumnDirective> 
-                <ColumnDirective field='target_total_rem' headerText='Total Rem' textAlign='Left'></ColumnDirective>              
+                <ColumnDirective field='sjobfunction' headerText='Job Sub Job' visible={false} textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='currency' headerText='Currency' textAlign='Left'></ColumnDirective>                
+                <ColumnDirective field='annual_base_pay' headerText='Annual Base' textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='annual_cash_allowance' headerText='Allowance' visible={false} textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='annual_fixed_pay' headerText='Guaranteed Cash' textAlign='Left'></ColumnDirective>   
+                <ColumnDirective field='target_total' headerText='Target Total Cash' visible={false} textAlign='Left'></ColumnDirective> 
+                <ColumnDirective field='target_direct_comp' headerText='Total Direct Comp' visible={false} textAlign='Left'></ColumnDirective> 
+                <ColumnDirective field='target_total_rem' headerText='Total Remuneration' visible={false} textAlign='Left'></ColumnDirective>              
               </ColumnsDirective>
               <Inject services={[Page, Group, Sort, Filter,ColumnChooser]} />
             </GridComponent>

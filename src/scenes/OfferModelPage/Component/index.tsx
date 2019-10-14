@@ -24,6 +24,7 @@ import SaveModelButton from './sactionButton';
 import { history } from "../../../store";
 import { ComboBoxComponent } from "@syncfusion/ej2-react-dropdowns";
 import AppBar from '@material-ui/core/AppBar';
+import { Prompt } from "react-router";
 
 const styles = (theme: Theme) =>
     createStyles({
@@ -63,6 +64,9 @@ const styles = (theme: Theme) =>
         spacediv: {
             height: 20
         },
+        enddiv: {
+            height: 50
+        },
         spaceline:{
             marginTop: "1.5rem",
             marginBottom: "1rem",
@@ -92,6 +96,12 @@ const styles = (theme: Theme) =>
             fontWeight: 'bold',
             marginBottom: '1rem',
             width: 200
+        },
+        field_data_full: {
+            fontSize: 14,
+            fontWeight: 'bold',
+            marginBottom: '1rem',
+            width: '100%'
         },
         field_data_view: {
             fontSize: 14,
@@ -140,6 +150,9 @@ interface State {
     jobposition_id: string;
     created_by: string;
     candidate_name: string;
+    gender: string;
+    business_unit: string;
+    note: string;
     job_flag: string;
     model_type: string;
     year_of_birth: string;
@@ -157,6 +170,7 @@ interface State {
     current_data: any;
     propose_data: any;
     comparator_data: ComparatorData;
+    unsaveData: Boolean;
 }
 
 interface ComparatorData {
@@ -173,6 +187,9 @@ class OfferModelPage extends React.Component<Props, State> {
         jobposition_id: "",
         created_by: "user.master@mail.com",
         candidate_name: "",
+        gender: "",
+        business_unit: "",
+        note: "",
         job_flag: "",
         model_type: "",
         year_of_birth: "",
@@ -190,6 +207,7 @@ class OfferModelPage extends React.Component<Props, State> {
         current_position_jobfunction: "",
         current_position_sjobfunction: "",
         propose_position_datestart: "2019-01-01",
+        unsaveData: false,
         current_data: {
             guaranteed_cash: {
                 annual_base: '0',
@@ -481,12 +499,14 @@ class OfferModelPage extends React.Component<Props, State> {
     handleChange = (statekay: keyof State) => (
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
+        this.state.unsaveData = true;
         this.setState({ [statekay]: event.target.value } as any);
     };
 
     handleChangeSelect = (statekay: keyof State) => (
         event: React.ChangeEvent<HTMLSelectElement>
     ) => {
+        this.state.unsaveData = true;
         this.setState({ [statekay]: event.target.value } as any);
     };
 
@@ -494,7 +514,7 @@ class OfferModelPage extends React.Component<Props, State> {
         const gc = { ...this.state.current_data }
         gc.guaranteed_cash.annual_base = event.target.value
         gc.sti.bonus_target = (parseInt(this.state.current_data.sti.bonus_target_amount) / event.target.value * 100).toFixed(2).toString()
-
+        this.state.unsaveData = true;
         this.setState({ current_data: gc })
     }
 
@@ -680,7 +700,7 @@ class OfferModelPage extends React.Component<Props, State> {
         let send = {
             ...this.state,
             status: "Generated"
-        }
+        }       
         this.props.onSubmit(send)
     }
 
@@ -830,10 +850,12 @@ class OfferModelPage extends React.Component<Props, State> {
         let sOnstypeData: { [key: string]: Object }[] =that.sOnstypeTypes();
 
         return (
-            
             <Grid container justify="flex-start" spacing={16}
             alignItems="flex-start" direction="row" className={classes.root}>  
-             
+                <Prompt
+                when={this.state.unsaveData}
+                message='You have unsaved changes, are you sure you want to leave?'
+                />
                 <Grid item xs={6}>
                     <Typography className={classes.status} color="textSecondary" gutterBottom>
                     {this.state.status} 
@@ -870,23 +892,41 @@ class OfferModelPage extends React.Component<Props, State> {
                                 <option value={'New'} >New</option>
                             </NativeSelect>
                             <Typography className={classes.field_label}>
-                            Compare Currency
-                        </Typography>
-                        <NativeSelect
-                            className={classes.field_data} 
-                            id="type"
-                            value={this.state.currency1}
-                            onChange={this.handleChangeSelect('currency1')}
-                            inputProps={{
-                                name: "type",
-                                id: "type-simple"
-                            }}
+                            Gender
+                            </Typography>
+                            <NativeSelect
+                                className={classes.field_data} 
+                                id="gender"
+                                value={this.state.gender}
+                                onChange={this.handleChangeSelect('gender')}
+                                inputProps={{
+                                    name: "gender",
+                                    id: "gender-simple"
+                                }}
                             >
-                            <option value={undefined} />
-                            {this.props.currencyList.map(currency => (
-                                <option value={currency.code}>{currency.code}</option>
-                            ))}
-                        </NativeSelect>
+                                <option value={undefined} />
+                                <option value={'Man'} >Man</option>
+                                <option value={'Woman'} >Woman</option>
+                                <option value={'Trans'} >Trans</option>
+                            </NativeSelect>
+                            <Typography className={classes.field_label}>
+                            Compare Currency
+                            </Typography>
+                            <NativeSelect
+                                className={classes.field_data} 
+                                id="type"
+                                value={this.state.currency1}
+                                onChange={this.handleChangeSelect('currency1')}
+                                inputProps={{
+                                    name: "type",
+                                    id: "type-simple"
+                                }}
+                                >
+                                <option value={undefined} />
+                                {this.props.currencyList.map(currency => (
+                                    <option value={currency.code}>{currency.country_name} ({currency.code})</option>
+                                ))}
+                            </NativeSelect>
                         </Grid>
                         <Grid item xs={4}>
                             <Typography className={classes.field_label}>
@@ -909,7 +949,11 @@ class OfferModelPage extends React.Component<Props, State> {
                             <Typography className={classes.field_label}>
                             Year of Birth
                             </Typography>
-                            <TextField className={classes.field_data} type="date" value={this.state.year_of_birth} onChange={this.handleChange('year_of_birth')} />                            
+                            <TextField className={classes.field_data} type="date" value={this.state.year_of_birth} onChange={this.handleChange('year_of_birth')} /> 
+                            <Typography className={classes.field_label}>
+                            Business Unit
+                            </Typography>
+                            <TextField className={classes.field_data} value={this.state.business_unit} onChange={this.handleChange('business_unit')}/>                                                      
                         </Grid>
                         <Grid item xs={4}>
                         <Typography className={classes.field_label}>
@@ -925,6 +969,14 @@ class OfferModelPage extends React.Component<Props, State> {
                             {this.state.jobgrade_id}
                         </Typography>
                         {/*<TextField className={classes.field_data} disabled value={this.state.jobgrade_id} onChange={this.handleChange('jobgrade_id')}/>*/}
+                        </Grid>
+                    </Grid>
+                    <Grid container>
+                        <Grid item xs={12}>
+                            <Typography className={classes.field_label}>
+                            Note
+                            </Typography>
+                            <TextField className={classes.field_data_full} value={this.state.note} onChange={this.handleChange('note')}/>
                         </Grid>
                     </Grid>
                     </Paper>
@@ -1065,7 +1117,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                                 value={currency.code}
                                                 key={currency.code}
                                                 >
-                                                {currency.code}
+                                                {currency.country_name} ({currency.code})
                                                 </option>
                                             ))}
                                             </NativeSelect>
@@ -1089,7 +1141,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                                 value={currency.code}
                                                 key={currency.code}
                                                 >
-                                                {currency.code}
+                                                {currency.country_name} ({currency.code})
                                                 </option>
                                             ))}
                                             </NativeSelect>
@@ -1711,8 +1763,8 @@ class OfferModelPage extends React.Component<Props, State> {
                                     </Grid>)}
                             </Grid>
                         </Grid>
-
                     </Paper>
+                    
                     <Divider />
                     <Divider />
                     <div
@@ -1723,7 +1775,7 @@ class OfferModelPage extends React.Component<Props, State> {
                     >
 
                     </div>
-
+                    <div className={classes.enddiv} />
                 </Grid >
                 <Grid item xs={3} spacing={16}>
                     <Grid
@@ -1736,12 +1788,26 @@ class OfferModelPage extends React.Component<Props, State> {
                     >
                         <Paper style={{ width: "100%", padding: "1rem" }}>
                             <Typography className={classes.field_section}>
-                            Offer Stats
+                            Annual Base
                             </Typography>
                             <Grid container  spacing={8}>
                                 <Grid item xs={6}>Compa Ratio</Grid>
                                 <Grid item xs={6}>{this.checkNan(parseInt(this.state.propose_data.guaranteed_cash.annual_base) * 100 / this.state.comparator_data.intSalaryRange.mid).toFixed(2)} %</Grid>
                             </Grid>
+                        </Paper>
+                    </Grid>
+                    <Grid
+                    container
+                    direction="row"
+                    justify="flex-start"
+                    alignItems="flex-start"
+                    spacing={16}
+                    style={{ marginBottom: '1rem', marginTop:'0.1rem' }}
+                    >
+                        <Paper style={{ width: "100%", padding: "1rem" }}>
+                            <Typography className={classes.field_section}>
+                            Guaranteed Cash
+                            </Typography>
                             <Grid container  spacing={8}>
                                 <Grid item xs={6}>Market Ratio Grade</Grid>
                                 <Grid item xs={6}>{this.checkNan(parseInt(this.state.propose_data.guaranteed_cash.annual_base) * 100 / this.state.comparator_data.extMarketData.grade.p50).toFixed(2)} %</Grid>
@@ -1749,6 +1815,54 @@ class OfferModelPage extends React.Component<Props, State> {
                             <Grid container  spacing={8}>
                                 <Grid item xs={6}>Market Ratio Function</Grid>
                                 <Grid item xs={6}>{this.checkNan(parseInt(this.state.propose_data.guaranteed_cash.annual_base) * 100 / this.state.comparator_data.intPayrollSpread.function.median).toFixed(2)} %</Grid>
+                            </Grid>
+                        </Paper>
+                    </Grid>
+                    <Grid
+                    container
+                    direction="row"
+                    justify="flex-start"
+                    alignItems="flex-start"
+                    spacing={16}
+                    style={{ marginBottom: '1rem', marginTop:'0.1rem' }}
+                    >
+                        <Paper style={{ width: "100%", padding: "1rem" }}>
+                            <Typography className={classes.field_section}>
+                            Target Total Cash
+                            </Typography>
+                            <Grid container  spacing={8}>
+                                <Grid item xs={6}>Market Ratio Grade</Grid>
+                                <Grid item xs={6}>{this.checkNan(parseInt(this.state.propose_data.guaranteed_cash.annual_base) * 100 / this.state.comparator_data.extMarketData.grade.p50).toFixed(2)} %</Grid>
+                            </Grid>
+                            <Grid container  spacing={8}>
+                                <Grid item xs={6}>Market Ratio Function</Grid>
+                                <Grid item xs={6}>{this.checkNan(parseInt(this.state.propose_data.guaranteed_cash.annual_base) * 100 / this.state.comparator_data.intPayrollSpread.function.median).toFixed(2)} %</Grid>
+                            </Grid>
+                        </Paper>
+                    </Grid>
+                    <Grid
+                    container
+                    direction="row"
+                    justify="flex-start"
+                    alignItems="flex-start"
+                    spacing={16}
+                    style={{ marginBottom: '1rem', marginTop:'0.1rem' }}
+                    >
+                        <Paper style={{ width: "100%", padding: "1rem" }}>
+                            <Typography className={classes.field_section}>
+                            TOM Bubble ™
+                            </Typography>
+                            <Grid container  spacing={8}>
+                                <Grid item xs={6}>Annual Base</Grid>
+                                <Grid item xs={6}>0</Grid>
+                            </Grid>
+                            <Grid container  spacing={8}>
+                                <Grid item xs={6}>Guaranteed Cash</Grid>
+                                <Grid item xs={6}>0</Grid>
+                            </Grid>
+                            <Grid container  spacing={8}>
+                                <Grid item xs={6}>Target Total Cash</Grid>
+                                <Grid item xs={6}>0</Grid>
                             </Grid>
                         </Paper>
                     </Grid>
@@ -1876,7 +1990,15 @@ class OfferModelPage extends React.Component<Props, State> {
                         variant="contained"                       
                         color="primary"
                         style={{ marginRight:"0.5rem" }}
-                        onClick={() => {if(this.state.candidate_name != "") this.props.onSubmit(this.state)}}
+                        onClick={() => {
+                            if(this.state.candidate_name != "") {
+                                this.setState({
+                                    unsaveData:false 
+                                },() => {
+                                    this.props.onSubmit(this.state);    
+                                });                                                      
+                            }
+                        }}
                         >
                             Save
                         </Button>

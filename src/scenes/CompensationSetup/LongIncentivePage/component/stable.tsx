@@ -22,6 +22,7 @@ import { ComboBoxComponent } from '@syncfusion/ej2-react-dropdowns';
 import { NumericTextBoxComponent } from '@syncfusion/ej2-react-inputs';
 import { arrayUnique } from "../../../../helper/uniqeArray";
 import { Typography } from '@material-ui/core';
+import { Currency } from '../../../../interface/countryInterface';
 
 enableRipple(true);
 let refresh: Boolean;
@@ -31,7 +32,6 @@ const styles = (theme: Theme) =>
     root: {
       width: "100%",
       height: "100%",
-      marginTop: theme.spacing.unit * 3,
       overflowX: "auto",
       textAlign:"left"
     },
@@ -60,6 +60,8 @@ interface InState {
     longincentiveList: LongIncentive[];
     onUpdate: Function;
     onEquityRange: Function;
+    jobgradeList: JobGrade[];
+    currencyList: Currency[];
 }
 
 export class CustomizedTable_v2 extends React.Component<Props, State>  {
@@ -121,16 +123,28 @@ export class CustomizedTable_v2 extends React.Component<Props, State>  {
         return type
       };
 
+      jobgradeTypes() {
+        const type = []
+        this.props.jobgradeList.forEach(element => {
+          type.push(element.jobgrade_name)
+        });
+        console.log(type);
+        return arrayUnique(type)
+      };
+
       currencyTypes() {
         const type = []
+        this.props.currencyList.forEach(element => {
+          type.push({ id: element.country_name + " (" + element.code + ")", value: element.code })
+        });
         type.push({ id: this.props.selectedCompany.base_currency_id, value: this.props.selectedCompany.base_currency_id });
         return type
       };
 
       valueTypes() {
         const type = []
-        type.push('Fixed');
-        type.push('Percent');
+        type.push('Units');
+        type.push('Values');
         console.log(type);
         return type
       };
@@ -145,12 +159,33 @@ export class CustomizedTable_v2 extends React.Component<Props, State>  {
         }
       };
 
+      investingvalueTypes() {
+        const type = []
+        type.push('On Board');
+        type.push('Tranche');
+        type.push('Cliff');
+        type.push('On Exit');
+        type.push('Other Event');
+        console.log(type);
+        return type
+      };
+
+      public investingvaluetypeParams : IEditCell = {
+        params:   {
+          actionComplete: () => false,
+          allowFiltering: true,
+          dataSource: this.investingvalueTypes(),
+          fields: { text: "value", value: "value"},
+          query: new Query()
+        }
+      };
+
       public currencyParams : IEditCell = {
         params:   {
           actionComplete: () => false,
           allowFiltering: true,
           dataSource: this.currencyTypes(),
-          fields: { text: "value", value: "value"},
+          fields: { text: "id", value: "value"},
           query: new Query()
         }
       };
@@ -164,8 +199,15 @@ export class CustomizedTable_v2 extends React.Component<Props, State>  {
               value: args.data.value,
               type: args.data.type,
               investing_type: args.data.investing_type,
+              country: args.data.country,
+              equity_type: args.data.equity_type,
+              job_grade: args.data.job_grade,
+              min: args.data.min,
+              mid: args.data.mid,
+              max: args.data.max,
               share_symbol: args.data.share_symbol,
               share_exchange: args.data.share_exchange,
+              share_price: args.data.share_price,
               currency: args.data.currency,
               isOptional: 'Y',
               year1: args.data.year1,
@@ -206,22 +248,70 @@ export class CustomizedTable_v2 extends React.Component<Props, State>  {
         this.props.onEquityRange(args.data);
       }
 
+      public countryParams : IEditCell = {
+        params:   {
+          actionComplete: () => false,
+          allowFiltering: true,
+          dataSource: this.countryTypes(),
+          fields: { text: "value", value: "value"},
+          query: new Query()
+        }
+      };
+
+      public jobgradeParams : IEditCell = {
+        params:   {
+          actionComplete: () => false,
+          allowFiltering: true,
+          dataSource: this.jobgradeTypes(),
+          fields: { text: "value", value: "value"},
+          query: new Query()
+        }
+      };
+
+      typeTypes() {
+        const type = []
+        this.props.longincentiveList.forEach(element => {
+          type.push(element.equity_type)
+        });
+        console.log(type);
+        return arrayUnique(type)
+      };
+
     render() {
       const { classes } = this.props;
-      const that = this;      
-     
-      function editNumberTemplateValue(args: object) {      
-        return (<NumericTextBoxComponent id='value' format='N' value={getValue('value', args)} showSpinButton={false} readonly={true}/>)
+      const that = this;     
+
+      function editTemplate(args: object) {      
+        let typeData: { [key: string]: Object }[] =that.typeTypes();
+        return (<ComboBoxComponent id='equity_type' dataSource={typeData} value={getValue('equity_type', args)} />)
+      }
+      
+      function editNumberTemplateMin(args: object) {      
+        return (<NumericTextBoxComponent id='min' format='N' value={getValue('min', args)} showSpinButton={false} readonly={true}/>)
+      }
+
+      function editNumberTemplateMid(args: object) {      
+        return (<NumericTextBoxComponent id='mid' format='N' value={getValue('mid', args)} showSpinButton={false} readonly={true}/>)
+      }
+
+      function editNumberTemplateMax(args: object) {      
+        return (<NumericTextBoxComponent id='max' format='N' value={getValue('max', args)} showSpinButton={false} readonly={true}/>)
       }
 
       return (
         <Paper className={classes.root}>
-            <GridComponent dataSource={this.props.longincentiveList} frozenColumns={6} allowTextWrap={true} toolbar={this.toolbarOptions} editSettings={this.editSettings} ref={ grid => this.gridInstance = grid} allowSorting={true}
-                    dataBound={this.dataBound.bind(this)} load={this.load} allowFiltering={true} filterSettings={this.filterSettings} actionBegin={this.actionBegin.bind(this)} rowSelected={this.rowselect.bind(this)}>
+            <GridComponent dataSource={this.props.longincentiveList} allowResizing={true} toolbar={this.toolbarOptions} editSettings={this.editSettings} ref={ grid => this.gridInstance = grid} allowSorting={true}
+                    dataBound={this.dataBound.bind(this)} load={this.load} actionBegin={this.actionBegin.bind(this)} rowSelected={this.rowselect.bind(this)}>
               <ColumnsDirective>
-                <ColumnDirective field='type' headerText='Type' validationRules={this.requiredRules} width='150' textAlign='Left'></ColumnDirective>
-                <ColumnDirective field='value' headerText='Value' width='150' defaultValue="0" validationRules={this.numbersRules} template={editNumberTemplateValue} textAlign='Left'></ColumnDirective>
-                <ColumnDirective field='investing_type' validationRules={this.requiredRules} edit={this.valuetypeParams} editType='dropdownedit' headerText='Investing Type' width='150' textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='type' headerText='LTI Type' validationRules={this.requiredRules} width='150' textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='value' headerText='Grant Type' width='150' validationRules={this.requiredRules} edit={this.valuetypeParams} editType='dropdownedit' textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='investing_type' validationRules={this.requiredRules} edit={this.investingvaluetypeParams} editType='dropdownedit' headerText='Vesting Type' width='150' textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='country' headerText='Country' width='120' validationRules={this.requiredRules} edit={this.countryParams} editType='dropdownedit' textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='equity_type' headerText='Equity Type' width='150' defaultValue="" editTemplate={editTemplate} textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='job_grade' headerText='Jobgrade' validationRules={this.requiredRules} width='130' edit={this.jobgradeParams} editType='dropdownedit' textAlign='Left' />
+                <ColumnDirective field='min' headerText='Min' width='150' defaultValue="0" validationRules={this.numbersRules} template={editNumberTemplateMin} textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='mid' headerText='Mid' width='150' defaultValue="0" validationRules={this.numbersRules} template={editNumberTemplateMid} textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='max' headerText='Max' width='150' defaultValue="0" validationRules={this.numbersRules} template={editNumberTemplateMax} textAlign='Left'></ColumnDirective>
                 <ColumnDirective field='share_symbol' defaultValue="" headerText='Stock Symbol' width='150' textAlign='Left'></ColumnDirective>
                 <ColumnDirective field='share_exchange' defaultValue="" headerText='Stock Exchange' width='150' textAlign='Left'></ColumnDirective>
                 <ColumnDirective field='currency' validationRules={this.requiredRules} edit={this.currencyParams} editType='dropdownedit' headerText='Currency' width='150' textAlign='Left'></ColumnDirective>
@@ -241,6 +331,8 @@ export class CustomizedTable_v2 extends React.Component<Props, State>  {
   function mapStateToProps(state: RootState) {
     return {
         selectedCompany: state.companyReducer.selectedCompany,
+        jobgradeList: state.jobgradeReducer.jobgradeList,
+        currencyList: state.countryReducer.currencyList
     };
   }
   

@@ -15,7 +15,7 @@ import { history } from "../../../store";
 import { Company } from "../../../interface/companyInterface";
 import { Country } from "../../../interface/countryInterface";
 import CustomizedTable from "./component/table";
-import { Typography, Divider } from "@material-ui/core";
+import { Typography, Divider, Paper } from "@material-ui/core";
 import CustomButton from "../../../helper/components/CustomButton";
 import EquityrangePage from "./EquityRangePage"
 import CustomizedTable_v2 from "./component/stable";
@@ -23,6 +23,10 @@ import Component from "../../OfferModelPage/Component";
 
 const styles = (theme: Theme) =>
   createStyles({
+    main: {
+      width: "100%",
+      padding: "1rem"
+    },
     root: {
       width: "100%",
       marginTop: theme.spacing.unit * 3,
@@ -108,8 +112,15 @@ class LongIncentivePage extends React.Component<Props, State> {
         value: ' ',
         type: ' ',
         investing_type: ' ',
+        country: ' ',
+        equity_type: ' ',
+        job_grade: ' ',
+        min: 0,
+        mid: 0,
+        max: 0,
         share_symbol: ' ',
         share_exchange: ' ',
+        share_price: 0,
         currency: ' ',
         isOptional: ' ',
         year1: 0,
@@ -131,17 +142,12 @@ class LongIncentivePage extends React.Component<Props, State> {
   };
 
   render() {
+    let { classes } = this.props;
     return (
       <main>
+        <Paper className={classes.main}>
         <CustomizedTable_v2 longincentiveList={this.props.longincentiveList} onUpdate={this.handleUpdateButtonClick} onEquityRange={this.handleEquityRangeClick} />
-        <Divider style={{ marginTop: 50 }} />
-        <Typography component="h1" variant="h6">
-          {this.state.selectedlti}
-          </Typography>
-        {this.state.equityrange &&
-          <EquityrangePage />
-        }
-
+        </Paper>
       </main>
     );
   }

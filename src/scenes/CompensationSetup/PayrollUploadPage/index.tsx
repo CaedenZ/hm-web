@@ -358,16 +358,17 @@ class PayrollUploadPage extends React.Component<Props, State> {
               <ColumnsDirective>
                 <ColumnDirective field='year' headerText='Year' width='120' textAlign='Left'></ColumnDirective>
                 <ColumnDirective field='country' headerText='Country' width='180' textAlign='Left'></ColumnDirective>
-                <ColumnDirective field='currency' headerText='Currency' visible={false} width='150' textAlign='Left'></ColumnDirective>
-                <ColumnDirective field='gender' headerText='Gender' width='150' textAlign='Left'></ColumnDirective>
-                <ColumnDirective field='jobfunction' headerText='Job Name' textAlign='Left'></ColumnDirective>
-                <ColumnDirective field='sjobfunction' headerText='Sub Job' visible={false} textAlign='Left'></ColumnDirective>
-                <ColumnDirective field='grade' headerText='Grade' textAlign='Left'></ColumnDirective>
-                <ColumnDirective field='business_title' headerText='Business Title' textAlign='Left'></ColumnDirective>
-                <ColumnDirective field='department' headerText='Department' visible={false} textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='employee_id' headerText='Employee ID' width='180' visible={false} textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='gender' headerText='Gender' width='150' visible={false} textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='jobfunction' headerText='Job Function' textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='sjobfunction' headerText='Sub Job Function' visible={false} textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='business_title' headerText='Position Title' textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='grade' headerText='Job Grade' textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='department' headerText='Division' visible={false} textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='currency' headerText='Currency' visible={false} width='150' textAlign='Left'></ColumnDirective>               
                 <ColumnDirective field='annual_base_pay' headerText='Annual Base' textAlign='Left'></ColumnDirective>
-                <ColumnDirective field='annual_cash_allowance' headerText='Annual Cash' textAlign='Left'></ColumnDirective>
-                <ColumnDirective field='annual_fixed_pay' headerText='Annual Fixed' textAlign='Left'></ColumnDirective>                
+                <ColumnDirective field='annual_cash_allowance' headerText='Allowance' visible={false} textAlign='Left'></ColumnDirective>
+                <ColumnDirective field='annual_fixed_pay' headerText='Guaranteed Cash' textAlign='Left'></ColumnDirective>                
               </ColumnsDirective>
               <Inject services={[Page, Group, Sort, Filter,ColumnChooser]} />
             </GridComponent>
