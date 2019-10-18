@@ -16,7 +16,7 @@ import { RootState } from "../../reducer";
 import { mapDispatchToProps } from "../../helper/dispachProps";
 import { connect } from "react-redux";
 import { SharedDispatchProps } from "../../interface/propsInterface";
-import { IconButton, Grid, Button } from "@material-ui/core";
+import { IconButton, Grid, Button, Dialog, DialogContent, Typography } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ConfirmIcon from "@material-ui/icons/Done";
 import RejectIcon from "@material-ui/icons/Close";
@@ -34,6 +34,8 @@ import JobPanel from "./Component/jobinfo";
 import ModelButton from "./Component/modelButton";
 import { JobPosition } from "../../interface/jobpositionInterface";
 import { GridComponent, ColumnsDirective, Inject, ColumnDirective, CommandColumn, Edit, Sort, CommandModel, CommandClickEventArgs } from "@syncfusion/ej2-react-grids";
+import FormPage from "../JobPositionPage/component/form"
+import $axios from "../../plugin/axios";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -69,17 +71,21 @@ export interface Props
 
 interface State {
   changeStatus: boolean;
+  isModalOpen: boolean;
   setcurrency: boolean;
 }
 
 interface InState {
   selectedCompany: Company;
   offerModelList: OfferModel[];
+  selectedJobPosition: JobPosition;
   role;
+  sessionkey: string;
 }
 class OfferModelPage extends React.Component<Props, State> {
   state = {
     changeStatus: false,
+    isModalOpen: false,
     setcurrency: false,
   }
   componentDidMount() {
@@ -117,7 +123,18 @@ class OfferModelPage extends React.Component<Props, State> {
     this.setState({ changeStatus: false, setcurrency: false });
   };
 
-  handleArchive = () => {
+  handleArchive = async () => {
+    const data = {
+      session_key: this.props.sessionkey,
+      jobposition_id: this.props.selectedJobPosition.jobposition_id,
+    }
+
+    const response = await $axios.post('/job/archivejob', data);
+    history.push("/jobposition");
+  };
+
+  handleDeletJob = () => {
+    this.props.deleteJobPosition(this.props.selectedJobPosition.jobposition_id);
     history.push("/jobposition")
   };
 
@@ -139,6 +156,25 @@ class OfferModelPage extends React.Component<Props, State> {
     return
   }
 
+  handleModelCreateButtonClick = () => {
+    this.setState({ isModalOpen: true });
+    this.forceUpdate();
+    console.log(this.state);
+  };
+
+  handleCreateJobPosition = (e, data) => {
+    e.preventDefault();
+    this.props.updateJobPosition(data);
+    this.setState({ isModalOpen: false });
+    history.push("/jobposition")
+    //window.location.reload();
+  };
+
+   //General Handle Close
+   handleModalClose = () => {
+    this.setState({ isModalOpen: false });
+  };
+
   public commandClick(args: CommandClickEventArgs): void  {    
     const result = args.rowData as OfferModel;
     console.log(result);
@@ -157,94 +193,59 @@ class OfferModelPage extends React.Component<Props, State> {
   render() {
     const { classes } = this.props;
 
-    const getActionButton = (row) => {
-      switch (row.status) {
-        case "Draft":
-          return (
-            <CustomTableCell align="right">
-              <IconButton
-                onClick={() => this.handleUpdateButtonClick(row)}
-              >
-                <UpdateIcon />
-              </IconButton>
-              <IconButton
-                onClick={() => this.handleDelete(row.offermodel_id)}
-              >
-                <DeleteIcon />
-              </IconButton>
-            </CustomTableCell>
-          )
-        case "Generated":
-          return (
-            <CustomTableCell align="right">
-              <IconButton
-                onClick={() => this.handleAcceptButtonClick(row)}
-              >
-                <ConfirmIcon />
-              </IconButton>
-              <IconButton
-                onClick={() => this.handleRejectButtonClick(row)}
-              >
-                <RejectIcon />
-              </IconButton>
-              <IconButton
-                onClick={() => this.handleDelete(row.offermodel_id)}
-              >
-                <DeleteIcon />
-              </IconButton>
-              <IconButton
-                onClick={() => this.handleReport(row.offermodel_id)}
-              >
-                <ReportIcon />
-              </IconButton>
-              <IconButton
-                onClick={() => this.handleContract(row.offermodel_id)}
-              >
-                <ContractIcon />
-              </IconButton>
-            </CustomTableCell>
-          )
-        default:
-          return (
-            <CustomTableCell align="right">
-              <IconButton
-                onClick={() => this.handleDelete(row.offermodel_id)}
-              >
-                <DeleteIcon />
-              </IconButton>
-              <IconButton
-                onClick={() => this.handleReport(row.offermodel_id)}
-              >
-                <ReportIcon />
-              </IconButton>
-              <IconButton
-                onClick={() => this.handleContract(row.offermodel_id)}
-              >
-                <ContractIcon />
-              </IconButton>
-            </CustomTableCell>
-          )
+    const archiveFunction = (): any => {
+        let archivebutton = (
+          <Button size="small" color="primary" onClick={e =>
+            window.confirm("Are you sure you wish to archive this job?") &&
+            this.handleArchive()
+          }>Archive</Button>
+        );
 
-      }
-    }
+        if (this.props.selectedJobPosition.status != 'ARCHIVE') {
+            return archivebutton;
+        } else return "";
+      };
+
+      const editFunction = (): any => {
+        let editbutton = (
+          <Button size="small" color="primary" onClick={() => this.handleModelCreateButtonClick()}
+          >Edit</Button>
+        );
+
+        if (this.props.selectedJobPosition.status != 'ARCHIVE') {
+            return editbutton;
+        } else return "";
+      };
+
+      const createModelFunction = (): any => {
+        let createModelbutton = (
+          <Grid item xs={12} md={4} lg={3}>
+              <Paper>
+              <ModelButton onClick={() => history.push("/jobposition/offermodel/create")}/>
+              </Paper>
+          </Grid>
+        );
+
+        if (this.props.selectedJobPosition.status != 'ARCHIVE') {
+            return createModelbutton;
+        } else return "";
+      };
 
     return (
       <main>
+        {archiveFunction()}
+        {editFunction()}
         <Button size="small" color="primary" onClick={e =>
-          window.confirm("Are you sure you wish to archive this job?") &&
-          this.handleArchive()
-        }>Archive</Button>
+          window.confirm("Are you sure you wish to delete this job?") &&
+          this.handleDeletJob()
+        }>Delete</Button>
         <Grid container spacing={16} style={{ marginBottom:"0.3rem" }}>      
             <Grid item xs={12} md={12} lg={9}>
               <Paper>
                 <JobPanel/>
               </Paper>
             </Grid>
-            <Grid item xs={12} md={4} lg={3}>
-              <Paper>
-              <ModelButton onClick={() => history.push("/jobposition/offermodel/create")}/>
-              </Paper>
-            </Grid>
+            {createModelFunction()}
         </Grid>
         
         <Paper className={classes.root}>
@@ -297,6 +298,22 @@ class OfferModelPage extends React.Component<Props, State> {
           open={this.state.changeStatus}
           handleClose={this.handleClose}
         />
+        <Dialog
+          open={this.state.isModalOpen}
+          onClose={this.handleModalClose}
+          maxWidth={false}
+        >
+          <DialogContent>
+            <Typography component="h1" variant="h5" style = {{margin:"1rem"}}>
+            Edit Job Position
+            </Typography>
+            <FormPage
+              create={false}
+              updateData={this.props.selectedJobPosition}
+              onSubmit={(e, data) => this.handleCreateJobPosition(e, data)}
+            />
+          </DialogContent>
+        </Dialog>
       </main>
     );
   }
@@ -310,7 +327,9 @@ function mapStateToProps(state: RootState) {
   return {
     selectedCompany: state.companyReducer.selectedCompany,
     offerModelList: state.offerModelReducer.offerModelList,
-    role: state.authenticationReducer.profile.info.role_name
+    role: state.authenticationReducer.profile.info.role_name,
+    selectedJobPosition: state.jobPositionReducer.selectedJobPosition,
+    sessionkey: state.authenticationReducer.token
   };
 }
 

@@ -216,6 +216,7 @@ class JobPositionPage extends React.Component<Props, State> {
               <ColumnDirective field='jobgrade_name' headerText='Job Grade' textAlign='Left'></ColumnDirective>
               <ColumnDirective field='business_title' headerText='Business Title'textAlign='Left'></ColumnDirective>
               <ColumnDirective field='job_name' headerText='Job Function' textAlign='Left'></ColumnDirective>
+              <ColumnDirective field='status' headerText='Status' textAlign='Left'></ColumnDirective>
               <ColumnDirective headerText='Manage Records' commands={this.commands}></ColumnDirective>
             </ColumnsDirective>
             <Inject services={[Page, CommandColumn, Edit, Group, Sort, Filter]} />

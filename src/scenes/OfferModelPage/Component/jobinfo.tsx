@@ -117,6 +117,12 @@ const styles = (theme: Theme) =>
                         <Typography className={classes.field_data}>
                         {this.props.selectedJobPosition.job_name}
                         </Typography>
+                        <Typography className={classes.field_label}>
+                        Status
+                        </Typography> 
+                        <Typography className={classes.field_data}>
+                        {this.props.selectedJobPosition.status}
+                        </Typography>
                         </Grid>
                     </Grid>                         
                 </CardContent>

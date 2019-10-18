@@ -12,6 +12,7 @@ export interface JobPosition {
     subjob_name:string;
     description: string;
     remarks: string;
+    status: string;
 }
 
 export interface JobPositionState {
