@@ -84,6 +84,7 @@ interface InState {
     selectedOfferModel: OfferModel;
     currencyList: Currency[];
     session_key: string;
+    selectedCompany: Company;
 }
 
 interface State {
@@ -423,6 +424,13 @@ class OfferModelPage extends React.Component<Props, State> {
             <Grid container style={{ width: '100%', height:'100%' }} >               
                 <Grid item xs={12}>
                     <Paper className={classes.main_paper}>
+                        {this.props.selectedCompany.logo_small !== "" && (
+                        <img
+                            alt="company small logo"
+                            style={{ width: "40px", marginRight: "1rem" }}
+                            src={this.props.selectedCompany.logo_small}
+                        />)}
+
                         <Typography className={classes.title} color="textSecondary" gutterBottom>
                         Offer Sheet
                         </Typography>
@@ -607,6 +615,7 @@ function mapStateToProps(state: RootState) {
         session_key: state.authenticationReducer.token,
         selectedOfferModel: state.offerModelReducer.selectedOfferModel,
         selectedJobPosition: state.jobPositionReducer.selectedJobPosition,
+        selectedCompany: state.companyReducer.selectedCompany
     };
 }
 
