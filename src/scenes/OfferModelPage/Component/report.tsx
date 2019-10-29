@@ -9,7 +9,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { OfferModel, NameValue, NameValueType } from "../../../interface/offerModelInterface";
 import $axios from "../../../plugin/axios";
 import { RootState } from "../../../reducer";
-import { Company } from "../../../interface/companyInterface";
+import { Company, Unit } from "../../../interface/companyInterface";
 import { JobPosition } from "../../../interface/jobpositionInterface";
 import { ShortIncentive } from "../../../interface/shortIncentiveInterface";
 import { LongIncentive } from "../../../interface/longIncentiveInterface";
@@ -85,6 +85,11 @@ interface InState {
     currencyList: Currency[];
     session_key: string;
     selectedCompany: Company;
+    divisionList:Unit[];
+    allowancesList: Allowances[];
+    stiList: ShortIncentive[];
+    ltiList: LongIncentive[];
+    signonList: Signons[];
 }
 
 interface State {
@@ -189,6 +194,53 @@ class OfferModelPage extends React.Component<Props, State> {
         )
 
         return c.code
+    }
+
+    getDivisionByID = (division_id) => {
+        let c = this.props.divisionList.find(e => { return e.unit_id === division_id }
+        )
+
+        return c.unit_name
+    }
+
+    getAllowanceByID = (allowance_id) => {
+        let c = this.props.allowancesList.find(e => { return e.allowance_id === allowance_id }
+        )
+
+        if(c != null)
+            return c.type
+        else
+            return allowance_id
+    }
+
+    getSTByID = (shortterm_id) => {
+        let c = this.props.stiList.find(e => { return e.shortterm_incentive_id === shortterm_id }
+        )
+
+        if(c != null)
+            return c.type
+        else
+            return shortterm_id
+    }
+
+    getLTByID = (longterm_id) => {
+        let c = this.props.ltiList.find(e => { return e.longterm_incentive_id === longterm_id }
+        )
+
+        if(c != null)
+            return c.type
+        else
+            return longterm_id
+    }
+
+    getSignOnByID = (signon_id) => {
+        let c = this.props.signonList.find(e => { return e.signons_id === signon_id }
+        )
+
+        if(c != null)
+            return c.type
+        else
+            return signon_id
     }
 
     getCurrencyRatio = (cu) => {
@@ -406,7 +458,9 @@ class OfferModelPage extends React.Component<Props, State> {
             //pdf.fromHTML(pdfstring);
             //pdf.save("pdf");
             html2canvas(input,  {
-                scale: 2
+                scale: 2,
+                allowTaint : false,
+                useCORS: true
                 })
             .then((canvas) => {
               const imgData = canvas.toDataURL('image/png');
@@ -420,6 +474,10 @@ class OfferModelPage extends React.Component<Props, State> {
           ;
         };
 
+        const image = this.props.selectedCompany.logo_small
+        const timestamp = new Date().getTime();
+        const imageWithTimestamp = image.includes('?') ? `${image}&v=${timestamp}` : `${image}?v=${timestamp}`;
+
         const ToPDF = () => (           
             <Grid container style={{ width: '100%', height:'100%' }} >               
                 <Grid item xs={12}>
@@ -428,7 +486,8 @@ class OfferModelPage extends React.Component<Props, State> {
                         <img
                             alt="company small logo"
                             style={{ width: "40px", marginRight: "1rem" }}
-                            src={this.props.selectedCompany.logo_small}
+                            src={imageWithTimestamp}
+                            crossOrigin="anonymous"
                         />)}
 
                         <Typography className={classes.title} color="textSecondary" gutterBottom>
@@ -444,30 +503,30 @@ class OfferModelPage extends React.Component<Props, State> {
 
                     <Grid className={classes.gridMargin} container justify="space-evenly" alignItems="center">
                         <Grid item xs={2}>Business Title:</Grid>
-                        <Grid item xs={4}>{this.state.current_position_title}</Grid>
+                        <Grid item xs={4}>{this.props.selectedJobPosition.business_title}</Grid>
                         <Grid item xs={2}>Division</Grid>
-                        <Grid item xs={4}>{this.state.current_position_jobfunction}</Grid>
+                        <Grid item xs={4}>{this.getDivisionByID(this.props.selectedJobPosition.division)}</Grid>
                     </Grid>
 
                     <Grid className={classes.gridMargin} container justify="space-evenly" alignItems="center">
                         <Grid item xs={2}>Grade:</Grid>
-                        <Grid item xs={4}>{this.state.current_position_grade}</Grid>
-                        <Grid item xs={2}>Region:</Grid>
-                        <Grid item xs={4}>{this.state.current_position_location}</Grid>
+                        <Grid item xs={4}>{this.props.selectedJobPosition.jobgrade_name}</Grid>
+                        <Grid item xs={2}>Location:</Grid>
+                        <Grid item xs={4}>{this.props.selectedJobPosition.location}</Grid>
                     </Grid>
 
                     <Grid className={classes.gridMargin} container justify="space-evenly" alignItems="center">
                         <Grid item xs={2}>Hire Date:</Grid>
                         <Grid item xs={4}>{this.state.propose_position_datestart}</Grid>
                         <Grid item xs={2}>Legal Entity:</Grid>
-                        <Grid item xs={4}>{}</Grid>
+                        <Grid item xs={4}>{this.props.selectedJobPosition.legal_entity}</Grid>
                     </Grid>
 
                     <Grid className={classes.gridMargin} container justify="space-evenly" alignItems="center">
                         <Grid item xs={2}>Function:</Grid>
-                        <Grid item xs={4}>{this.state.current_position_jobfunction}</Grid>
+                        <Grid item xs={4}>{this.props.selectedJobPosition.job_name}</Grid>
                         <Grid item xs={2}>Country:</Grid>
-                        <Grid item xs={4}>{this.state.current_position_country}</Grid>
+                        <Grid item xs={4}>{this.props.selectedJobPosition.country}</Grid>
                     </Grid>
 
                     <div className={classes.spacediv} />
@@ -482,7 +541,7 @@ class OfferModelPage extends React.Component<Props, State> {
                         </Grid>
                         {this.state.propose_data.guaranteed_cash.optional.map((item: NameValue, index) =>
                             <Grid key={'gc' + index} container>
-                                <Grid item xs={4}>{item.name}</Grid>
+                                <Grid item xs={4}>{this.getAllowanceByID(item.name)}</Grid>
                                 <Grid item xs={8}>{parseInt(item.value).toLocaleString(navigator.language, { maximumFractionDigits: 0 })}</Grid>
                             </Grid>
                         )}
@@ -508,7 +567,7 @@ class OfferModelPage extends React.Component<Props, State> {
                         </Grid>
                         {this.state.propose_data.sti.optional.map((item: NameValue, index) =>
                             <Grid key={'gc' + index} container>
-                                <Grid item xs={4}>{item.name}</Grid>
+                                <Grid item xs={4}>{this.getSTByID(item.name)}</Grid>
                                 <Grid item xs={8}>{parseInt(item.value).toLocaleString(navigator.language, { maximumFractionDigits: 0 })}</Grid>
                             </Grid>
                         )}
@@ -526,7 +585,7 @@ class OfferModelPage extends React.Component<Props, State> {
                     <Grid style={{ width: '100%' }} alignItems="center" justify="space-evenly" direction="row">
                         {this.state.propose_data.lti.optional.map((item: NameValue, index) =>
                             <Grid key={'gc' + index} container>
-                                <Grid item xs={4}>{item.name}</Grid>
+                                <Grid item xs={4}>{this.getLTByID(item.name)}</Grid>
                                 <Grid item xs={8}>{parseInt(item.value).toLocaleString(navigator.language, { maximumFractionDigits: 0 })}</Grid>
                             </Grid>
                         )}
@@ -540,7 +599,7 @@ class OfferModelPage extends React.Component<Props, State> {
                     <Grid style={{ width: '100%' }} alignItems="center" justify="space-evenly" direction="row">
                         {this.state.propose_data.sign_on.optional.map((item: NameValue, index) =>
                             <Grid key={'gc' + index} container>
-                                <Grid item xs={4}>{item.name}</Grid>
+                                <Grid item xs={4}>{this.getSignOnByID(item.name)}</Grid>
                                 <Grid item xs={8}>{parseInt(item.value).toLocaleString(navigator.language, { maximumFractionDigits: 0 })}</Grid>
                             </Grid>
                         )}
@@ -615,7 +674,12 @@ function mapStateToProps(state: RootState) {
         session_key: state.authenticationReducer.token,
         selectedOfferModel: state.offerModelReducer.selectedOfferModel,
         selectedJobPosition: state.jobPositionReducer.selectedJobPosition,
-        selectedCompany: state.companyReducer.selectedCompany
+        selectedCompany: state.companyReducer.selectedCompany,
+        divisionList:state.companyReducer.divisionList,
+        allowancesList: state.allowancesReducer.allowancesList,
+        stiList: state.shortIncentiveReducer.shortincentiveList,
+        ltiList: state.longIncentiveReducer.longincentiveList,
+        signonList: state.signonsReducer.signonsList,
     };
 }
 

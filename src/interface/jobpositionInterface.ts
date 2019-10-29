@@ -13,6 +13,8 @@ export interface JobPosition {
     description: string;
     remarks: string;
     status: string;
+    division: string;
+    legal_entity: string;
 }
 
 export interface JobPositionState {

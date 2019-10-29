@@ -287,6 +287,26 @@ class CreateCompanyPage extends Component<Props, FormState> {
     }
   };
 
+  companyIconDis = () => {
+    if (this.props.view) {
+      return <div style={{ width: 200, height: 150, margin:"1rem"  }} />;
+    }
+    else
+    {
+      if (this.state.logo_small !== "") {
+        return (
+          <img
+            alt="company icon"
+            src={this.state.logo_small}
+            style={{ width: 200, height: 150, margin:"1rem" }}
+          />
+        );
+      } else {
+        return <div style={{ width: 200, height: 150, margin:"1rem"  }} />;
+      }
+    }
+  };
+
   companyMain = () => {
     if (this.props.view) {
       if (this.state.logo_small !== "") {
@@ -309,6 +329,26 @@ class CreateCompanyPage extends Component<Props, FormState> {
           onClose={this.onMainClose}
         />
       );
+    }
+  };
+
+  companyMainDis = () => {
+    if (this.props.view) {
+      return <div style={{ width: 200, height: 150, margin:"1rem"  }} />;
+    }
+    else
+    {
+      if (this.state.logo_small !== "") {
+        return (
+          <img
+            alt="company main"
+            src={this.state.logo_main}
+            style={{ width: 200, height: 150, margin:"1rem"  }}
+          />
+        );
+      } else {
+        return <div style={{ width: 200, height: 150, margin:"1rem"  }} />;
+      }
     }
   };
 
@@ -349,7 +389,7 @@ class CreateCompanyPage extends Component<Props, FormState> {
           style={{ padding: "2rem" }}
         >
           <Grid justify="center" spacing={16} container>           
-            <Grid item direction="column" xs={9} container>
+            <Grid item direction="column" xs={7} container>
               <Grid container>
                 <Grid container item xs={6}>
                   <TextField
@@ -479,45 +519,27 @@ class CreateCompanyPage extends Component<Props, FormState> {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid item direction="column" xs={3} container>
+            <Grid item direction="column" xs={2} container>
               <Grid item xs={6}>
-                <Typography>Company Icon</Typography>
                 <div style={{ margin: "1rem 1rem", marginTop: 0 }}>
-                  {/* {this.props.view ? (
-                    <img
-                      alt="company icon"
-                      src={this.state.logo_small}
-                      style={{ width: 200, height: 150 }}
-                    />
-                  ) : (
-                    <Avatar
-                      width={200}
-                      height={150}
-                      onCrop={this.onCrop}
-                      onClose={this.onClose}
-                    />
-                  )} */}
                   {this.companyIcon()}
                 </div>
               </Grid>
               <Grid item xs={6}>
-                <Typography>Company Logo</Typography>
                 <div style={{ margin: "1rem 1rem", marginTop: 0 }}>
-                  {/* {this.props.view ? (
-                    <img
-                      alt="company main"
-                      src={this.state.logo_main}
-                      style={{ width: 200, height: 150 }}
-                    />
-                  ) : (
-                    <Avatar
-                      width={200}
-                      height={150}
-                      onCrop={this.onMainCrop}
-                      onClose={this.onMainClose}
-                    />
-                  )} */}
                   {this.companyMain()}
+                </div>
+              </Grid>
+            </Grid>
+            <Grid item direction="column" xs={2} container>
+              <Grid item xs={6}>
+                <div style={{ margin: "1rem 1rem", marginTop: 0 }}>
+                  {this.companyIconDis()}
+                </div>
+              </Grid>
+              <Grid item xs={6}>
+                <div style={{ margin: "1rem 1rem", marginTop: 0 }}>
+                  {this.companyMainDis()}
                 </div>
               </Grid>
             </Grid>

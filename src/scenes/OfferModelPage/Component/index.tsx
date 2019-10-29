@@ -514,7 +514,7 @@ class OfferModelPage extends React.Component<Props, State> {
         this.setState({ [statekay]: event.target.value } as any);
     };
 
-    handleChangeAnnualBaseCurrent = (event) => {
+    handleChangeAnnualBaseCurrent = (event) => { 
         const gc = { ...this.state.current_data }
         gc.guaranteed_cash.annual_base = event.target.value
         gc.sti.bonus_target = (parseInt(this.state.current_data.sti.bonus_target_amount) / event.target.value * 100).toFixed(2).toString()

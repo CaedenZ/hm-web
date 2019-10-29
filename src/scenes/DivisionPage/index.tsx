@@ -47,6 +47,8 @@ interface State {
   isSubModalOpen: boolean;
   isSubSubModalOpen: boolean;
   isModalUpdateOpen: boolean;
+  isSubModalUpdateOpen: boolean;
+  isSubSubModalUpdateOpen: boolean;
 }
 
 interface InState {
@@ -65,6 +67,8 @@ class UnitPage extends React.Component<Props, State> {
     isSubModalOpen: false,
     isSubSubModalOpen: false,
     isModalUpdateOpen: false,
+    isSubModalUpdateOpen: false,
+    isSubSubModalUpdateOpen: false,
   };
 
   constructor(props) {
@@ -107,6 +111,24 @@ class UnitPage extends React.Component<Props, State> {
     //history.push("/unit/subunit/create");
   };
 
+  //Update Main Unit
+  handleUpdateButtonClick = unit => {
+    this.props.selectUpdateUnit(unit);
+    this.setState({ isModalUpdateOpen: true });
+  };
+
+  //Update Sub Unit
+  handleSubUpdateButtonClick = unit => {
+    this.props.selectUpdateUnit(unit);
+    this.setState({ isSubModalUpdateOpen: true });
+  };
+
+  //Update Sub Unit
+  handleSubSubUpdateButtonClick = unit => {
+    this.props.selectUpdateUnit(unit);
+    this.setState({ isSubSubModalUpdateOpen: true });
+  };
+
   //Save Create Main
   handleCreateUnit = (e, data) => {
     e.preventDefault();
@@ -131,17 +153,29 @@ class UnitPage extends React.Component<Props, State> {
     //history.goBack();
   };
 
-  //Handle Update
-  handleUpdateButtonClick = unit => {
-    this.props.selectUpdateUnit(unit);
-    this.setState({ isModalUpdateOpen: true });
-  };
+
 
   //Update Main
   handleUpdateUnit = (e, data) => {
     e.preventDefault();
     this.props.updateUnit(data);
     this.setState({ isModalUpdateOpen: false });
+    //history.goBack();
+  };
+  
+  //Update Sub Main
+  handleUpdateSubUnit = (e, data) => {
+      e.preventDefault();
+      this.props.updateSubUnit(data);
+      this.setState({ isSubModalUpdateOpen: false });
+      //history.goBack();
+    };  
+
+  //Update Sub/Sub Main
+  handleUpdateSubSubUnit = (e, data) => {
+    e.preventDefault();
+    this.props.updateChildUnit(data);
+    this.setState({ isSubSubModalUpdateOpen: false });
     //history.goBack();
   };  
 
@@ -151,6 +185,8 @@ class UnitPage extends React.Component<Props, State> {
     this.setState({ isSubModalOpen: false });
     this.setState({ isSubSubModalOpen: false });
     this.setState({ isModalUpdateOpen: false });
+    this.setState({ isSubModalUpdateOpen: false });
+    this.setState({ isSubSubModalUpdateOpen: false });
   };
 
   /*handleSubAddButtonClick = div => {
@@ -163,13 +199,6 @@ class UnitPage extends React.Component<Props, State> {
     history.push("/unit/subunit");
   };
 
-
-
-  handleSubUpdateButtonClick = unit => {
-    console.log("clicked");
-    this.props.selectUpdateUnit(unit);
-    history.push("/unit/subunit/update");
-  };
 
   handleChildUpdateButtonClick = unit => {
     console.log("clicked");
@@ -381,7 +410,7 @@ class UnitPage extends React.Component<Props, State> {
                                   <IconButton
                                     onClick={() =>
                                       //this.handleSubUpdateButtonClick(subrow)
-                                      this.handleUpdateButtonClick(subrow)
+                                      this.handleSubUpdateButtonClick(subrow)
                                     }
                                   >
                                     <UpdateIcon />
@@ -420,7 +449,7 @@ class UnitPage extends React.Component<Props, State> {
                                         <IconButton
                                           onClick={() =>
                                             //this.handleChildUpdateButtonClick(childrow)
-                                            this.handleUpdateButtonClick(childrow)
+                                            this.handleSubSubUpdateButtonClick(childrow)
                                           }
                                         >
                                           <UpdateIcon />
@@ -520,13 +549,45 @@ class UnitPage extends React.Component<Props, State> {
         >
           <DialogContent>
             <Typography component="h1" variant="h5" style = {{margin:"1rem"}}>
-            Create Main Unit
+            Update Main Unit
             </Typography>
             <FormPage
               create={false}
               updateData={this.props.selectedUnit}
-              onSubmit={(e, data) => this.handleCreateUnit(e, data)}
+              onSubmit={(e, data) => this.handleUpdateUnit(e, data)}
             />
+          </DialogContent>
+        </Dialog>
+        <Dialog
+          open={this.state.isSubModalUpdateOpen}
+          onClose={this.handleModalClose}
+          maxWidth={false}
+        >
+          <DialogContent>
+            <Typography component="h1" variant="h5" style = {{margin:"1rem"}}>
+            Update Sub Unit
+            </Typography>
+            {this.props.parentUnit ? <FormPage
+              create={false}
+              updateData={this.props.selectedUnit}
+              onSubmit={(e, data) => this.handleUpdateSubUnit(e, data)}
+            />:null}
+          </DialogContent>
+        </Dialog>
+        <Dialog
+          open={this.state.isSubSubModalUpdateOpen}
+          onClose={this.handleModalClose}
+          maxWidth={false}
+        >
+          <DialogContent>
+            <Typography component="h1" variant="h5" style = {{margin:"1rem"}}>
+            Update Sub/Sub Unit
+            </Typography>
+            {this.props.parentUnit ? <FormPage
+              create={false}
+              updateData={this.props.selectedUnit}
+              onSubmit={(e, data) => this.handleUpdateSubSubUnit(e, data)}
+            />:null}
           </DialogContent>
         </Dialog>
       </main>

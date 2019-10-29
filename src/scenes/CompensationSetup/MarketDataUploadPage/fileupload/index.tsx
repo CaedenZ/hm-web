@@ -93,6 +93,7 @@ interface InState {
 }
 class FileUploadPageMarket extends React.Component<Props, State> {
   public editOptions: EditSettingsModel = { allowEditing: true, mode: 'Normal' };
+  public toolbarOptions: any =  ['Update', 'Cancel'];
 
   state: State = {
     data: false,
@@ -271,7 +272,7 @@ class FileUploadPageMarket extends React.Component<Props, State> {
 
         {this.state.format_listqueue && <Grid container>
           <Paper className={classes.root}>
-            <GridComponent dataSource={this.state.format_listqueue} editSettings={this.editOptions} allowSorting={true} allowTextWrap={true}
+            <GridComponent dataSource={this.state.format_listqueue} editSettings={this.editOptions} toolbar={this.toolbarOptions} allowSorting={true} allowTextWrap={true}
                     load={this.load} commandClick={this.commandClick.bind(this)} actionBegin={this.actionBegin.bind(this)}>
               <ColumnsDirective>
                 <ColumnDirective field='uploaded' allowEditing={false} headerText='Date' textAlign='Left'></ColumnDirective>
