@@ -10,7 +10,7 @@ import ManualForm from "../form"
 import $axios from "../../../../plugin/axios";
 import DeleteIcon from '@material-ui/icons/Delete';
 import CustomButton from "../../../../helper/components/CustomButton";
-import { GridComponent, ColumnsDirective, ColumnDirective, Inject, Page, Group, Sort, Filter, VirtualScroll, ColumnChooser, CommandModel, CommandClickEventArgs, CommandColumn, Edit, EditSettingsModel } from "@syncfusion/ej2-react-grids";
+import { Toolbar, GridComponent, ColumnsDirective, ColumnDirective, Inject, Page, Group, Sort, Filter, VirtualScroll, ColumnChooser, CommandModel, CommandClickEventArgs, CommandColumn, Edit, EditSettingsModel } from "@syncfusion/ej2-react-grids";
 import { enableRipple, getValue } from '@syncfusion/ej2-base';
 import moment from "moment";
 import { history } from "../../../../store";
@@ -93,6 +93,7 @@ interface InState {
 }
 class FileUploadPage extends React.Component<Props, State> {
   public editOptions: EditSettingsModel = { allowEditing: true, mode: 'Normal' };
+  public toolbarOptions: any =  ['Update', 'Cancel'];
 
   state: State = {
     data: false,
@@ -271,7 +272,7 @@ class FileUploadPage extends React.Component<Props, State> {
 
         {this.state.format_listqueue && <Grid container>
           <Paper className={classes.root}>
-            <GridComponent dataSource={this.state.format_listqueue} editSettings={this.editOptions} allowSorting={true} allowTextWrap={true}
+            <GridComponent dataSource={this.state.format_listqueue} editSettings={this.editOptions} toolbar={this.toolbarOptions} allowSorting={true} allowTextWrap={true}
                     load={this.load} commandClick={this.commandClick.bind(this)} actionBegin={this.actionBegin.bind(this)}>
               <ColumnsDirective>
                 <ColumnDirective field='uploaded' allowEditing={false} headerText='Date' textAlign='Left'></ColumnDirective>
@@ -280,7 +281,7 @@ class FileUploadPage extends React.Component<Props, State> {
                 <ColumnDirective field='active' displayAsCheckBox={true} editType='booleanedit' headerText='Active'></ColumnDirective>
                 <ColumnDirective headerText='Manage Records' commands={this.commands}></ColumnDirective>
               </ColumnsDirective>
-              <Inject services={[Sort, CommandColumn, Edit]} />
+              <Inject services={[Sort, CommandColumn, Edit, Toolbar]} />
             </GridComponent>
             </Paper>
           </Grid>}

@@ -10,7 +10,7 @@ import ManualForm from "../form"
 import $axios from "../../../../plugin/axios";
 import DeleteIcon from '@material-ui/icons/Delete';
 import CustomButton from "../../../../helper/components/CustomButton";
-import { GridComponent, ColumnsDirective, ColumnDirective, Inject, Page, Group, Sort, Filter, VirtualScroll, ColumnChooser, CommandModel, CommandClickEventArgs, CommandColumn, Edit, EditSettingsModel } from "@syncfusion/ej2-react-grids";
+import { Toolbar, GridComponent, ColumnsDirective, ColumnDirective, Inject, Page, Group, Sort, Filter, VirtualScroll, ColumnChooser, CommandModel, CommandClickEventArgs, CommandColumn, Edit, EditSettingsModel } from "@syncfusion/ej2-react-grids";
 import { enableRipple, getValue } from '@syncfusion/ej2-base';
 import moment from "moment";
 import { history } from "../../../../store";
@@ -281,7 +281,7 @@ class FileUploadPageMarket extends React.Component<Props, State> {
                 <ColumnDirective field='active' displayAsCheckBox={true} editType='booleanedit' headerText='Active'></ColumnDirective>
                 <ColumnDirective headerText='Manage Records' commands={this.commands}></ColumnDirective>
               </ColumnsDirective>
-              <Inject services={[Sort, CommandColumn, Edit]} />
+              <Inject services={[Sort, CommandColumn, Edit, Toolbar]} />
             </GridComponent>
             </Paper>
           </Grid>}
