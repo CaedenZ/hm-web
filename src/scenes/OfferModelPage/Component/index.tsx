@@ -26,6 +26,7 @@ import { ComboBoxComponent } from "@syncfusion/ej2-react-dropdowns";
 import AppBar from '@material-ui/core/AppBar';
 import { Prompt } from "react-router";
 import Select from '@material-ui/core/Select';
+import { arrayUnique } from "../../../helper/uniqeArray";
 
 const styles = (theme: Theme) =>
     createStyles({
@@ -344,6 +345,26 @@ class OfferModelPage extends React.Component<Props, State> {
         )
 
         return c.code
+    }
+
+    getUniqueCurrencyList = (clist) => {
+        const cats = clist.map(q => q.currency_name);
+        cats.unshift("Singapore Dollar");
+        cats.unshift("British Pound Sterling");
+        cats.unshift("Indian Rupee");
+        cats.unshift("Euro");
+        cats.unshift("Chinese Yuan Renminbi");
+        cats.unshift("US Dollar");        
+        
+        let fclist = [];
+
+        arrayUnique(cats).forEach(element => {
+            let d = clist.find(el => el.currency_name == element);
+            if(d != null)
+                fclist.push(d);
+        });
+
+        return fclist
     }
 
     getCurrencyRatio = (cu) => {
@@ -980,8 +1001,8 @@ class OfferModelPage extends React.Component<Props, State> {
                                 }}
                                 >
                                 <option value={undefined} />
-                                {this.props.currencyList.map(currency => (
-                                    <option value={currency.code}>{currency.country_name} ({currency.code})</option>
+                                {this.getUniqueCurrencyList(this.props.currencyList).map(currency => (
+                                    <option value={currency.code}>{currency.currency_name} ({currency.code})</option>
                                 ))}
                             </Select>
                         </Grid>
@@ -1172,12 +1193,12 @@ class OfferModelPage extends React.Component<Props, State> {
                                             }}
                                             >
                                             <option value="" />
-                                            {this.props.currencyList.map(currency => (
+                                            {this.getUniqueCurrencyList(this.props.currencyList).map(currency => (
                                                 <option
                                                 value={currency.code}
                                                 key={currency.code}
                                                 >
-                                                {currency.country_name} ({currency.code})
+                                                {currency.currency_name} ({currency.code})
                                                 </option>
                                             ))}
                                             </Select>
@@ -1197,12 +1218,12 @@ class OfferModelPage extends React.Component<Props, State> {
                                             }}
                                             >
                                             <option value="" />
-                                            {this.props.currencyList.map(currency => (
+                                            {this.getUniqueCurrencyList(this.props.currencyList).map(currency => (
                                                 <option
                                                 value={currency.code}
                                                 key={currency.code}
                                                 >
-                                                {currency.country_name} ({currency.code})
+                                                {currency.currency_name} ({currency.code})
                                                 </option>
                                             ))}
                                             </Select>

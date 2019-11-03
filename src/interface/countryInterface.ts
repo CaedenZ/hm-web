@@ -5,6 +5,7 @@ export interface Currency {
     country_name: string;
     code: string;
     rate: string;
+    currency_name: string;
 }
 
 export interface DistintCurrency {
