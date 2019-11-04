@@ -1070,19 +1070,20 @@ class OfferModelPage extends React.Component<Props, State> {
                             </Typography>
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails>
+                            
                             <Grid style={{ width: '100%' }} direction="row">
                                 <Grid container>
                                     <Grid item xs={2}><p className={classes.subtitle}>Status</p></Grid>
-                                    <Grid item xs={5}><p className={classes.subtitle}>Current</p></Grid>
+                                    <Grid item xs={4}><p className={classes.subtitle}>Current</p></Grid>
                                     <Grid item xs={5}><p className={classes.subtitle}>Propose</p></Grid>
                                 </Grid>
                                 <Grid container>
                                     <Grid item xs={2}><p className={classes.subtitle}>Title</p></Grid>
-                                    <Grid item xs={5}>
+                                    <Grid item xs={4}>
                                         <TextField InputProps={{readOnly: readonlyFunction(),}} className={classes.field_data}
                                             value={this.state.current_position_title} onChange={this.handleChange('current_position_title')}/>
                                     </Grid>
-                                    <Grid item xs={5}>
+                                    <Grid item xs={5} style={{ paddingLeft:"1rem", backgroundColor: "#f5f5f5"}}>
                                     <Typography className={classes.field_data_view}>
                                         {this.props.selectedJobPosition.business_title}
                                     </Typography>
@@ -1091,7 +1092,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                 </Grid>
                                 <Grid container>
                                     <Grid item xs={2}><p className={classes.subtitle}>Country</p></Grid>
-                                    <Grid item xs={5}>
+                                    <Grid item xs={4}>
                                         {this.props.countryList.length > 0 && (
                                                 <Select
                                                 className={classes.field_data}
@@ -1118,7 +1119,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                         {/*<TextField className={classes.field_data}
                                         value={this.state.current_position_country} onChange={this.handleChange('current_position_country')}/>*/}
                                     </Grid>
-                                    <Grid item xs={5}>
+                                    <Grid item xs={5} style={{ paddingLeft:"1rem", backgroundColor: "#f5f5f5"}}>
                                     <Typography className={classes.field_data_view}>
                                         {this.props.selectedJobPosition.country}
                                     </Typography> 
@@ -1127,11 +1128,11 @@ class OfferModelPage extends React.Component<Props, State> {
                                 </Grid>
                                 <Grid container>
                                     <Grid item xs={2}><p className={classes.subtitle}>Location</p></Grid>
-                                    <Grid item xs={5}>
+                                    <Grid item xs={4}>
                                         <TextField InputProps={{readOnly: readonlyFunction(),}} className={classes.field_data}
                                         value={this.state.current_position_location} onChange={this.handleChange('current_position_location')}/>
                                     </Grid>
-                                    <Grid item xs={5}>
+                                    <Grid item xs={5} style={{ paddingLeft:"1rem", backgroundColor: "#f5f5f5"}}>
                                     <Typography className={classes.field_data_view}>
                                         {this.props.selectedJobPosition.location}
                                     </Typography> 
@@ -1140,11 +1141,11 @@ class OfferModelPage extends React.Component<Props, State> {
                                 </Grid>
                                 <Grid container>
                                     <Grid item xs={2}><p className={classes.subtitle}>Grade</p></Grid>
-                                    <Grid item xs={5}>
+                                    <Grid item xs={4}>
                                         <TextField InputProps={{readOnly: readonlyFunction(),}} className={classes.field_data}
                                         value={this.state.current_position_grade} onChange={this.handleChange('current_position_grade')}/>
                                         </Grid>
-                                    <Grid item xs={5}>
+                                    <Grid item xs={5} style={{ paddingLeft:"1rem", backgroundColor: "#f5f5f5"}}>
                                     <Typography className={classes.field_data_view}>
                                         {this.props.selectedJobPosition.jobgrade_name}
                                     </Typography>    
@@ -1153,11 +1154,11 @@ class OfferModelPage extends React.Component<Props, State> {
                                 </Grid>
                                 <Grid container>
                                     <Grid item xs={2}><p className={classes.subtitle}>Jobfunction</p></Grid>
-                                    <Grid item xs={5}>
+                                    <Grid item xs={4}>
                                         <TextField InputProps={{readOnly: readonlyFunction(),}} className={classes.field_data}
                                         value={this.state.current_position_jobfunction} onChange={this.handleChange('current_position_jobfunction')}/>
                                         </Grid>
-                                    <Grid item xs={5}>
+                                    <Grid item xs={5} style={{ paddingLeft:"1rem", backgroundColor: "#f5f5f5"}}>
                                     <Typography className={classes.field_data_view}>
                                         {this.props.selectedJobPosition.job_name}
                                     </Typography>    
@@ -1166,12 +1167,12 @@ class OfferModelPage extends React.Component<Props, State> {
                                 </Grid>
                                 <Grid container>
                                     <Grid item xs={2}><p className={classes.subtitle}>Datestart</p></Grid>
-                                    <Grid item xs={5}>
+                                    <Grid item xs={4}>
                                         <TextField InputProps={{readOnly: readonlyFunction(),}} className={classes.field_data}
                                         type="date"
                                         value={this.state.current_position_datestart} onChange={this.handleChange('current_position_datestart')}/>
                                     </Grid>
-                                    <Grid item xs={5}>
+                                    <Grid item xs={5} style={{ paddingLeft:"1rem", backgroundColor: "#f5f5f5"}}>
                                         <TextField InputProps={{readOnly: readonlyFunction(),}} className={classes.field_data}
                                         type="date"
                                         value={this.state.propose_position_datestart} onChange={this.handleChange('propose_position_datestart')}/>
@@ -1179,7 +1180,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                 </Grid>
                                 <Grid container>
                                     <Grid item xs={2}><p className={classes.subtitle}>Currency</p></Grid>
-                                    <Grid item xs={5}>
+                                    <Grid item xs={4}>
                                         {this.props.currencyList.length > 0 && (
                                             <Select
                                             className={classes.field_data}
@@ -1204,7 +1205,7 @@ class OfferModelPage extends React.Component<Props, State> {
                                             </Select>
                                         )}
                                     </Grid>
-                                    <Grid item xs={5}>
+                                    <Grid item xs={5} style={{ paddingLeft:"1rem", backgroundColor: "#f5f5f5"}}>
                                         {this.props.currencyList.length > 0 && (
                                             <Select
                                             className={classes.field_data}
