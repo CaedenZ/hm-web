@@ -38,7 +38,9 @@ class Layout extends Component<Props> {
       <PermanentDrawerLeft>
         <div style={{ display: "inline-block", height: "5vh" }} />
         <ErrorBoundary>{this.props.children}</ErrorBoundary>
-        <CustomSnackBar />
+        {
+          //<CustomSnackBar />
+        }
         <CustomDialog />
       </PermanentDrawerLeft>
     );
